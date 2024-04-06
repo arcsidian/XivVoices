@@ -415,7 +415,7 @@ namespace XivVoices.Voice {
                         try
                         {
                             await Task.Delay(100, token);
-                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.EmoteLoop, "Animation Mode Override");
+                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
                             MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), lipId, "Lipsync");
 
                             int adjustedDelay = CalculateAdjustedDelay(durationMs, lipSyncType);
@@ -433,7 +433,7 @@ namespace XivVoices.Voice {
                                 _chatGui.Print($"Task was finished");
 #endif
                                 animationMemory.LipsOverride = 0;
-                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.EmoteLoop, "Animation Mode Override");
+                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
                                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                                 cts.Dispose();
                                 taskCancellations.Remove(character);
@@ -446,7 +446,7 @@ namespace XivVoices.Voice {
                             _chatGui.Print($"Task was canceled.");
 #endif
                             animationMemory.LipsOverride = 0;
-                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.EmoteLoop, "Animation Mode Override");
+                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
                             MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                             cts.Dispose();
                             taskCancellations.Remove(character);
