@@ -29,10 +29,23 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Set version based on ref type
+        id: set_version
+        run: |
+          if("${{ github.ref }}" -match "refs/tags/") {
+            $ver = "${{ github.ref }}" -replace 'refs/tags/',''
+          } else {
+            # Fallback version, or generate one based on date, commit SHA, etc.
+            $ver = "0.0.1" # Example fallback version
+          }
+          echo "::set-output name=version::$ver"
+        shell: pwsh
+
       - name: Build
         run: |
-          $ver = '${{ github.ref }}' -replace 'refs/tags/',''
+          $ver = "${{ steps.set_version.outputs.version }}"
           dotnet build --no-restore -c Release --nologo -p:Version=$ver
+        shell: pwsh
 
       - name: Write version into manifest
         run: |
