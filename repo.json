@@ -4,8 +4,13 @@
     "Name": "XivVoices",
     "Description": "Turning every dialogue into avoiced dialogue!",
     "InternalName": "XivVoices",
+<<<<<<< HEAD
     "AssemblyVersion": "0.0.0.1",
     "TestingAssemblyVersion": "0.0.0.1",
+=======
+    "AssemblyVersion": "0.9.0",
+    "TestingAssemblyVersion": "0.9.0",
+>>>>>>> 2227a544cebb06e6d78b760fbacb41a214bd143c
     "RepoUrl": "https://github.com/arcsidian/XivVoicesPlugin",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 9,
