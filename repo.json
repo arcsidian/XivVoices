@@ -1,0 +1,24 @@
+[
+  {
+    "Author": "Arcsidian",
+    "Name": "XivVoices",
+    "Description": "Turning every dialogue into avoiced dialogue!",
+    "InternalName": "XivVoices",
+    "AssemblyVersion": "0.1.0.0",
+    "TestingAssemblyVersion": "0.1.0.0",
+    "RepoUrl": "https://github.com/arcsidian/XivVoicesPlugin",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 9,
+    "IsHide": "False",
+    "IsTestingExclusive": "False",
+    "DownloadCount": 0,
+    "LastUpdate": 0,
+    "LoadPriority": 69420,
+    "LoadRequiredState": 2,
+    "LoadSync": true,
+    "DownloadLinkInstall": "",
+    "DownloadLinkTesting": "",
+    "DownloadLinkUpdate": "",
+    "IconUrl": "https://raw.githubusercontent.com/arcsidian/XivVoices/master/icon.png"
+  }
+]

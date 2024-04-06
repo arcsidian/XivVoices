@@ -68,7 +68,7 @@ jobs:
           name: XivVoices ${{ github.ref_name }}
           artifacts: "./XivVoices/bin/Release/*.zip"
           tag: ${{ github.ref_name }}
-          body: "A build of the Roleplaying Voice plugin. Do not install this manually. Install via the dalamud repo link!"
+          body: "Xiv Voices Plugin Release. Install via the dalamud repo link."
           omitBodyDuringUpdate: true
           allowUpdates: true
           replacesArtifacts: true
