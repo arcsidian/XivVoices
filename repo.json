@@ -4,8 +4,8 @@
     "Name": "Xiv Voices",
     "Description": "Turning every dialogue into a voiced dialogue!",
     "InternalName": "XivVoices",
-    "AssemblyVersion": "0.1.0.0",
-    "TestingAssemblyVersion": "0.1.0.0",
+    "AssemblyVersion": "1.0.1",
+    "TestingAssemblyVersion": "1.0.1",
     "RepoUrl": "https://github.com/arcsidian/XivVoicesPlugin",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 9,
@@ -16,9 +16,9 @@
     "LoadPriority": 69420,
     "LoadRequiredState": 2,
     "LoadSync": true,
-    "DownloadLinkInstall": "https://github.com/arcsidian/XivVoices/releases/download/0.1.0.0/XivVoices.zip",
-    "DownloadLinkTesting": "https://github.com/arcsidian/XivVoices/releases/download/0.1.0.0/XivVoices.zip",
-    "DownloadLinkUpdate": "https://github.com/arcsidian/XivVoices/releases/download/0.1.0.0/XivVoices.zip",
+    "DownloadLinkInstall": "https://github.com/arcsidian/XivVoices/releases/download/1.0.1/XivVoices.zip",
+    "DownloadLinkTesting": "https://github.com/arcsidian/XivVoices/releases/download/1.0.1/XivVoices.zip",
+    "DownloadLinkUpdate": "https://github.com/arcsidian/XivVoices/releases/download/1.0.1/XivVoices.zip",
     "IconUrl": "https://raw.githubusercontent.com/arcsidian/XivVoices/master/icon.png"
   }
 ]
