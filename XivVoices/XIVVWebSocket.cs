@@ -80,15 +80,21 @@ namespace XivVoices
         private void OnMessageReceived(string data)
         {
             XivvData ttsData = JsonConvert.DeserializeObject<XivvData>(data);
+#if DEBUG
             this.Plugin.Chat.Print("Websocket Received: " + ttsData.Type + " " + ttsData.Character + " " + ttsData.Data);
+#endif
+
 
             if (ttsData.Type == "Start")
             {
+#if DEBUG
                 this.Plugin.Chat.Print($"characterList has {characterList.Count}");
+
                 if (characterList.ContainsKey(ttsData.Character))
                     this.Plugin.Chat.Print("found the character");
                 else
                     this.Plugin.Chat.Print("did not find it");
+#endif
 
                 this.Plugin.TriggerLipSync(characterList[ttsData.Character], ttsData.Data);
             }

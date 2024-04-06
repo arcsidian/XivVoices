@@ -387,24 +387,20 @@ namespace XivVoices.Voice {
                 else if (duration < 5)
                 {
                     lipId = LipSyncTypes[4].Timeline.AnimationId;
-                    _chatGui.Print($"less than 5");
                     lipSyncType = 4;
                 }
                 else if (duration < 9)
                 {
                     lipId = LipSyncTypes[5].Timeline.AnimationId;
-                    _chatGui.Print($"less than 9");
                     lipSyncType = 5;
                 }
                 else
                 {
                     lipId = LipSyncTypes[6].Timeline.AnimationId;
-                    _chatGui.Print($"more than 6");
                     lipSyncType = 6;
                 }
 
                 int durationMs = (int)(duration * 1000);
-                _chatGui.Print($"int durationMs[{durationMs}]");
 
                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), lipId, "Lipsync");
 
@@ -424,13 +420,18 @@ namespace XivVoices.Voice {
 
                             int adjustedDelay = CalculateAdjustedDelay(durationMs, lipSyncType);
 
-
+#if DEBUG
                             _chatGui.Print($"Task was started lipSyncType[{lipSyncType}] durationMs[{durationMs}] delay [{adjustedDelay}]");
+#endif
+
                             await Task.Delay(adjustedDelay, token);
 
                             if (!token.IsCancellationRequested && character != null)
                             {
+
+#if DEBUG
                                 _chatGui.Print($"Task was finished");
+#endif
                                 animationMemory.LipsOverride = 0;
                                 MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.EmoteLoop, "Animation Mode Override");
                                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
@@ -440,7 +441,10 @@ namespace XivVoices.Voice {
                         }
                         catch (TaskCanceledException)
                         {
+
+#if DEBUG
                             _chatGui.Print($"Task was canceled.");
+#endif
                             animationMemory.LipsOverride = 0;
                             MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.EmoteLoop, "Animation Mode Override");
                             MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
@@ -488,14 +492,14 @@ namespace XivVoices.Voice {
         {
             if (taskCancellations.TryGetValue(character, out var cts))
             {
-                _chatGui.Print("Cancellation " + character.Name);
+                //_chatGui.Print("Cancellation " + character.Name);
                 cts.Cancel();
                 return;
             }
 
             try
             {
-                _chatGui.Print("StopLipSync " + character.Name);
+                //_chatGui.Print("StopLipSync " + character.Name);
                 var actorMemory = new ActorMemory();
                 actorMemory.SetAddress(character.Address);
                 var animationMemory = actorMemory.Animation;
