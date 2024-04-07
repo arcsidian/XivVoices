@@ -348,6 +348,16 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Replace ARR Cutscenes");
 
+            // SkipEnabled
+            var skipEnabled = this.Configuration.SkipEnabled;
+            if (ImGui.Checkbox("##interruptEnabled", ref skipEnabled))
+            {
+                this.configuration.SkipEnabled = skipEnabled;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Dialogue Skip Enabled");
+
 
             //ImGui.SetNextItemWidth(ImGui.GetContentRegionMax().X);
         }

@@ -82,6 +82,7 @@ namespace XivVoices {
         public Configuration Config => config;
 
         public IChatGui Chat => _chat;
+        public IClientState ClientState => _clientState;
 
         public AddonTalkHandler AddonTalkHandler { get => _addonTalkHandler; set => _addonTalkHandler = value; }
         #endregion
@@ -220,7 +221,8 @@ namespace XivVoices {
                     if (_addonTalkHandler.lastNPCDialogue == playerName + cleanedMessage)
                     {
                         //webSocketServer.BroadcastMessage($"===> match");
-                        ChatText(playerName, cleanedMessage, type, senderId, true);
+                        if(config.SkipEnabled)
+                            ChatText(playerName, cleanedMessage, type, senderId, true);
                     }
                     return;
                 }
@@ -313,7 +315,7 @@ namespace XivVoices {
 
         public void TriggerLipSync(Character character, string length)
         {
-            if(config.LipsyncEnabled)
+            if (config.LipsyncEnabled)
                 _addonTalkHandler.TriggerLipSync(character, length);
         }
 

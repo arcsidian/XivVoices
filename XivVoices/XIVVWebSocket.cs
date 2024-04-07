@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Security;
 using WebSocketSharp;
 using WebSocketSharp.Server;
+using XivCommon.Functions;
 using XivVoices.Voice;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -71,8 +72,9 @@ namespace XivVoices
                 if (!characterList.ContainsKey(index))
                     characterList.Add(index, character);
             }
+            string user = $"{this.Plugin.ClientState.LocalPlayer.Name}@{this.Plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-            var dataToSend = $"{{\"Type\":\"{type}\",\"Speaker\":\"{speaker}\",\"NpcID\":\"{npcID}\",\"Message\":\"{message}\",\"Body\":\"{body}\",\"Gender\":\"{gender}\",\"Race\":\"{race}\",\"Tribe\":\"{tribe}\",\"Eyes\":\"{eyes}\",\"Language\":\"{language}\",\"Position\":\"{position}\",\"Character\":\"{index}\"}}";
+            var dataToSend = $"{{\"Type\":\"{type}\",\"Speaker\":\"{speaker}\",\"NpcID\":\"{npcID}\",\"Message\":\"{message}\",\"Body\":\"{body}\",\"Gender\":\"{gender}\",\"Race\":\"{race}\",\"Tribe\":\"{tribe}\",\"Eyes\":\"{eyes}\",\"Language\":\"{language}\",\"Position\":\"{position}\",\"Character\":\"{index}\",\"User\":\"{user}\"}}";
             //this.Plugin.Chat.Print("Websocket Sent: " + dataToSend);
             _wss.WebSocketServices["/XivVoices"].Sessions.Broadcast(dataToSend);
         }
