@@ -12,9 +12,16 @@ namespace XivVoices
         public bool Active { get; set; } = true;
         public string WebsocketStatus { get; set; } = "";
         public bool ReplaceVoicedARRCutscenes { get; set; } = true;
+        public bool LipsyncEnabled { get; set; } = true;
+
+        // Chat Settings
+        public bool SayEnabled { get; set; } = true;
+        public bool TellEnabled { get; set; } = true;
+        public bool ShoutEnabled { get; set; } = true;
+        public bool PartyEnabled { get; set; } = true;
+        public bool FreeCompanyEnabled { get; set; } = true;
         public bool BattleDialoguesEnabled { get; set; } = true;
         public bool BubblesEnabled { get; set; } = true;
-        public bool LipsyncEnabled { get; set; } = true;
 
         // the below exist just to make saving less cumbersome
         [NonSerialized]

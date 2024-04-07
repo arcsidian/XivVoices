@@ -149,7 +149,7 @@ namespace XivVoices {
                 Logo = this.pluginInterface.UiBuilder.LoadImage(imagePath);
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
-                _chat.PrintError("[XivVoices]0 Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
+                _chat.PrintError("[XivVoices] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
             #endregion
         }
@@ -168,7 +168,7 @@ namespace XivVoices {
                 }
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
-                _chat.PrintError("[XivVoices]1 Fatal Error, the plugin did not initialize correctly!\n"+ e.Message);
+                _chat.PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
         }
 
@@ -242,15 +242,30 @@ namespace XivVoices {
 
                 switch (type) {
                     case XivChatType.Say:
+                        if (config.SayEnabled)
+                            ChatText(playerName, cleanedMessage, type, senderId);
+                        break;
+                    case XivChatType.TellIncoming:
+                        if (config.TellEnabled)
+                            ChatText(playerName, cleanedMessage, type, senderId);
+                        break;
+                    case XivChatType.TellOutgoing:
+                        break;
                     case XivChatType.Shout:
                     case XivChatType.Yell:
+                        if (config.ShoutEnabled)
+                            ChatText(playerName, cleanedMessage, type, senderId);
+                        break;
                     case XivChatType.CustomEmote:
+                        break;
                     case XivChatType.Party:
-                    case XivChatType.FreeCompany:
                     case XivChatType.CrossParty:
-                    case XivChatType.TellIncoming:
-                    case XivChatType.TellOutgoing:
-                        ChatText(playerName, cleanedMessage, type, senderId);
+                        if (config.PartyEnabled)
+                            ChatText(playerName, cleanedMessage, type, senderId);
+                        break;
+                    case XivChatType.FreeCompany:
+                        if (config.FreeCompanyEnabled)
+                            ChatText(playerName, cleanedMessage, type, senderId);
                         break;
                     case XivChatType.NPCDialogue:
                         break;

@@ -343,8 +343,23 @@ namespace XivVoices.Voice {
         {
             string correctedMessage = StripPlayerNameFromNPCDialogue(ConvertRomanNumberals(sentence));
             correctedMessage = Regex.Replace(correctedMessage, @"\s+", " ");
-            return correctedMessage.Replace("─", " - ");
+            correctedMessage = correctedMessage
+                .Replace("─", " - ")
+                .Replace("—", " - ")
+                .Replace("–", "-");
+
+            // Remove leading "..." if present
+            if (correctedMessage.StartsWith("..."))
+            {
+                correctedMessage = correctedMessage[3..];
+            }
+
+            // Trim leading and trailing spaces
+            correctedMessage = correctedMessage.Trim();
+
+            return correctedMessage ?? "";
         }
+
 
         /*
         public async void TriggerLipSync(Character character, int lipSyncType)
@@ -373,37 +388,32 @@ namespace XivVoices.Voice {
                 actorMemory = new ActorMemory();
                 actorMemory.SetAddress(character.Address);
                 animationMemory = actorMemory.Animation;
-                animationMemory.LipsOverride = LipSyncTypes[5].Timeline.AnimationId;
 
                 // Determine the duration based on the message size
                 float duration = float.Parse(length, CultureInfo.InvariantCulture);
 
-                ushort lipId = 0;
-                int lipSyncType = 0;
+                Dictionary<int,int> mouthMovement = new Dictionary<int, int>();
+
                 if (duration < 0.2f)
-                {
                     return;
-                }
-                else if (duration < 5)
-                {
-                    lipId = LipSyncTypes[4].Timeline.AnimationId;
-                    lipSyncType = 4;
-                }
-                else if (duration < 9)
-                {
-                    lipId = LipSyncTypes[5].Timeline.AnimationId;
-                    lipSyncType = 5;
-                }
-                else
-                {
-                    lipId = LipSyncTypes[6].Timeline.AnimationId;
-                    lipSyncType = 6;
-                }
 
                 int durationMs = (int)(duration * 1000);
 
-                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), lipId, "Lipsync");
 
+                // Decide on the lengths
+                int durationRounded = (int)Math.Floor(duration);
+                int remaining = durationRounded;
+                mouthMovement[6] = remaining / 4;
+                remaining = remaining % 4;
+                mouthMovement[5] = remaining / 2;
+                remaining = remaining % 2;
+                mouthMovement[4] = remaining / 1;
+                remaining = remaining % 1;
+#if DEBUG
+                _chatGui.Print($"durationMs[{durationMs}] durationRounded[{durationRounded}] fours[{mouthMovement[6]}] twos[{mouthMovement[5]}] ones[{mouthMovement[4]}]");
+#endif
+
+                
                 if (!taskCancellations.ContainsKey(character))
                 {
                     var cts = new CancellationTokenSource();
@@ -411,33 +421,86 @@ namespace XivVoices.Voice {
                     var token = cts.Token;
 
                     Task task = Task.Run(async () => {
-                        MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), lipId, "Lipsync");
                         try
                         {
                             await Task.Delay(100, token);
-                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
-                            MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), lipId, "Lipsync");
 
-                            int adjustedDelay = CalculateAdjustedDelay(durationMs, lipSyncType);
-
-#if DEBUG
-                            _chatGui.Print($"Task was started lipSyncType[{lipSyncType}] durationMs[{durationMs}] delay [{adjustedDelay}]");
-#endif
-
-                            await Task.Delay(adjustedDelay, token);
-
-                            if (!token.IsCancellationRequested && character != null)
+                            if(!token.IsCancellationRequested && mouthMovement[6] > 0)
                             {
-
-#if DEBUG
-                                _chatGui.Print($"Task was finished");
-#endif
-                                animationMemory.LipsOverride = 0;
+                                animationMemory.LipsOverride = LipSyncTypes[6].Timeline.AnimationId;
                                 MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
-                                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
+                                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[6].Timeline.AnimationId, "Lipsync");
+                                int adjustedDelay = CalculateAdjustedDelay(mouthMovement[6] * 4000, 6);
+#if DEBUG
+                                _chatGui.Print($"Task was started mouthMovement[6] durationMs[{mouthMovement[6]*4}] delay [{adjustedDelay}]");
+#endif
+                                await Task.Delay(adjustedDelay, token);
+
+                                if (!token.IsCancellationRequested && character != null)
+                                {
+#if DEBUG
+                                    _chatGui.Print($"Task mouthMovement[6] was finished");
+#endif
+                                    animationMemory.LipsOverride = 0;
+                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                    MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
+                                }
+
+                            }
+
+                            if (!token.IsCancellationRequested && mouthMovement[5] > 0)
+                            {
+                                animationMemory.LipsOverride = LipSyncTypes[5].Timeline.AnimationId;
+                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[5].Timeline.AnimationId, "Lipsync");
+                                int adjustedDelay = CalculateAdjustedDelay(mouthMovement[5] * 2000, 5);
+#if DEBUG
+                                _chatGui.Print($"Task was started mouthMovement[5] durationMs[{mouthMovement[5] * 2}] delay [{adjustedDelay}]");
+#endif
+                                await Task.Delay(adjustedDelay, token);
+                                if (!token.IsCancellationRequested && character != null)
+                                {
+#if DEBUG
+                                    _chatGui.Print($"Task mouthMovement[5] was finished");
+#endif
+                                    animationMemory.LipsOverride = 0;
+                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                    MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
+                                }
+
+                            }
+
+                            if (!token.IsCancellationRequested && mouthMovement[4] > 0)
+                            {
+                                animationMemory.LipsOverride = LipSyncTypes[4].Timeline.AnimationId;
+                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[4].Timeline.AnimationId, "Lipsync");
+                                int adjustedDelay = CalculateAdjustedDelay(mouthMovement[4]*1000, 4);
+#if DEBUG
+                                _chatGui.Print($"Task was started mouthMovement[4] durationMs[{mouthMovement[4]}] delay [{adjustedDelay}]");
+#endif
+                                await Task.Delay(adjustedDelay, token);
+                                if (!token.IsCancellationRequested && character != null)
+                                {
+#if DEBUG
+                                    _chatGui.Print($"Task mouthMovement[4] was finished");
+#endif
+                                    animationMemory.LipsOverride = 0;
+                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                    MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
+                                }
+                            }
+
+                            if (!token.IsCancellationRequested)
+                            {
+#if DEBUG
+                                _chatGui.Print($"Task was Completed");
+#endif
                                 cts.Dispose();
                                 taskCancellations.Remove(character);
                             }
+
+
                         }
                         catch (TaskCanceledException)
                         {
@@ -453,7 +516,7 @@ namespace XivVoices.Voice {
                         }
                     }, token);
                 }
-
+                
                 
 
 
@@ -474,13 +537,13 @@ namespace XivVoices.Voice {
 
             if (durationMs <= (1* animationLoop) + halfStep)
             {
-                return (1 * animationLoop) - 100;
+                return (1 * animationLoop) - 50;
             }
             else 
                 for(int i = 2; delay < durationMs; i++)
                     if (durationMs > (i * animationLoop) - halfStep && durationMs  <= (i * animationLoop) + halfStep)
                     {
-                        delay = (i * animationLoop) - 100;
+                        delay = (i * animationLoop) - 50;
                         return delay;
                     }
 

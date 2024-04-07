@@ -59,20 +59,20 @@ namespace XivVoices {
         }
         public override void Draw() {
             if (clientState.IsLoggedIn) {
-                DrawGeneral();
-                /*
+                //DrawGeneral();
+                
                 if (ImGui.BeginTabBar("ConfigTabs")) {
                     if (ImGui.BeginTabItem("General")) {
                         DrawGeneral();
                         ImGui.EndTabItem();
                     }
 
-                    //if (ImGui.BeginTabItem("Settings")) {
-                    //    DrawSettings();
-                    //    ImGui.EndTabItem();
-                    //}
+                    if (ImGui.BeginTabItem("Settings")) {
+                        DrawSettings();
+                        ImGui.EndTabItem();
+                    }
                     ImGui.EndTabBar();
-                }*/
+                }
                 DrawErrors();
                 SaveAndClose();
             } else {
@@ -204,9 +204,12 @@ namespace XivVoices {
         }
 
         private void DrawGeneral() {
+            ImGui.Dummy(new Vector2(0, 10));
             ImGui.Indent(65);
             ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(this.PluginReference.Logo.Width, this.PluginReference.Logo.Height));
             ImGui.Unindent(65);
+            ImGui.Dummy(new Vector2(0, 10));
+
             if (ImGui.Button(" remember to download Xiv Voices\nsoftware and connect it to this plugin", new Vector2(ImGui.GetWindowSize().X - 10, 60)))
             {
                 Process process = new Process();
@@ -231,33 +234,6 @@ namespace XivVoices {
             };
             ImGui.SameLine();
             ImGui.Text("Xiv Voices Enabled");
-
-            var replaceVoicedARRCutscenes = this.Configuration.ReplaceVoicedARRCutscenes;
-            if (ImGui.Checkbox("##replaceVoicedARRCutscenes", ref replaceVoicedARRCutscenes))
-            {
-                this.configuration.ReplaceVoicedARRCutscenes = replaceVoicedARRCutscenes;
-                this.configuration.Save();
-            };
-            ImGui.SameLine();
-            ImGui.Text("Replace ARR Cutscenes");
-
-            var battleDialoguesEnabled = this.Configuration.BattleDialoguesEnabled;
-            if (ImGui.Checkbox("##battleDialoguesEnabled", ref battleDialoguesEnabled))
-            {
-                this.configuration.BattleDialoguesEnabled = battleDialoguesEnabled;
-                this.configuration.Save();
-            };
-            ImGui.SameLine();
-            ImGui.Text("Battle Dialogues Enabled");
-
-            var bubblesEnabled = this.Configuration.BubblesEnabled;
-            if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
-            {
-                this.configuration.BubblesEnabled = bubblesEnabled;
-                this.configuration.Save();
-            };
-            ImGui.SameLine();
-            ImGui.Text("Chat Bubbles Enabled");
 
             var lipsyncEnabled = this.Configuration.LipsyncEnabled;
             if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
@@ -284,36 +260,96 @@ namespace XivVoices {
         }
 
         private void DrawSettings() {
-            ImGui.Text("Server IP");
-            ImGui.SetNextItemWidth(ImGui.GetContentRegionMax().X);
-            string x = "";
-            ImGui.InputText("##serverIP", ref x, 2000);
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.TextWrapped("Chat Settings");
+            ImGui.Dummy(new Vector2(0, 10));
 
-            ImGui.Text("Elevenlabs API Key");
-            ImGui.SetNextItemWidth(ImGui.GetContentRegionMax().X);
-            ImGui.InputText("##apiKey", ref _port, 2000, ImGuiInputTextFlags.Password);
-
-            if (ImGui.Button("Elevenlabs API Key Sign Up", new Vector2(ImGui.GetWindowSize().X - 10, 25))) {
-                Process process = new Process();
-                try {
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = "https://www.elevenlabs.io/?from=partnerthompson2324";
-                    process.Start();
-                } catch (Exception e) {
-
-                }
-            }
-
-            ImGui.SetNextItemWidth(ImGui.GetContentRegionMax().X);
-            //ImGui.Checkbox("##aggressiveCachingActive", ref _aggressiveCaching);
+            // SayEnabled
+            var sayEnabled = this.Configuration.SayEnabled;
+            if (ImGui.Checkbox("##sayEnabled", ref sayEnabled))
+            {
+                this.configuration.SayEnabled = sayEnabled;
+                this.configuration.Save();
+            };
             ImGui.SameLine();
-            ImGui.Text("Use Aggressive Caching");
+            ImGui.Text("Say Enabled");
 
-            //ImGui.Checkbox("##useServer", ref _useServer);
+            // TellEnabled
+            var tellEnabled = this.Configuration.TellEnabled;
+            if (ImGui.Checkbox("##tellEnabled", ref tellEnabled))
+            {
+                this.configuration.TellEnabled = tellEnabled;
+                this.configuration.Save();
+            };
             ImGui.SameLine();
-            ImGui.Text("Allow Sending/Receiving Server Data");
-            ImGui.TextWrapped("(Any players with ARK installed and connected to the same server will hear your custom voice and vice versa if added to eachothers whitelists)");
+            ImGui.Text("Tell Enabled");
 
+            // ShoutEnabled
+            var shoutEnabled = this.Configuration.ShoutEnabled;
+            if (ImGui.Checkbox("##shoutEnabled", ref shoutEnabled))
+            {
+                this.configuration.ShoutEnabled = shoutEnabled;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Shout/Yell Enabled");
+
+            // PartyEnabled
+            var partyEnabled = this.Configuration.PartyEnabled;
+            if (ImGui.Checkbox("##partyEnabled", ref partyEnabled))
+            {
+                this.configuration.PartyEnabled = partyEnabled;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Party Enabled");
+
+            // FreeCompanyEnabled
+            var freeCompanyEnabled = this.Configuration.FreeCompanyEnabled;
+            if (ImGui.Checkbox("##freeCompanyEnabled", ref freeCompanyEnabled))
+            {
+                this.configuration.FreeCompanyEnabled = freeCompanyEnabled;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Free Company Enabled");
+
+            // BattleDialoguesEnabled
+            var battleDialoguesEnabled = this.Configuration.BattleDialoguesEnabled;
+            if (ImGui.Checkbox("##battleDialoguesEnabled", ref battleDialoguesEnabled))
+            {
+                this.configuration.BattleDialoguesEnabled = battleDialoguesEnabled;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Battle Dialogues Enabled");
+
+            // BubblesEnabled
+            var bubblesEnabled = this.Configuration.BubblesEnabled;
+            if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
+            {
+                this.configuration.BubblesEnabled = bubblesEnabled;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Chat Bubbles Enabled");
+
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.TextWrapped("Other Settings");
+            ImGui.Dummy(new Vector2(0, 10));
+
+            // ReplaceVoicedARRCutscenes
+            var replaceVoicedARRCutscenes = this.Configuration.ReplaceVoicedARRCutscenes;
+            if (ImGui.Checkbox("##replaceVoicedARRCutscenes", ref replaceVoicedARRCutscenes))
+            {
+                this.configuration.ReplaceVoicedARRCutscenes = replaceVoicedARRCutscenes;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Replace ARR Cutscenes");
+
+
+            //ImGui.SetNextItemWidth(ImGui.GetContentRegionMax().X);
         }
 
 
