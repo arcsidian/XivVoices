@@ -212,12 +212,11 @@ namespace XivVoices {
 
                 }
 
-                string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
-
                 if (type == XivChatType.NPCDialogue){
                     //string correctedMessage = _addonTalkHandler.StripPlayerNameFromNPCDialogue(_addonTalkHandler.ConvertRomanNumberals(message.TextValue.TrimStart('.')));
                     //webSocketServer.BroadcastMessage($"=====> lastNPCDialogue [{_addonTalkHandler.lastNPCDialogue}]\n=========> current [{playerName + cleanedMessage}]");
                     // Check for Cancel
+                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
                     if (_addonTalkHandler.lastNPCDialogue == playerName + cleanedMessage)
                     {
                         //webSocketServer.BroadcastMessage($"===> match");
@@ -229,6 +228,7 @@ namespace XivVoices {
 
                 if (type == XivChatType.NPCDialogueAnnouncements)
                 {
+                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
 #if DEBUG
                     Chat.Print($"B[{_addonTalkHandler.lastBubbleDialogue}]\nC[{cleanedMessage}]");
 #endif
@@ -245,35 +245,38 @@ namespace XivVoices {
                 switch (type) {
                     case XivChatType.Say:
                         if (config.SayEnabled)
-                            ChatText(playerName, cleanedMessage, type, senderId);
+                        {
+                            ChatText(playerName, message.TextValue, type, senderId);
+                        }
                         break;
                     case XivChatType.TellIncoming:
                         if (config.TellEnabled)
-                            ChatText(playerName, cleanedMessage, type, senderId);
+                            ChatText(playerName, message.TextValue, type, senderId);
                         break;
                     case XivChatType.TellOutgoing:
                         break;
                     case XivChatType.Shout:
                     case XivChatType.Yell:
                         if (config.ShoutEnabled)
-                            ChatText(playerName, cleanedMessage, type, senderId);
+                            ChatText(playerName, message.TextValue, type, senderId);
                         break;
                     case XivChatType.CustomEmote:
                         break;
                     case XivChatType.Party:
                     case XivChatType.CrossParty:
                         if (config.PartyEnabled)
-                            ChatText(playerName, cleanedMessage, type, senderId);
+                            ChatText(playerName, message.TextValue, type, senderId);
                         break;
                     case XivChatType.FreeCompany:
                         if (config.FreeCompanyEnabled)
-                            ChatText(playerName, cleanedMessage, type, senderId);
+                            ChatText(playerName, message.TextValue, type, senderId);
                         break;
                     case XivChatType.NPCDialogue:
                         break;
                     case XivChatType.NPCDialogueAnnouncements:
                         if (config.BattleDialoguesEnabled)
                         {
+                            string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
                             ChatText(playerName, cleanedMessage, type, senderId);
                             _addonTalkHandler.lastBattleDialogue = cleanedMessage;
                         }

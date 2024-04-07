@@ -680,10 +680,21 @@ namespace XivVoices.Voice {
             return character;
         }
 
-        private string StripPlayerNameFromNPCDialogue(string value) {
-            string[] mainCharacterName = _clientState.LocalPlayer.Name.TextValue.Split(" ");
-            return value.Replace(mainCharacterName[0], "_FIRSTNAME_").Replace(mainCharacterName[1], "_LASTNAME_");
+        private string StripPlayerNameFromNPCDialogue(string value)
+        {
+            if (_clientState?.LocalPlayer?.Name?.TextValue != null)
+            {
+                string[] mainCharacterName = _clientState.LocalPlayer.Name.TextValue.Split(" ");
+                value = value.Replace(mainCharacterName[0], "_FIRSTNAME_");
+
+                if (mainCharacterName.Length > 1)
+                {
+                    value = value.Replace(mainCharacterName[1], "_LASTNAME_");
+                }
+            }
+            return value;
         }
+
 
 
         private AddonTalkState GetTalkAddonState() {
