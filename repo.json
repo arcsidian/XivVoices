@@ -6,7 +6,7 @@
     "InternalName": "XivVoices",
     "AssemblyVersion": "0.1.0.4",
     "TestingAssemblyVersion": "0.1.0.4",
-    "RepoUrl": "https://github.com/arcsidian/XivVoicesPlugin",
+    "RepoUrl": "https://github.com/arcsidian/XivVoices",
     "ApplicableVersion": "any",
     "DalamudApiLevel": 9,
     "IsHide": "False",
@@ -19,6 +19,6 @@
     "DownloadLinkInstall": "https://github.com/arcsidian/XivVoices/releases/download/0.1.0.4/XivVoices.zip",
     "DownloadLinkTesting": "https://github.com/arcsidian/XivVoices/releases/download/0.1.0.4/XivVoices.zip",
     "DownloadLinkUpdate": "https://github.com/arcsidian/XivVoices/releases/download/0.1.0.4/XivVoices.zip",
-    "IconUrl": "https://raw.githubusercontent.com/arcsidian/XivVoices/master/icon.png"
+    "IconUrl": "https://raw.githubusercontent.com/arcsidian/XivVoices/main/icon.png"
   }
 ]
