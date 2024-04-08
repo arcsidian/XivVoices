@@ -206,7 +206,8 @@ namespace XivVoices {
         private void DrawGeneral() {
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.Indent(65);
-            ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(this.PluginReference.Logo.Width, this.PluginReference.Logo.Height));
+            if (this.PluginReference?.Logo?.ImGuiHandle != IntPtr.Zero)
+                ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(this.PluginReference.Logo.Width, this.PluginReference.Logo.Height));
             ImGui.Unindent(65);
             ImGui.Dummy(new Vector2(0, 10));
 
