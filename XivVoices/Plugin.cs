@@ -85,6 +85,7 @@ namespace XivVoices {
         public IClientState ClientState => _clientState;
 
         public AddonTalkHandler AddonTalkHandler { get => _addonTalkHandler; set => _addonTalkHandler = value; }
+
         #endregion
         #region Plugin Initiialization
         public unsafe Plugin(
@@ -118,6 +119,8 @@ namespace XivVoices {
                 this.config.Initialize(this.pluginInterface);
                 webSocketServer = new XIVVWebSocketServer(this.config, this);
                 // Initialize the UI
+                var imagePath = Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png");
+                Logo = this.pluginInterface.UiBuilder.LoadImage(imagePath);
                 this.windowSystem = new WindowSystem(typeof(Plugin).AssemblyQualifiedName);
                 _window = this.pluginInterface.Create<PluginWindow>();
                 pluginInterface.UiBuilder.DisableAutomaticUiHide = true;
@@ -146,8 +149,7 @@ namespace XivVoices {
                 _addonTalkHandler = new AddonTalkHandler(_addonTalkManager, _framework, _objectTable, clientState, this, chat, scanner);
                 _gameGui = gameGui;
 
-                var imagePath = Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png");
-                Logo = this.pluginInterface.UiBuilder.LoadImage(imagePath);
+                
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
                 _chat.PrintError("[XivVoices] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
@@ -216,7 +218,7 @@ namespace XivVoices {
                     //string correctedMessage = _addonTalkHandler.StripPlayerNameFromNPCDialogue(_addonTalkHandler.ConvertRomanNumberals(message.TextValue.TrimStart('.')));
                     //webSocketServer.BroadcastMessage($"=====> lastNPCDialogue [{_addonTalkHandler.lastNPCDialogue}]\n=========> current [{playerName + cleanedMessage}]");
                     // Check for Cancel
-                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
+                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue);
                     if (_addonTalkHandler.lastNPCDialogue == playerName + cleanedMessage)
                     {
                         //webSocketServer.BroadcastMessage($"===> match");
@@ -228,7 +230,7 @@ namespace XivVoices {
 
                 if (type == XivChatType.NPCDialogueAnnouncements)
                 {
-                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
+                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue);
 #if DEBUG
                     Chat.Print($"B[{_addonTalkHandler.lastBubbleDialogue}]\nC[{cleanedMessage}]");
 #endif
@@ -276,7 +278,7 @@ namespace XivVoices {
                     case XivChatType.NPCDialogueAnnouncements:
                         if (config.BattleDialoguesEnabled)
                         {
-                            string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue.Trim().Replace("\n", " "));
+                            string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue);
                             ChatText(playerName, cleanedMessage, type, senderId);
                             _addonTalkHandler.lastBattleDialogue = cleanedMessage;
                         }
@@ -343,7 +345,7 @@ namespace XivVoices {
             
                 if (_scdReplacements.ContainsKey(e.SoundPath))
                 {
-                    if (!e.SoundPath.Contains("vo_emote") && !e.SoundPath.Contains("vo_battle"))
+                    if (!e.SoundPath.Contains("se_vfx_monster"))
                     {
                         Dalamud.Logging.PluginLog.Log("Sound Mod Intercepted");
 #if DEBUG

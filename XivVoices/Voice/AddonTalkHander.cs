@@ -187,13 +187,12 @@ namespace XivVoices.Voice {
                                             Character characterObject = GetCharacterFromId(character->GameObject.ObjectID);
                                             string finalName = characterObject != null && !string.IsNullOrEmpty(characterObject.Name.TextValue) && Conditions.IsBoundByDuty ? characterObject.Name.TextValue : nameID;
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
-                                                NPCText(finalName,
-                                                    npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
-                                                    character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
-#if DEBUG
-                                                //_plugin.Chat.Print($"speakerName[{speakerName}] characterObject.Name.TextValue[{characterObject.Name.TextValue}].");
-                                                //_plugin.Chat.Print("Sent audio from NPC bubble.");
-#endif
+
+                                                if(Conditions.IsBoundByDuty || (!Conditions.IsBoundByDuty && !_plugin.Config.BubblesInBattlesOnly))
+                                                {
+                                                    NPCText(finalName, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                        character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
+                                                }
                                             }
                                         }
                                     }
@@ -259,7 +258,7 @@ namespace XivVoices.Voice {
                                     _lastText = _currentText;
                                     _currentText = _state.Text;
                                     if (!_blockAudioGeneration) {
-                                        //_plugin.webSocketServer.BroadcastMessage($"----------------> [1] {_state.Speaker}: {_state.Text.TrimStart('.')}");
+                                        //_plugin.webSocketServer.SendMessage($"----------------> [1] {_state.Speaker}: {_state.Text.TrimStart('.')}");
                                         NPCText(_state.Speaker, _state.Text.TrimStart('.'), false);
                                         _startedNewDialogue = true;
                                         _passthroughTimer.Reset();
@@ -273,8 +272,7 @@ namespace XivVoices.Voice {
                                 if (_currentDialoguePaths.Count > 0) {
                                     if (!_currentDialoguePathsCompleted[_currentDialoguePathsCompleted.Count - 1] && !_blockAudioGeneration) {
                                         try {
-                                            // TODO ----------------------------------------
-                                            //_plugin.webSocketServer.BroadcastMessage($"----------------> [2] {_state.Speaker}: {_state.Text.TrimStart('.')}");
+                                            //_plugin.webSocketServer.SendMessage($"----------------> [2] {_state.Speaker}: {_state.Text.TrimStart('.')}");
                                         } catch (Exception e) {
                                             Dalamud.Logging.PluginLog.LogError(e, e.Message);
                                         }
@@ -288,8 +286,7 @@ namespace XivVoices.Voice {
                                     if (otherData.Id != 15) {
                                         _namesToRemove.Clear();
                                         _currentText = "";
-                                        // TODO : interrupt? ----------------------------------------
-                                        //_plugin.webSocketServer.BroadcastMessage($"----------------> [3] {_state.Speaker}: {_state.Text.TrimStart('.')}");
+                                        //_plugin.webSocketServer.SendMessage($"----------------> [3] {_state.Speaker}: {_state.Text.TrimStart('.')}");
                                         _currentDialoguePaths.Clear();
                                         _currentDialoguePathsCompleted.Clear();
                                     }
@@ -346,7 +343,8 @@ namespace XivVoices.Voice {
             correctedMessage = correctedMessage
                 .Replace("─", " - ")
                 .Replace("—", " - ")
-                .Replace("–", "-");
+                .Replace("–", "-")
+                .Replace("\n", " ");
 
             // Remove leading "..." if present
             if (correctedMessage.StartsWith("..."))

@@ -59,6 +59,11 @@ namespace XivVoices
             UpdateConfigStatus("WebSocket Server stopped.");
         }
 
+        public void SendMessage(string message)
+        {
+            _wss.WebSocketServices["/XivVoices"].Sessions.Broadcast(message);
+        }
+
         public void BroadcastMessage(string type, string speaker, string npcID, string message, string body, string gender, string race, string tribe, string eyes, string language, string position, Character character)
         {
             string index = "none";

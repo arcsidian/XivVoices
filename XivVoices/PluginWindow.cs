@@ -261,6 +261,9 @@ namespace XivVoices {
         }
 
         private void DrawSettings() {
+
+            // Chat Settings ----------------------------------------------
+
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.TextWrapped("Chat Settings");
             ImGui.Dummy(new Vector2(0, 10));
@@ -325,6 +328,13 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Battle Dialogues Enabled");
 
+            
+            // Bubble Settings ----------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.TextWrapped("Bubble Settings");
+            ImGui.Dummy(new Vector2(0, 10));
+
             // BubblesEnabled
             var bubblesEnabled = this.Configuration.BubblesEnabled;
             if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
@@ -334,6 +344,19 @@ namespace XivVoices {
             };
             ImGui.SameLine();
             ImGui.Text("Chat Bubbles Enabled");
+
+            // BubblesInBattlesOnly
+            var bubblesInBattlesOnly = this.Configuration.BubblesInBattlesOnly;
+            if (ImGui.Checkbox("##bubblesInBattlesOnly", ref bubblesInBattlesOnly))
+            {
+                this.configuration.BubblesInBattlesOnly = bubblesInBattlesOnly;
+                this.configuration.Save();
+            };
+            ImGui.SameLine();
+            ImGui.Text("Only Enable Chat Bubbles in Duties");
+
+
+            // Other Settings ----------------------------------------------
 
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.TextWrapped("Other Settings");

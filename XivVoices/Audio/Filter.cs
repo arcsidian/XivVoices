@@ -40,6 +40,7 @@ namespace XivVoices
 
         // Called by AddonTalkHandler
         public event EventHandler<InterceptedSound> OnCutsceneAudioDetected;
+
         #region Delegates
 
         private delegate void* PlaySpecificSoundDelegate(long a1, int idx);
@@ -294,6 +295,7 @@ namespace XivVoices
             }
             path = path.ToLowerInvariant();
             var specificPath = $"{path}/{idx}";
+
             string splitPath = specificPath.Split(".scd")[0] + ".scd";
             if ((specificPath.Contains("vo_battle") && muted)
                 || (_blacklist.Contains(splitPath)) && !splitPath.Contains("sound/foot")) // removed && Plugin.Config.MoveSCDBasedModsToPerformanceSlider
@@ -307,7 +309,12 @@ namespace XivVoices
             {
                 return true;
             }
-            if (((specificPath.Contains("vo_voiceman") || specificPath.Contains("vo_man") || specificPath.Contains("se_vfx_monster") || specificPath.Contains("vo_line")) || specificPath.Contains("cut/ffxiv/")) )//&& !Plugin.Config.NpcSpeechGenerationDisabled)
+
+            // print everything you see here
+            //if (specificPath.Contains("vo_line"))
+            //    Plugin.webSocketServer.SendMessage("Intercept --> " + specificPath);
+            
+            if ((specificPath.Contains("vo_voiceman") || specificPath.Contains("vo_man") || specificPath.Contains("se_vfx_monster") || specificPath.Contains("vo_line")) || specificPath.Contains("cut/ffxiv/") )
             {
                 if ((specificPath.Contains("vo_man") || (specificPath.Contains("cut/ffxiv/") && specificPath.Contains("vo_voiceman"))) && Plugin.Config.ReplaceVoicedARRCutscenes)
                 {
@@ -317,7 +324,6 @@ namespace XivVoices
                 else
                 {
                     OnCutsceneAudioDetected?.Invoke(this, new InterceptedSound() { SoundPath = splitPath, isBlocking = true });
-                    // TODO: say something here to know what's happening
                 }
             }
             return false;
