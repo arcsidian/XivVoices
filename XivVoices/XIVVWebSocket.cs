@@ -79,6 +79,18 @@ namespace XivVoices
             }
             string user = $"{this.Plugin.ClientState.LocalPlayer.Name}@{this.Plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
+            // Remove known suffixes from speaker name
+            var suffixes = new string[] { "'s Voice", "'s Avatar" };
+            foreach (var suffix in suffixes)
+            {
+                if (speaker.EndsWith(suffix))
+                {
+                    speaker = speaker.Substring(0, speaker.Length - suffix.Length);
+                    break;
+                }
+            }
+
+
             var dataToSend = $"{{\"Type\":\"{type}\",\"Speaker\":\"{speaker}\",\"NpcID\":\"{npcID}\",\"Message\":\"{message}\",\"Body\":\"{body}\",\"Gender\":\"{gender}\",\"Race\":\"{race}\",\"Tribe\":\"{tribe}\",\"Eyes\":\"{eyes}\",\"Language\":\"{language}\",\"Position\":\"{position}\",\"Character\":\"{index}\",\"User\":\"{user}\"}}";
             //this.Plugin.Chat.Print("Websocket Sent: " + dataToSend);
             _wss.WebSocketServices["/XivVoices"].Sessions.Broadcast(dataToSend);

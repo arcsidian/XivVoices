@@ -358,25 +358,6 @@ namespace XivVoices.Voice {
             return correctedMessage ?? "";
         }
 
-
-        /*
-        public async void TriggerLipSync(Character character, int lipSyncType)
-        {
-            try
-            {
-                _chatGui.Print("TriggerLipSync for " + character.Name);
-                var actorMemory = new ActorMemory();
-                actorMemory.SetAddress(character.Address);
-                var animationMemory = actorMemory.Animation;
-                animationMemory.LipsOverride = LipSyncTypes[lipSyncType].Timeline.AnimationId;
-                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[lipSyncType].Timeline.AnimationId, "Lipsync");
-            }
-            catch
-            {
-
-            }
-        }*/
-
         public async void TriggerLipSync(Character character, string length)
         {
             ActorMemory actorMemory = null;
@@ -411,7 +392,11 @@ namespace XivVoices.Voice {
                 _chatGui.Print($"durationMs[{durationMs}] durationRounded[{durationRounded}] fours[{mouthMovement[6]}] twos[{mouthMovement[5]}] ones[{mouthMovement[4]}]");
 #endif
 
-                
+                // Decide on the Mode
+                ActorMemory.CharacterModes intialState = actorMemory.CharacterMode;
+                ActorMemory.CharacterModes mode = ActorMemory.CharacterModes.EmoteLoop;
+
+
                 if (!taskCancellations.ContainsKey(character))
                 {
                     var cts = new CancellationTokenSource();
@@ -426,8 +411,9 @@ namespace XivVoices.Voice {
                             if(!token.IsCancellationRequested && mouthMovement[6] > 0)
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[6].Timeline.AnimationId;
-                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
                                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[6].Timeline.AnimationId, "Lipsync");
+
                                 int adjustedDelay = CalculateAdjustedDelay(mouthMovement[6] * 4000, 6);
 #if DEBUG
                                 _chatGui.Print($"Task was started mouthMovement[6] durationMs[{mouthMovement[6]*4}] delay [{adjustedDelay}]");
@@ -440,7 +426,7 @@ namespace XivVoices.Voice {
                                     _chatGui.Print($"Task mouthMovement[6] was finished");
 #endif
                                     animationMemory.LipsOverride = 0;
-                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                                     MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                                 }
 
@@ -449,7 +435,7 @@ namespace XivVoices.Voice {
                             if (!token.IsCancellationRequested && mouthMovement[5] > 0)
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[5].Timeline.AnimationId;
-                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
                                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[5].Timeline.AnimationId, "Lipsync");
                                 int adjustedDelay = CalculateAdjustedDelay(mouthMovement[5] * 2000, 5);
 #if DEBUG
@@ -462,7 +448,7 @@ namespace XivVoices.Voice {
                                     _chatGui.Print($"Task mouthMovement[5] was finished");
 #endif
                                     animationMemory.LipsOverride = 0;
-                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                                     MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                                 }
 
@@ -471,7 +457,7 @@ namespace XivVoices.Voice {
                             if (!token.IsCancellationRequested && mouthMovement[4] > 0)
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[4].Timeline.AnimationId;
-                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
                                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[4].Timeline.AnimationId, "Lipsync");
                                 int adjustedDelay = CalculateAdjustedDelay(mouthMovement[4]*1000, 4);
 #if DEBUG
@@ -484,7 +470,7 @@ namespace XivVoices.Voice {
                                     _chatGui.Print($"Task mouthMovement[4] was finished");
 #endif
                                     animationMemory.LipsOverride = 0;
-                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                                    MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                                     MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                                 }
                             }
@@ -507,7 +493,7 @@ namespace XivVoices.Voice {
                             _chatGui.Print($"Task was canceled.");
 #endif
                             animationMemory.LipsOverride = 0;
-                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), ActorMemory.CharacterModes.Normal, "Animation Mode Override");
+                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                             MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                             cts.Dispose();
                             taskCancellations.Remove(character);
