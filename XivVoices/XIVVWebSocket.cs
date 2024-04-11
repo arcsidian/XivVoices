@@ -1,9 +1,11 @@
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Plugin.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Text.RegularExpressions;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 using XivCommon.Functions;
@@ -66,6 +68,9 @@ namespace XivVoices
 
         public void BroadcastMessage(string type, string speaker, string npcID, string message, string body, string gender, string race, string tribe, string eyes, string language, string position, Character character)
         {
+            if (!Regex.IsMatch(message, @"[a-zA-Z]"))
+                return;
+
             string index = "none";
             if (character != null)
             {
@@ -90,10 +95,8 @@ namespace XivVoices
                 }
             }
 
-
-            var dataToSend = $"{{\"Type\":\"{type}\",\"Speaker\":\"{speaker}\",\"NpcID\":\"{npcID}\",\"Message\":\"{message}\",\"Body\":\"{body}\",\"Gender\":\"{gender}\",\"Race\":\"{race}\",\"Tribe\":\"{tribe}\",\"Eyes\":\"{eyes}\",\"Language\":\"{language}\",\"Position\":\"{position}\",\"Character\":\"{index}\",\"User\":\"{user}\"}}";
-            //this.Plugin.Chat.Print("Websocket Sent: " + dataToSend);
-            _wss.WebSocketServices["/XivVoices"].Sessions.Broadcast(dataToSend);
+            XivvRequest request = new XivvRequest(type, speaker, npcID, message, body, gender, race, tribe, eyes, language,position,index,user);
+            _wss.WebSocketServices["/XivVoices"].Sessions.Broadcast(JsonConvert.SerializeObject(request));
         }
 
         private void OnMessageReceived(string data)
@@ -144,4 +147,42 @@ namespace XivVoices
         public string Character;
         public string Data;
     }
+
+    [System.Serializable]
+    public class XivvRequest
+    {
+        public string Type { get; set; }
+        public string Speaker { get; set; }
+        public string NpcID { get; set; }
+        public string Message { get; set; }
+        public string Body { get; set; }
+        public string Gender { get; set; }
+        public string Race { get; set; }
+        public string Tribe { get; set; }
+        public string Eyes { get; set; }
+        public string Language { get; set; }
+        public string Position { get; set; }
+        public string Character { get; set; }
+        public string User { get; set; }
+
+        public XivvRequest(string type, string speaker, string npcID, string message, string body,
+                           string gender, string race, string tribe, string eyes, string language,
+                           string position, string character, string user)
+        {
+            Type = type;
+            Speaker = speaker;
+            NpcID = npcID;
+            Message = message;
+            Body = body;
+            Gender = gender;
+            Race = race;
+            Tribe = tribe;
+            Eyes = eyes;
+            Language = language;
+            Position = position;
+            Character = character;
+            User = user;
+        }
+    }
+
 }
