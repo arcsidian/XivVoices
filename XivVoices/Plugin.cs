@@ -102,7 +102,8 @@ namespace XivVoices {
             IGameInteropProvider interopProvider,
             ICondition condition,
             IGameGui gameGui,
-            IDragDropManager dragDrop) {
+            IDragDropManager dragDrop,
+            ITextureProvider textureProvider) {
             #region Constructor
             try {
                 Service.DataManager = dataManager;
@@ -119,8 +120,8 @@ namespace XivVoices {
                 this.config.Initialize(this.pluginInterface);
                 webSocketServer = new XIVVWebSocketServer(this.config, this);
                 // Initialize the UI
-                var imagePath = Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png");
-                Logo = this.pluginInterface.UiBuilder.LoadImage(imagePath);
+                var imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png"));
+                Logo = textureProvider.GetTextureFromFile(imagePath);
                 this.windowSystem = new WindowSystem(typeof(Plugin).AssemblyQualifiedName);
                 _window = this.pluginInterface.Create<PluginWindow>();
                 pluginInterface.UiBuilder.DisableAutomaticUiHide = true;
