@@ -407,7 +407,10 @@ namespace XivVoices {
                 {
                     var imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png"));
                     Logo = _textureProvider.GetTextureFromFile(imagePath);
-                    texturesLoaded = true;
+                    if (Logo != null)
+                    {
+                        texturesLoaded = true; // Set the flag if the logo is successfully loaded
+                    }
                 }
                 catch (Exception e)
                 {
