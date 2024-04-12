@@ -23,7 +23,9 @@ namespace XivVoices
         public bool FreeCompanyEnabled { get; set; } = true;
         public bool BattleDialoguesEnabled { get; set; } = true;
         public bool BubblesEnabled { get; set; } = true;
-        public bool BubblesInBattlesOnly { get; set; } = false;
+        public bool BubblesEverywhere { get; set; } = true;
+        public bool BubblesInSafeZones { get; set; } = false;
+        public bool BubblesInBattleZones { get; set; } = false;
 
         // the below exist just to make saving less cumbersome
         [NonSerialized]

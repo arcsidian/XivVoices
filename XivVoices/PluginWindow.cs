@@ -347,16 +347,70 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Chat Bubbles Enabled");
 
-            // BubblesInBattlesOnly
-            var bubblesInBattlesOnly = this.Configuration.BubblesInBattlesOnly;
-            if (ImGui.Checkbox("##bubblesInBattlesOnly", ref bubblesInBattlesOnly))
-            {
-                this.configuration.BubblesInBattlesOnly = bubblesInBattlesOnly;
-                this.configuration.Save();
-            };
-            ImGui.SameLine();
-            ImGui.Text("Only Enable Chat Bubbles in Duties");
+            ImGui.Indent(28);
+                var nullcheck = false;
+                // BubblesEverywhere
+                var bubblesEverywhere = this.Configuration.BubblesEverywhere;
+                if (this.Configuration.BubblesEnabled)
+                {
+                    if (ImGui.Checkbox("##bubblesEverywhere", ref bubblesEverywhere))
+                    {
+                        if (bubblesEverywhere)
+                        {
+                            this.configuration.BubblesEverywhere = bubblesEverywhere;
+                            this.configuration.BubblesInSafeZones = !bubblesEverywhere;
+                            this.configuration.BubblesInBattleZones = !bubblesEverywhere;
+                            this.configuration.Save();
+                        }
+                    };
+                }
+                else
+                    ImGui.Checkbox("##null", ref nullcheck);
+                ImGui.SameLine();
+                ImGui.Text("Enable Bubbles Everywhere");
 
+                // BubblesInSafeZones
+                var bubblesOutOfBattlesOnly = this.Configuration.BubblesInSafeZones;
+                if (this.Configuration.BubblesEnabled)
+                {
+                    if (ImGui.Checkbox("##bubblesOutOfBattlesOnly", ref bubblesOutOfBattlesOnly))
+                    {
+                        if(bubblesOutOfBattlesOnly)
+                        {
+                            this.configuration.BubblesEverywhere = !bubblesOutOfBattlesOnly;
+                            this.configuration.BubblesInSafeZones = bubblesOutOfBattlesOnly;
+                            this.configuration.BubblesInBattleZones = !bubblesOutOfBattlesOnly;
+                            this.configuration.Save();
+                        }
+                    };
+                }
+                else
+                    ImGui.Checkbox("##null", ref nullcheck);
+                ImGui.SameLine();
+                ImGui.Text("Only Enable Chat Bubbles In Safe Zones");
+
+                // BubblesInBattleZones
+                var bubblesInBattlesOnly = this.Configuration.BubblesInBattleZones;
+                if (this.Configuration.BubblesEnabled)
+                {
+                    if (ImGui.Checkbox("##bubblesInBattlesOnly", ref bubblesInBattlesOnly))
+                    {
+                        if (bubblesOutOfBattlesOnly)
+                        {
+                            this.configuration.BubblesEverywhere = !bubblesInBattlesOnly;
+                            this.configuration.BubblesInSafeZones = !bubblesInBattlesOnly;
+                            this.configuration.BubblesInBattleZones = bubblesInBattlesOnly;
+                            this.configuration.Save();
+                        }
+                    };
+                }
+                else
+                    ImGui.Checkbox("##null", ref nullcheck);
+                ImGui.SameLine();
+                ImGui.Text("Only Enable Chat Bubbles in Battle Zones");
+
+
+            ImGui.Unindent(28);
 
             // Other Settings ----------------------------------------------
 
