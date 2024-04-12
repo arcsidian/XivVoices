@@ -32,6 +32,8 @@ namespace XivVoices {
         private ISigScanner _sigScanner;
         private IGameInteropProvider _interopProvider;
         private IFramework _framework;
+        private ITextureProvider _textureProvider;
+        private bool texturesLoaded = false;
 
         private readonly PluginCommandManager<Plugin> commandManager;
         private readonly Configuration config;
@@ -120,8 +122,6 @@ namespace XivVoices {
                 this.config.Initialize(this.pluginInterface);
                 webSocketServer = new XIVVWebSocketServer(this.config, this);
                 // Initialize the UI
-                var imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png"));
-                Logo = textureProvider.GetTextureFromFile(imagePath);
                 this.windowSystem = new WindowSystem(typeof(Plugin).AssemblyQualifiedName);
                 _window = this.pluginInterface.Create<PluginWindow>();
                 pluginInterface.UiBuilder.DisableAutomaticUiHide = true;
@@ -142,6 +142,7 @@ namespace XivVoices {
                 _toast = toast;
                 _gameConfig = gameConfig;
                 _sigScanner = scanner;
+                _textureProvider = textureProvider;
                 _interopProvider = interopProvider;
                 _objectTable = objectTable;
                 _framework = framework;
@@ -400,6 +401,19 @@ namespace XivVoices {
         #endregion
         #region UI Management
         private void UiBuilder_Draw() {
+            if (!texturesLoaded)
+            {
+                try
+                {
+                    var imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png"));
+                    Logo = _textureProvider.GetTextureFromFile(imagePath);
+                    texturesLoaded = true;
+                }
+                catch (Exception e)
+                {
+                    _chat.PrintError("Failed to load textures: " + e.Message);
+                }
+            }
             this.windowSystem.Draw();
         }
         private void UiBuilder_OpenConfigUi() {
