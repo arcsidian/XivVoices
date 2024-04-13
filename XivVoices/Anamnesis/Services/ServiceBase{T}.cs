@@ -3,6 +3,8 @@
 
 namespace Anamnesis;
 
+using Dalamud.Logging;
+using Dalamud.Plugin.Services;
 using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -38,9 +40,11 @@ public abstract class ServiceBase<T> : IService, INotifyPropertyChanged
 
 	public virtual Task Initialize()
 	{
+		
 		instance = (T)this;
 		this.IsAlive = true;
-		return Task.CompletedTask;
+        //PluginLog.LogError("Initializing.. " + instance);
+        return Task.CompletedTask;
 	}
 
 	public virtual Task Shutdown()

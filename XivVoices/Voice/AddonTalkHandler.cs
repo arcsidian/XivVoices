@@ -57,6 +57,7 @@ namespace XivVoices.Voice {
         //private readonly Object mGameChatInfoLockObj = new();
 
         private MemoryService _memoryService;
+        private GameService _gameService;
         private SettingsService _settingService;
         private AnimationService _animationService;
         private ActorMemory _actorMemory;
@@ -98,6 +99,7 @@ namespace XivVoices.Voice {
             bubbleCooldown.Start();
 
             _memoryService = new MemoryService();
+            _gameService = new GameService();
             _settingService = new SettingsService();
             _gameDataService = new GameDataService();
             _animationService = new AnimationService();
@@ -109,6 +111,7 @@ namespace XivVoices.Voice {
 
             _memoryService.Initialize();
             _memoryService.OpenProcess(Process.GetCurrentProcess());
+            _gameService.Initialize();
             _settingService.Initialize();
             _gameDataService.Initialize();
             _actorService.Initialize();
@@ -728,6 +731,7 @@ namespace XivVoices.Voice {
             disposed = true;
 
             _memoryService.Shutdown();
+            _gameService.Shutdown();
             _settingService.Shutdown();
             _gameDataService.Shutdown();
             _actorService.Shutdown();

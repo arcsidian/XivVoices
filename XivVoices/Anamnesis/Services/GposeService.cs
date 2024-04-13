@@ -25,7 +25,7 @@ public class GposeService : ServiceBase<GposeService>
 
 	public static bool GetIsGPose()
 	{
-		if (AddressService.GposeCheck == IntPtr.Zero)
+        if (AddressService.GposeCheck == IntPtr.Zero)
 			return false;
 
 		// Character select screen counts as gpose.
