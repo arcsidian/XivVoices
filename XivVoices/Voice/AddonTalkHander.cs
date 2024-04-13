@@ -32,7 +32,7 @@ namespace XivVoices.Voice {
     public class AddonTalkHandler : IDisposable {
         private AddonTalkManager addonTalkManager;
         private IFramework framework;
-        private IObjectTable objects;
+        private IObjectTable _objectTable;
         private IClientState _clientState;
         private object subscription;
         private string _lastText;
@@ -67,6 +67,7 @@ namespace XivVoices.Voice {
         private UserAnimationOverride _animationOverride;
         private PoseService _poseService;
         private TargetService _targetService;
+        private List<GameObject> _threadSafeObjectTable;
         public List<ActionTimeline> LipSyncTypes { get; private set; }
 
         private readonly List<NPCBubbleInformation> _speechBubbleInfo = new();
@@ -86,7 +87,7 @@ namespace XivVoices.Voice {
             IClientState clientState, Plugin plugin, IChatGui chatGui, ISigScanner sigScanner) {
             this.addonTalkManager = addonTalkManager;
             this.framework = framework;
-            this.objects = objects;
+            this._objectTable = objects;
             _clientState = clientState;
             framework.Update += Framework_Update;
             _plugin = plugin;
@@ -222,8 +223,11 @@ namespace XivVoices.Voice {
             return _openChatBubbleHook.Original(pThis, pActor, pString, param3);
         }
         private Character GetCharacterFromId(uint id) {
-            foreach (GameObject gameObject in Service.ObjectTable) {
-                if (gameObject.ObjectId == id) {
+            foreach (GameObject gameObject in _threadSafeObjectTable)
+            {
+                if (gameObject.ObjectId == id
+                    && (gameObject.ObjectKind == ObjectKind.EventNpc || gameObject.ObjectKind == ObjectKind.BattleNpc))
+                {
                     return gameObject as Character;
                 }
             }
@@ -302,6 +306,7 @@ namespace XivVoices.Voice {
                                     }
                                     _startedNewDialogue = false;
                                 }
+                                _threadSafeObjectTable = _objectTable.ToList();
                                 _blockAudioGeneration = false;
                                 _textIsPresent = false;
                             }
@@ -631,9 +636,11 @@ namespace XivVoices.Voice {
 
         private GameObject DiscoverNpc(string npcName, ref uint id, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
             if (npcName == "???") {
-                foreach (var item in objects) {
+                /*
+                foreach (var item in _objectTable) {
+
                     if (item as Character == null || item as Character == _clientState.LocalPlayer || item.Name.TextValue == "") continue;
-                    /*
+                    
                     if (true) {
                         Character character = item as Character;
                         if (character != null && character != _clientState.LocalPlayer) {
@@ -643,10 +650,11 @@ namespace XivVoices.Voice {
                             return character;
                         }
                         return item;
-                    }*/
-                }
-            } else {
-                foreach (var item in objects) {
+                    }
+                }*/
+            }
+            else {
+                foreach (var item in _objectTable) {
                     if (item as Character == null || item as Character == _clientState.LocalPlayer || item.Name.TextValue == "") continue;
                     //_plugin.webSocketServer.BroadcastMessage("LOOKING AT " + item.Name.TextValue +" WITH " + item.DataId);
                     if (item.Name.TextValue == npcName) {
