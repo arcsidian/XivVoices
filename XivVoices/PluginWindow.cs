@@ -129,7 +129,6 @@ namespace XivVoices {
 
         private void RequestSave()
         {
-            PluginReference.webSocketServer.SendMessage("saving");
             Task.Run(() => {
                 this.configuration.Save();
             });
