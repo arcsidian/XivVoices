@@ -19,6 +19,8 @@ using Dalamud.Interface.DragDrop;
 using XivVoices.Services;
 using Dalamud.Interface.Internal;
 using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.FFXIV.Client.Game.Control;
 #endregion
 namespace XivVoices {
     public class Plugin : IDalamudPlugin {
@@ -59,6 +61,8 @@ namespace XivVoices {
         private AddonTalkHandler _addonTalkHandler;
         private IGameGui _gameGui;
         private int _recentCFPop;
+        private unsafe Camera* _camera;
+        private MediaCameraObject _playerCamera;
 
         public IDalamudTextureWrap Logo;
         public string Name => "XivVoices Plugin";
@@ -82,6 +86,8 @@ namespace XivVoices {
         public IGameInteropProvider InteropProvider { get => _interopProvider; set => _interopProvider = value; }
 
         public Configuration Config => config;
+
+        public MediaCameraObject PlayerCamera => _playerCamera;
 
         public IChatGui Chat => _chat;
         public IClientState ClientState => _clientState;
@@ -150,8 +156,9 @@ namespace XivVoices {
                 _addonTalkManager = new AddonTalkManager(_framework, _clientState, condition, gameGui);
                 _addonTalkHandler = new AddonTalkHandler(_addonTalkManager, _framework, _objectTable, clientState, this, chat, scanner);
                 _gameGui = gameGui;
+                _camera = CameraManager.Instance()->GetActiveCamera();
+                _playerCamera = new MediaCameraObject(_camera);
 
-                
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
                 _chat.PrintError("[XivVoices] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);

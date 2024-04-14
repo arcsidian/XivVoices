@@ -620,20 +620,31 @@ namespace XivVoices.Voice {
                 if (!string.IsNullOrEmpty(nameToUse) && char.IsDigit(nameToUse[0]))
                     nameToUse = "Bubble";
 
-                // Calculate the direction from the NPC to the player
-                Vector3 speakerPosition = position;
+                // Player and NPC positions
                 Vector3 playerPosition = _clientState.LocalPlayer.Position;
-                Vector3 directionToPlayer = playerPosition - speakerPosition;
-                float length = directionToPlayer.Length();
-                if (length > 0)
-                {
-                    directionToPlayer = Vector3.Divide(directionToPlayer, length);
-                }
+                Vector3 npcPosition = position;
 
+                // Camera orientation vectors
+                Vector3 cameraForward = Vector3.Normalize(_plugin.PlayerCamera.Forward);
+                Vector3 cameraUp = Vector3.Normalize(_plugin.PlayerCamera.Top);
+                Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(cameraUp, cameraForward));
+
+                // Construct the camera rotation matrix (as an inverse)
+                Matrix4x4 cameraRotationMatrix = new Matrix4x4(
+                    cameraRight.X, cameraRight.Y, cameraRight.Z, 0,
+                    cameraUp.X, cameraUp.Y, cameraUp.Z, 0,
+                    cameraForward.X, cameraForward.Y, cameraForward.Z, 0,
+                    0, 0, 0, 1);
+
+                // Compute vector from player to NPC
+                Vector3 toNPC = npcPosition - playerPosition;
+
+                // Transform the vector to camera space (using the transpose, which is the inverse for rotation matrices)
+                Vector3 relativePosition = Vector3.Transform(toNPC, Matrix4x4.Transpose(cameraRotationMatrix));
 
                 if (lastBattleDialogue != correctedMessage)
                 {
-                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, "-1", correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), directionToPlayer.ToString(), npcObject);
+                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, "-1", correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), relativePosition.ToString(), npcObject);
                     lastBubbleDialogue = correctedMessage;
                 }
                 else
