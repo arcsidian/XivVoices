@@ -620,9 +620,20 @@ namespace XivVoices.Voice {
                 if (!string.IsNullOrEmpty(nameToUse) && char.IsDigit(nameToUse[0]))
                     nameToUse = "Bubble";
 
-                if(lastBattleDialogue != correctedMessage)
+                // Calculate the direction from the NPC to the player
+                Vector3 speakerPosition = position;
+                Vector3 playerPosition = _clientState.LocalPlayer.Position;
+                Vector3 directionToPlayer = playerPosition - speakerPosition;
+                float length = directionToPlayer.Length();
+                if (length > 0)
                 {
-                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, "-1", correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position.ToString(), npcObject);
+                    directionToPlayer = Vector3.Divide(directionToPlayer, length);
+                }
+
+
+                if (lastBattleDialogue != correctedMessage)
+                {
+                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, "-1", correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), directionToPlayer.ToString(), npcObject);
                     lastBubbleDialogue = correctedMessage;
                 }
                 else
