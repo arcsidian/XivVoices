@@ -96,6 +96,7 @@ namespace XivVoices
             }
 
             XivvRequest request = new XivvRequest(type, speaker, npcID, message, body, gender, race, tribe, eyes, language,position,index,user);
+            Dalamud.Logging.PluginLog.LogInformation($"[XIVV Sending Websocket] {JsonConvert.SerializeObject(request)}");
             _wss.WebSocketServices["/XivVoices"].Sessions.Broadcast(JsonConvert.SerializeObject(request));
         }
 
