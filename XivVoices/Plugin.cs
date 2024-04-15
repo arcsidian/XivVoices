@@ -21,6 +21,7 @@ using Dalamud.Interface.Internal;
 using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
+using System.Threading.Tasks;
 #endregion
 namespace XivVoices {
     public class Plugin : IDalamudPlugin {
@@ -239,18 +240,8 @@ namespace XivVoices {
 
                 if (type == XivChatType.NPCDialogueAnnouncements)
                 {
-                    string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue);
-#if DEBUG
-                    Chat.Print($"B[{_addonTalkHandler.lastBubbleDialogue}]\nC[{cleanedMessage}]");
-#endif
-                    if (_addonTalkHandler.lastBubbleDialogue == cleanedMessage)
-                    {
-#if DEBUG
-                        Chat.Print("--> Cancelled NPCDialogueAnnouncements");
-#endif
-                        return;
-                    }
-                    
+                    HandleNPCDialogueAnnouncements(playerName,type,senderId,message.TextValue);
+                    return;
                 }
 
                 switch (type) {
@@ -285,12 +276,6 @@ namespace XivVoices {
                     case XivChatType.NPCDialogue:
                         break;
                     case XivChatType.NPCDialogueAnnouncements:
-                        if (config.BattleDialoguesEnabled)
-                        {
-                            string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue);
-                            ChatText(playerName, cleanedMessage, type, senderId);
-                            _addonTalkHandler.lastBattleDialogue = cleanedMessage;
-                        }
                         break;
                     case (XivChatType)2729:
                     case (XivChatType)2091:
@@ -304,12 +289,30 @@ namespace XivVoices {
                     case (XivChatType)8235:
                     case (XivChatType)9001:
                     case (XivChatType)4139:
-                        //BattleText(playerName, message, type); -------------------------------------------------------------------
                         break;
                 }
 
                 
             }
+        }
+
+        private async void HandleNPCDialogueAnnouncements(string playerName, XivChatType type, uint senderId, string message)
+        {
+            await Task.Delay(250);
+            string cleanedMessage = _addonTalkHandler.CleanSentence(message);
+
+            if (_addonTalkHandler.lastBubbleDialogue == cleanedMessage)
+            {
+                webSocketServer.SendMessage($"NPCDialogueAnnouncement blocked: {cleanedMessage}");
+                return;
+            }
+
+            if (config.BattleDialoguesEnabled)
+            {
+                ChatText(playerName, cleanedMessage, type, senderId);
+                _addonTalkHandler.lastBattleDialogue = cleanedMessage;
+            }
+
         }
 
         private void ChatText(string sender, SeString message, XivChatType type, uint senderId, bool cancel = false) {
@@ -381,7 +384,7 @@ namespace XivVoices {
         private void _clientState_Login() {
         }
 
-        #endregion
+#endregion
         #region String Sanitization
         public string RemoveActionPhrases(string value) {
             return value.Replace("Direct hit ", null)

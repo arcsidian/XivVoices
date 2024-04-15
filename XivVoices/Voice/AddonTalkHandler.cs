@@ -681,9 +681,10 @@ namespace XivVoices.Voice {
             else {
                 foreach (var item in _objectTable) {
                     if (item as Character == null || item as Character == _clientState.LocalPlayer || item.Name.TextValue == "") continue;
-                    //_plugin.webSocketServer.BroadcastMessage("LOOKING AT " + item.Name.TextValue +" WITH " + item.DataId);
+                    //_plugin.webSocketServer.SendMessage($"DiscoverNpc: LOOKING AT {item.Name.TextValue} WITH {item.DataId}");
                     if (item.Name.TextValue == npcName) {
                         _namesToRemove.Add(npcName);
+                        //_plugin.webSocketServer.SendMessage($"DiscoverNpc: FOUND {item.Name.TextValue} WITH {item.DataId}");
                         return GetCharacterData(item, ref id, ref body, ref gender, ref tribe, ref race, ref eyes);
                     }
                 }
@@ -700,6 +701,7 @@ namespace XivVoices.Voice {
                 race = character.Customize[(int)CustomizeIndex.Race];
                 tribe = character.Customize[(int)CustomizeIndex.Tribe];
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape];
+                //_plugin.webSocketServer.SendMessage($"GetCharacterData: Name {character.Name.TextValue} Position {character.Position}");
 //#if DEBUG
 //                _plugin.Chat.Print(character.Name.TextValue + " is model type " + body + ", and race " + race + ".");
 //#endif
