@@ -769,6 +769,7 @@ namespace XivVoices.Voice {
             _addressService.Shutdown();
             _poseService.Shutdown();
             _targetService.Shutdown();
+            _openChatBubbleHook.Dispose();
         }
 
         public class UserAnimationOverride
