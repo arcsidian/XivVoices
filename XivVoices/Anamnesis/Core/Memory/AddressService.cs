@@ -181,7 +181,7 @@ public class AddressService : ServiceBase<AddressService>
 			}
 			catch (Exception ex)
 			{
-				//Log.Error(ex, $"Failed to scan memory for signature: {name} (Have you tried restarting FFXIV?)");
+				Dalamud.Logging.PluginLog.Error(ex, $"Failed to scan memory for signature: {name} (Have you tried restarting FFXIV?)");
 			}
 		});
 	}
