@@ -598,6 +598,12 @@ namespace XivVoices.Voice {
 
                 GameObject npcObject = DiscoverNpc(npcName, ref id, ref body, ref gender, ref tribe, ref race, ref eyes);
 
+                // Gender Adjustment
+                if (npcName.ToLower().Contains("gaia"))
+                {
+                    gender = true;
+                }
+
                 string nameToUse = npcObject != null ? npcObject.Name.TextValue : npcName;
                 string correctedMessage = CleanSentence(message);
                 
