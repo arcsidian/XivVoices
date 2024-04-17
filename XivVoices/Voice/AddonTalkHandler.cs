@@ -2,7 +2,6 @@
 using Anamnesis.Actor;
 using Anamnesis.Core.Memory;
 using Anamnesis.GameData.Excel;
-using Anamnesis.GameData.Interfaces;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using Dalamud.Game;

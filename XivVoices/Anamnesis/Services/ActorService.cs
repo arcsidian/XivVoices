@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Anamnesis.Actor;
 using Anamnesis.Actor.Refresh;
 using Anamnesis.Core.Memory;
 using Anamnesis.Memory;

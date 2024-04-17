@@ -7,8 +7,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Dalamud.Hooking;
 using Dalamud.Logging;
-using Dalamud.Utility;
-using FFXIVClientStructs.FFXIV.Client.System.Framework;
 using FFXIVClientStructs.FFXIV.Client.System.Resource.Handle;
 
 namespace XivVoices
