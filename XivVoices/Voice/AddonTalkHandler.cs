@@ -194,17 +194,17 @@ namespace XivVoices.Voice {
 
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (Conditions.IsBoundByDuty && _plugin.Config.BubblesInBattleZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (!Conditions.IsBoundByDuty && _plugin.Config.BubblesInSafeZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                             }
@@ -615,7 +615,7 @@ namespace XivVoices.Voice {
             }
         }
         
-        private async void NPCText(string name, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
+        private async void NPCText(string name, string id, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
             if (!_plugin.Config.Active || !_plugin.Config.BubblesEnabled) return;
             try {
                 Character npcObject = null;
@@ -650,7 +650,7 @@ namespace XivVoices.Voice {
 
                 if (lastBattleDialogue != correctedMessage)
                 {
-                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, "-1", correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), relativePosition.ToString(), npcObject);
+                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), relativePosition.ToString(), npcObject);
                     lastBubbleDialogue = correctedMessage;
                 }
                 else

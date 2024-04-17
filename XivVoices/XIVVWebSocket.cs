@@ -1,16 +1,10 @@
-using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Plugin.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Security;
 using System.Text.RegularExpressions;
 using WebSocketSharp;
 using WebSocketSharp.Server;
-using XivCommon.Functions;
-using XivVoices.Voice;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace XivVoices
 {
