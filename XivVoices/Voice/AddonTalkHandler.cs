@@ -191,21 +191,24 @@ namespace XivVoices.Voice {
                                             string finalName = characterObject != null && !string.IsNullOrEmpty(characterObject.Name.TextValue) && Conditions.IsBoundByDuty ? characterObject.Name.TextValue : nameID;
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
 
-                                                //_plugin.webSocketServer.SendMessage($" ModelSkeletonId: [{character->CharacterData.ModelSkeletonId}]");
+                                                _plugin.webSocketServer.SendMessage($" ModelSkeletonId: [{character->CharacterData.ModelSkeletonId}]");
+                                                string id = character->GameObject.DataID.ToString();
+                                                if (character->DrawData.CustomizeData.BodyType.ToString() == "0")
+                                                    id = character->CharacterData.ModelSkeletonId.ToString();
 
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, id, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (Conditions.IsBoundByDuty && _plugin.Config.BubblesInBattleZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, id, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (!Conditions.IsBoundByDuty && _plugin.Config.BubblesInSafeZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, id, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                             }
