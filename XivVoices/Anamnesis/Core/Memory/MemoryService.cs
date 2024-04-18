@@ -12,7 +12,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Anamnesis.Core.Memory;
-using Anamnesis.Services;
 
 public class MemoryService : ServiceBase<MemoryService>
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Dalamud.Game.Text.SeStringHandling;

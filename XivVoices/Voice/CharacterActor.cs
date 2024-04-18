@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 [StructLayout(LayoutKind.Explicit)]
 public unsafe struct CharacterActor
