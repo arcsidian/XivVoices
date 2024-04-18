@@ -191,6 +191,8 @@ namespace XivVoices.Voice {
                                             string finalName = characterObject != null && !string.IsNullOrEmpty(characterObject.Name.TextValue) && Conditions.IsBoundByDuty ? characterObject.Name.TextValue : nameID;
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
 
+                                                //_plugin.webSocketServer.SendMessage($" ModelSkeletonId: [{character->CharacterData.ModelSkeletonId}]");
+
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
                                                     NPCText(finalName, character->GameObject.DataID.ToString(), npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
@@ -646,10 +648,11 @@ namespace XivVoices.Voice {
 
                 // Transform the vector to camera space (using the transpose, which is the inverse for rotation matrices)
                 Vector3 relativePosition = Vector3.Transform(toNPC, Matrix4x4.Transpose(cameraRotationMatrix));
+                string positionString = relativePosition.ToString("#.###", CultureInfo.InvariantCulture);
 
                 if (lastBattleDialogue != correctedMessage)
                 {
-                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), relativePosition.ToString(), npcObject);
+                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), positionString, npcObject);
                     lastBubbleDialogue = correctedMessage;
                 }
                 else
@@ -706,6 +709,7 @@ namespace XivVoices.Voice {
                 race = character.Customize[(int)CustomizeIndex.Race];
                 tribe = character.Customize[(int)CustomizeIndex.Tribe];
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape];
+                // _plugin.webSocketServer.SendMessage($" ModelSkeletonId: [{character->CharacterData.ModelSkeletonId}]");
                 //_plugin.webSocketServer.SendMessage($"GetCharacterData: Name {character.Name.TextValue} Position {character.Position}");
 //#if DEBUG
 //                _plugin.Chat.Print(character.Name.TextValue + " is model type " + body + ", and race " + race + ".");
