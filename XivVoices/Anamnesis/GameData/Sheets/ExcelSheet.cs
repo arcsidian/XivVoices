@@ -117,7 +117,7 @@ public class ExcelSheet<T> : Lumina.Excel.ExcelSheet<T>, IEnumerable<T>, IEnumer
 		ExcelHeaderFile? file = lumina.GetFile<ExcelHeaderFile>(path);
 
 		if (file == null)
-			throw new Exception($"Failed to get data file: {path}");
+			throw new Exception($"Failed to get Data file: {path}");
 
 		if (expectedHash.HasValue)
 		{

@@ -22,6 +22,9 @@ using Dalamud.Game.ClientState.Objects.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using System.Threading.Tasks;
+using XivVoices.Engine;
+using System.Numerics;
+using Microsoft.VisualBasic.ApplicationServices;
 #endregion
 namespace XivVoices {
     public class Plugin : IDalamudPlugin {
@@ -94,6 +97,11 @@ namespace XivVoices {
         public IClientState ClientState => _clientState;
 
         public AddonTalkHandler AddonTalkHandler { get => _addonTalkHandler; set => _addonTalkHandler = value; }
+
+        public XivVoices.Engine.Updater updater;
+        public XivVoices.Engine.Database database;
+        public XivVoices.Engine.Audio audio;
+        public XivVoices.Engine.Engine engine;
 
         #endregion
         #region Plugin Initiialization
@@ -179,6 +187,12 @@ namespace XivVoices {
                 if (_clientState.IsLoggedIn) {
                     _chat.Print("XivVoices is live.");
                 }
+
+                updater = new Updater();
+                database = new Database(this.pluginInterface, this, _clientState);
+                audio = new Audio(this);
+                engine = new Engine.Engine(this.config,this.database, this.audio);
+
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
                 _chat.PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
@@ -205,6 +219,7 @@ namespace XivVoices {
         private void Chat_ChatMessage(XivChatType type, uint senderId,
         ref SeString sender, ref SeString message, ref bool isHandled) {
             if (!disposed) {
+                if (!config.Active || !config.Initialized) return;
 
                 string playerName = "";
                 try {
@@ -296,8 +311,9 @@ namespace XivVoices {
             }
         }
 
-        private async void HandleNPCDialogueAnnouncements(string playerName, XivChatType type, uint senderId, string message)
-        {
+        private async void HandleNPCDialogueAnnouncements(string playerName, XivChatType type, uint senderId, string message){
+            if (!config.Active || !config.Initialized) return;
+
             await Task.Delay(250);
             string cleanedMessage = _addonTalkHandler.CleanSentence(message);
 
@@ -316,17 +332,31 @@ namespace XivVoices {
         }
 
         private void ChatText(string sender, SeString message, XivChatType type, uint senderId, bool cancel = false) {
-            if (!config.Active) return;
+            if (!config.Active || !config.Initialized) return;
 
             string stringtype = type.ToString();
             if(cancel)
                 stringtype = "Cancel";
 
-            if (sender.Contains(_clientState.LocalPlayer.Name.TextValue)) {
-                webSocketServer.BroadcastMessage(stringtype, sender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), "-1", _clientState.LocalPlayer);
+            var suffixes = new string[] { "'s Voice", "'s Avatar" };
+            foreach (var suffix in suffixes)
+            {
+                if (sender.EndsWith(suffix))
+                {
+                    sender = sender.Substring(0, sender.Length - suffix.Length);
+                    break;
+                }
             }
-            else {
-                webSocketServer.BroadcastMessage(stringtype, sender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), "-1", null);
+            string correctSender = _addonTalkHandler.CleanSender(sender);
+            string user = $"{ClientState.LocalPlayer.Name}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
+
+            if (sender.Contains(_clientState.LocalPlayer.Name.TextValue))
+            {
+                Engine.Engine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), _clientState.LocalPlayer, user);
+            }
+            else
+            {
+                Engine.Engine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
             }
         } 
 
@@ -532,6 +562,11 @@ namespace XivVoices {
                 }
                 Filter?.Dispose();
                 _addonTalkHandler?.Dispose();
+
+                updater.Dispose();
+                database.Dispose();
+                audio.Dispose();
+                engine.Dispose();
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
             }

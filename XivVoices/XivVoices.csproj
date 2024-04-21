@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<LangVersion>11.0</LangVersion>
-		<Version>0.1.2.4</Version>
+		<Version>0.2.0.0</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -21,7 +21,12 @@
 	    <None Remove="Anamnesis\Data\NpcNames.json" />
 	    <None Remove="Anamnesis\Data\Tips.json" />
 		<None Remove="emote.scd" />
-		
+		<None Remove="Data\ignored.json" />
+		<None Remove="Data\lexicon.json" />
+		<None Remove="Data\nameless.json" />
+		<None Remove="Data\npcData.json" />
+		<None Remove="Data\retainers.json" />
+		<None Remove="Data\voiceNames.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -31,11 +36,21 @@
 	    <EmbeddedResource Include="Anamnesis\Data\NpcNames.json" />
 	    <EmbeddedResource Include="Anamnesis\Data\Tips.json" />
 		<EmbeddedResource Include="emote.scd" />
+		<EmbeddedResource Include="Data\ignored.json" />
+		<EmbeddedResource Include="Data\lexicon.json" />
+		<EmbeddedResource Include="Data\nameless.json" />
+		<EmbeddedResource Include="Data\npcData.json" />
+		<EmbeddedResource Include="Data\retainers.json" />
+		<EmbeddedResource Include="Data\voiceNames.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Concentus.OggFile" Version="1.0.4" />
 		<PackageReference Include="DalamudPackager" Version="2.1.12" />
+		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
+		<PackageReference Include="Xabe.FFmpeg" Version="5.2.6" />
 	</ItemGroup>
 
 	<ItemGroup>

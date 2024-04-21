@@ -143,7 +143,7 @@ namespace XivVoices.Voice {
 
         
         private void _chatGui_ChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
-            if (_clientState.IsLoggedIn && bubbleCooldown.ElapsedMilliseconds > 200 && Conditions.IsBoundByDuty) {
+            if (_clientState.IsLoggedIn && bubbleCooldown.ElapsedMilliseconds >= 200 && Conditions.IsBoundByDuty) {
                 if (_state == null) {
                     switch (type) {
                         case XivChatType.NPCDialogueAnnouncements:
@@ -182,7 +182,8 @@ namespace XivVoices.Voice {
                             } else {
                                 _speechBubbleInfo.Add(npcBubbleInformaton);
                                 try {
-                                    if (!_blockAudioGeneration && bubbleCooldown.ElapsedMilliseconds > 200) {
+                                    _plugin.webSocketServer.SendMessage($"_blockAudioGeneration:[{_blockAudioGeneration}] bubbleCooldown.ElapsedMilliseconds:[{bubbleCooldown.ElapsedMilliseconds}]");
+                                    if (!_blockAudioGeneration && bubbleCooldown.ElapsedMilliseconds >= 0 ) {
                                         FFXIVClientStructs.FFXIV.Client.Game.Character.Character* character = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)pActor;
                                         if ((ObjectKind)character->GameObject.ObjectKind == ObjectKind.EventNpc || (ObjectKind)character->GameObject.ObjectKind == ObjectKind.BattleNpc) {
                                             string nameID = character->DrawData.Top.Value.ToString() + character->DrawData.Head.Value.ToString() +
@@ -378,6 +379,22 @@ namespace XivVoices.Voice {
             correctedMessage = correctedMessage.Trim();
 
             return correctedMessage ?? "";
+        }
+
+        public string CleanSender(string sender)
+        {
+            var suffixes = new string[] { "'s Voice", "'s Avatar" };
+
+            foreach (var suffix in suffixes)
+            {
+                if (sender.EndsWith(suffix))
+                {
+                    sender = sender.Substring(0, sender.Length - suffix.Length);
+                    break;
+                }
+            }
+
+            return sender;
         }
 
         public async void TriggerLipSync(Character character, string length)
@@ -610,9 +627,13 @@ namespace XivVoices.Voice {
 
                 string nameToUse = npcObject != null ? npcObject.Name.TextValue : npcName;
                 string correctedMessage = CleanSentence(message);
+                string correctSender = CleanSender(nameToUse);
                 
                 string genderType = gender ? "Female":"Male";
-                _plugin.webSocketServer.BroadcastMessage("Dialogue", nameToUse, id.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), "-1", npcObject as Character);
+                string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
+
+                Engine.Engine.Instance.Process("Dialogue", correctSender, id.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as Character, user);
+
                 lastNPCDialogue = npcName + correctedMessage;
             }
             catch {
@@ -629,6 +650,7 @@ namespace XivVoices.Voice {
                 string genderType = gender ? "Female" : "Male";
                 if (!string.IsNullOrEmpty(nameToUse) && char.IsDigit(nameToUse[0]))
                     nameToUse = "Bubble";
+                string correctSender = CleanSender(nameToUse);
 
                 // Player and NPC positions
                 Vector3 playerPosition = _clientState.LocalPlayer.Position;
@@ -655,7 +677,10 @@ namespace XivVoices.Voice {
 
                 if (lastBattleDialogue != correctedMessage)
                 {
-                    _plugin.webSocketServer.BroadcastMessage("Bubble", nameToUse, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), positionString, npcObject);
+                    string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
+
+                    Engine.Engine.Instance.Process("Bubble", correctSender, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
+
                     lastBubbleDialogue = correctedMessage;
                 }
                 else

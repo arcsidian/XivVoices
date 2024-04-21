@@ -10,6 +10,8 @@ namespace XivVoices
         public int Version { get; set; } = 0;
         public string Port { get; set; } = "16969";
         public bool Active { get; set; } = true;
+        public bool Initialized { get; set; } = false;
+        public string WorkingDirectory { get; set; } = "C:/XIV_User";
         public string WebsocketStatus { get; set; } = "";
         public bool ReplaceVoicedARRCutscenes { get; set; } = true;
         public bool LipsyncEnabled { get; set; } = true;
@@ -22,10 +24,18 @@ namespace XivVoices
         public bool PartyEnabled { get; set; } = true;
         public bool FreeCompanyEnabled { get; set; } = true;
         public bool BattleDialoguesEnabled { get; set; } = true;
+        public bool RetainersEnabled { get; set; } = true;
         public bool BubblesEnabled { get; set; } = true;
         public bool BubblesEverywhere { get; set; } = true;
         public bool BubblesInSafeZones { get; set; } = false;
         public bool BubblesInBattleZones { get; set; } = false;
+
+        // Engine Settings
+        public int Volume { get; set; } = 100;
+        public int Speed { get; set; } = 100;
+        public bool PollyEnabled { get; set; } = false;
+        public bool LocalTTSEnabled { get; set; } = false;
+        public bool WebsocketRedirectionEnabled { get; set; } = false;
 
         // the below exist just to make saving less cumbersome
         [NonSerialized]

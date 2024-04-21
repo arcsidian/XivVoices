@@ -45,7 +45,7 @@ public class IItemConverter : JsonConverter<IItem>
 		else
 		{
 			if (GameDataService.Items == null)
-				throw new Exception("No items in game data service");
+				throw new Exception("No items in game Data service");
 
 			return GameDataService.Items.Get(uint.Parse(str));
 		}

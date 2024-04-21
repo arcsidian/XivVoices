@@ -65,7 +65,7 @@ public class DatCharacterFile : FileBase, IUpgradeCharacterFile
 	public CharacterFile Upgrade()
 	{
 		if (this.Data == null)
-			throw new Exception("Dat Appearance File has no data.");
+			throw new Exception("Dat Appearance File has no Data.");
 
 		CharacterFile file = new CharacterFile();
 		file.Race = (ActorCustomizeMemory.Races)this.Data[0];

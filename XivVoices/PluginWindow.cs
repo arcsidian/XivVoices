@@ -7,6 +7,9 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using Dalamud.Plugin.Services;
 using System.Threading.Tasks;
+using XivVoices.Engine;
+using System.IO;
+using System.Linq;
 
 namespace XivVoices {
     public class PluginWindow : Window {
@@ -24,10 +27,12 @@ namespace XivVoices {
         private DateTime lastChangeTime;
         private const int debounceIntervalMs = 500;
         private bool needSave = false;
+        private string selectedDrive = string.Empty;
+        private string reportInput = new string('\0', 250);
 
         public PluginWindow() : base("Xiv Voices by Arcsidian") {
             //IsOpen = true;
-            Size = new Vector2(350, 600);
+            Size = new Vector2(350, 650);
             initialSize = Size;
             SizeCondition = ImGuiCond.Always;
             Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize;
@@ -65,18 +70,48 @@ namespace XivVoices {
         public override void Draw() {
             if (clientState.IsLoggedIn) {
 
-                if (ImGui.BeginTabBar("ConfigTabs")) {
-                    if (ImGui.BeginTabItem("General")) {
-                        DrawGeneral();
-                        ImGui.EndTabItem();
-                    }
-
-                    if (ImGui.BeginTabItem("Settings")) {
-                        DrawSettings();
-                        ImGui.EndTabItem();
-                    }
-                    ImGui.EndTabBar();
+                if(!configuration.Initialized)
+                {
+                    InitializationWindow();
                 }
+                else
+                {
+                    if (Updater.Instance.State.Count > 0)
+                    {
+                        UpdateWindow();
+                    }
+                    else
+                    {
+                        if (ImGui.BeginTabBar("ConfigTabs"))
+                        {
+                            if (ImGui.BeginTabItem("General"))
+                            {
+                                DrawGeneral();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem("Dialogue Settings"))
+                            {
+                                DrawSettings();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem("Audio Settings"))
+                            {
+                                AudioSettings();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem("Audio Logs"))
+                            {
+                                LogsSettings();
+                                ImGui.EndTabItem();
+                            }
+                            ImGui.EndTabBar();
+                        }
+                    }
+                }
+                
                 DrawErrors();
                 Close();
             } else {
@@ -218,6 +253,130 @@ namespace XivVoices {
             }
         }
 
+
+        private void InitializationWindow()
+        {
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.Indent(90);
+            ImGui.TextWrapped("Xiv Voices Initialization");
+            ImGui.Unindent(90);
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.TextWrapped("Choose a working directory that will hold all the voice files in your computer, afterwards press \"Start\" to begin downloading Xiv Voices into your computer.");
+
+            ImGui.Dummy(new Vector2(0, 20));
+            ImGui.Indent(65);
+
+            if (this.PluginReference.Logo != null)
+                ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(200, 200));
+            else
+                ImGui.Dummy(new Vector2(200, 200));
+
+            ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.Unindent(30);
+
+            // Get available drives
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+            List<string> drives = allDrives.Where(drive => drive.IsReady).Select(drive => drive.Name.Trim('\\')).ToList();
+            string[] driveNames = drives.ToArray();
+            int driveIndex = drives.IndexOf(selectedDrive);
+
+            ImGui.Text("Select Drive:");
+            if (ImGui.Combo("##Drives", ref driveIndex, driveNames, driveNames.Length))
+            {
+                selectedDrive = drives[driveIndex];
+                this.configuration.WorkingDirectory = $"{selectedDrive}/XIV_Voices";
+            }
+
+            ImGui.Dummy(new Vector2(0, 50));
+
+            if (ImGui.Button("Start Downloading Xiv Voices", new Vector2(260, 50)))
+            {
+                if(selectedDrive != string.Empty)
+                    Updater.Instance.Check();
+            }
+
+        }
+
+        private void UpdateWindow()
+        {
+            if (Updater.Instance.State.Contains(1))
+            {
+                ImGui.Dummy(new Vector2(0, 10));
+                ImGui.TextWrapped("Checking Server Manifest...");
+            }
+
+            if (Updater.Instance.State.Contains(2))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("Checking Local Manifest...");
+            }
+
+            if (Updater.Instance.State.Contains(3))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("Checking Xiv Voices Tools...");
+            }
+
+            if (Updater.Instance.State.Contains(-1))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("Error: Unable to load Manifests");
+            }
+
+            if (Updater.Instance.State.Contains(4))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("Xiv Voices Tools are Ready.");
+            }
+
+            if (Updater.Instance.State.Contains(5))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("Xiv Voices Tools Missing, Downloading..");
+            }
+
+            if (Updater.Instance.State.Contains(6))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                float progress = Updater.Instance.ToolsDownloadState / 100.0f;
+                ImGui.ProgressBar(progress, new Vector2(-1, 0), $"{Updater.Instance.ToolsDownloadState}% Complete");
+                ImGui.Dummy(new Vector2(0, 5));
+            }
+
+            if (Updater.Instance.State.Contains(7))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("All Voice Files are Up to Date");
+            }
+
+            if (Updater.Instance.State.Contains(8))
+            {
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.TextWrapped("There is a new update, downloading...");
+                if (Updater.Instance.State.Contains(9))
+                {
+                    ImGui.SameLine();
+                    ImGui.Text(" " +Updater.Instance.DataDownloadCount + " files left");
+                }
+                ImGui.Dummy(new Vector2(0, 5));
+            }
+
+            if (Updater.Instance.State.Contains(9))
+            {
+                foreach (var item in Updater.Instance.DownloadInfoState)
+                {
+                    ImGui.ProgressBar(item.percentage, new Vector2(-1, 0), $"{item.file} {item.status}");
+                }
+            }
+
+            if (Updater.Instance.State.Contains(10))
+            {
+                ImGui.TextWrapped("Done Updating.");
+            }
+
+        }
+
         private void DrawGeneral() {
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.Indent(65);
@@ -226,25 +385,17 @@ namespace XivVoices {
                 ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(200, 200));
             else
                 ImGui.Dummy(new Vector2(200, 200));
-            ImGui.Unindent(65);
+
+            ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
             ImGui.Dummy(new Vector2(0, 10));
 
-            if (ImGui.Button(" remember to download Xiv Voices\nsoftware and connect it to this plugin", new Vector2(ImGui.GetWindowSize().X - 10, 60)))
+            ImGui.Unindent(65);
+            ImGui.Dummy(new Vector2(0, 10));
+            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(ImGui.GetWindowSize().X - 10, 60)))
             {
-                Process process = new Process();
-                try
-                {
-                    // true is the default, but it is important not to set it to false
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = "https://arcsidian.com/xivv";
-                    process.Start();
-                }
-                catch (Exception e)
-                {
-
-                }
+                Updater.Instance.Check();
             }
-            
+
             ImGui.Dummy(new Vector2(0, 10));
             var activeValue = this.Configuration.Active;
             if (ImGui.Checkbox("##xivVoicesActive", ref activeValue)){
@@ -287,7 +438,6 @@ namespace XivVoices {
                 needSave = false; // Reset save flag after saving
             }
         }
-
 
         private void DrawSettings() {
 
@@ -364,7 +514,18 @@ namespace XivVoices {
             };
             ImGui.SameLine();
             ImGui.Text("Battle Dialogues Enabled");
-            
+
+            // RetainersEnabled
+            var retainersEnabled = this.Configuration.RetainersEnabled;
+            if (ImGui.Checkbox("##retainersEnabled", ref retainersEnabled))
+            {
+                this.configuration.RetainersEnabled = retainersEnabled;
+                needSave = true;
+                lastChangeTime = DateTime.Now;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Retainers Enabled");
+
             // Bubble Settings ----------------------------------------------
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.TextWrapped("Bubble Settings");
@@ -484,6 +645,149 @@ namespace XivVoices {
                 needSave = false; // Reset save flag after saving
             }
 
+        }
+
+        private void AudioSettings()
+        {
+            // Volume Slider ---------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 20));
+            ImGui.TextWrapped("Volume Control");
+            int volume = this.Configuration.Volume;
+            if (ImGui.SliderInt("##volumeSlider", ref volume, 0, 100, volume.ToString()))
+            {
+                this.Configuration.Volume = volume;
+                needSave = true;
+                lastChangeTime = DateTime.Now;
+            }
+            ImGui.SameLine();
+            ImGui.Text("Volume");
+
+            // Speed Slider ---------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.TextWrapped("Speed Control");
+            int speed = this.Configuration.Speed;
+            if (ImGui.SliderInt("##speedSlider", ref speed, 75, 150, speed.ToString()))
+            {
+                this.Configuration.Speed = speed;
+                needSave = true;
+                lastChangeTime = DateTime.Now;
+            }
+            ImGui.SameLine();
+            ImGui.Text("Speed");
+
+            // Polly Settings ----------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 20));
+            ImGui.TextWrapped("Poly Settings (soon)");
+            ImGui.Dummy(new Vector2(0, 10)); 
+
+            // Local AI Settings Settings ----------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 20));
+            ImGui.TextWrapped("Local TTS (soon)");
+            ImGui.Dummy(new Vector2(0, 10));
+
+
+            // Saving Process
+            if (needSave && (DateTime.Now - lastChangeTime).TotalMilliseconds > debounceIntervalMs)
+            {
+                RequestSave();
+                needSave = false; // Reset save flag after saving
+            }
+
+        }
+
+        private void LogsSettings()
+        {
+            // Polly Settings ----------------------------------------------
+            if (!configuration.Active)
+            {
+                ImGui.Dummy(new Vector2(0, 20));
+                ImGui.TextWrapped("Xiv Voices is Disabled");
+                ImGui.Dummy(new Vector2(0, 10));
+            }
+            else
+            {
+                foreach (var item in PluginReference.audio.AudioInfoState)
+                {
+                    // Show Dialogue Details (Name: Sentence)
+                    if (ImGui.BeginChild(item.id, new Vector2(340, 43), false))
+                    {
+                        float textHeight = ImGui.CalcTextSize($"{item.data.Speaker}: {item.data.Sentence}", 340.0f).Y;
+                        float paddingHeight = Math.Max(35 - textHeight, 0);
+                        ImGui.Dummy(new Vector2(1, 3));
+                        if (paddingHeight > 3)
+                            ImGui.Dummy(new Vector2(1, paddingHeight-3));
+
+                        ImGui.TextWrapped($"{item.data.Speaker}: {item.data.Sentence}");
+                        ImGui.EndChild();
+                    }
+
+                    // Show Player Progress Bar
+                    ImGui.ProgressBar(item.percentage, new Vector2(220, 24), $"{item.state}");
+                    ImGui.SameLine();
+
+                    // Show Report Button
+                    if (ImGui.Button($"Report##report{item.id}", new Vector2(50, 24)))
+                    {
+                        reportInput = new string('\0', 250);
+                        ImGui.OpenPopup($"ReportDialogue##{item.id}");
+                    }
+
+                    // Report Popup
+                    bool open = true;
+                    ImGui.SetNextWindowSizeConstraints(new Vector2(350, 350), new Vector2(350, float.MaxValue));
+                    if (ImGui.BeginPopupModal($"ReportDialogue##{item.id}", ref open, ImGuiWindowFlags.AlwaysAutoResize))
+                    {
+                        ImGui.Dummy(new Vector2(0, 5));
+                        ImGui.Text($"Speaker: {item.data.Speaker}");
+                        ImGui.Dummy(new Vector2(0, 5));
+                        ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
+                        ImGui.Dummy(new Vector2(0, 20));
+                        ImGui.TextWrapped("Tell me why you think this dialogue needs to be redone or muted");
+                        ImGui.Dummy(new Vector2(0, 5));
+                        ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 250, new Vector2(335, 100));
+                        ImGui.Dummy(new Vector2(0, 5));
+                        if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
+                        {
+                            //PluginReference.webSocketServer.SendMessage("input:" + reportInput);
+                            PluginReference.engine.ReportRedoToArc(item.data, reportInput);
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImGui.Dummy(new Vector2(0, 2));
+                        if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
+                        {
+                            PluginReference.engine.ReportMuteToArc(item.data, reportInput);
+                            PluginReference.engine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImGui.Dummy(new Vector2(0, 2));
+                        if (ImGui.Button("Close", new Vector2(335, 25)))
+                            ImGui.CloseCurrentPopup();
+                        ImGui.Dummy(new Vector2(0, 2));
+                        ImGui.EndPopup();
+                    }
+
+                    // Show Play and Stop Buttons
+                    ImGui.SameLine();
+                    if (item.state == "playing")
+                    {
+                        if (ImGui.Button("Stop", new Vector2(50, 24)))
+                            PluginReference.audio.StopAudio();
+                    }
+                    else
+                    {
+                        if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
+                        {
+                            PluginReference.audio.StopAudio();
+                            PluginReference.engine.AddToQueue(item.data);
+                        }
+                    }
+                }
+            }
+            
         }
 
 

@@ -1,0 +1,1415 @@
+[
+  {
+    "voiceName": "Chat",
+    "speakers": []
+  },
+  {
+    "voiceName": "Unknown",
+    "speakers": []
+  },
+  {
+    "voiceName": "Minfilia",
+    "speakers": ["Minfilia", "Minfilia's Avatar", "The Word of the Mother", "Oracle of Light"]
+  },
+  {
+    "voiceName": "Tataru",
+    "speakers": ["Tataru", "Tataru's Avatar"]
+  },
+  {
+    "voiceName": "Yshtola",
+    "speakers": ["Y'shtola", "Y'shtola's Avatar", "Cultured Conjurer"]
+  },
+  {
+    "voiceName": "Papalymo",
+    "speakers": ["Papalymo", "Papalymo's Avatar"]
+  },
+  {
+    "voiceName": "Yda",
+    "speakers": ["Yda", "Yda's Avatar"]
+  },
+  {
+    "voiceName": "Thancred",
+    "speakers": ["Thancred", "Thancred's Avatar", "Handsome Stranger"]
+  },
+  {
+    "voiceName": "Urianger",
+    "speakers": ["Urianger", "Urianger's Avatar"]
+  },
+  {
+    "voiceName": "Alphinaud",
+    "speakers": ["Alphinaud", "Alphinaud's Avatar", "Alphinaud's Voice"]
+  },
+  {
+    "voiceName": "Alisaie",
+    "speakers": ["Alisaie", "Alisaie's Avatar"]
+  },
+  {
+    "voiceName": "Krile",
+    "speakers": ["Krile", "Krile's Avatar"]
+  },
+  {
+    "voiceName": "Estinien",
+    "speakers": ["Estinien", "Estinien's Avatar", "Estinien Wyrmblood"]
+  },
+  {
+    "voiceName": "Graha_Tia",
+    "speakers": ["G'raha Tia", "G'raha Tia's Avatar", "Crystal Exarch", "Disembodied Voice", "Familiar Voice"]
+  },
+  {
+    "voiceName": "Flhaminn",
+    "speakers": []
+  },
+  {
+    "voiceName": "Moenbryda",
+    "speakers": ["Moenbryda"]
+  },
+  {
+    "voiceName": "Merlwyb",
+    "speakers": ["Merlwyb", "Bloefhiswyn", "Admiral Bloefhiswyn"]
+  },
+  {
+    "voiceName": "Eynzahr_Slafyrsyn",
+    "speakers": ["Eynzahr", "Eynzahr Slafyrsyn", "Mistbeard", "Musosai"]
+  },
+  {
+    "voiceName": "Sicard",
+    "speakers": ["Sicard", "Sicard the Last Word"]
+  },
+  {
+    "voiceName": "Baderon",
+    "speakers": ["Baderon"]
+  },
+  {
+    "voiceName": "Carvallain",
+    "speakers": ["Carvallain", "Adjunct Ostyrgrein", "Ostyrgrein"]
+  },
+  {
+    "voiceName": "Kan_E_Senna",
+    "speakers": ["Kan-E-Senna", "Elder Seedseer"]
+  },
+  {
+    "voiceName": "Serpent_Marshal_Brookstone",
+    "speakers": []
+  },
+  {
+    "voiceName": "Raya_O_Senna",
+    "speakers": []
+  },
+  {
+    "voiceName": "A_Ruhn_Senna",
+    "speakers": ["A-Ruhn-Senna"]
+  },
+  {
+    "voiceName": "E_Sumi_Yan",
+    "speakers": ["E-Sumi-Yan"]
+  },
+  {
+    "voiceName": "Mother_Miounne",
+    "speakers": []
+  },
+  {
+    "voiceName": "Nanamo_Ul_Namo",
+    "speakers": ["Nanamo Ul Namo", "Lilira"]
+  },
+  {
+    "voiceName": "Raubahn",
+    "speakers": ["Raubahn"]
+  },
+  {
+    "voiceName": "Pipin",
+    "speakers": ["Pipin", "Pipin of the Steel Heart"]
+  },
+  {
+    "voiceName": "Lolorito",
+    "speakers": ["Lolorito", "Gurumi Borlumi"]
+  },
+  {
+    "voiceName": "Teledji_Adeledji",
+    "speakers": ["Teledji Adeledji"]
+  },
+  {
+    "voiceName": "Momodi",
+    "speakers": []
+  },
+  {
+    "voiceName": "Aymeric",
+    "speakers": ["Aymeric", "Aymeric the Blue"]
+  },
+  {
+    "voiceName": "Lucia",
+    "speakers": ["Lucia", "Taciturn Temple Knight", "Lucia the Radiant"]
+  },
+  {
+    "voiceName": "Count_Edmont_de_Fortemps",
+    "speakers": ["Count Edmont de Fortemps", "Louisoix"]
+  },
+  {
+    "voiceName": "Haurchefant",
+    "speakers": ["Haurchefant"]
+  },
+  {
+    "voiceName": "Emmanellain",
+    "speakers": ["Emmanellain", "Emmanellain the Lofty"]
+  },
+  {
+    "voiceName": "Honoroit",
+    "speakers": ["Honoroit"]
+  },
+  {
+    "voiceName": "Hilda",
+    "speakers": ["Hilda", "Hilda Ware", "Hilda the Mongrel", "The Mongrel"]
+  },
+  {
+    "voiceName": "Artoirel",
+    "speakers": []
+  },
+  {
+    "voiceName": "Ysayle",
+    "speakers": ["Ysayle", "Iceheart"]
+  },
+  {
+    "voiceName": "Lyse",
+    "speakers": ["Lyse"]
+  },
+  {
+    "voiceName": "Arenvald",
+    "speakers": ["Arenvald"]
+  },
+  {
+    "voiceName": "Conrad",
+    "speakers": ["Conrad", "Conrad Farsight"]
+  },
+  {
+    "voiceName": "Mnaago",
+    "speakers": ["M'naago"]
+  },
+  {
+    "voiceName": "Meffrid",
+    "speakers": ["Meffrid"]
+  },
+  {
+    "voiceName": "Fordola",
+    "speakers": ["Fordola", "Fordola rem Lupis", "Fordola Lupis"]
+  },
+  {
+    "voiceName": "Hien",
+    "speakers": ["Hien"]
+  },
+  {
+    "voiceName": "Yugiri",
+    "speakers": ["Yugiri", "Yugiri Mistwalker", "Refugee Leader"]
+  },
+  {
+    "voiceName": "Gosetsu",
+    "speakers": ["Gosetsu", "Gosetsu Everfall", "Xande"]
+  },
+  {
+    "voiceName": "Hancock",
+    "speakers": ["Hancock"]
+  },
+  {
+    "voiceName": "Rasho",
+    "speakers": ["Rasho"]
+  },
+  {
+    "voiceName": "Tansui",
+    "speakers": ["Tansui", "Tansui the Foxed"]
+  },
+  {
+    "voiceName": "Isse",
+    "speakers": ["Isse"]
+  },
+  {
+    "voiceName": "Yotsuyu",
+    "speakers": ["Yotsuyu", "Tsuyu", "Tsukuyomi"]
+  },
+  {
+    "voiceName": "Asahi",
+    "speakers": ["Asahi"]
+  },
+  {
+    "voiceName": "Temulun",
+    "speakers": ["Temulun"]
+  },
+  {
+    "voiceName": "Cirina",
+    "speakers": ["Cirina", "Cirina of the Laughing Reeds"]
+  },
+  {
+    "voiceName": "Magnai",
+    "speakers": ["Magnai", "Magnai the Older"]
+  },
+  {
+    "voiceName": "Sadu",
+    "speakers": ["Sadu", "Sadu Heavensflame"]
+  },
+  {
+    "voiceName": "Shar",
+    "speakers": ["Shar"]
+  },
+  {
+    "voiceName": "Louisoix",
+    "speakers": []
+  },
+  {
+    "voiceName": "Matoya",
+    "speakers": ["Matoya"]
+  },
+  {
+    "voiceName": "Rammbroes",
+    "speakers": []
+  },
+  {
+    "voiceName": "Cid",
+    "speakers": ["Cid", "Marques"]
+  },
+  {
+    "voiceName": "Biggs",
+    "speakers": []
+  },
+  {
+    "voiceName": "Wedge",
+    "speakers": []
+  },
+  {
+    "voiceName": "Ilberd",
+    "speakers": ["Ilberd", "The Griffin", "Ilberd of the Dull Blade"]
+  },
+  {
+    "voiceName": "Yuyuhase",
+    "speakers": []
+  },
+  {
+    "voiceName": "Alianne",
+    "speakers": []
+  },
+  {
+    "voiceName": "Riol",
+    "speakers": []
+  },
+  {
+    "voiceName": "Wilred",
+    "speakers": []
+  },
+  {
+    "voiceName": "Varis_zos_Galvus",
+    "speakers": ["Varis", "Varis zos Galvus", ]
+  },
+  {
+    "voiceName": "Zenos_yae_Galvus",
+    "speakers": ["Zenos yae Galvus", "Zenos", "Zenos viator Galvus"]
+  },
+  {
+    "voiceName": "Gaius_van_Baelsar",
+    "speakers": ["Gaius", "Gaius Baelsar", "Gaius van Baelsar", "Shadowhunter", "Menacing Mercenary"]
+  },
+  {
+    "voiceName": "Nero_tol_Scaeva",
+    "speakers": []
+  },
+  {
+    "voiceName": "Livia_sas_Junius",
+    "speakers": ["Livia", "Livia sas Junius", "Livia the Undeterred", "Drusilla", "The Reaper"]
+  },
+  {
+    "voiceName": "Nero",
+    "speakers": ["Nero", "Nero tol Scaeva", "Iron Nero", "Outlandish Man", "Nero Scaeva"]
+  },
+  {
+    "voiceName": "Maxima",
+    "speakers": ["Maxima", "Maxima the Neoteric", "Ugetsu", "Ugetsu Tachikake", "Ugetsu, Slayer of a Thousand Souls"]
+  },
+  {
+    "voiceName": "Jullus",
+    "speakers": ["Jullus"]
+  },
+  {
+    "voiceName": "Midgardsormr",
+    "speakers": ["Midgardsormr", "Voice of Midgardsormr"]
+  },
+  {
+    "voiceName": "Emet_Selch",
+    "speakers": ["Emet-Selch", "Sol zos Galvus", "Solus zos Galvus"]
+  },
+  {
+    "voiceName": "Elidibus",
+    "speakers": ["Elidibus", "Themis"]
+  },
+  {
+    "voiceName": "Lahabrea",
+    "speakers": ["Lahabrea", "Ascian Lahabrea", "Masked Magus"]
+  },
+  {
+    "voiceName": "Ardbert",
+    "speakers": ["Ardbert", "“Ardbert”"]
+  },
+  {
+    "voiceName": "Nabriales",
+    "speakers": ["Nabriales"]
+  },
+  {
+    "voiceName": "Hythlodaeus",
+    "speakers": ["Hythlodaeus"]
+  },
+  {
+    "voiceName": "Hermes",
+    "speakers": ["Hermes"]
+  },
+  {
+    "voiceName": "Meteion",
+    "speakers": ["Meteion"]
+  },
+  {
+    "voiceName": "Venat",
+    "speakers": ["Venat", "Lady of the Light", "Hydaelyn", "Azem"]
+  },
+  {
+    "voiceName": "Ryne",
+    "speakers": ["Ryne"]
+  },
+  {
+    "voiceName": "Gaia",
+    "speakers": ["Gaia", "Oracle of Darkness", "Voidwalker"]
+  },
+  {
+    "voiceName": "Lyna",
+    "speakers": ["Lyna", "Curt Gateguard"]
+  },
+  {
+    "voiceName": "Tesleen",
+    "speakers": ["Tesleen", "Tesleen, the Forgiven"]
+  },
+  {
+    "voiceName": "Dulia",
+    "speakers": ["Dulia-Chai", "Renda-Sue"]
+  },
+  {
+    "voiceName": "Chai",
+    "speakers": ["Chai-Nuzz"]
+  },
+  {
+    "voiceName": "Runar",
+    "speakers": ["Runar"]
+  },
+  {
+    "voiceName": "Nidhana",
+    "speakers": ["Nidhana"]
+  },
+  {
+    "voiceName": "Fourchenault",
+    "speakers": ["Fourchenault", "Fourchenault Leveilleur"]
+  },
+  {
+    "voiceName": "Matsya",
+    "speakers": ["Matsya"]
+  },
+  {
+    "voiceName": "Varshahn",
+    "speakers": ["Varshahn"]
+  },
+  {
+    "voiceName": "2B",
+    "speakers": ["2B", "2P", "FUDefender_2B", "FUDefender_2P"]
+  },
+  {
+    "voiceName": "9S",
+    "speakers": ["9S","FUDefender_9S"]
+  },
+  {
+    "voiceName": "Clive",
+    "speakers": ["Clive", "Strange Man"]
+  },
+  {
+    "voiceName": "Others_YoshiP",
+    "speakers": ["Naoki Yoshida", "Wandering Minstrel"]
+  },
+  {
+    "voiceName": "Others_Bre",
+    "speakers": ["Bremondt","Grizzled Passenger", "Brendt", "Brennan"]
+  },
+  {
+    "voiceName": "Others_Hildibrand",
+    "speakers": ["Hildibrand","Hildibrand Manderville", "Well-spoken Zombie", "Zombibrand", "Perturbed Gentleman", "Hildibella", "The Forgiven Gentleman"]
+  },
+  {
+    "voiceName": "Others_Nashu",
+    "speakers": ["Nashu","Nashu Mhakaracca"]
+  },
+  {
+    "voiceName": "Others_Widargelt",
+    "speakers": ["Widargelt","Widargelt the Watcher", "Widargelt Beake", "Theodred"]
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Raen_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Au_Ra_Xaela_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Female_05_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Duskwight_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Female_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elezen_Wildwood_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_Helion_01_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_Helion_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_Helion_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_Helion_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_The_Lost_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_The_Lost_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_The_Lost_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hrothgar_The_Lost_04_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Female_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Highlander_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Hyur_Midlander_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Female_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Dunesfolk_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Female_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lalafell_Plainsfolk_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Female_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Male_02_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Keeper_of_the_Moon_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Female_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Seeker_of_the_Sun_Male_06",
+    "speakers": []
+  },
+  {
+    "voiceName": "Miqote_Fat",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Hellsguard_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Female_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Female_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Roegadyn_Sea_Wolves_Male_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Female_01_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Male_01",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Rava_Male_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Veena_Female_01_05",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Veena_Female_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Veena_Female_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Veena_Female_04",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Veena_Male_02",
+    "speakers": []
+  },
+  {
+    "voiceName": "Viera_Veena_Male_03",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elderly_Female",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elderly_Male_Hyur",
+    "speakers": []
+  },
+  {
+    "voiceName": "Elderly_Male",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Male_1",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Male_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Male_3_6",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Male_4",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Male_5",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Female_1",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Female_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Female_3_5",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Hyur_Female_4",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Male_1",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Male_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Male_3",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Male_4",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Male_5_6",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Female_1_3",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Female_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Female_4",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Elezen_Female_5_6",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Male_1",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Male_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Male_3",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Male_4",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Male_5_6",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Female_1_5",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Female_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Aura_Female_4",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Miqote_Female_2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Child_Miqote_Female_3_4",
+    "speakers": []
+  },
+  
+  {
+    "voiceName": "Amaljaa",
+    "speakers": []
+  },
+  {
+    "voiceName": "Sylph",
+    "speakers": []
+  },
+  {
+    "voiceName": "Kobold",
+    "speakers": []
+  },
+  {
+    "voiceName": "Sahagin",
+    "speakers": []
+  },
+  {
+    "voiceName": "Ixal",
+    "speakers": []
+  },
+  {
+    "voiceName": "Dragon",
+    "speakers": []
+  },
+  {
+    "voiceName": "Dragon_Midgardsormr",
+    "speakers": ["Midgardsormr", "Voice of Midgardsormr"]
+  },
+  {
+    "voiceName": "Goblin_Female",
+    "speakers": []
+  },
+  {
+    "voiceName": "Goblin_Male",
+    "speakers": []
+  },
+  {
+    "voiceName": "Moogle",
+    "speakers": []
+  },
+  {
+    "voiceName": "Vanu_Female",
+    "speakers": []
+  },
+  {
+    "voiceName": "Vanu_Male",
+    "speakers": []
+  },
+  {
+    "voiceName": "Vath",
+    "speakers": []
+  },
+  {
+    "voiceName": "Node",
+    "speakers": []
+  },
+  {
+    "voiceName": "Vanu_Female",
+    "speakers": []
+  },
+  {
+    "voiceName": "Vanu_Male",
+    "speakers": []
+  },
+  {
+    "voiceName": "Namazu",
+    "speakers": []
+  },
+  {
+    "voiceName": "Kojin",
+    "speakers": []
+  },
+  {
+    "voiceName": "Ananta",
+    "speakers": []
+  },
+  {
+    "voiceName": "Lupin",
+    "speakers": []
+  },
+  {
+    "voiceName": "Matanga_Female",
+    "speakers": []
+  },
+  {
+    "voiceName": "Matanga_Male",
+    "speakers": []
+  },
+  {
+    "voiceName": "Loporrit",
+    "speakers": []
+  },
+  {
+    "voiceName": "Loporrit_Mappingway",
+    "speakers": ["Mappingway"]
+  },
+  {
+    "voiceName": "Omicron",
+    "speakers": []
+  },
+  {
+    "voiceName": "Ifrit",
+    "speakers": ["Ifrit"]
+  },
+  {
+    "voiceName": "Titan",
+    "speakers": ["Titan"]
+  },
+  {
+    "voiceName": "Garuda",
+    "speakers": ["Garuda"]
+  },
+  {
+    "voiceName": "Phoenix",
+    "speakers": ["Phoenix"]
+  },
+  {
+    "voiceName": "Leviathan",
+    "speakers": ["Leviathan"]
+  },
+  {
+    "voiceName": "Ramuh",
+    "speakers": ["Ramuh"]
+  },
+  {
+    "voiceName": "Shiva",
+    "speakers": ["Shiva"]
+  },
+  {
+    "voiceName": "Ravana",
+    "speakers": ["Ravana"]
+  },
+  {
+    "voiceName": "Bismarck",
+    "speakers": ["Bismarck"]
+  },
+  {
+    "voiceName": "Knights_of_the_Round",
+    "speakers": ["Knights of the Round"]
+  },
+  {
+    "voiceName": "Alexander",
+    "speakers": ["Alexander"]
+  },
+  {
+    "voiceName": "Shinryu",
+    "speakers": ["Shinryu"]
+  },
+  {
+    "voiceName": "Lakshmi",
+    "speakers": ["Lakshmi"]
+  },
+  {
+    "voiceName": "Halone",
+    "speakers": ["Halone"]
+  },
+  {
+    "voiceName": "Menphina",
+    "speakers": ["Menphina"]
+  },
+  {
+    "voiceName": "Thaliak",
+    "speakers": ["Thaliak"]
+  },
+  {
+    "voiceName": "Nymeia",
+    "speakers": ["Nymeia"]
+  },
+  {
+    "voiceName": "Llymlaen",
+    "speakers": ["Llymlaen"]
+  },
+  {
+    "voiceName": "Oschon",
+    "speakers": ["Oschon"]
+  },
+  {
+    "voiceName": "Byregot",
+    "speakers": ["Byregot"]
+  },
+  {
+    "voiceName": "Rhalgr",
+    "speakers": ["Rhalgr"]
+  },
+  {
+    "voiceName": "Azeyma",
+    "speakers": ["Azeyma"]
+  },
+  {
+    "voiceName": "Naldthal",
+    "speakers": ["Nald'thal"]
+  },
+  {
+    "voiceName": "Nophica",
+    "speakers": ["Nophica"]
+  },
+  {
+    "voiceName": "Althyk",
+    "speakers": ["Althyk"]
+  },
+  {
+    "voiceName": "Eulogia",
+    "speakers": ["Eulogia"]
+  },
+  {
+    "voiceName": "Boss1",
+    "speakers": []
+  },
+  {
+    "voiceName": "Boss2",
+    "speakers": []
+  },
+  {
+    "voiceName": "Boss3",
+    "speakers": []
+  },
+  {
+    "voiceName": "Boss4",
+    "speakers": []
+  }
+]

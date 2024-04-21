@@ -138,10 +138,10 @@ namespace XivVoices
 
         private static (IntPtr noSoundPtr, IntPtr infoPtr) SetUpNoSound()
         {
-            // get the data of an empty scd
+            // get the Data of an empty scd
             var noSound = GetNoSoundScd();
 
-            // allocate unmanaged memory for this data and copy the data into the memory
+            // allocate unmanaged memory for this Data and copy the Data into the memory
             var noSoundPtr = Marshal.AllocHGlobal(noSound.Length);
             Marshal.Copy(noSound, 0, noSoundPtr, noSound.Length);
 
@@ -256,7 +256,7 @@ namespace XivVoices
             if (ret != null && path.EndsWith(".scd"))
             {
                 var scdData = Marshal.ReadIntPtr((IntPtr)ret + ResourceDataPointerOffset);
-                // if we immediately have the scd data, cache it, otherwise add it to a waiting list to hopefully be picked up at sound play time
+                // if we immediately have the scd Data, cache it, otherwise add it to a waiting list to hopefully be picked up at sound play time
                 if (scdData != IntPtr.Zero)
                 {
                     this.Scds[scdData] = path;

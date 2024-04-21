@@ -88,7 +88,7 @@ public class GameDataService : ServiceBase<GameDataService>
 
 		FileResource? file = LuminaData.GetFile(path);
 		if (file == null)
-			throw new Exception($"Failed to read file from game data: \"{path}\"");
+			throw new Exception($"Failed to read file from game Data: \"{path}\"");
 
 		return file.Data;
 	}
@@ -164,7 +164,7 @@ public class GameDataService : ServiceBase<GameDataService>
 		}
 		catch (Exception ex)
 		{
-			throw new Exception("Failed to read data sheets", ex);
+			throw new Exception("Failed to read Data sheets", ex);
 		}
 
 		try

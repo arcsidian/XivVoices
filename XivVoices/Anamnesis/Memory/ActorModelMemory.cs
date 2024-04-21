@@ -9,7 +9,7 @@ using System.ComponentModel;
 public class ActorModelMemory : MemoryBase
 {
 	/// <summary>
-	/// Known data paths.
+	/// Known Data paths.
 	/// </summary>
 	public enum DataPaths : short
 	{

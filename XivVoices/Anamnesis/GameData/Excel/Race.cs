@@ -51,7 +51,7 @@ public class Race : ExcelRow
 			return;
 
 		if (GameDataService.Tribes == null)
-			throw new Exception("No Tribes list in game data service");
+			throw new Exception("No Tribes list in game Data service");
 
 		this.Tribes = this.CustomizeRace switch
 		{

@@ -28,7 +28,7 @@ public class EquipmentSheet : IEnumerable<Equipment>
 		}
 		catch (Exception ex)
 		{
-			throw new Exception($"Failed to load json data: {fileName}", ex);
+			throw new Exception($"Failed to load json Data: {fileName}", ex);
 		}
 	}
 

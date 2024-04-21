@@ -66,12 +66,12 @@ public sealed class SignatureScanner
 	}
 
 	/// <summary>
-	/// Scan for a .data address using a .text function.
+	/// Scan for a .Data address using a .text function.
 	/// This is intended to be used with IDA sigs.
 	/// Place your cursor on the line calling a static address, and create and IDA sig.
 	/// </summary>
-	/// <param name="signature">The signature of the function using the data.</param>
-	/// <param name="offset">The offset from function start of the instruction using the data.</param>
+	/// <param name="signature">The signature of the function using the Data.</param>
+	/// <param name="offset">The offset from function start of the instruction using the Data.</param>
 	/// <returns>An IntPtr to the static memory location.</returns>
 	public IntPtr GetStaticAddressFromSig(string signature, int offset = 0)
 	{
@@ -91,7 +91,7 @@ public sealed class SignatureScanner
 	}
 
 	/// <summary>
-	/// Scan for a byte signature in the .data section.
+	/// Scan for a byte signature in the .Data section.
 	/// </summary>
 	/// <param name="signature">The signature.</param>
 	/// <returns>The real offset of the found signature.</returns>
@@ -208,7 +208,7 @@ public sealed class SignatureScanner
 					this.TextSectionOffset = ReadInt32(sectionCursor, 12);
 					this.TextSectionSize = ReadInt32(sectionCursor, 8);
 					break;
-				case 0x617461642E: // .data
+				case 0x617461642E: // .Data
 					this.DataSectionOffset = ReadInt32(sectionCursor, 12);
 					this.DataSectionSize = ReadInt32(sectionCursor, 8);
 					break;
