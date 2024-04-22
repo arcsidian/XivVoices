@@ -677,17 +677,26 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Speed");
 
-            // Polly Settings ----------------------------------------------
-
-            ImGui.Dummy(new Vector2(0, 20));
-            ImGui.TextWrapped("Poly Settings (soon)");
-            ImGui.Dummy(new Vector2(0, 10)); 
 
             // Local AI Settings Settings ----------------------------------------------
 
             ImGui.Dummy(new Vector2(0, 20));
-            ImGui.TextWrapped("Local TTS (soon)");
-            ImGui.Dummy(new Vector2(0, 10));
+            var localTTSEnabled = this.Configuration.LocalTTSEnabled;
+            if (ImGui.Checkbox("##localTTSEnabled", ref localTTSEnabled))
+            {
+                this.configuration.LocalTTSEnabled = localTTSEnabled;
+                needSave = true;
+                lastChangeTime = DateTime.Now;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Local TTS Enabled");
+
+
+            // Polly Settings ----------------------------------------------
+
+            //ImGui.Dummy(new Vector2(0, 20));
+            //ImGui.TextWrapped("Poly Settings (soon)");
+            //ImGui.Dummy(new Vector2(0, 10));
 
 
             // Saving Process
@@ -753,14 +762,14 @@ namespace XivVoices {
                         if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
                         {
                             //PluginReference.webSocketServer.SendMessage("input:" + reportInput);
-                            PluginReference.engine.ReportRedoToArc(item.data, reportInput);
+                            PluginReference.xivEngine.ReportRedoToArc(item.data, reportInput);
                             ImGui.CloseCurrentPopup();
                         }
                         ImGui.Dummy(new Vector2(0, 2));
                         if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
                         {
-                            PluginReference.engine.ReportMuteToArc(item.data, reportInput);
-                            PluginReference.engine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
+                            PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
+                            PluginReference.xivEngine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
                             ImGui.CloseCurrentPopup();
                         }
                         ImGui.Dummy(new Vector2(0, 2));
@@ -782,7 +791,7 @@ namespace XivVoices {
                         if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
                         {
                             PluginReference.audio.StopAudio();
-                            PluginReference.engine.AddToQueue(item.data);
+                            PluginReference.xivEngine.AddToQueue(item.data);
                         }
                     }
                 }

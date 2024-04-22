@@ -24,8 +24,8 @@ using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using System.Threading.Tasks;
 using XivVoices.Engine;
 using System.Numerics;
-using Microsoft.VisualBasic.ApplicationServices;
 #endregion
+
 namespace XivVoices {
     public class Plugin : IDalamudPlugin {
         #region Fields
@@ -101,7 +101,8 @@ namespace XivVoices {
         public XivVoices.Engine.Updater updater;
         public XivVoices.Engine.Database database;
         public XivVoices.Engine.Audio audio;
-        public XivVoices.Engine.Engine engine;
+        public XivVoices.Engine.XivEngine xivEngine;
+        
 
         #endregion
         #region Plugin Initiialization
@@ -191,7 +192,7 @@ namespace XivVoices {
                 updater = new Updater();
                 database = new Database(this.pluginInterface, this, _clientState);
                 audio = new Audio(this);
-                engine = new Engine.Engine(this.config,this.database, this.audio);
+                xivEngine = new XivEngine(this.config,this.database, this.audio);
 
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
@@ -246,7 +247,6 @@ namespace XivVoices {
                     string cleanedMessage = _addonTalkHandler.CleanSentence(message.TextValue);
                     if (_addonTalkHandler.lastNPCDialogue == playerName + cleanedMessage)
                     {
-                        //webSocketServer.BroadcastMessage($"===> match");
                         if(config.SkipEnabled)
                             ChatText(playerName, cleanedMessage, type, senderId, true);
                     }
@@ -352,11 +352,11 @@ namespace XivVoices {
 
             if (sender.Contains(_clientState.LocalPlayer.Name.TextValue))
             {
-                Engine.Engine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), _clientState.LocalPlayer, user);
+                Engine.XivEngine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), _clientState.LocalPlayer, user);
             }
             else
             {
-                Engine.Engine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
+                Engine.XivEngine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
             }
         } 
 
@@ -538,7 +538,7 @@ namespace XivVoices {
             try { 
                 disposed = true;
                 config.Save();
-                webSocketServer.Stop();
+                
                 _chat.ChatMessage -= Chat_ChatMessage;
                 this.pluginInterface.UiBuilder.Draw -= UiBuilder_Draw;
                 this.pluginInterface.UiBuilder.OpenConfigUi -= UiBuilder_OpenConfigUi;
@@ -566,7 +566,8 @@ namespace XivVoices {
                 updater.Dispose();
                 database.Dispose();
                 audio.Dispose();
-                engine.Dispose();
+                xivEngine.Dispose();
+                webSocketServer.Stop();
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
             }

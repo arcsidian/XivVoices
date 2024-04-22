@@ -81,26 +81,26 @@ namespace XivVoices.Engine
         public async Task Check()
         {
             State.Clear();
-            Engine.Instance.Database.UpdateDirectory();
+            XivEngine.Instance.Database.UpdateDirectory();
 
-            Engine.Instance.Database.Plugin.Config.Initialized = true;
+            XivEngine.Instance.Database.Plugin.Config.Initialized = true;
             State.Add(1); // Checking Server Manifest State
-            Engine.Instance.Database.Plugin.Chat.Print("Check GetServerManifest");
+            XivEngine.Instance.Database.Plugin.Chat.Print("Check GetServerManifest");
             await GetServerManifest();
 
             State.Add(2); // Checking Local Manifest State
-            Engine.Instance.Database.Plugin.Chat.Print("Check GetLocalManifest");
+            XivEngine.Instance.Database.Plugin.Chat.Print("Check GetLocalManifest");
             await GetLocalManifest();
 
             State.Add(3); // Checking Xiv Voices Tools State
-            Engine.Instance.Database.Plugin.Chat.Print("Check GetTools");
+            XivEngine.Instance.Database.Plugin.Chat.Print("Check GetTools");
             await GetTools();
 
             // Manifest Check
             if (!serverManifestLoaded || !localManifestLoaded)
             {
-                if (!serverManifestLoaded) Engine.Instance.Database.Plugin.Chat.Print("Server Manifest check failed!");
-                if (!localManifestLoaded) Engine.Instance.Database.Plugin.Chat.Print("Local Manifest check failed!");
+                if (!serverManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.Print("Server Manifest check failed!");
+                if (!localManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.Print("Local Manifest check failed!");
                 State.Add(-1); // Error 1: Unable to load Manifests
                 await Task.Delay(1000);
                 State.Clear();
@@ -111,12 +111,12 @@ namespace XivVoices.Engine
             if (toolsExist)
             {
                 State.Add(4); // All Tools Exist State 
-                Engine.Instance.Database.Plugin.Chat.Print("Tools exist!");
+                XivEngine.Instance.Database.Plugin.Chat.Print("Tools exist!");
             }
             else
             {
                 State.Add(5); // Tools Missing, Downloading...
-                Engine.Instance.Database.Plugin.Chat.Print("Tools are missing!");
+                XivEngine.Instance.Database.Plugin.Chat.Print("Tools are missing!");
                 await DownloadAndExtractTools();
             }
 
@@ -142,13 +142,13 @@ namespace XivVoices.Engine
             if (manifestsMatch)
             {
                 State.Add(7); // Up To Date State
-                Engine.Instance.Database.Plugin.Chat.Print("Manifests match!");
+                XivEngine.Instance.Database.Plugin.Chat.Print("Manifests match!");
                 await Task.Delay(2000);
             }
             else
             {
                 State.Add(8); // Downloading Files...
-                Engine.Instance.Database.Plugin.Chat.Print("Manifests are different!");
+                XivEngine.Instance.Database.Plugin.Chat.Print("Manifests are different!");
                 await DownloadAndExtractData();
             }
 
@@ -183,13 +183,13 @@ namespace XivVoices.Engine
             localManifestLoaded = false;
             localManifest = new Dictionary<string, long>();
 
-            string[] folders = Directory.GetDirectories(Engine.Instance.Database.VoiceFilesPath);
+            string[] folders = Directory.GetDirectories(XivEngine.Instance.Database.VoiceFilesPath);
             foreach (string folder in folders)
             {
                 string[] subFolders = Directory.GetDirectories(folder);
                 foreach (string subFolder in subFolders)
                 {
-                    string relativePath = subFolder.Replace(Engine.Instance.Database.VoiceFilesPath, "").Replace("\\", "/").TrimStart('/');
+                    string relativePath = subFolder.Replace(XivEngine.Instance.Database.VoiceFilesPath, "").Replace("\\", "/").TrimStart('/');
                     long size = await CalculateFolderSizeAsync(subFolder);
 
                     if (splitFolders.Contains(relativePath))
@@ -210,7 +210,7 @@ namespace XivVoices.Engine
 
             // Convert the manifest to JSON and save it
             string manifestJson = JsonConvert.SerializeObject(localManifest, Formatting.Indented);
-            await File.WriteAllTextAsync(Engine.Instance.Database.DirectoryPath + "/manifest.json", manifestJson);
+            await File.WriteAllTextAsync(XivEngine.Instance.Database.DirectoryPath + "/manifest.json", manifestJson);
 
             PluginLog.Log("Updater:Manifest created successfully.");
             localManifestLoaded = true;
@@ -223,16 +223,16 @@ namespace XivVoices.Engine
             await Task.Delay(100);
             toolsExist = false;
 
-            // Check if the directory exists
-            if (!Directory.Exists(Engine.Instance.Database.ToolsPath))
+            // Check if the directory exists 
+            if (!Directory.Exists(XivEngine.Instance.Database.ToolsPath))
             {
-                Directory.CreateDirectory(Engine.Instance.Database.ToolsPath);
+                Directory.CreateDirectory(XivEngine.Instance.Database.ToolsPath);
                 return;
             }
 
             // Check for the existence of the tools
-            bool ffmpegExists = File.Exists(Path.Combine(Engine.Instance.Database.ToolsPath, "ffmpeg.exe"));
-            bool ffprobeExists = File.Exists(Path.Combine(Engine.Instance.Database.ToolsPath, "ffprobe.exe"));
+            bool ffmpegExists = File.Exists(Path.Combine(XivEngine.Instance.Database.ToolsPath, "ffmpeg.exe"));
+            bool ffprobeExists = File.Exists(Path.Combine(XivEngine.Instance.Database.ToolsPath, "ffprobe.exe"));
 
             // If both files exist, set toolsExist to true
             if (ffmpegExists && ffprobeExists)
@@ -258,7 +258,7 @@ namespace XivVoices.Engine
         public async Task<Dictionary<string, long>> SplitFolderByCharacterAsync(string folderPath)
         {
             Dictionary<string, long> splitSizes = new Dictionary<string, long>();
-            string baseFolderRelativePath = folderPath.Replace(Engine.Instance.Database.VoiceFilesPath, "").Replace("\\", "/").TrimStart('/');
+            string baseFolderRelativePath = folderPath.Replace(XivEngine.Instance.Database.VoiceFilesPath, "").Replace("\\", "/").TrimStart('/');
 
             await Task.Run(() =>
             {
@@ -286,9 +286,9 @@ namespace XivVoices.Engine
 
         private async Task DownloadAndExtractTools()
         {
-            Engine.Instance.Database.Plugin.Chat.Print("Download Start...");
+            XivEngine.Instance.Database.Plugin.Chat.Print("Download Start...");
             string toolsUrl = "https://github.com/arcsidian/XivVoices/releases/download/0.1.2.4/Tools.zip";
-            string savePath = Path.Combine(Engine.Instance.Database.DirectoryPath, "Tools.zip");
+            string savePath = Path.Combine(XivEngine.Instance.Database.DirectoryPath, "Tools.zip");
 
             try
             {
@@ -318,22 +318,22 @@ namespace XivVoices.Engine
                             }
                         }
 
-                        Engine.Instance.Database.Plugin.Chat.Print("Download complete. Extracting...");
+                        XivEngine.Instance.Database.Plugin.Chat.Print("Download complete. Extracting...");
 
                         // Extract the zip file
-                        string extractPath = Engine.Instance.Database.DirectoryPath;
+                        string extractPath = XivEngine.Instance.Database.DirectoryPath;
                         ZipFile.ExtractToDirectory(savePath, extractPath, true);
-                        Engine.Instance.Database.Plugin.Chat.Print("Extraction complete.");
+                        XivEngine.Instance.Database.Plugin.Chat.Print("Extraction complete.");
 
                         // Delete the zip file after extracting
                         File.Delete(savePath);
-                        Engine.Instance.Database.Plugin.Chat.Print("Cleanup complete.");
+                        XivEngine.Instance.Database.Plugin.Chat.Print("Cleanup complete.");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Engine.Instance.Database.Plugin.Chat.Print($"An error occurred: {ex.Message}");
+                XivEngine.Instance.Database.Plugin.Chat.Print($"An error occurred: {ex.Message}");
             }
         }
 
@@ -341,7 +341,7 @@ namespace XivVoices.Engine
         {
             if (!Active) return;
 
-            Engine.Instance.Database.Plugin.Chat.Print("Updating the software... Please wait...");
+            XivEngine.Instance.Database.Plugin.Chat.Print("Updating the software... Please wait...");
             List<string> deletedFiles = new List<string>();
             List<string> changedFiles = new List<string>();
             DownloadInfoState.Clear();
@@ -373,7 +373,7 @@ namespace XivVoices.Engine
             // Delete files
             foreach (var file in deletedFiles)
             {
-                string fullPath = Path.Combine(Engine.Instance.Database.VoiceFilesPath, file);
+                string fullPath = Path.Combine(XivEngine.Instance.Database.VoiceFilesPath, file);
                 PluginLog.Information($"Deleting: {fullPath}");
                 if (Directory.Exists(fullPath))
                 {
@@ -389,7 +389,7 @@ namespace XivVoices.Engine
 
 
             // Erase existing .zip files
-            var directoryInfo = new DirectoryInfo(Engine.Instance.Database.RootPath);
+            var directoryInfo = new DirectoryInfo(XivEngine.Instance.Database.RootPath);
             foreach (var file in directoryInfo.GetFiles("*.zip"))
             {
                 try
@@ -431,11 +431,11 @@ namespace XivVoices.Engine
 
             DataDownloadCount--;
             // Handle file deletions based on naming conventions
-            string baseDirectory = Path.Combine(Engine.Instance.Database.VoiceFilesPath, file);
+            string baseDirectory = Path.Combine(XivEngine.Instance.Database.VoiceFilesPath, file);
             if (file.Contains("__"))
             {
                 var parts = file.Split("__");
-                baseDirectory = Path.Combine(Engine.Instance.Database.VoiceFilesPath, parts[0]);
+                baseDirectory = Path.Combine(XivEngine.Instance.Database.VoiceFilesPath, parts[0]);
                 string specificFilePattern = parts[1] + "*";  // assuming naming like "subfolder__a" to delete all 'a*' files
 
                 if (Directory.Exists(baseDirectory))
@@ -454,7 +454,7 @@ namespace XivVoices.Engine
             // Initiate file download and processing
             State.Add(9); // Downloading Data...
             string fileUrl = $"{ServerFilesURL}{file}.zip";
-            string savePath = Path.Combine(Engine.Instance.Database.DirectoryPath, $"{Path.GetFileName(file)}_{Engine.Instance.Database.GenerateRandomSuffix()}.zip");
+            string savePath = Path.Combine(XivEngine.Instance.Database.DirectoryPath, $"{Path.GetFileName(file)}_{XivEngine.Instance.Database.GenerateRandomSuffix()}.zip");
             file = file.Split('/')[1];
             if(DownloadInfoState.Count > 12)
             {
@@ -464,7 +464,7 @@ namespace XivVoices.Engine
                     DownloadInfoState.Remove(oldestFinished);
                 }
             }
-            string id = $"{file}_{Engine.Instance.Database.GenerateRandomSuffix()}";
+            string id = $"{file}_{XivEngine.Instance.Database.GenerateRandomSuffix()}";
             var downloadInfo = new DownloadInfo(id, file, "Downloading", 0f);
             DownloadInfoState.AddLast(downloadInfo);
             try
@@ -494,7 +494,7 @@ namespace XivVoices.Engine
                 downloadInfo.percentage = 1f;
                 downloadInfo.status = "Processing";
                 PluginLog.Information($"Downloaded {file}. Extracting...");
-                await UnzipAndDeleteFileAsync(savePath, Engine.Instance.Database.VoiceFilesPath);
+                await UnzipAndDeleteFileAsync(savePath, XivEngine.Instance.Database.VoiceFilesPath);
                 PluginLog.Information($"Extracted {file}.");
                 downloadInfo.status = "Finished";
             }
@@ -523,7 +523,7 @@ namespace XivVoices.Engine
         private async Task SaveLocalManifestAsync()
         {
             string manifestJson = JsonConvert.SerializeObject(localManifest, Formatting.Indented);
-            await File.WriteAllTextAsync(Engine.Instance.Database.DirectoryPath + "/manifest.json", manifestJson);
+            await File.WriteAllTextAsync(XivEngine.Instance.Database.DirectoryPath + "/manifest.json", manifestJson);
         }
 
 

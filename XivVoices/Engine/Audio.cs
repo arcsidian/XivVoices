@@ -23,7 +23,8 @@ namespace XivVoices.Engine
 
         public LinkedList<AudioInfo> AudioInfoState { get; set; } = new LinkedList<AudioInfo>();
 
-        public Audio(Plugin plugin) {
+        public Audio(Plugin plugin)
+        {
             this.Plugin = plugin;
             Plugin.Chat.Print("Audio: I am awake");
             characterList = new List<Character>();

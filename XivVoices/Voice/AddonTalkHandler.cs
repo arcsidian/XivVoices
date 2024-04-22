@@ -632,7 +632,7 @@ namespace XivVoices.Voice {
                 string genderType = gender ? "Female":"Male";
                 string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-                Engine.Engine.Instance.Process("Dialogue", correctSender, id.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as Character, user);
+                Engine.XivEngine.Instance.Process("Dialogue", correctSender, id.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as Character, user);
 
                 lastNPCDialogue = npcName + correctedMessage;
             }
@@ -679,7 +679,7 @@ namespace XivVoices.Voice {
                 {
                     string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-                    Engine.Engine.Instance.Process("Bubble", correctSender, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
+                    Engine.XivEngine.Instance.Process("Bubble", correctSender, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
 
                     lastBubbleDialogue = correctedMessage;
                 }

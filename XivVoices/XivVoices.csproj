@@ -95,6 +95,12 @@
 	  <None Update="SoundTouch_x64.dll">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+		<None Update="overtone.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="overtoneruntime.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -103,6 +109,7 @@
       <Visible>false</Visible>
     </Content>
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <None Remove="C:\Users\Arc\.nuget\packages\naudio.lame\2.1.0\build\libmp3lame.32.dll" />
@@ -118,6 +125,10 @@
 
 	<ItemGroup>
 	  <None Remove="C:\Users\Arc\.nuget\packages\naudio.lame\2.1.0\build\libmp3lame.64.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="LocalTTS\" />
 	</ItemGroup>
 
 </Project>
