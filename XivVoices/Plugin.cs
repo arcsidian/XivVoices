@@ -43,7 +43,7 @@ namespace XivVoices {
 
         private readonly PluginCommandManager<Plugin> commandManager;
         private readonly Configuration config;
-        public XIVVWebSocketServer webSocketServer;
+        //public XIVVWebSocketServer webSocketServer;
         private readonly WindowSystem windowSystem;
         private PluginWindow _window { get; init; }
 
@@ -136,7 +136,7 @@ namespace XivVoices {
                 // Get or create a configuration object
                 this.config = this.pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
                 this.config.Initialize(this.pluginInterface);
-                webSocketServer = new XIVVWebSocketServer(this.config, this);
+                //webSocketServer = new XIVVWebSocketServer(this.config, this);
                 // Initialize the UI
                 this.windowSystem = new WindowSystem(typeof(Plugin).AssemblyQualifiedName);
                 _window = this.pluginInterface.Create<PluginWindow>();
@@ -319,7 +319,7 @@ namespace XivVoices {
 
             if (_addonTalkHandler.lastBubbleDialogue == cleanedMessage)
             {
-                webSocketServer.SendMessage($"NPCDialogueAnnouncement blocked: {cleanedMessage}");
+                //webSocketServer.SendMessage($"NPCDialogueAnnouncement blocked: {cleanedMessage}");
                 return;
             }
 
@@ -567,7 +567,7 @@ namespace XivVoices {
                 database.Dispose();
                 audio.Dispose();
                 xivEngine.Dispose();
-                webSocketServer.Stop();
+                //webSocketServer.Stop();
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
             }

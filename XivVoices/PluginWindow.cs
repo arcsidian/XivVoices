@@ -416,6 +416,7 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Lipsync Enabled");
 
+            /*
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.LabelText("##Label", "Websocket Settings");
             ImGui.InputText("##port", ref _port, 5);
@@ -430,7 +431,7 @@ namespace XivVoices {
             }
             ImGui.TextWrapped(this.configuration.WebsocketStatus);
             ImGui.Dummy(new Vector2(0, 10));
-
+            */
             // Saving Process
             if (needSave && (DateTime.Now - lastChangeTime).TotalMilliseconds > debounceIntervalMs)
             {

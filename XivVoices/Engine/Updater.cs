@@ -287,7 +287,7 @@ namespace XivVoices.Engine
         private async Task DownloadAndExtractTools()
         {
             //XivEngine.Instance.Database.Plugin.Chat.Print("Download Start...");
-            string toolsUrl = "https://github.com/arcsidian/XivVoices/releases/download/0.1.2.4/Tools.zip";
+            string toolsUrl = "https://github.com/arcsidian/XivVoices/releases/download/0.2.0.0/Tools.zip";
             string savePath = Path.Combine(XivEngine.Instance.Database.DirectoryPath, "Tools.zip");
 
             try

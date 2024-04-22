@@ -123,7 +123,6 @@ namespace XivVoices.LocalTTS
         {
             lock (_lock)
             {
-                Plugin.webSocketServer.SendMessage("TTSEngine Dispoing");
                 Disposed = true;
                 if (_context != IntPtr.Zero)
                     TTSNative.LocalTTSFree(_context);
