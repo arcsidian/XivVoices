@@ -103,7 +103,7 @@ namespace XivVoices.Engine
                 {
                     if (msg.Network == "Online")
                     {
-                        this.Database.Plugin.Chat.Print("CheckMessages: Online");
+                        //this.Database.Plugin.Chat.Print("CheckMessages: Online");
                         //if (Configuration.PollyEnabled && !Configuration.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // && !AudioIsMuted?
                         //    Task.Run(async () => await SpeakPollyAsync(msg));
                         if (Configuration.LocalTTSEnabled && !Configuration.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // !&& AudioIsMuted?
@@ -113,7 +113,7 @@ namespace XivVoices.Engine
                     }
                     else
                     {
-                        this.Database.Plugin.Chat.Print("CheckMessages: Offline");
+                        //this.Database.Plugin.Chat.Print("CheckMessages: Offline");
                         Task.Run(async () => await SpeakLocallyAsync(msg));
                     }
                 }

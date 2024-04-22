@@ -182,7 +182,7 @@ namespace XivVoices.Voice {
                             } else {
                                 _speechBubbleInfo.Add(npcBubbleInformaton);
                                 try {
-                                    _plugin.webSocketServer.SendMessage($"_blockAudioGeneration:[{_blockAudioGeneration}] bubbleCooldown.ElapsedMilliseconds:[{bubbleCooldown.ElapsedMilliseconds}]");
+                                    //_plugin.webSocketServer.SendMessage($"_blockAudioGeneration:[{_blockAudioGeneration}] bubbleCooldown.ElapsedMilliseconds:[{bubbleCooldown.ElapsedMilliseconds}]");
                                     if (!_blockAudioGeneration && bubbleCooldown.ElapsedMilliseconds >= 0 ) {
                                         FFXIVClientStructs.FFXIV.Client.Game.Character.Character* character = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)pActor;
                                         if ((ObjectKind)character->GameObject.ObjectKind == ObjectKind.EventNpc || (ObjectKind)character->GameObject.ObjectKind == ObjectKind.BattleNpc) {
@@ -192,7 +192,6 @@ namespace XivVoices.Voice {
                                             string finalName = characterObject != null && !string.IsNullOrEmpty(characterObject.Name.TextValue) && Conditions.IsBoundByDuty ? characterObject.Name.TextValue : nameID;
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
 
-                                                _plugin.webSocketServer.SendMessage($" ModelSkeletonId: [{character->CharacterData.ModelSkeletonId}]");
                                                 string id = character->GameObject.DataID.ToString();
                                                 if (character->DrawData.CustomizeData.BodyType.ToString() == "0")
                                                     id = character->CharacterData.ModelSkeletonId.ToString();
@@ -679,6 +678,7 @@ namespace XivVoices.Voice {
                 {
                     string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
+                    //TODO print it?
                     Engine.XivEngine.Instance.Process("Bubble", correctSender, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
 
                     lastBubbleDialogue = correctedMessage;

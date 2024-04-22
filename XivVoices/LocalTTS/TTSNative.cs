@@ -1,15 +1,10 @@
 using System;
-using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using XivVoices.Engine;
-
 
 namespace XivVoices.LocalTTS
 {
     public static class TTSNative
     {
-
         private const string localTTSLib = "C:\\XIV_Voices\\Tools\\localtts";
         
         [StructLayout(LayoutKind.Sequential)]
@@ -41,9 +36,5 @@ namespace XivVoices.LocalTTS
 
         [DllImport(localTTSLib, CallingConvention = CallingConvention.Cdecl, EntryPoint = "localtts_free")]
         public static extern void LocalTTSFree(IntPtr ctx);
-        
     }
-
-
-
 }

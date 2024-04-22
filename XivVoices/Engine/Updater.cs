@@ -85,22 +85,22 @@ namespace XivVoices.Engine
 
             XivEngine.Instance.Database.Plugin.Config.Initialized = true;
             State.Add(1); // Checking Server Manifest State
-            XivEngine.Instance.Database.Plugin.Chat.Print("Check GetServerManifest");
+            //XivEngine.Instance.Database.Plugin.Chat.Print("Check GetServerManifest");
             await GetServerManifest();
 
             State.Add(2); // Checking Local Manifest State
-            XivEngine.Instance.Database.Plugin.Chat.Print("Check GetLocalManifest");
+            //XivEngine.Instance.Database.Plugin.Chat.Print("Check GetLocalManifest");
             await GetLocalManifest();
 
             State.Add(3); // Checking Xiv Voices Tools State
-            XivEngine.Instance.Database.Plugin.Chat.Print("Check GetTools");
+            //XivEngine.Instance.Database.Plugin.Chat.Print("Check GetTools");
             await GetTools();
 
             // Manifest Check
             if (!serverManifestLoaded || !localManifestLoaded)
             {
-                if (!serverManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.Print("Server Manifest check failed!");
-                if (!localManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.Print("Local Manifest check failed!");
+                if (!serverManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.PrintError("Server is updating right now!");
+                if (!localManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.PrintError("Local Manifest check failed!");
                 State.Add(-1); // Error 1: Unable to load Manifests
                 await Task.Delay(1000);
                 State.Clear();
@@ -111,13 +111,13 @@ namespace XivVoices.Engine
             if (toolsExist)
             {
                 State.Add(4); // All Tools Exist State 
-                XivEngine.Instance.Database.Plugin.Chat.Print("Tools exist!");
+                //XivEngine.Instance.Database.Plugin.Chat.Print("Tools exist!");
             }
             else
             {
                 State.Add(5); // Tools Missing, Downloading...
                 XivEngine.Instance.Database.Plugin.Chat.Print("Tools are missing!");
-                await DownloadAndExtractTools();
+                //await DownloadAndExtractTools();
             }
 
             // Compare counts first for a quick mismatch check for MANIFEST
@@ -142,13 +142,13 @@ namespace XivVoices.Engine
             if (manifestsMatch)
             {
                 State.Add(7); // Up To Date State
-                XivEngine.Instance.Database.Plugin.Chat.Print("Manifests match!");
+                //XivEngine.Instance.Database.Plugin.Chat.Print("Manifests match!");
                 await Task.Delay(2000);
             }
             else
             {
                 State.Add(8); // Downloading Files...
-                XivEngine.Instance.Database.Plugin.Chat.Print("Manifests are different!");
+                //XivEngine.Instance.Database.Plugin.Chat.Print("Manifests are different!");
                 await DownloadAndExtractData();
             }
 
@@ -286,7 +286,7 @@ namespace XivVoices.Engine
 
         private async Task DownloadAndExtractTools()
         {
-            XivEngine.Instance.Database.Plugin.Chat.Print("Download Start...");
+            //XivEngine.Instance.Database.Plugin.Chat.Print("Download Start...");
             string toolsUrl = "https://github.com/arcsidian/XivVoices/releases/download/0.1.2.4/Tools.zip";
             string savePath = Path.Combine(XivEngine.Instance.Database.DirectoryPath, "Tools.zip");
 
@@ -318,16 +318,16 @@ namespace XivVoices.Engine
                             }
                         }
 
-                        XivEngine.Instance.Database.Plugin.Chat.Print("Download complete. Extracting...");
+                        //XivEngine.Instance.Database.Plugin.Chat.Print("Download complete. Extracting...");
 
                         // Extract the zip file
                         string extractPath = XivEngine.Instance.Database.DirectoryPath;
                         ZipFile.ExtractToDirectory(savePath, extractPath, true);
-                        XivEngine.Instance.Database.Plugin.Chat.Print("Extraction complete.");
+                        //XivEngine.Instance.Database.Plugin.Chat.Print("Extraction complete.");
 
                         // Delete the zip file after extracting
                         File.Delete(savePath);
-                        XivEngine.Instance.Database.Plugin.Chat.Print("Cleanup complete.");
+                        //XivEngine.Instance.Database.Plugin.Chat.Print("Cleanup complete.");
                     }
                 }
             }
