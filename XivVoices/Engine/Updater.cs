@@ -116,8 +116,8 @@ namespace XivVoices.Engine
             else
             {
                 State.Add(5); // Tools Missing, Downloading...
-                XivEngine.Instance.Database.Plugin.Chat.Print("Tools are missing!");
-                //await DownloadAndExtractTools();
+                //XivEngine.Instance.Database.Plugin.Chat.Print("Tools are missing!");
+                await DownloadAndExtractTools();
             }
 
             // Compare counts first for a quick mismatch check for MANIFEST
