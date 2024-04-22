@@ -1213,7 +1213,7 @@ namespace XivVoices.Engine
             string filterArgs = SoundEffects(msg);
             string arguments = $"-i \"{msg.FilePath}\" -filter:a \"{filterArgs}\" -c:a libopus \"{outputFilePath}\"";
 
-            string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.DirectoryPath, "Tools"); ;
+            string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath); ;
             FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
 
             IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);

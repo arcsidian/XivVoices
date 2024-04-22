@@ -288,7 +288,7 @@ namespace XivVoices.Engine
         {
             //XivEngine.Instance.Database.Plugin.Chat.Print("Download Start...");
             string toolsUrl = "https://github.com/arcsidian/XivVoices/releases/download/0.2.0.0/Tools.zip";
-            string savePath = Path.Combine(XivEngine.Instance.Database.DirectoryPath, "Tools.zip");
+            string savePath = Path.Combine(XivEngine.Instance.Database.ToolsPath, "Tools.zip");
 
             try
             {
@@ -321,7 +321,7 @@ namespace XivVoices.Engine
                         //XivEngine.Instance.Database.Plugin.Chat.Print("Download complete. Extracting...");
 
                         // Extract the zip file
-                        string extractPath = XivEngine.Instance.Database.DirectoryPath;
+                        string extractPath = XivEngine.Instance.Database.ToolsPath;
                         ZipFile.ExtractToDirectory(savePath, extractPath, true);
                         //XivEngine.Instance.Database.Plugin.Chat.Print("Extraction complete.");
 
