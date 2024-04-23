@@ -25,8 +25,8 @@ namespace XivVoices.Engine
         #endregion
 
         #region Public Parameters
-        public string RootPath { get; set; } = "C:/XIV_Voices";
-        public string DirectoryPath { get; set; } = "C:/XIV_Voices";
+        public string RootPath { get; set; }
+        public string DirectoryPath { get; set; }
         public string VoiceFilesPath { get { return Path.Combine(DirectoryPath, "Data"); } }
         public string ToolsPath { get { return "C:/XIV_Voices/Tools";  } }
         public string Firstname { get; } = "_FIRSTNAME_";

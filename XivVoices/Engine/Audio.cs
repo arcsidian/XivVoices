@@ -46,21 +46,22 @@ namespace XivVoices.Engine
             AudioIsPlaying = true;
             audioIsStopped = false;
 
+            var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
             var audioInfo = GetAudioInfo(xivMessage);
 
             Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
             using (var audioOutput = new WaveOut())
             {
-                audioOutput.Init(waveStream);
+                audioOutput.Init(volumeProvider);
                 audioOutput.Play();
                 audioInfo.state = "playing";
-                audioOutput.Volume = (float)Plugin.Config.Volume/100f;
+                volumeProvider.Volume = (float)Plugin.Config.Volume/100f;
                 var totalDuration = waveStream.TotalTime.TotalMilliseconds;
                 while (audioOutput.PlaybackState == PlaybackState.Playing)
                 {
                     var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
                     audioInfo.percentage = (float)(currentPosition / totalDuration);
-                    audioOutput.Volume = (float)Plugin.Config.Volume / 100f;
+                    volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
                     if (audioIsStopped)
                     {
                         audioOutput.Stop();
@@ -123,8 +124,7 @@ namespace XivVoices.Engine
                         panningProvider.Pan = data.Balance;
 
                         /* Testing In a Loop
-                        
-                        Plugin.Chat.Print("distance:" + distance);
+                        Plugin.Chat.Print("distance:" + data.Distance);
                         Plugin.Chat.Print("audioOutput.Volume:" + audioOutput.Volume);
 
                         if (audioIsStopped)
@@ -134,8 +134,8 @@ namespace XivVoices.Engine
                         }
                         if (waveStream.Position > waveStream.Length - 100)
                             waveStream.Position = 0;
+                        */
 
-                        */ 
 
                         await Task.Delay(50);
                     }
