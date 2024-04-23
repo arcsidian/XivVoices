@@ -1177,7 +1177,8 @@ namespace XivVoices.Engine
                 if (msg.TtsData.Gender == "Female")
                     speaker = 1;
 
-                var pcmData = await ttsEngine.SpeakTTS(msg.TtsData.Message, localTTS[speaker]);
+                string sentence = Regex.Replace(msg.TtsData.Message, "[“”]", "\"");
+                var pcmData = await ttsEngine.SpeakTTS(sentence, localTTS[speaker]);
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
                 var stream = new MemoryStream();
                 var writer = new BinaryWriter(stream);
