@@ -88,7 +88,6 @@ namespace XivVoices.Engine
                 {
                     bubbleQueue.Enqueue(xivMessage.NpcId+xivMessage.Sentence);
                     initialization = true;
-                    Plugin.Chat.Print("Waiting:" + xivMessage.NpcId + xivMessage.Sentence);
                 }
 
                 if (bubbleQueue.Peek() == xivMessage.NpcId + xivMessage.Sentence)
@@ -96,8 +95,6 @@ namespace XivVoices.Engine
 
                 await Task.Delay(30);
             }
-
-            Plugin.Chat.Print("Free:" + xivMessage.NpcId + xivMessage.Sentence);
 
             try
             {
