@@ -17,26 +17,24 @@ namespace XivVoices.Engine
         public bool AudioIsPlaying { get; set; } = false;
 
         private Plugin Plugin;
-        List<Character> characterList;
-        private static DateTime lastBubblePlayback = DateTime.MinValue;
-        private static float lastBubbleLength = 0;
-        private static readonly object lockObject = new object();
-
-        public LinkedList<AudioInfo> AudioInfoState { get; set; } = new LinkedList<AudioInfo>();
+        public Queue<string> bubbleQueue { get; set; }
+        public LinkedList<AudioInfo> AudioInfoState { get; set; }
 
         public Audio(Plugin plugin)
         {
             this.Plugin = plugin;
             Plugin.Chat.Print("Audio: I am awake");
-            characterList = new List<Character>();
-            AudioInfoState.Clear();
+            AudioInfoState = new LinkedList<AudioInfo>();
+            bubbleQueue = new Queue<string>();
+
         }
 
         public void Dispose()
         {
-            if (characterList != null)
-                characterList.Clear();
-            characterList = null;
+            AudioInfoState.Clear();
+            AudioInfoState = null;
+            bubbleQueue.Clear();
+            bubbleQueue = null;
         }
 
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream)
@@ -81,30 +79,30 @@ namespace XivVoices.Engine
 
         public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream)
         {
-            //if (characterList.Contains(xivMessage.TtsData.Character))
-            //    return;
-            // Plugin.Chat.Print(waveStream.TotalTime.Milliseconds.ToString());
+            bool initialization = false;
+
             while (true)
             {
-                lock (lockObject)
+                if (!initialization)
                 {
-                    if ((DateTime.Now - lastBubblePlayback).TotalMilliseconds >= lastBubbleLength)
-                    {
-                        lastBubblePlayback = DateTime.Now;
-                        lastBubbleLength = waveStream.TotalTime.Milliseconds+500;
-                        break;
-                    }
+                    bubbleQueue.Enqueue(xivMessage.NpcId+xivMessage.Sentence);
+                    initialization = true;
+                    Plugin.Chat.Print("Waiting:" + xivMessage.NpcId + xivMessage.Sentence);
                 }
-                await Task.Delay(10);
+
+                if (bubbleQueue.Peek() == xivMessage.NpcId + xivMessage.Sentence)
+                    break;
+
+                await Task.Delay(30);
             }
+
+            Plugin.Chat.Print("Free:" + xivMessage.NpcId + xivMessage.Sentence);
 
             try
             {
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 PanningSampleProvider panningProvider = new PanningSampleProvider(volumeProvider);
 
-
-                
                 var audioInfo = GetAudioInfo(xivMessage);
 
                 using (var audioOutput = new WaveOut())
@@ -143,6 +141,7 @@ namespace XivVoices.Engine
                     }
                     audioInfo.state = "stopped";
                     audioInfo.percentage = 1f;
+                    bubbleQueue.Dequeue();
                 }
             }
             catch (Exception ex)
@@ -155,10 +154,6 @@ namespace XivVoices.Engine
             {
                 waveStream?.Dispose();
             }
-
-            //if (characterList.Contains(xivMessage.TtsData.Character))
-            //    characterList.Remove(xivMessage.TtsData.Character);
-
         }
 
 
