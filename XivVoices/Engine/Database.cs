@@ -21,7 +21,7 @@ namespace XivVoices.Engine
     {
 
         #region Private Parameters
-        private bool notificationBusy = false;
+        private DalamudPluginInterface _pluginInterface;
         #endregion
 
         #region Public Parameters
@@ -42,16 +42,13 @@ namespace XivVoices.Engine
         public Framework Framework { get; set; }
         #endregion
 
-        private DalamudPluginInterface _pluginInterface;
-        public Plugin Plugin;
-        public IClientState ClientState;
+        public Plugin Plugin { get; set; }
 
         #region Unity Methods
-        public Database(DalamudPluginInterface pluginInterface, Plugin plugin, IClientState clientState)
+        public Database(DalamudPluginInterface pluginInterface, Plugin plugin)
         {
             this._pluginInterface = pluginInterface;
             this.Plugin = plugin;
-            this.ClientState = clientState;
             Framework = new Framework();
 
             string pathWith_Data = _pluginInterface.AssemblyLocation.DirectoryName;
@@ -489,7 +486,6 @@ namespace XivVoices.Engine
             else
             {
                 PluginLog.LogError("Failed to write WAV file to path: " + filePath + ".wav");
-                Notification("Error: Failed to write WAV file to path: " + filePath + ".wav");
             }
 
             await WriteJSON(directoryPath + "/Data.json", Data);
@@ -682,83 +678,6 @@ namespace XivVoices.Engine
         }
         #endregion
 
-
-        #region Notifications
-        public void Notification(string message, bool announce = true, string explanation = "")
-        {
-            Task.Run(async () => await ShowNotification(message, announce, explanation));
-        }
-
-        public Queue<string> notificationQueue = new Queue<string>();
-        string lastNotification = "";
-        bool notificationInProgress = false;
-        async Task ShowNotification(string _message, bool announce = true, string explanation = "")
-        {
-            /*
-            string message = Regex.Replace(_message, @"[\uE000-\uE0FF]", string.Empty);
-            bool initialization = false;
-
-            while (true)
-            {
-                if (!initialization)
-                {
-                    if (notificationQueue.Contains(message) || (lastNotification == message && explanation == ""))
-                        return;
-
-                    notificationQueue.Enqueue(message);
-                    initialization = true;
-                }
-
-                if (!notificationInProgress)
-                {
-                    if (notificationQueue.Peek() == message)
-                    {
-                        notificationQueue.Dequeue();
-                        break;
-                    }
-                }
-                await Task.Delay(100);
-            }
-
-            notificationInProgress = true;
-
-            if (announce)
-            {
-                while (notificationBusy)
-                    await Task.Delay(100);
-                notificationBusy = true;
-            }
-
-            // Put it in the Logs
-            
-            while (logsContainer.transform.childCount >= 15)
-            {
-                Destroy(logsContainer.transform.GetChild(0).gameObject);
-                
-            }
-
-
-            GameObject go = Instantiate(logPrefab, logsContainer.transform);
-            if (explanation != "")
-                go.GetComponent<TextMeshProUGUI>().text = explanation;
-            else
-                go.GetComponent<TextMeshProUGUI>().text = message;
-
-            // Show it as a notification
-            if (announce)
-            {
-                notificationsText.text = message;
-                lastNotification = message;
-                notifications.SetActive(true);
-                await new WaitForSeconds(3f);
-                notifications.SetActive(false);
-                notificationBusy = false;
-            }
-
-            notificationInProgress = false;
-            */
-        }
-        #endregion
     }
 
 }

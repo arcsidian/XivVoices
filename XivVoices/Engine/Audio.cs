@@ -176,7 +176,7 @@ namespace XivVoices.Engine
             {
                 volumeRanges[1].volumeEnd = 0.8f;
                 volumeRanges[2].volumeStart = 0.8f;
-                volumeRanges[2].volumeEnd = 0.6f;
+                volumeRanges[2].volumeEnd = 0.4f;
             }
 
             foreach (var range in volumeRanges)

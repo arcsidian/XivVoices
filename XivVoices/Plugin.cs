@@ -190,7 +190,7 @@ namespace XivVoices {
                 }
 
                 updater = new Updater();
-                database = new Database(this.pluginInterface, this, _clientState);
+                database = new Database(this.pluginInterface, this);
                 audio = new Audio(this);
                 xivEngine = new XivEngine(this.config,this.database, this.audio);
 

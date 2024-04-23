@@ -44,7 +44,6 @@ namespace XivVoices.Engine
 
         public List<string> IgnoredDialogues = new List<string>();
         public bool UnknownProcessRunning { get; set; } = false;
-        //public Queue<NotificationData> notifications = new Queue<NotificationData>();
         #endregion
 
 
@@ -376,7 +375,6 @@ namespace XivVoices.Engine
             if (xivMessage.NPC != null)
             {
                 //this.Database.Plugin.Chat.Print(xivMessage.Speaker + " has been found in the DB");
-                //notifications.Enqueue(new NotificationData(xivMessage.Speaker + " has been found in the DB", false));
                 xivMessage.VoiceName = GetVoiceName(xivMessage, fetchedByID);
             }
             else
@@ -412,7 +410,6 @@ namespace XivVoices.Engine
             xivMessage.FilePath = this.Database.VoiceDataExists(xivMessage.VoiceName.ToString(), xivMessage.Speaker, xivMessage.Sentence);
             if (xivMessage.FilePath.IsNullOrEmpty())
             {
-                //notifications.Enqueue(new NotificationData("Voice file does not exist.", false));
                 xivMessage.Network = "Online";
             }
             else if (xivMessage.FilePath == "report")
@@ -1490,7 +1487,6 @@ namespace XivVoices.Engine
             }
 
             reportToArcJSONBusy = false;
-            //Notification(xivMessage.Speaker + "'s missing dialogue reported to Arc", true, "[Reported] " + xivMessage.Speaker + ": " + xivMessage.Sentence);
             return;
         }
         #endregion
