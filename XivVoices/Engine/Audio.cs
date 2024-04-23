@@ -156,6 +156,12 @@ namespace XivVoices.Engine
             }
         }
 
+        public async Task PlayEmptyAudio(XivMessage xivMessage, string type)
+        {
+            var audioInfo = GetAudioInfo(xivMessage, type);
+            audioInfo.percentage = 1f;
+            audioInfo.state = "Reported";
+        }
 
         float AdjustVolume(float distance)
         {

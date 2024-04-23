@@ -955,8 +955,8 @@ namespace XivVoices.Engine
         {
             if (OnlineTTS && this.Database.Framework.Active)
                 this.Database.Framework.Process(_msg);
-            //else
-            //    Audio.PlayEmptyAudio(_msg);
+            else
+                Audio.PlayEmptyAudio(_msg, "empty");
         }
 
         /*
