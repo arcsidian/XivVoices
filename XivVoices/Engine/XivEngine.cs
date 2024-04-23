@@ -1111,7 +1111,7 @@ namespace XivVoices.Engine
 
                 stream.Position = 0;
                 WaveStream waveStream = new RawSourceWaveStream(stream, waveFormat);
-                PlayAudio(msg, waveStream);
+                PlayAudio(msg, waveStream, "ai");
             }
             catch (Exception ex)
             {
@@ -1144,7 +1144,7 @@ namespace XivVoices.Engine
                         waveStream = await FFmpegFileToWaveStream(msg);
                     else
                         waveStream = DecodeOggOpusToPCM(msg.FilePath);
-                    PlayAudio(msg,waveStream);
+                    PlayAudio(msg,waveStream, "xivv");
                 }
                 catch (Exception ex)
                 {
@@ -1157,7 +1157,7 @@ namespace XivVoices.Engine
                 try
                 {
                     using (var audioFile = new AudioFileReader("file:" + msg.FilePath))
-                        PlayAudio(msg,audioFile);
+                        PlayAudio(msg,audioFile, "xivv");
                 }
                 catch (Exception ex)
                 {
@@ -1297,15 +1297,15 @@ namespace XivVoices.Engine
             return filterArgs;
         }
 
-        private void PlayAudio(XivMessage xivMessage, WaveStream waveStream)
+        private void PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
             if (xivMessage.TtsData != null && xivMessage.TtsData.Position != new Vector3(-99))
             {
-                Audio.PlayBubble(xivMessage, waveStream);
+                Audio.PlayBubble(xivMessage, waveStream, type);
             }
             else
             {
-                Audio.PlayAudio(xivMessage, waveStream);
+                Audio.PlayAudio(xivMessage, waveStream, type);
             }
         }
         #endregion

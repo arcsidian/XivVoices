@@ -136,10 +136,11 @@ namespace XivVoices.Engine
     [System.Serializable]
     public class AudioInfo
     {
-        public AudioInfo(string _id, string _state, float _percentage, XivMessage _data) { id = _id; state = _state; percentage = _percentage; data = _data; }
+        public AudioInfo(string _id, string _state, float _percentage, string _type, XivMessage _data) { id = _id; state = _state; percentage = _percentage; type = _type;  data = _data; }
 
         public string id;
         public string state;
+        public string type;
         public float percentage;
         public XivMessage data;
 

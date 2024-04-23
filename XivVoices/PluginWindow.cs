@@ -717,7 +717,12 @@ namespace XivVoices {
                     }
 
                     // Show Player Progress Bar
+                    if(item.type == "xivv")
+                        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
                     ImGui.ProgressBar(item.percentage, new Vector2(220, 24), $"{item.state}");
+                    if (item.type == "xivv")
+                        ImGui.PopStyleColor();
+
                     ImGui.SameLine();
 
                     // Show Report Button

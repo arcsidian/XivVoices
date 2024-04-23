@@ -37,7 +37,7 @@ namespace XivVoices.Engine
             bubbleQueue = null;
         }
 
-        public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream)
+        public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
             
             while (AudioIsPlaying)
@@ -47,7 +47,7 @@ namespace XivVoices.Engine
             audioIsStopped = false;
 
             var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
-            var audioInfo = GetAudioInfo(xivMessage);
+            var audioInfo = GetAudioInfo(xivMessage, type);
 
             Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
             using (var audioOutput = new WaveOut())
@@ -78,7 +78,7 @@ namespace XivVoices.Engine
             AudioIsPlaying = false;
         }
 
-        public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream)
+        public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream, string type)
         {
             bool initialization = false;
 
@@ -104,7 +104,7 @@ namespace XivVoices.Engine
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 PanningSampleProvider panningProvider = new PanningSampleProvider(volumeProvider);
 
-                var audioInfo = GetAudioInfo(xivMessage);
+                var audioInfo = GetAudioInfo(xivMessage, type);
 
                 using (var audioOutput = new WaveOut())
                 {
@@ -179,14 +179,14 @@ namespace XivVoices.Engine
             return volumeRanges[^1].volumeEnd;
         }
 
-        AudioInfo GetAudioInfo(XivMessage xivMessage)
+        AudioInfo GetAudioInfo(XivMessage xivMessage, string type)
         {
             string id = $"{xivMessage.Speaker}_{xivMessage.Sentence}";
             id = Regex.Replace(id, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
             var audioInfo = AudioInfoState.FirstOrDefault(ai => ai.id == id);
             if (audioInfo == null)
             {
-                audioInfo = new AudioInfo(id, "new", 0f, xivMessage);
+                audioInfo = new AudioInfo(id, "new", 0f, type, xivMessage);
                 AudioInfoState.AddFirst(audioInfo);
             }
             else
