@@ -16,22 +16,19 @@ namespace XivVoices {
         private Configuration configuration;
         private IClientState clientState;
 
-        private string _port;
-
         private string managerNullMessage = string.Empty;
         private bool SizeYChanged = false;
         private bool managerNull;
         private Vector2? initialSize;
         private Vector2? changedSize;
 
-        private DateTime lastChangeTime;
+        private DateTime lastSaveTime;
         private const int debounceIntervalMs = 500;
         private bool needSave = false;
         private string selectedDrive = string.Empty;
         private string reportInput = new string('\0', 250);
 
         public PluginWindow() : base("Xiv Voices by Arcsidian") {
-            //IsOpen = true;
             Size = new Vector2(350, 650);
             initialSize = Size;
             SizeCondition = ImGuiCond.Always;
@@ -42,9 +39,6 @@ namespace XivVoices {
             get => configuration;
             set {
                 configuration = value;
-                if (configuration != null) {
-                    _port = configuration.Port;
-                }
             }
         }
 
@@ -127,9 +121,9 @@ namespace XivVoices {
             var originPos = ImGui.GetCursorPos();
             
             // Place save button in bottom left + some padding / extra space
-            ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMax().X + 10f);
+            ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMax().X + 15f);
             ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
-            if (ImGui.Button("Ko-Fi")) {
+            if (ImGui.Button("   Ko-Fi   ")) {
                 //Save();
                 Process process = new Process();
                 try
@@ -146,18 +140,22 @@ namespace XivVoices {
             }
             ImGui.SetCursorPos(originPos);
             // Place close button in bottom right + some padding / extra space
-            ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.CalcTextSize("Close").X - 20f);
+            ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.CalcTextSize("Discord").X - 22f);
             ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
-            if (ImGui.Button("Close")) {
-                if (needSave)
+            if (ImGui.Button(" Discord ")) {
+
+                Process process = new Process();
+                try
                 {
-                    RequestSave();
-                    needSave = false; // Reset save flag after saving
+                    // true is the default, but it is important not to set it to false
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.FileName = "https://arcsidian.com/discord";
+                    process.Start();
                 }
-                SizeYChanged = false;
-                changedSize = null;
-                Size = initialSize;
-                IsOpen = false;
+                catch (Exception e)
+                {
+
+                }
             }
             ImGui.SetCursorPos(originPos);
         }
@@ -167,6 +165,7 @@ namespace XivVoices {
             Task.Run(() => {
                 this.configuration.Save();
             });
+            lastSaveTime = DateTime.Now;
         }
 
         private void DrawErrors() {
@@ -401,7 +400,6 @@ namespace XivVoices {
             if (ImGui.Checkbox("##xivVoicesActive", ref activeValue)){
                 this.configuration.Active = activeValue;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Xiv Voices Enabled");
@@ -411,7 +409,6 @@ namespace XivVoices {
             {
                 this.configuration.LipsyncEnabled = lipsyncEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Lipsync Enabled");
@@ -433,7 +430,7 @@ namespace XivVoices {
             ImGui.Dummy(new Vector2(0, 10));
             */
             // Saving Process
-            if (needSave && (DateTime.Now - lastChangeTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
             {
                 RequestSave();
                 needSave = false; // Reset save flag after saving
@@ -454,7 +451,6 @@ namespace XivVoices {
             {
                 this.configuration.SayEnabled = sayEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
 
             };
             ImGui.SameLine();
@@ -466,7 +462,6 @@ namespace XivVoices {
             {
                 this.configuration.TellEnabled = tellEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
 
             };
             ImGui.SameLine();
@@ -478,7 +473,6 @@ namespace XivVoices {
             {
                 this.configuration.ShoutEnabled = shoutEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Shout/Yell Enabled");
@@ -489,7 +483,6 @@ namespace XivVoices {
             {
                 this.configuration.PartyEnabled = partyEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Party Enabled");
@@ -500,7 +493,6 @@ namespace XivVoices {
             {
                 this.configuration.FreeCompanyEnabled = freeCompanyEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Free Company Enabled");
@@ -511,7 +503,6 @@ namespace XivVoices {
             {
                 this.configuration.BattleDialoguesEnabled = battleDialoguesEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Battle Dialogues Enabled");
@@ -522,7 +513,6 @@ namespace XivVoices {
             {
                 this.configuration.RetainersEnabled = retainersEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Retainers Enabled");
@@ -538,7 +528,6 @@ namespace XivVoices {
             {
                 this.configuration.BubblesEnabled = bubblesEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Chat Bubbles Enabled");
@@ -557,7 +546,6 @@ namespace XivVoices {
                             this.configuration.BubblesInSafeZones = !bubblesEverywhere;
                             this.configuration.BubblesInBattleZones = !bubblesEverywhere;
                             needSave = true;
-                            lastChangeTime = DateTime.Now;
                         }
                     };
                 }
@@ -578,7 +566,6 @@ namespace XivVoices {
                             this.configuration.BubblesInSafeZones = bubblesOutOfBattlesOnly;
                             this.configuration.BubblesInBattleZones = !bubblesOutOfBattlesOnly;
                             needSave = true;
-                            lastChangeTime = DateTime.Now;
                         }
                     };
                 }
@@ -599,7 +586,6 @@ namespace XivVoices {
                             this.configuration.BubblesInSafeZones = !bubblesInBattlesOnly;
                             this.configuration.BubblesInBattleZones = bubblesInBattlesOnly;
                             needSave = true;
-                            lastChangeTime = DateTime.Now;
                         }
                     };
                 }
@@ -623,7 +609,6 @@ namespace XivVoices {
             {
                 this.configuration.ReplaceVoicedARRCutscenes = replaceVoicedARRCutscenes;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Replace ARR Cutscenes");
@@ -634,13 +619,12 @@ namespace XivVoices {
             {
                 this.configuration.SkipEnabled = skipEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Dialogue Skip Enabled");
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastChangeTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
             {
                 RequestSave();
                 needSave = false; // Reset save flag after saving
@@ -659,7 +643,6 @@ namespace XivVoices {
             {
                 this.Configuration.Volume = volume;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             }
             ImGui.SameLine();
             ImGui.Text("Volume");
@@ -673,7 +656,6 @@ namespace XivVoices {
             {
                 this.Configuration.Speed = speed;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             }
             ImGui.SameLine();
             ImGui.Text("Speed");
@@ -687,7 +669,6 @@ namespace XivVoices {
             {
                 this.configuration.LocalTTSEnabled = localTTSEnabled;
                 needSave = true;
-                lastChangeTime = DateTime.Now;
             };
             ImGui.SameLine();
             ImGui.Text("Local TTS Enabled");
@@ -701,7 +682,7 @@ namespace XivVoices {
 
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastChangeTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
             {
                 RequestSave();
                 needSave = false; // Reset save flag after saving
