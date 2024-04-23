@@ -425,7 +425,6 @@ namespace XivVoices.Engine
 
             string originalSpeaker = speaker;
             speaker = Regex.Replace(speaker, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
-            sentence = Regex.Replace(sentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
 
             // Create a Path 
             string cleanedSentence = RemoveSymbolsAndLowercase(sentence);
@@ -445,6 +444,8 @@ namespace XivVoices.Engine
             maxLength -= missingFromDirectoryPath;
             if (cleanedSentence.Length > maxLength)
                 cleanedSentence = cleanedSentence.Substring(0, maxLength);
+
+            cleanedSentence = Regex.Replace(cleanedSentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
             filePath = speakerDirectory + "/" + cleanedSentence;
 
             // Check if file exists
@@ -547,8 +548,7 @@ namespace XivVoices.Engine
         public string VoiceDataExists(string voiceName, string speaker, string sentence)
         {
             speaker = Regex.Replace(speaker, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
-            sentence = Regex.Replace(sentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
-
+            
             // Create a Path
             string cleanedSentence = Regex.Replace(sentence, "<[^<]*>", "");
             cleanedSentence = RemoveSymbolsAndLowercase(cleanedSentence);
@@ -563,6 +563,8 @@ namespace XivVoices.Engine
             maxLength -= missingFromDirectoryPath;
             if (cleanedSentence.Length > maxLength)
                 cleanedSentence = cleanedSentence.Substring(0, maxLength);
+
+            cleanedSentence = Regex.Replace(cleanedSentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
             filePath = speakerDirectory + "/" + cleanedSentence;
 
             // Get Wav from filePath if it exists and return it as AudioClip, if not, return Null
