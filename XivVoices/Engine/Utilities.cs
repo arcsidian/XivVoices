@@ -52,15 +52,14 @@ namespace XivVoices.Engine
             Speaker = ttsData.Speaker;
             NpcId = ttsData.NpcID;
             Sentence = ttsData.Message;
-            OriginalSentence = ttsData.Message;
             TtsData = ttsData;
+            Reported = false;
         }
 
         public string ChatType;
         public string Speaker = "";
         public string NpcId;
         public string Sentence = "";
-        public string OriginalSentence = "";
         public TTSData TtsData;
 
         public string FilePath = "";

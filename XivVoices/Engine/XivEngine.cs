@@ -16,6 +16,7 @@ using System.Net.Http;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
+using Dalamud.Plugin.Services;
 //using Amazon.Polly;
 //using Amazon.Polly.Model;
 
@@ -169,10 +170,36 @@ namespace XivVoices.Engine
                 msg.TtsData.Race = mapper.GetSkeleton(int.Parse(msg.TtsData.NpcID));
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
-            msg = CleanXivMessage(msg);
-            if (msg.Speaker == "???")
-                msg = this.Database.GetNameless(msg);
-            msg = UpdateXivMessage(msg);
+
+
+            string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
+            var results = GetPossibleSentences(message, fullname[0], fullname[1]);
+            bool sentenceFound = false;
+            foreach (var result in results)
+            {
+                msg.Sentence = result;
+                msg = CleanXivMessage(msg);
+                if (msg.Speaker == "???")
+                    msg = this.Database.GetNameless(msg);
+                msg = UpdateXivMessage(msg);
+                if(msg.FilePath != null)
+                {
+                    sentenceFound = true;
+                    break;
+                }
+            }
+
+            if (!sentenceFound)
+            {
+                msg.Sentence = msg.TtsData.Message;
+                if (!msg.Reported)
+                {
+                    ReportToArc(msg);
+                    msg.Reported = true;
+                }
+            }
+
+
             if (msg.VoiceName == "Retainer" && !Configuration.RetainersEnabled) return;
             if (IgnoredDialogues.Contains(msg.Speaker + msg.Sentence) || this.Database.Ignored.Contains(msg.Speaker)) return;
 
@@ -182,6 +209,65 @@ namespace XivVoices.Engine
 
             AddToQueue(msg);
 
+        }
+
+        public static List<string> GetPossibleSentences(string sentence, string firstName, string lastName)
+        {
+            var replacements = new Dictionary<string, string>
+            {
+                { firstName, "_FIRSTNAME_" },
+                { lastName, "_LASTNAME_" }
+            };
+
+            List<string> results = new List<string>();
+            RecurseCombinations(sentence, replacements, new List<string> { firstName, lastName }, 0, results);
+            return results;
+        }
+
+        private static void RecurseCombinations(string currentSentence, Dictionary<string, string> replacements, List<string> names, int index, List<string> results)
+        {
+            if (index == names.Count)
+            {
+                results.Add(currentSentence);
+                return;
+            }
+
+            string name = names[index];
+            string pattern = $@"\b{Regex.Escape(name)}\b";
+            Regex regex = new Regex(pattern);
+
+            // Get all distinct positions where the name occurs
+            var matches = regex.Matches(currentSentence);
+            int matchCount = matches.Count;
+
+            // Generate all combinations of replacements for this name
+            for (int i = 0; i < (1 << matchCount); i++) // 2^matchCount combinations
+            {
+                List<(int Start, int Length, string Replacement)> replacementList = new List<(int, int, string)>();
+                for (int j = 0; j < matchCount; j++)
+                {
+                    if ((i & (1 << j)) != 0)
+                    {
+                        var match = matches[j];
+                        replacementList.Add((match.Index, match.Length, replacements[name]));
+                    }
+                }
+
+                // Replace using the replacement list to avoid index shifts
+                string modifiedSentence = ReplaceUsingList(currentSentence, replacementList);
+                RecurseCombinations(modifiedSentence, replacements, names, index + 1, results);
+            }
+        }
+
+        private static string ReplaceUsingList(string sentence, List<(int Start, int Length, string Replacement)> replacements)
+        {
+            // Apply replacements from last to first to avoid index shift issues
+            replacements.Sort((a, b) => b.Start.CompareTo(a.Start));
+            foreach (var (Start, Length, Replacement) in replacements)
+            {
+                sentence = sentence.Substring(0, Start) + Replacement + sentence.Substring(Start + Length);
+            }
+            return sentence;
         }
 
         public void EnableOnlineTTS()
@@ -292,9 +378,6 @@ namespace XivVoices.Engine
                 xivMessage.VoiceName = "Unknown";
             }
 
-            xivMessage.Reported = false;
-
-
             if (xivMessage.VoiceName == "Unknown" && xivMessage.Speaker != "???")
             {
                 // Check if it belongs to a retainer
@@ -311,7 +394,7 @@ namespace XivVoices.Engine
                 }
 
                 // If not then report it as unknown
-                if (xivMessage.VoiceName == "Unknown")
+                if (!xivMessage.Reported)
                 {
                     ReportUnknown(xivMessage);
                     xivMessage.Reported = true;
@@ -324,14 +407,6 @@ namespace XivVoices.Engine
             {
                 //notifications.Enqueue(new NotificationData("Voice file does not exist.", false));
                 xivMessage.Network = "Online";
-                //if (!this.Database.ArcIsHere || !XivUpdater.Instance.IsUpdating)
-                {
-                    if (!xivMessage.Reported)
-                    {
-                        ReportToArc(xivMessage);
-                        xivMessage.Reported = true;
-                    }
-                }
             }
             else if (xivMessage.FilePath == "report")
             {
@@ -1084,10 +1159,6 @@ namespace XivVoices.Engine
             if (this.ttsEngine == null)
                 this.ttsEngine = new TTSEngine(Database.Plugin);
 
-            string pattern = "\\b" + "_NAME_" + "\\b";
-            msg.Sentence = Regex.Replace(msg.Sentence, pattern, msg.TtsData.User.Split(' ')[0]);
-            msg.OriginalSentence = msg.Sentence;
-
             if (localTTS[0] == null)
                 localTTS[0] = TTSVoiceNative.LoadVoiceFromDisk("en-gb-northern_english_male-medium");
             if (localTTS[1] == null)
@@ -1099,7 +1170,7 @@ namespace XivVoices.Engine
                 if (msg.TtsData.Gender == "Female")
                     speaker = 1;
 
-                var pcmData = await ttsEngine.SpeakTTS(msg.OriginalSentence, localTTS[speaker]);
+                var pcmData = await ttsEngine.SpeakTTS(msg.TtsData.Message, localTTS[speaker]);
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
                 var stream = new MemoryStream();
                 var writer = new BinaryWriter(stream);
