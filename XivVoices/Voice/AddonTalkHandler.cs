@@ -399,6 +399,8 @@ namespace XivVoices.Voice {
 
         public async void TriggerLipSync(Character character, string length)
         {
+            if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
+
             ActorMemory actorMemory = null;
             AnimationMemory animationMemory = null;
             if (character != null)
@@ -576,6 +578,8 @@ namespace XivVoices.Voice {
 
         public async void StopLipSync(Character character)
         {
+            if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
+
             if (taskCancellations.TryGetValue(character, out var cts))
             {
                 //_chatGui.Print("Cancellation " + character.Name);

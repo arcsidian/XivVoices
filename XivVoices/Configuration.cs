@@ -37,6 +37,10 @@ namespace XivVoices
         public bool LocalTTSEnabled { get; set; } = false;
         public bool WebsocketRedirectionEnabled { get; set; } = false;
 
+        // Framework Settings
+        public bool FrameworkActive { get; set; } = false;
+        public bool FrameworkOnline { get; set; } = false;
+
         // the below exist just to make saving less cumbersome
         [NonSerialized]
         private DalamudPluginInterface? PluginInterface;

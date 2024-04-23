@@ -270,16 +270,6 @@ namespace XivVoices.Engine
             return sentence;
         }
 
-        public void EnableOnlineTTS()
-        {
-            OnlineTTS = true;
-        }
-
-        public void DisableOnlineTTS()
-        {
-            OnlineTTS = false;
-        }
-
 
         public XivMessage CleanXivMessage(XivMessage xivMessage)
         {
@@ -411,7 +401,7 @@ namespace XivVoices.Engine
             else if (xivMessage.FilePath == "report")
             {
                 xivMessage.Network = "Online";
-                if (!this.Database.Framework.Active)
+                if (!Database.Plugin.Config.FrameworkActive)
                 {
                     ReportDifferent(xivMessage);
                     xivMessage.Reported = true;
@@ -1028,7 +1018,7 @@ namespace XivVoices.Engine
         #region Audio Methods
         public void Speak(XivMessage _msg)
         {
-            if (OnlineTTS && this.Database.Framework.Active)
+            if (Database.Plugin.Config.FrameworkOnline && Database.Plugin.Config.FrameworkActive)
                 this.Database.Framework.Process(_msg);
             else
                 Audio.PlayEmptyAudio(_msg, "empty");
@@ -1386,14 +1376,14 @@ namespace XivVoices.Engine
         public void ReportUnprocessable(XivMessage msg)
         {
             PluginLog.Information("ReportUnprocessable");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "/Unprocessable/", ""));
         }
 
         public void ReportError(XivMessage msg)
         {
             PluginLog.Information("ReportError");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "/Error/", ""));
         }
 
@@ -1401,20 +1391,20 @@ namespace XivVoices.Engine
         public void ReportUnknown(XivMessage msg)
         {
             PluginLog.Information("ReportUnknown");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 
         public void ReportDifferent(XivMessage msg)
         {
             PluginLog.Information("ReportDifferent");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "different", ""));
         }
 
         public void ReportMuteToArc(XivMessage msg, string input)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "mute", input));
@@ -1422,7 +1412,7 @@ namespace XivVoices.Engine
 
         public void ReportRedoToArc(XivMessage msg, string input)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));
@@ -1431,7 +1421,7 @@ namespace XivVoices.Engine
 
         public void ReportToArc(XivMessage msg)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Framework.Active) return;
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
