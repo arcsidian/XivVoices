@@ -53,9 +53,9 @@ namespace XivVoices.Engine
             using (var audioOutput = new WaveOut())
             {
                 audioOutput.Init(volumeProvider);
+                volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
                 audioOutput.Play();
                 audioInfo.state = "playing";
-                volumeProvider.Volume = (float)Plugin.Config.Volume/100f;
                 var totalDuration = waveStream.TotalTime.TotalMilliseconds;
                 while (audioOutput.PlaybackState == PlaybackState.Playing)
                 {
@@ -200,7 +200,7 @@ namespace XivVoices.Engine
             }
             if (AudioInfoState.Count > 7)
             {
-                var oldestFinished = AudioInfoState.LastOrDefault(ddi => ddi.state == "stopped");
+                var oldestFinished = AudioInfoState.LastOrDefault(ddi => ddi.state == "stopped" || ddi.state == "Reported");
                 if (oldestFinished != null)
                     AudioInfoState.Remove(oldestFinished);
             }
