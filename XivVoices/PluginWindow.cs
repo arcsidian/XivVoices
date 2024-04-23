@@ -756,7 +756,7 @@ namespace XivVoices {
                         ImGui.Dummy(new Vector2(0, 5));
                         ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
                         ImGui.Dummy(new Vector2(0, 20));
-                        ImGui.TextWrapped("Tell me why you think this dialogue needs to be redone or muted");
+                        ImGui.TextWrapped("Tell me why this dialogue needs to be redone or muted");
                         ImGui.Dummy(new Vector2(0, 5));
                         ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 250, new Vector2(335, 100));
                         ImGui.Dummy(new Vector2(0, 5));

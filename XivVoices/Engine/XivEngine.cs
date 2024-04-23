@@ -122,7 +122,8 @@ namespace XivVoices.Engine
             if (reports.Count > 0)
             {
                 ReportXivMessage report = reports.Dequeue();
-                Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
+                if (report.message.TtsData.User != "Arc Xiv@Twintania")
+                    Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
             }
         }
 

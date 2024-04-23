@@ -678,7 +678,7 @@ namespace XivVoices.Voice {
                 {
                     string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-                    //TODO print it?
+                    _plugin.Chat.Print("Bubble: " + correctedMessage);
                     Engine.XivEngine.Instance.Process("Bubble", correctSender, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
 
                     lastBubbleDialogue = correctedMessage;

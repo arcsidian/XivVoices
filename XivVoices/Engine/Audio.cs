@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using FFXIVClientStructs.FFXIV.Shader;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -102,20 +103,16 @@ namespace XivVoices.Engine
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 PanningSampleProvider panningProvider = new PanningSampleProvider(volumeProvider);
 
-                // Player and Speaker positions
-                Vector3 speakerPosition = xivMessage.TtsData.Position;
-                Vector3 playerPosition = Plugin.ClientState.LocalPlayer.Position;
 
-                // Camera orientation vectors
-                Vector3 cameraForward = Vector3.Normalize(Plugin.PlayerCamera.Forward);
-                Vector3 cameraUp = Vector3.Normalize(Plugin.PlayerCamera.Top);
-                Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(cameraUp, cameraForward));
-
+                
                 var audioInfo = GetAudioInfo(xivMessage);
 
                 using (var audioOutput = new WaveOut())
                 {
                     audioOutput.Init(panningProvider);
+                    var data = GetDistanceAndBalance(xivMessage.TtsData.Position);
+                    volumeProvider.Volume = AdjustVolume(data.Distance);
+                    panningProvider.Pan = data.Balance;
                     audioOutput.Play();
                     audioInfo.state = "playing";
                     var totalDuration = waveStream.TotalTime.TotalMilliseconds;
@@ -123,26 +120,9 @@ namespace XivVoices.Engine
                     {
                         var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
                         audioInfo.percentage = (float)(currentPosition / totalDuration);
-
-                        playerPosition = Plugin.ClientState.LocalPlayer.Position;
-
-                        // Update camera vectors
-                        cameraForward = Vector3.Normalize(Plugin.PlayerCamera.Forward);
-                        cameraUp = Vector3.Normalize(Plugin.PlayerCamera.Top);
-                        cameraRight = Vector3.Normalize(Vector3.Cross(cameraUp, cameraForward));
-
-                        // Calculate relative position from player to speaker
-                        Vector3 relativePosition = speakerPosition - playerPosition;
-
-                        // Distance for volume adjustment
-                        float distance = relativePosition.Length();
-                        volumeProvider.Volume = AdjustVolume(distance);
-
-
-                        // Direction for stereo balance
-                        float dotProduct = Vector3.Dot(relativePosition, cameraRight);
-                        float balance = Math.Clamp(dotProduct / 20, -1, 1); // Normalize and clamp the value for balance
-                        panningProvider.Pan = balance; // Set stereo balance based on direction
+                        data = GetDistanceAndBalance(xivMessage.TtsData.Position);
+                        volumeProvider.Volume = AdjustVolume(data.Distance);
+                        panningProvider.Pan = data.Balance;
 
                         /* Testing In a Loop
                         
@@ -227,6 +207,29 @@ namespace XivVoices.Engine
                     AudioInfoState.Remove(oldestFinished);
             }
             return audioInfo;
+        }
+
+        (float Distance,float Balance) GetDistanceAndBalance(Vector3 speakerPosition)
+        {
+            // Update camera vectors
+            Vector3 cameraForward = Vector3.Normalize(Plugin.PlayerCamera.Forward);
+            Vector3 cameraUp = Vector3.Normalize(Plugin.PlayerCamera.Top);
+            Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(cameraUp, cameraForward));
+
+            // Calculate relative position from player to speaker
+            Vector3 relativePosition = speakerPosition - Plugin.ClientState.LocalPlayer.Position;
+
+            // Distance for volume adjustment
+            float distance = relativePosition.Length();
+            //volumeProvider.Volume = AdjustVolume(distance);
+
+
+            // Direction for stereo balance
+            float dotProduct = Vector3.Dot(relativePosition, cameraRight);
+            float balance = Math.Clamp(dotProduct / 20, -1, 1); // Normalize and clamp the value for balance
+            //panningProvider.Pan = balance; // Set stereo balance based on direction
+
+            return (Distance: distance, Balance: balance);
         }
 
         public void StopAudio()
