@@ -1,5 +1,8 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Shader;
+using Lumina.Excel.GeneratedSheets;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -168,6 +171,13 @@ namespace XivVoices.Engine
                 (3f, 5f, 0.85f, 0.3f),   // 3 to 5 units: 85% to 30% 
                 (5f, 20f, 0.3f, 0.05f)     // 5 to 20 units: 30% to 5%
             };
+
+            if(Conditions.IsBoundByDuty)
+            {
+                volumeRanges[1].volumeEnd = 0.8f;
+                volumeRanges[2].volumeStart = 0.8f;
+                volumeRanges[2].volumeEnd = 0.6f;
+            }
 
             foreach (var range in volumeRanges)
             {
