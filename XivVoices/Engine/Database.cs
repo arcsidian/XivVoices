@@ -425,6 +425,8 @@ namespace XivVoices.Engine
 
             string originalSpeaker = speaker;
             speaker = Regex.Replace(speaker, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
+            sentence = Regex.Replace(sentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
+
             // Create a Path 
             string cleanedSentence = RemoveSymbolsAndLowercase(sentence);
             if (cleanedSentence.IsNullOrEmpty())
@@ -545,6 +547,7 @@ namespace XivVoices.Engine
         public string VoiceDataExists(string voiceName, string speaker, string sentence)
         {
             speaker = Regex.Replace(speaker, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
+            sentence = Regex.Replace(sentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
 
             // Create a Path
             string cleanedSentence = Regex.Replace(sentence, "<[^<]*>", "");

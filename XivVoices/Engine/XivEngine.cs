@@ -294,6 +294,23 @@ namespace XivVoices.Engine
             pattern = @"Your postal prowess has earned you carrier level \d{2}";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Your postal prowess has earned you this carrier level");
 
+            // 3- Chocobo Eligible to Participate In Races
+            pattern = @"^Congratulations.*eligible to participate in sanctioned chocobo races\.*";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Congratulations! Your chocobo is now eligible to participate in sanctioned chocobo races.");
+
+            // 4- Chocobo Training
+            pattern = @"^What sort of training did you have in mind for .*, (madam|sir)\?$";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "What sort of training did you have in mind for your chocobo?");
+
+            // 5- Teaching Chocobo an Ability
+            pattern = @"^You wish to teach .*, (madam|sir)\? Then, if you would be so kind as to provide the requisite manual\.$";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "You wish to teach your chocobo an ability? Then, if you would be so kind as to provide the requisite manual.");
+
+            // 6- Removing Chocobo Ability
+            pattern = @"^You wish for .+ to unlearn an ability\? Very well, if you would be so kind as to specify the undesired ability\.\.\.$";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "You wish for your chocobo to unlearn an ability? Very well, if you would be so kind as to specify the undesired ability...");
+
+
             // =====================================================
 
             // Send help
