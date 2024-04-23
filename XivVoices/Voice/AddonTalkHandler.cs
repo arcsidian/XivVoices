@@ -579,6 +579,7 @@ namespace XivVoices.Voice {
         public async void StopLipSync(Character character)
         {
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
+            if(character == null) return;
 
             if (taskCancellations.TryGetValue(character, out var cts))
             {
