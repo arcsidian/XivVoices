@@ -57,7 +57,7 @@ namespace XivVoices.Engine
             if (!XivEngine.Instance.Database.Plugin.Config.Mute)
             {
                 Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
-                using (var audioOutput = new WaveOut())
+                using (var audioOutput = new DirectSoundOut())
                 {
                     audioOutput.Init(volumeProvider);
                     volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
@@ -114,7 +114,7 @@ namespace XivVoices.Engine
 
                 if (!XivEngine.Instance.Database.Plugin.Config.Mute)
                 { 
-                    using (var audioOutput = new WaveOut())
+                    using (var audioOutput = new DirectSoundOut())
                     {
                         audioOutput.Init(panningProvider);
                         var data = GetDistanceAndBalance(xivMessage.TtsData.Position);
