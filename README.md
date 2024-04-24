@@ -34,17 +34,17 @@ Follow these steps to install Xiv Voices:
      https://raw.githubusercontent.com/arcsidian/XivVoices/main/repo.json
      ```
    - Use the images below for guidance:
-     - ![Settings Guide](https://arcsidian.com/xivv/images/01.png)
-     - ![Add Repository](https://arcsidian.com/xivv/images/02.png)
+     - <img src="https://arcsidian.com/xivv/images/01.png" alt="Settings Guide" width="300"/>
+     - <img src="https://arcsidian.com/xivv/images/02.png" alt="Add Repository" width="600"/>
 3. **Install the Plugin**:
    - Open the Dalamud Plugins panel.
    - Navigate to 'All Plugins', search for "xivv", and click 'Install'.
-     - ![Plugin Search](https://arcsidian.com/xivv/images/03.png)
-     - ![Installation](https://arcsidian.com/xivv/images/04.png)
+     - <img src="https://arcsidian.com/xivv/images/03.png" alt="Add Repository" width="300"/>
+     - <img src="https://arcsidian.com/xivv/images/04.png" alt="Add Repository" width="600"/>
 4. **Setup Plugin**:
    - Upon first launch, you'll be prompted with a setup screen to select a storage location for the plugin’s content.
    - After selecting the appropriate drive, click "Start Downloading".
-     - ![Setup Screen](https://arcsidian.com/xivv/images/05.png)
+     - <img src="https://arcsidian.com/xivv/images/05.png" alt="Add Repository" width="300"/>
 
 ## Join Our Community
 
@@ -55,7 +55,7 @@ Join the conversation and contribute to the development by following our Discord
 ## Support This Project
 
 Running the server as well as the framework that helps create
-new unique voices for XIVV has demanding costs
+new unique voices for XIVV has demanding costs.
 
 All donations go towards the development of this project.
 
