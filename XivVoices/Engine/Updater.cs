@@ -50,6 +50,8 @@ namespace XivVoices.Engine
 
 
         #region Public Parameters
+        public bool Busy { get; set; } = false;
+        public DateTime ServerLastUpdate { get; set; } = new DateTime(1969, 7, 20);
         public List<int> State { get; set; } = new List<int>();
         public float ToolsDownloadState { get; set; } = 0;
         public LinkedList<DownloadInfo> DownloadInfoState { get; set; } = new LinkedList<DownloadInfo>();
@@ -69,6 +71,7 @@ namespace XivVoices.Engine
                 return;
 
             Active = true;
+            Busy = false;
         }
 
         public void Dispose()
@@ -78,8 +81,15 @@ namespace XivVoices.Engine
         #endregion
 
 
-        public async Task Check()
+        public async Task Check(bool calledByAutoUpdate = false, bool intialWindowState = true)
         {
+            if (calledByAutoUpdate)
+            {
+                if (!intialWindowState && !XivEngine.Instance.Database.Plugin.Window.IsOpen)
+                    XivEngine.Instance.Database.Plugin.Window.Toggle();
+            }
+
+            Busy = true;
             State.Clear();
             XivEngine.Instance.Database.UpdateDirectory();
 
@@ -154,6 +164,15 @@ namespace XivVoices.Engine
 
             await Task.Delay(2000);
             State.Clear();
+            Busy = false;
+
+            if (calledByAutoUpdate)
+            {
+                XivEngine.Instance.Database.Plugin.Config.LastUpdate = ServerLastUpdate;
+                XivEngine.Instance.Database.Plugin.Config.Save();
+                if (!intialWindowState && XivEngine.Instance.Database.Plugin.Window.IsOpen)
+                    XivEngine.Instance.Database.Plugin.Window.Toggle();
+            }
         }
 
         public async Task GetServerManifest()

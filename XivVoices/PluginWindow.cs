@@ -390,7 +390,7 @@ namespace XivVoices {
 
             ImGui.Unindent(65);
             ImGui.Dummy(new Vector2(0, 10));
-            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(ImGui.GetWindowSize().X - 10, 60)))
+            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(ImGui.GetWindowSize().X - 16, 60)))
             {
                 Updater.Instance.Check();
             }

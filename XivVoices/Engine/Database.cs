@@ -14,6 +14,7 @@ using Dalamud.Logging;
 using System.Threading.Tasks;
 using System.Reflection;
 using Dalamud.Plugin.Services;
+using System.Net.Http;
 
 namespace XivVoices.Engine
 {
@@ -675,6 +676,32 @@ namespace XivVoices.Engine
             System.Random random = new System.Random();
             int randomNumber = random.Next(0, 1000);
             return randomNumber.ToString("D3");
+        }
+
+        public async Task<string> FetchDateFromServer(string url)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await httpClient.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string content = await response.Content.ReadAsStringAsync();
+                        return content;
+                    }
+                    else
+                    {
+                        PluginLog.LogError("Failed to retrieve data: " + response.StatusCode);
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.LogError("Failed to load the data from the server: " + ex.Message);
+                    return null;
+                }
+            }
         }
         #endregion
 

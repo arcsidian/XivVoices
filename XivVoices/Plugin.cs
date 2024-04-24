@@ -91,6 +91,8 @@ namespace XivVoices {
 
         public Configuration Config => config;
 
+        public PluginWindow Window => _window; 
+
         public MediaCameraObject PlayerCamera => _playerCamera;
 
         public IChatGui Chat => _chat;
@@ -192,7 +194,7 @@ namespace XivVoices {
                 updater = new Updater();
                 database = new Database(this.pluginInterface, this);
                 audio = new Audio(this);
-                xivEngine = new XivEngine(this.config,this.database, this.audio);
+                xivEngine = new XivEngine(this.config,this.database, this.audio, this.updater);
 
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);

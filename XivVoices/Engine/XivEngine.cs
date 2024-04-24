@@ -16,7 +16,6 @@ using System.Net.Http;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
-using Dalamud.Plugin.Services;
 //using Amazon.Polly;
 //using Amazon.Polly.Model;
 
@@ -26,7 +25,8 @@ namespace XivVoices.Engine
     public class XivEngine
     {
         #region Private Parameters
-        private Timer _timer;
+        private Timer _updateTimer;
+        private Timer _autoUpdateTimer;
         private bool speakLocallyIsBusy = false;
         private DataMapper mapper;
         private Queue<XivMessage> ffxivMessages = new Queue<XivMessage>();
@@ -40,6 +40,8 @@ namespace XivVoices.Engine
         public Configuration Configuration { get; set; }
         public Database Database { get; set; }
         public Audio Audio { get; set; }
+
+        public Updater Updater { get; set; }
         public bool OnlineTTS { get; set; } = false;
 
         public List<string> IgnoredDialogues = new List<string>();
@@ -50,7 +52,7 @@ namespace XivVoices.Engine
         #region Core Methods
         public static XivEngine Instance;
 
-        public XivEngine(Configuration _configuration, Database _database, Audio _audio)
+        public XivEngine(Configuration _configuration, Database _database, Audio _audio, Updater _updater)
         {
             if (Instance == null)
             {
@@ -62,11 +64,13 @@ namespace XivVoices.Engine
             this.Configuration = _configuration;
             this.Database = _database;
             this.Audio = _audio;
+            this.Updater = _updater;
             this.ttsEngine = null;
             //AiVoicesEnabled = PlayerPrefs.GetInt("aiVoicesEnabled", 1) == 1;
             //RetainersEnabled = PlayerPrefs.GetInt("retainersEnabled", 1) == 1;
             mapper = new DataMapper();
-            _timer = new Timer(Update, null, 0, 50);
+            _updateTimer = new Timer(Update, null, 0, 50);
+            _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
             localTTS[0] = null;
             localTTS[1] = null;
             Active = true;
@@ -127,11 +131,35 @@ namespace XivVoices.Engine
             }
         }
 
+        private async void AutoUpdate(object state)
+        {
+            if (!Active) return;
+            if (Updater.Busy) return;
+            if (!this.Database.Plugin.Config.Initialized) return;
+            string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
+            if (dateString == null) return;
+
+            DateTime serverDateTime = DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind);
+            int comparisonResult = DateTime.Compare(this.Database.Plugin.Config.LastUpdate, serverDateTime);
+            if (comparisonResult < 0)
+            {
+                this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
+                this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
+                this.Updater.ServerLastUpdate = serverDateTime;
+            }
+            else
+            {
+                this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... You're up to date!");
+            }
+        }
+
         public void Dispose()
         {
             StopTTS();
-            _timer?.Dispose();
-            _timer = null;
+            _autoUpdateTimer?.Dispose();
+            _autoUpdateTimer = null;
+            _updateTimer?.Dispose();
+            _updateTimer = null;
             Active = false;
         }
         #endregion
