@@ -1,8 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Shader;
-using Lumina.Excel.GeneratedSheets;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -57,7 +53,7 @@ namespace XivVoices.Engine
             if (!XivEngine.Instance.Database.Plugin.Config.Mute)
             {
                 Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
-                using (var audioOutput = new DirectSoundOut())
+                using (var audioOutput = GetAudioEngine())
                 {
                     audioOutput.Init(volumeProvider);
                     volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
@@ -114,7 +110,7 @@ namespace XivVoices.Engine
 
                 if (!XivEngine.Instance.Database.Plugin.Config.Mute)
                 { 
-                    using (var audioOutput = new DirectSoundOut())
+                    using (var audioOutput = GetAudioEngine())
                     {
                         audioOutput.Init(panningProvider);
                         var data = GetDistanceAndBalance(xivMessage.TtsData.Position);
@@ -162,6 +158,19 @@ namespace XivVoices.Engine
             finally
             {
                 waveStream?.Dispose();
+            }
+        }
+
+        IWavePlayer GetAudioEngine()
+        {
+            switch (XivEngine.Instance.Database.Plugin.Config.AudioEngine)
+            {
+                case 1:
+                    return new DirectSoundOut();
+                case 2:
+                    return new WasapiOut();
+                default:
+                    return new WaveOut();
             }
         }
 

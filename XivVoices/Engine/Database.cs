@@ -13,7 +13,6 @@ using Dalamud.Plugin;
 using Dalamud.Logging;
 using System.Threading.Tasks;
 using System.Reflection;
-using Dalamud.Plugin.Services;
 using System.Net.Http;
 
 namespace XivVoices.Engine

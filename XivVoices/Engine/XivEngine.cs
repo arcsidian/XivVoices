@@ -16,11 +16,6 @@ using System.Net.Http;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
-using Dalamud.Plugin.Services;
-using System.Security.Cryptography;
-using System.Xml.Serialization;
-using System.Collections;
-using System.Diagnostics;
 //using Amazon.Polly;
 //using Amazon.Polly.Model;
 

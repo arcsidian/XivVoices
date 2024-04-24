@@ -36,6 +36,7 @@ namespace XivVoices
         public bool Mute { get; set; } = false;
         public int Volume { get; set; } = 100;
         public int Speed { get; set; } = 100;
+        public int AudioEngine { get; set; } = 1;
         public bool PollyEnabled { get; set; } = false;
         public bool LocalTTSEnabled { get; set; } = false;
         public bool WebsocketRedirectionEnabled { get; set; } = false;

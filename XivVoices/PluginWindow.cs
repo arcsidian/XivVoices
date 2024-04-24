@@ -174,7 +174,6 @@ namespace XivVoices {
                     ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize;
                     if (ImGui.Begin("Framework", ref isFrameworkWindowOpen, windowFlags))
                     {
-                        //ImGui.Separator();
                         if (ImGui.BeginTabBar("FrameworkTabs"))
                         {
                             if (ImGui.BeginTabItem("General Framework"))
@@ -740,7 +739,7 @@ namespace XivVoices {
 
             // Speed Slider ---------------------------------------------
 
-            ImGui.Dummy(new Vector2(0, 10));
+            ImGui.Dummy(new Vector2(0, 20));
             ImGui.TextWrapped("Speed Control");
             int speed = this.Configuration.Speed;
             if (ImGui.SliderInt("##speedSlider", ref speed, 75, 150, speed.ToString()))
@@ -751,6 +750,25 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Speed");
 
+            // Playback Engine  ---------------------------------------------
+            ImGui.Dummy(new Vector2(0, 20));
+            ImGui.TextWrapped("Playback Engine");
+            string[] audioEngines = new string[] { "DirectSound", "Wasapi" }; 
+            int currentEngine = this.Configuration.AudioEngine - 1;
+
+            if (ImGui.Combo("##audioEngine", ref currentEngine, audioEngines, audioEngines.Length))
+            {
+                this.Configuration.AudioEngine = currentEngine + 1;
+                needSave = true;
+            }
+            ImGui.SameLine();
+            ImGui.Text("Engine");
+
+
+            // Speed Slider ---------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 40));
+            ImGui.Separator();
 
             // Local AI Settings Settings ----------------------------------------------
 
