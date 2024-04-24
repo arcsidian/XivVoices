@@ -1542,6 +1542,15 @@ namespace XivVoices.Engine
         bool reportToArcJSONBusy = false;
         public async Task ReportToArcJSON(XivMessage xivMessage, string folder, string comment)
         {
+            string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
+            xivMessage.Sentence = xivMessage.TtsData.Message;
+            xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
+            if (fullname.Length > 1)
+            {
+                xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
+            }
+
+
             while (reportToArcJSONBusy && Database.Data["voices"] != "0")
                 await Task.Delay(500);
 
