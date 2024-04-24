@@ -23,6 +23,5 @@ namespace XivVoices.Engine
         public async Task Run(string directoryPath, bool once = false)
         {
         }
-
     }
 }
