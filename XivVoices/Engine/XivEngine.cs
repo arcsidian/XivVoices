@@ -37,7 +37,6 @@ namespace XivVoices.Engine
 
         #region Public Parameters
         private bool Active { get; set; } = false;
-        public Configuration Configuration { get; set; }
         public Database Database { get; set; }
         public Audio Audio { get; set; }
 
@@ -52,7 +51,7 @@ namespace XivVoices.Engine
         #region Core Methods
         public static XivEngine Instance;
 
-        public XivEngine(Configuration _configuration, Database _database, Audio _audio, Updater _updater)
+        public XivEngine(Database _database, Audio _audio, Updater _updater)
         {
             if (Instance == null)
             {
@@ -61,7 +60,6 @@ namespace XivVoices.Engine
             else
                 return;
 
-            this.Configuration = _configuration;
             this.Database = _database;
             this.Audio = _audio;
             this.Updater = _updater;
@@ -110,7 +108,7 @@ namespace XivVoices.Engine
                         //this.Database.Plugin.Chat.Print("CheckMessages: Online");
                         //if (Configuration.PollyEnabled && !Configuration.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // && !AudioIsMuted?
                         //    Task.Run(async () => await SpeakPollyAsync(msg));
-                        if (Configuration.LocalTTSEnabled && !Configuration.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // !&& AudioIsMuted?
+                        if (this.Database.Plugin.Config.LocalTTSEnabled && !this.Database.Plugin.Config.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // !&& AudioIsMuted?
                             Task.Run(async () => await SpeakAI(msg));
                         else
                             Speak(msg);
@@ -134,6 +132,7 @@ namespace XivVoices.Engine
         private async void AutoUpdate(object state)
         {
             if (!Active) return;
+            if (!this.Database.Plugin.Config.AutoUpdate) return;
             if (Updater.Busy) return;
             if (!this.Database.Plugin.Config.Initialized) return;
             string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
@@ -227,7 +226,7 @@ namespace XivVoices.Engine
             }
 
 
-            if (msg.VoiceName == "Retainer" && !Configuration.RetainersEnabled) return;
+            if (msg.VoiceName == "Retainer" && !this.Database.Plugin.Config.RetainersEnabled) return;
             if (IgnoredDialogues.Contains(msg.Speaker + msg.Sentence) || this.Database.Ignored.Contains(msg.Speaker)) return;
 
             PluginLog.Information($"NPC Data From FFXIV: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes}");
@@ -419,7 +418,7 @@ namespace XivVoices.Engine
                     xivMessage = this.Database.GetRetainer(xivMessage);
                     if (xivMessage.VoiceName == "Retainer")
                     {
-                        if (Configuration.RetainersEnabled)
+                        if (this.Database.Plugin.Config.RetainersEnabled)
                             return UpdateXivMessage(xivMessage, true);
                         else
                             return xivMessage;
@@ -1237,7 +1236,7 @@ namespace XivVoices.Engine
                 WaveStream waveStream = null;
 
                 // Check for audio speed adjustment or special effects
-                bool changeSpeed = Configuration.Speed != 100;
+                bool changeSpeed = this.Database.Plugin.Config.Speed != 100;
                 bool applyEffects = SoundEffects(msg) != "";
 
 
@@ -1378,7 +1377,7 @@ namespace XivVoices.Engine
         {
             bool changeSpeed = false;
             string additionalChanges = "";
-            if (XivEngine.Instance.Configuration.Speed != 100) changeSpeed = true;
+            if (XivEngine.Instance.Database.Plugin.Config.Speed != 100) changeSpeed = true;
             if (msg.VoiceName == "Omicron" || msg.VoiceName == "Node") additionalChanges = "robot";
 
             string filterArgs = "";
@@ -1389,7 +1388,7 @@ namespace XivVoices.Engine
             if (changeSpeed)
             {
                 if (filterArgs != "") filterArgs += ",";
-                filterArgs += $"\"atempo={(XivEngine.Instance.Configuration.Speed/100f).ToString(CultureInfo.InvariantCulture)}\"";
+                filterArgs += $"\"atempo={(XivEngine.Instance.Database.Plugin.Config.Speed/100f).ToString(CultureInfo.InvariantCulture)}\"";
             }
 
             if (additionalChanges == "robot")

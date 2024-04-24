@@ -191,10 +191,11 @@ namespace XivVoices {
                     _chat.Print("XivVoices is live.");
                 }
 
-                updater = new Updater();
+                
                 database = new Database(this.pluginInterface, this);
+                updater = new Updater();
                 audio = new Audio(this);
-                xivEngine = new XivEngine(this.config,this.database, this.audio, this.updater);
+                xivEngine = new XivEngine(this.database, this.audio, this.updater);
 
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);

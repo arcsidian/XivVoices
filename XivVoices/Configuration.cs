@@ -12,6 +12,7 @@ namespace XivVoices
         public bool Active { get; set; } = true;
         public bool Initialized { get; set; } = false;
         public string WorkingDirectory { get; set; } = "C:/XIV_User";
+        public bool AutoUpdate { get; set; } = true;
         public DateTime LastUpdate { get; set; } = new DateTime(1969, 7, 20);
         public string WebsocketStatus { get; set; } = "";
         public bool ReplaceVoicedARRCutscenes { get; set; } = true;

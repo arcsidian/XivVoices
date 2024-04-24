@@ -404,6 +404,17 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Xiv Voices Enabled");
 
+            ImGui.Dummy(new Vector2(0, 10));
+            var autoUpdate = this.Configuration.AutoUpdate;
+            if (ImGui.Checkbox("##autoUpdate", ref autoUpdate))
+            {
+                this.configuration.AutoUpdate = autoUpdate;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Auto Update Enabled");
+
+            ImGui.Dummy(new Vector2(0, 10));
             var lipsyncEnabled = this.Configuration.LipsyncEnabled;
             if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
             {
