@@ -441,6 +441,7 @@ namespace XivVoices.Engine
             await Task.WhenAll(downloadTasks);
 
             State.Add(10); // Downloading Data State
+            await XivEngine.Instance.Database.ReloadAndUpdateData();
             PluginLog.Information("Update complete.");
         }
 

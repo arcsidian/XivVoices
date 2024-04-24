@@ -385,17 +385,36 @@ namespace XivVoices {
             else
                 ImGui.Dummy(new Vector2(200, 200));
 
+            // Working Directory
             ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
             ImGui.Dummy(new Vector2(0, 10));
 
-            ImGui.Unindent(65);
+            // Data
+            ImGui.Indent(10);
+            ImGui.TextWrapped("NPCs:");
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
+            ImGui.TextWrapped(XivEngine.Instance.Database.Data["npcs"]);
+            ImGui.PopStyleColor();
+            ImGui.SameLine();
+
+            ImGui.TextWrapped(" Voices:");
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
+            ImGui.TextWrapped(XivEngine.Instance.Database.Data["voices"]);
+            ImGui.PopStyleColor();
+            ImGui.Dummy(new Vector2(0, 10));
+
+            // Update Button
+            ImGui.Unindent(75);
             ImGui.Dummy(new Vector2(0, 10));
             if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(ImGui.GetWindowSize().X - 16, 60)))
             {
                 Updater.Instance.Check();
             }
 
-            ImGui.Dummy(new Vector2(0, 10));
+            // Options
+            ImGui.Dummy(new Vector2(0, 20));
             var activeValue = this.Configuration.Active;
             if (ImGui.Checkbox("##xivVoicesActive", ref activeValue)){
                 this.configuration.Active = activeValue;
@@ -440,6 +459,7 @@ namespace XivVoices {
             ImGui.TextWrapped(this.configuration.WebsocketStatus);
             ImGui.Dummy(new Vector2(0, 10));
             */
+
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
             {

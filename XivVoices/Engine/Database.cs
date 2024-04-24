@@ -32,7 +32,6 @@ namespace XivVoices.Engine
         public string ToolsPath { get { return "C:/XIV_Voices/Tools";  } }
         public string Firstname { get; } = "_FIRSTNAME_";
         public string Lastname { get; } = "_LASTNAME_";
-        public bool GameUpdated { get; set; } = false;
         public Dictionary<string, XivNPC> Npcs { get; set; }
         public Dictionary<string, string> Data { get; set; }
         public Dictionary<string, string> VoiceNames { get; set; }
@@ -187,10 +186,8 @@ namespace XivVoices.Engine
                 Data["voices"] = "0";
                 Data["npcs"] = "0";
                 Data["actors"] = "0";
-                await WriteJSON(DirectoryPath + "/Data.json", Data); 
-            }
-            if (GameUpdated)
                 await ReloadAndUpdateData();
+            }
         }
 
         public async Task LoadLexiconsAsync(bool announce = false)
@@ -509,7 +506,7 @@ namespace XivVoices.Engine
             Task.Run(async () => await ReloadAndUpdateData());
         }
 
-        async Task ReloadAndUpdateData()
+        public async Task ReloadAndUpdateData()
         {
             int _actors = Directory.GetDirectories(VoiceFilesPath).Count();
             int _voices = 0;
@@ -526,7 +523,6 @@ namespace XivVoices.Engine
             Data["npcs"] = _npcs.ToString();
             Data["actors"] = _actors.ToString();
             await WriteJSON(DirectoryPath + "/Data.json", Data);
-            //XivVoices.Instance.UpdateText();
         }
 
         public void SetIgnored(string speaker)
