@@ -49,7 +49,7 @@ namespace XivVoices.Engine
         {
             this._pluginInterface = pluginInterface;
             this.Plugin = plugin;
-            Framework = new Framework();
+            
 
             string pathWith_Data = _pluginInterface.AssemblyLocation.DirectoryName;
             RootPath = Path.GetDirectoryName(pathWith_Data);
@@ -132,7 +132,7 @@ namespace XivVoices.Engine
 
         public void Dispose()
         {
-
+            Framework.Dispose();
         }
         #endregion
 
@@ -166,6 +166,8 @@ namespace XivVoices.Engine
                 //}
 
                 await LoadVoiceNamesAsync();
+
+                Framework = new Framework();
 
                 Plugin.Chat.Print("Done.");
                 await Task.Delay(200);
@@ -405,17 +407,17 @@ namespace XivVoices.Engine
             PluginLog.Information("JSON file written successfully to path: " + filePath);
         }
 
-        /*
-        public void WriteVoiceData(string voiceName, string speaker, string sentence, AudioClip clip)
-        {
-           Task.Run(async () => await WriteVoiceDataCoroutine(voiceName, speaker, sentence, clip));
-        }
+        
 
         bool writeVoiceDataBusy = false;
-        public async Task WriteVoiceDataCoroutine(string voiceName, string speaker, string sentence, AudioClip clip)
+        public async Task WriteVoiceData(XivMessage xivMessage, byte[] audioData)
         {
-            while (writeVoiceDataBusy)
-                
+            string voiceName = xivMessage.VoiceName;
+            string speaker = xivMessage.Speaker;
+            string sentence = xivMessage.Sentence;
+
+            while (writeVoiceDataBusy) await Task.Delay(50);
+
             writeVoiceDataBusy = true;
 
             string originalSpeaker = speaker;
@@ -433,15 +435,16 @@ namespace XivVoices.Engine
 
             string filePath = speakerDirectory + "/" + cleanedSentence;
             int missingFromDirectoryPath = 0;
-            if (directoryPath.Length < 13)
-                missingFromDirectoryPath = 13 - directoryPath.Length;
-            int maxLength = 200 - ((directoryPath + "/" + voiceName + "/" + speaker).Length);
+            if (DirectoryPath.Length < 13)
+                missingFromDirectoryPath = 13 - DirectoryPath.Length;
+            int maxLength = 200 - ((DirectoryPath + "/" + voiceName + "/" + speaker).Length);
             maxLength -= missingFromDirectoryPath;
             if (cleanedSentence.Length > maxLength)
                 cleanedSentence = cleanedSentence.Substring(0, maxLength);
 
             cleanedSentence = Regex.Replace(cleanedSentence, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
             filePath = speakerDirectory + "/" + cleanedSentence;
+            xivMessage.FilePath = filePath;
 
             // Check if file exists
             bool fileExistedBefore;
@@ -463,34 +466,38 @@ namespace XivVoices.Engine
                 Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
             }
 
-            // Save clip as WAV in filePath
-            bool success = WavUtil.Save(filePath + ".wav", clip);
-
-            if (success)
+            // TODO: this is the previous snippet that turns AudioClip into wav, let's change it
+            try
             {
-                PluginLog.Information("WAV file written successfully to path: " + filePath + ".wav");
+                await File.WriteAllBytesAsync(xivMessage.FilePath + ".mp3", audioData);
+
+                //PluginLog.Information("MP3 file written successfully to path: " + filePath);
+                PluginLog.Information("MP3 file written successfully to path: " + filePath);
                 if (!fileExistedBefore)
                 {
                     Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
                 }
 
-                // Save JSON Data for this WAV
-                Dictionary<string, string> wavdata = new Dictionary<string, string>();
-                wavdata["speaker"] = originalSpeaker;
-                wavdata["sentence"] = sentence;
-                wavdata["lastSave"] = DateTime.UtcNow.ToString("o");
-                await WriteJSON(filePath + ".json", wavdata);
+                // Save JSON Data for this MP3
+                var mp3data = new Dictionary<string, string>
+                {
+                    ["speaker"] = originalSpeaker,
+                    ["sentence"] = sentence,
+                    ["lastSave"] = DateTime.UtcNow.ToString("o")
+                };
+                await WriteJSON(filePath + ".json", mp3data);
+
+                XivEngine.Instance.SpeakLocallyAsync(xivMessage,true);
             }
-            else
+            catch (Exception ex)
             {
-                PluginLog.LogError("Failed to write WAV file to path: " + filePath + ".wav");
+                PluginLog.LogError($"Failed to write MP3 file to path: {filePath}. Error: {ex.Message}");
             }
 
-            await WriteJSON(directoryPath + "/Data.json", Data);
-            //XivVoices.Instance.UpdateText();
+            await WriteJSON(DirectoryPath + "/Data.json", Data);
             writeVoiceDataBusy = false;
         }
-        */
+        
         #endregion
 
 

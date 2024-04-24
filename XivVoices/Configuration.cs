@@ -33,6 +33,7 @@ namespace XivVoices
         public bool BubblesInBattleZones { get; set; } = false;
 
         // Engine Settings
+        public bool Mute { get; set; } = false;
         public int Volume { get; set; } = 100;
         public int Speed { get; set; } = 100;
         public bool PollyEnabled { get; set; } = false;

@@ -27,6 +27,8 @@ namespace XivVoices {
         private bool needSave = false;
         private string selectedDrive = string.Empty;
         private string reportInput = new string('\0', 250);
+        private bool isFrameworkWindowOpen = false;
+
 
         public PluginWindow() : base("Xiv Voices by Arcsidian") {
             Size = new Vector2(350, 650);
@@ -120,11 +122,10 @@ namespace XivVoices {
         private void Close() {
             var originPos = ImGui.GetCursorPos();
             
-            // Place save button in bottom left + some padding / extra space
+            // Place Ko-fi Button to the left
             ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMax().X + 15f);
             ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
             if (ImGui.Button("   Ko-Fi   ")) {
-                //Save();
                 Process process = new Process();
                 try
                 {
@@ -139,11 +140,11 @@ namespace XivVoices {
                 }
             }
             ImGui.SetCursorPos(originPos);
-            // Place close button in bottom right + some padding / extra space
+
+            // Place Discord Button to the right
             ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.CalcTextSize("Discord").X - 22f);
             ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
             if (ImGui.Button(" Discord ")) {
-
                 Process process = new Process();
                 try
                 {
@@ -158,6 +159,51 @@ namespace XivVoices {
                 }
             }
             ImGui.SetCursorPos(originPos);
+            if (this.configuration.FrameworkActive)
+            {
+                // Place Framework Button at the center
+                ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X / 2 - 40f);
+                ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
+                if (ImGui.Button(" Framework "))
+                {
+                    isFrameworkWindowOpen = true;
+                }
+                if (isFrameworkWindowOpen)
+                {
+                    ImGui.SetNextWindowSize(new Vector2(400, 650));
+                    ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize;
+                    if (ImGui.Begin("Framework", ref isFrameworkWindowOpen, windowFlags))
+                    {
+                        //ImGui.Separator();
+                        if (ImGui.BeginTabBar("FrameworkTabs"))
+                        {
+                            if (ImGui.BeginTabItem("General Framework"))
+                            {
+                                Framework_General();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem(" Unknown Dialogues "))
+                            {
+                                Framework_Unknown();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem("    Audio Monitoring    "))
+                            {
+                                Framework_Audio();
+                                ImGui.EndTabItem();
+                            }
+                            ImGui.EndTabBar();
+                        }
+                        ImGui.Dummy(new Vector2(1, 10));
+                        ImGui.TextWrapped($"Files: {XivEngine.Instance.Database.Framework.Queue.Count}");
+                        ImGui.End();
+                    }
+                }
+                ImGui.SetCursorPos(originPos);
+            }
+            
         }
 
         private void RequestSave()
@@ -443,6 +489,8 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Lipsync Enabled");
 
+            
+
             /*
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.LabelText("##Label", "Websocket Settings");
@@ -665,6 +713,18 @@ namespace XivVoices {
 
         private void AudioSettings()
         {
+            // Mute Button -----------------------------------------------
+
+            ImGui.Dummy(new Vector2(0, 20));
+            var mute = this.Configuration.Mute;
+            if (ImGui.Checkbox("##mute", ref mute))
+            {
+                this.configuration.Mute = mute;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Mute Enabled");
+
             // Volume Slider ---------------------------------------------
 
             ImGui.Dummy(new Vector2(0, 20));
@@ -824,6 +884,137 @@ namespace XivVoices {
                     }
                     
                 }
+            }
+        }
+
+        private void Framework_General()
+        {
+            ImGui.Dummy(new Vector2(0, 10));
+            var frameworkOnline = this.Configuration.FrameworkOnline;
+            if (ImGui.Checkbox("##frameworkOnline", ref frameworkOnline))
+            {
+                this.configuration.FrameworkOnline = frameworkOnline;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Framework Enabled");
+
+            // Saving Process
+            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            {
+                RequestSave();
+                needSave = false;
+            }
+        }
+
+        private void Framework_Unknown()
+        {
+            ImGui.Dummy(new Vector2(0, 10));
+            if (ImGui.Button($"Load Unknown List##loadUnknownList", new Vector2(385, 25)))
+            {
+                XivEngine.Instance.UnknownList_Load();
+            }
+
+            ImGui.Dummy(new Vector2(0, 10));
+
+            foreach (string item in XivEngine.Instance.Audio.unknownQueue)
+            {
+                if (ImGui.BeginChild("unknownList"+item, new Vector2(275, 50), true))
+                {
+                    ImGui.Dummy(new Vector2(0, 5));
+
+                    ImGui.Text(item);
+                    ImGui.EndChild();
+                }
+                ImGui.SameLine();
+                ImGui.SameLine();
+                if (ImGui.Button("Run##unknowButton" + item, new Vector2(45, 50)))
+                {
+                    XivEngine.Instance.Database.Framework.Run(item);
+                }
+                ImGui.SameLine();
+                if (ImGui.Button("Once##unknowButton" + item, new Vector2(45, 50)))
+                {
+                    XivEngine.Instance.Database.Framework.Run(item, true);
+                }
+            }
+
+            // Saving Process
+            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            {
+                RequestSave();
+                needSave = false;
+            }
+        }
+
+        private void Framework_Audio()
+        {
+            ImGui.Dummy(new Vector2(0, 10));
+
+            foreach (var item in PluginReference.audio.AudioInfoState)
+            {
+                // Show Dialogue Details (Name: Sentence)
+                if (ImGui.BeginChild(item.id, new Vector2(385, 43), false))
+                {
+                    float textHeight = ImGui.CalcTextSize($"{item.data.Speaker}: {item.data.Sentence}", 340.0f).Y;
+                    float paddingHeight = Math.Max(35 - textHeight, 0);
+                    ImGui.Dummy(new Vector2(1, 3));
+                    if (paddingHeight > 3)
+                        ImGui.Dummy(new Vector2(1, paddingHeight - 3));
+
+                    ImGui.TextWrapped($"{item.data.Speaker}: {item.data.Sentence}");
+                    ImGui.EndChild();
+                }
+
+                // Show Player Progress Bar
+                int progressSize = 265;
+                if (item.type == "xivv")
+                    ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
+                else if (item.type == "empty")
+                {
+                    ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
+                    progressSize = 380;
+                }
+                ImGui.ProgressBar(item.percentage, new Vector2(progressSize, 24), $"{item.state}");
+                if (item.type == "xivv" || item.type == "empty")
+                    ImGui.PopStyleColor();
+
+
+                if (item.type != "empty")
+                {
+                    ImGui.SameLine();
+
+                    // Show Report Button
+                    if (ImGui.Button($"Redo##redo{item.id}", new Vector2(50, 24)))
+                    {
+                        XivEngine.Instance.Database.Framework.Process(item.data);
+                    }
+
+                    // Show Play and Stop Buttons
+                    ImGui.SameLine();
+                    if (item.state == "playing")
+                    {
+                        if (ImGui.Button("Stop", new Vector2(50, 24)))
+                            PluginReference.audio.StopAudio();
+                    }
+                    else
+                    {
+                        if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
+                        {
+                            PluginReference.audio.StopAudio();
+                            PluginReference.xivEngine.AddToQueue(item.data);
+                        }
+                    }
+                }
+
+            }
+
+
+            // Saving Process
+            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            {
+                RequestSave();
+                needSave = false;
             }
         }
 

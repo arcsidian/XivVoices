@@ -16,6 +16,11 @@ using System.Net.Http;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
+using Dalamud.Plugin.Services;
+using System.Security.Cryptography;
+using System.Xml.Serialization;
+using System.Collections;
+using System.Diagnostics;
 //using Amazon.Polly;
 //using Amazon.Polly.Model;
 
@@ -44,7 +49,7 @@ namespace XivVoices.Engine
         public bool OnlineTTS { get; set; } = false;
 
         public List<string> IgnoredDialogues = new List<string>();
-        public bool UnknownProcessRunning { get; set; } = false;
+        
         #endregion
 
 
@@ -199,31 +204,51 @@ namespace XivVoices.Engine
 
 
             string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
-            var results = GetPossibleSentences(message, fullname[0], fullname[1]);
-            bool sentenceFound = false;
-            foreach (var result in results)
+
+            if (this.Database.Plugin.Config.FrameworkActive)
             {
-                msg.Sentence = result;
+                msg.Sentence = msg.Sentence.Replace(fullname[0], "_FIRSTNAME_");
+
+                if (fullname.Length > 1)
+                {
+                    msg.Sentence = msg.Sentence.Replace(fullname[1], "_LASTNAME_");
+                }
+
                 msg = CleanXivMessage(msg);
                 if (msg.Speaker == "???")
                     msg = this.Database.GetNameless(msg);
                 msg = UpdateXivMessage(msg);
-                if(msg.FilePath != null)
-                {
-                    sentenceFound = true;
-                    break;
-                }
-            }
 
-            if (!sentenceFound)
+            }
+            else
             {
-                msg.Sentence = msg.TtsData.Message;
-                if (!msg.Reported)
+                var results = GetPossibleSentences(message, fullname[0], fullname[1]);
+                bool sentenceFound = false;
+                foreach (var result in results)
                 {
-                    ReportToArc(msg);
-                    msg.Reported = true;
+                    msg.Sentence = result;
+                    msg = CleanXivMessage(msg);
+                    if (msg.Speaker == "???")
+                        msg = this.Database.GetNameless(msg);
+                    msg = UpdateXivMessage(msg);
+                    if (msg.FilePath != null)
+                    {
+                        sentenceFound = true;
+                        break;
+                    }
+                }
+
+                if (!sentenceFound)
+                {
+                    msg.Sentence = msg.TtsData.Message;
+                    if (!msg.Reported)
+                    {
+                        ReportToArc(msg);
+                        msg.Reported = true;
+                    }
                 }
             }
+           
 
 
             if (msg.VoiceName == "Retainer" && !this.Database.Plugin.Config.RetainersEnabled) return;
@@ -1062,7 +1087,7 @@ namespace XivVoices.Engine
             if (Database.Plugin.Config.FrameworkOnline && Database.Plugin.Config.FrameworkActive)
                 this.Database.Framework.Process(_msg);
             else
-                Audio.PlayEmptyAudio(_msg, "empty");
+                Audio.PlayEmptyAudio(_msg);
         }
 
         /*
@@ -1224,11 +1249,23 @@ namespace XivVoices.Engine
 
 
 
-        public async Task SpeakLocallyAsync(XivMessage msg)
+        public async Task SpeakLocallyAsync(XivMessage msg, bool isMp3 = false)
         {
             while (speakLocallyIsBusy)
                 await Task.Delay(50);
             speakLocallyIsBusy = true;
+
+            if (isMp3)
+            {
+                File.Delete(msg.FilePath + ".ogg");
+                string arguments = $"-i \"{msg.FilePath+".mp3"}\" -c:a libopus \"{msg.FilePath +".ogg"}\"";
+                string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath); ;
+                FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
+                IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
+                await conversion.Start();
+                File.Delete(msg.FilePath + ".mp3");
+                msg.FilePath = msg.FilePath + ".ogg";
+            }
 
             if (msg.FilePath.EndsWith(".ogg"))
             {
@@ -1409,6 +1446,39 @@ namespace XivVoices.Engine
             else
             {
                 Audio.PlayAudio(xivMessage, waveStream, type);
+            }
+        }
+        #endregion
+
+        #region Framework
+        public void RedoAudio(XivMessage xivMessage)
+        {
+            XivEngine.Instance.Database.Plugin.Chat.Print("ArcFramework: RedoAudio");
+            if (xivMessage.VoiceName == "Unknown")
+            {
+                xivMessage = XivEngine.Instance.CleanXivMessage(xivMessage);
+                if (xivMessage.Speaker == "???")
+                    xivMessage = XivEngine.Instance.Database.GetNameless(xivMessage);
+                xivMessage = XivEngine.Instance.UpdateXivMessage(xivMessage);
+                XivEngine.Instance.Speak(xivMessage);
+            }
+            else
+                this.Database.Framework.Process(xivMessage);
+        }
+
+        public void UnknownList_Load()
+        {
+            string directoryPath = Database.DirectoryPath + "/Unknown";
+            Audio.unknownQueue.Clear();
+            foreach (var directory in System.IO.Directory.GetDirectories(directoryPath))
+            {
+                // Get all files in the directory
+                string[] files = System.IO.Directory.GetFiles(directory);
+
+                if (files.Length == 0)
+                    continue;
+
+                Audio.unknownQueue.Enqueue(directory);
             }
         }
         #endregion

@@ -23,6 +23,8 @@ namespace XivVoices.Engine
             User = user;
         }
 
+        public TTSData() { }
+
         public string Type;
         public string Speaker;
         public string NpcID;

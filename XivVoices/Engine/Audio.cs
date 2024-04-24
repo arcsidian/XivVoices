@@ -21,6 +21,7 @@ namespace XivVoices.Engine
 
         private Plugin Plugin;
         public Queue<string> bubbleQueue { get; set; }
+        public Queue<string> unknownQueue { get; set; }
         public LinkedList<AudioInfo> AudioInfoState { get; set; }
 
         public Audio(Plugin plugin)
@@ -29,6 +30,7 @@ namespace XivVoices.Engine
             Plugin.Chat.Print("Audio: I am awake");
             AudioInfoState = new LinkedList<AudioInfo>();
             bubbleQueue = new Queue<string>();
+            unknownQueue = new Queue<string>();
 
         }
 
@@ -52,30 +54,34 @@ namespace XivVoices.Engine
             var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
             var audioInfo = GetAudioInfo(xivMessage, type);
 
-            Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
-            using (var audioOutput = new WaveOut())
+            if (!XivEngine.Instance.Database.Plugin.Config.Mute)
             {
-                audioOutput.Init(volumeProvider);
-                volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
-                audioOutput.Play();
-                audioInfo.state = "playing";
-                var totalDuration = waveStream.TotalTime.TotalMilliseconds;
-                while (audioOutput.PlaybackState == PlaybackState.Playing)
+                Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
+                using (var audioOutput = new WaveOut())
                 {
-                    var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
-                    audioInfo.percentage = (float)(currentPosition / totalDuration);
+                    audioOutput.Init(volumeProvider);
                     volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
-                    if (audioIsStopped)
+                    audioOutput.Play();
+                    audioInfo.state = "playing";
+                    var totalDuration = waveStream.TotalTime.TotalMilliseconds;
+                    while (audioOutput.PlaybackState == PlaybackState.Playing)
                     {
-                        audioOutput.Stop();
-                        Plugin.StopLipSync(xivMessage.TtsData.Character);
-                        break;
+                        var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
+                        audioInfo.percentage = (float)(currentPosition / totalDuration);
+                        volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
+                        if (audioIsStopped)
+                        {
+                            audioOutput.Stop();
+                            Plugin.StopLipSync(xivMessage.TtsData.Character);
+                            break;
+                        }
+                        await Task.Delay(50);
                     }
-                    await Task.Delay(50);
                 }
-                audioInfo.state = "stopped";
-                audioInfo.percentage = 1f;
             }
+
+            audioInfo.state = "stopped";
+            audioInfo.percentage = 1f;
             waveStream?.Dispose();
             audioIsStopped = false;
             AudioIsPlaying = false;
@@ -106,43 +112,46 @@ namespace XivVoices.Engine
 
                 var audioInfo = GetAudioInfo(xivMessage, type);
 
-                using (var audioOutput = new WaveOut())
-                {
-                    audioOutput.Init(panningProvider);
-                    var data = GetDistanceAndBalance(xivMessage.TtsData.Position);
-                    volumeProvider.Volume = AdjustVolume(data.Distance);
-                    panningProvider.Pan = data.Balance;
-                    audioOutput.Play();
-                    audioInfo.state = "playing";
-                    var totalDuration = waveStream.TotalTime.TotalMilliseconds;
-                    while (audioOutput.PlaybackState == PlaybackState.Playing)
+                if (!XivEngine.Instance.Database.Plugin.Config.Mute)
+                { 
+                    using (var audioOutput = new WaveOut())
                     {
-                        var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
-                        audioInfo.percentage = (float)(currentPosition / totalDuration);
-                        data = GetDistanceAndBalance(xivMessage.TtsData.Position);
+                        audioOutput.Init(panningProvider);
+                        var data = GetDistanceAndBalance(xivMessage.TtsData.Position);
                         volumeProvider.Volume = AdjustVolume(data.Distance);
                         panningProvider.Pan = data.Balance;
-
-                        /* Testing In a Loop
-                        Plugin.Chat.Print("distance:" + data.Distance);
-                        Plugin.Chat.Print("audioOutput.Volume:" + audioOutput.Volume);
-
-                        if (audioIsStopped)
+                        audioOutput.Play();
+                        audioInfo.state = "playing";
+                        var totalDuration = waveStream.TotalTime.TotalMilliseconds;
+                        while (audioOutput.PlaybackState == PlaybackState.Playing)
                         {
-                            audioOutput.Stop();
-                            break;
+                            var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
+                            audioInfo.percentage = (float)(currentPosition / totalDuration);
+                            data = GetDistanceAndBalance(xivMessage.TtsData.Position);
+                            volumeProvider.Volume = AdjustVolume(data.Distance);
+                            panningProvider.Pan = data.Balance;
+
+                            /* Testing In a Loop
+                            Plugin.Chat.Print("distance:" + data.Distance);
+                            Plugin.Chat.Print("audioOutput.Volume:" + audioOutput.Volume);
+
+                            if (audioIsStopped)
+                            {
+                                audioOutput.Stop();
+                                break;
+                            }
+                            if (waveStream.Position > waveStream.Length - 100)
+                                waveStream.Position = 0;
+                            */
+
+                            await Task.Delay(50);
                         }
-                        if (waveStream.Position > waveStream.Length - 100)
-                            waveStream.Position = 0;
-                        */
-
-
-                        await Task.Delay(50);
                     }
-                    audioInfo.state = "stopped";
-                    audioInfo.percentage = 1f;
-                    bubbleQueue.Dequeue();
                 }
+
+                audioInfo.state = "stopped";
+                audioInfo.percentage = 1f;
+                bubbleQueue.Dequeue();
             }
             catch (Exception ex)
             {
@@ -156,9 +165,9 @@ namespace XivVoices.Engine
             }
         }
 
-        public async Task PlayEmptyAudio(XivMessage xivMessage, string type)
+        public async Task PlayEmptyAudio(XivMessage xivMessage)
         {
-            var audioInfo = GetAudioInfo(xivMessage, type);
+            var audioInfo = GetAudioInfo(xivMessage, "empty");
             audioInfo.percentage = 1f;
             audioInfo.state = "Reported";
         }
