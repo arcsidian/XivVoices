@@ -62,15 +62,21 @@ namespace XivVoices.Engine
 
         private Dictionary<int, string> skeletonMap = new Dictionary<int, string>()
         {
-            {11001, "Amalj'aa"},
+            {60, "Dragon"}, // Medium size Sooh Non
+            {63, "Dragon"}, // Large size Ess Khas
+            {239, "Dragon"}, // Small size Khash Thah
+            {11001, "Amalj'aa"}, // Vanu Vanu too
             {11002, "Ixal"},
             {11003, "Kobold"},
             {11004, "Goblin"},
             {11005, "Sylph"},
             {11006, "Moogle"},
             {11007, "Sahagin"},
+            {11013, "Qiqirn"},
             {11028, "Kojin"}
         };
+
+
 
         public string GetBody(int id) => bodyMap.TryGetValue(id, out var name) ? name : "Adult";
         public string GetRace(int id) => raceMap.TryGetValue(id, out var name) ? name : "Unknown:" + id.ToString();

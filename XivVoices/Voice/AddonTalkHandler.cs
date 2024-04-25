@@ -26,6 +26,7 @@ using System.Text.RegularExpressions;
 using Dalamud.Game.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+using XivVoices.Engine;
 
 namespace XivVoices.Voice {
     public class AddonTalkHandler : IDisposable {
@@ -746,7 +747,7 @@ namespace XivVoices.Voice {
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape];
                 
 //#if DEBUG
-                _plugin.Chat.Print($"{character.Name.TextValue}: id[{id}] skeleton[{skeleton}] body[{body}] race[{race}] tribe[{tribe}] eyes[{eyes}]");
+                //_plugin.Chat.Print($"{character.Name.TextValue}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}] ---> area[{_plugin.ClientState.TerritoryType}]");
 //#endif
             }
             return character;
