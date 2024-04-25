@@ -446,7 +446,6 @@ namespace XivVoices {
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
             ImGui.TextWrapped(XivEngine.Instance.Database.Data["voices"]);
             ImGui.PopStyleColor();
-            ImGui.Dummy(new Vector2(0, 10));
 
             // Update Button
             ImGui.Unindent(75);
@@ -456,8 +455,8 @@ namespace XivVoices {
                 Updater.Instance.Check();
             }
 
-            // Options
-            ImGui.Dummy(new Vector2(0, 20));
+            // Xiv Voices Enabled
+            ImGui.Dummy(new Vector2(0, 15));
             var activeValue = this.Configuration.Active;
             if (ImGui.Checkbox("##xivVoicesActive", ref activeValue)){
                 this.configuration.Active = activeValue;
@@ -466,7 +465,8 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Xiv Voices Enabled");
 
-            ImGui.Dummy(new Vector2(0, 10));
+            // Auto Update Enabled
+            ImGui.Dummy(new Vector2(0, 8));
             var autoUpdate = this.Configuration.AutoUpdate;
             if (ImGui.Checkbox("##autoUpdate", ref autoUpdate))
             {
@@ -476,16 +476,19 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Auto Update Enabled");
 
-            ImGui.Dummy(new Vector2(0, 10));
-            var lipsyncEnabled = this.Configuration.LipsyncEnabled;
-            if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
+            // Xiv Voices Enabled
+            ImGui.Dummy(new Vector2(0, 8));
+            var reports = this.Configuration.Reports;
+            if (ImGui.Checkbox("##reports", ref reports))
             {
-                this.configuration.LipsyncEnabled = lipsyncEnabled;
+                this.configuration.Reports = reports;
                 needSave = true;
             };
             ImGui.SameLine();
-            ImGui.Text("Lipsync Enabled");
-
+            ImGui.Text("Report Missing Dialogues Automatically");
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
+            ImGui.Text("( English dialogues only, do not enable for other languages )");
+            ImGui.PopStyleColor();
             
 
             /*
@@ -722,6 +725,17 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Mute Enabled");
 
+            // Lipsync Enabled -----------------------------------------------
+            ImGui.Dummy(new Vector2(0, 10));
+            var lipsyncEnabled = this.Configuration.LipsyncEnabled;
+            if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
+            {
+                this.configuration.LipsyncEnabled = lipsyncEnabled;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Lipsync Enabled");
+
             // Volume Slider ---------------------------------------------
 
             ImGui.Dummy(new Vector2(0, 20));
@@ -765,7 +779,7 @@ namespace XivVoices {
 
             // Speed Slider ---------------------------------------------
 
-            ImGui.Dummy(new Vector2(0, 40));
+            ImGui.Dummy(new Vector2(0, 30));
             ImGui.Separator();
 
             // Local AI Settings Settings ----------------------------------------------

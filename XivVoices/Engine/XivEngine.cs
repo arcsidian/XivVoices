@@ -1476,6 +1476,7 @@ namespace XivVoices.Engine
         #region Reports
         public void ReportUnprocessable(XivMessage msg)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             PluginLog.Information("ReportUnprocessable");
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "/Unprocessable/", ""));
@@ -1483,6 +1484,7 @@ namespace XivVoices.Engine
 
         public void ReportError(XivMessage msg)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             PluginLog.Information("ReportError");
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "/Error/", ""));
@@ -1491,6 +1493,7 @@ namespace XivVoices.Engine
         Queue<ReportXivMessage> reports = new Queue<ReportXivMessage>();
         public void ReportUnknown(XivMessage msg)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             PluginLog.Information("ReportUnknown");
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
@@ -1498,6 +1501,7 @@ namespace XivVoices.Engine
 
         public void ReportDifferent(XivMessage msg)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             PluginLog.Information("ReportDifferent");
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             reports.Enqueue(new ReportXivMessage(msg, "different", ""));
@@ -1505,6 +1509,7 @@ namespace XivVoices.Engine
 
         public void ReportMuteToArc(XivMessage msg, string input)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
@@ -1513,6 +1518,7 @@ namespace XivVoices.Engine
 
         public void ReportRedoToArc(XivMessage msg, string input)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
@@ -1522,6 +1528,7 @@ namespace XivVoices.Engine
 
         public void ReportToArc(XivMessage msg)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
@@ -1531,6 +1538,7 @@ namespace XivVoices.Engine
         bool reportToArcJSONBusy = false;
         public async Task ReportToArcJSON(XivMessage xivMessage, string folder, string comment)
         {
+            if (!this.Database.Plugin.Config.Reports) return;
             string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
             xivMessage.Sentence = xivMessage.TtsData.Message;
             xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
