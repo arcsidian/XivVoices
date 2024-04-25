@@ -1555,7 +1555,7 @@ namespace XivVoices.Engine
             ReportData reportData = new ReportData
             {
                 speaker = xivMessage.Speaker,
-                sentence = xivMessage.TtsData.Message,
+                sentence = xivMessage.Sentence,
                 npcid = xivMessage.NpcId,
                 skeletonid = xivMessage.TtsData.SkeletonID,
                 body = xivMessage.TtsData.Body,
