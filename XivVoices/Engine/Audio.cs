@@ -223,10 +223,11 @@ namespace XivVoices.Engine
             else
             {
                 AudioInfoState.Remove(audioInfo);
+                audioInfo = new AudioInfo(id, "new", 0f, type, xivMessage);
                 AudioInfoState.AddFirst(audioInfo);
                 audioInfo.state = "new";
             }
-            if (AudioInfoState.Count > 7)
+            if (AudioInfoState.Count > 50)
             {
                 var oldestFinished = AudioInfoState.LastOrDefault(ddi => ddi.state == "stopped" || ddi.state == "Reported");
                 if (oldestFinished != null)

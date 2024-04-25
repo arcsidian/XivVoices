@@ -41,6 +41,13 @@ namespace XivVoices.Engine
         public Framework Framework { get; set; }
         #endregion
 
+        #region Framework Parameters
+        public bool ForcePlayerName { get; set; } = false;
+        public string PlayerName { get; set; } = "our friend";
+        public bool ForceWholeSentence { get; set; } = false;
+        public string WholeSentence { get; set; } = "";
+        #endregion
+
         public Plugin Plugin { get; set; }
 
         #region Unity Methods

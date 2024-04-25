@@ -195,8 +195,6 @@ namespace XivVoices {
                             }
                             ImGui.EndTabBar();
                         }
-                        ImGui.Dummy(new Vector2(1, 10));
-                        ImGui.TextWrapped($"Files: {XivEngine.Instance.Database.Framework.Queue.Count}");
                         ImGui.End();
                     }
                 }
@@ -810,7 +808,7 @@ namespace XivVoices {
             }
             else
             {
-                foreach (var item in PluginReference.audio.AudioInfoState)
+                foreach (var item in PluginReference.audio.AudioInfoState.Take(7))
                 {
                     // Show Dialogue Details (Name: Sentence)
                     if (ImGui.BeginChild(item.id, new Vector2(340, 43), false))
@@ -974,8 +972,53 @@ namespace XivVoices {
         private void Framework_Audio()
         {
             ImGui.Dummy(new Vector2(0, 10));
+            if (ImGui.BeginChild("frameworkAudio", new Vector2(385, 90), true))
+            {
+                // Player Name
+                ImGui.Dummy(new Vector2(130, 0));
+                ImGui.SameLine();
+                string playerName = XivEngine.Instance.Database.PlayerName;
+                ImGui.SetNextItemWidth(112);
+                if (ImGui.InputText("##playerName", ref playerName, 100))
+                {
+                    XivEngine.Instance.Database.PlayerName = playerName;
+                    needSave = true;
+                }
+                ImGui.SameLine();
+                var forcePlayerName = XivEngine.Instance.Database.ForcePlayerName;
+                if (ImGui.Checkbox("##forcePlayerName", ref forcePlayerName))
+                {
+                    XivEngine.Instance.Database.ForcePlayerName = forcePlayerName;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Force Name");
 
-            foreach (var item in PluginReference.audio.AudioInfoState)
+                // Full Sentence
+                ImGui.Dummy(new Vector2(0, 3));
+                ImGui.Dummy(new Vector2(3, 0));
+                ImGui.SameLine();
+                string wholeSentence = XivEngine.Instance.Database.WholeSentence;
+                ImGui.SetNextItemWidth(240);
+                if (ImGui.InputText("##wholeSentence", ref wholeSentence, 200))
+                {
+                    XivEngine.Instance.Database.WholeSentence = wholeSentence;
+                    needSave = true;
+                }
+                ImGui.SameLine();
+                var forceWholeSentence = XivEngine.Instance.Database.ForceWholeSentence;
+                if (ImGui.Checkbox("##forceWholeSentence", ref forceWholeSentence))
+                {
+                    XivEngine.Instance.Database.ForceWholeSentence = forceWholeSentence;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Sentence");
+
+                ImGui.EndChild();
+            }
+
+            foreach (var item in PluginReference.audio.AudioInfoState.Take(6))
             {
                 // Show Dialogue Details (Name: Sentence)
                 if (ImGui.BeginChild(item.id, new Vector2(385, 43), false))
@@ -1033,6 +1076,8 @@ namespace XivVoices {
 
             }
 
+            ImGui.Dummy(new Vector2(1, 1));
+            ImGui.TextWrapped($"Files: {XivEngine.Instance.Database.Framework.Queue.Count}");
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
