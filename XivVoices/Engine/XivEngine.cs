@@ -143,12 +143,12 @@ namespace XivVoices.Engine
             if (comparisonResult < 0)
             {
                 this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
-                this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
                 this.Updater.ServerLastUpdate = serverDateTime;
+                await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
             }
             else
             {
-                this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... You're up to date!");
+                //this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... You're up to date!");
             }
         }
 
