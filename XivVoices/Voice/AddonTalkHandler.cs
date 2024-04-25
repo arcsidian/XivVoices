@@ -193,22 +193,21 @@ namespace XivVoices.Voice {
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
 
                                                 string id = character->GameObject.DataID.ToString();
-                                                if (character->DrawData.CustomizeData.BodyType.ToString() == "0")
-                                                    id = character->CharacterData.ModelSkeletonId.ToString();
+                                                string skeleton = character->CharacterData.ModelSkeletonId.ToString();
 
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, id, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (Conditions.IsBoundByDuty && _plugin.Config.BubblesInBattleZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, id, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (!Conditions.IsBoundByDuty && _plugin.Config.BubblesInSafeZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    NPCText(finalName, id, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
+                                                    NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                             }
@@ -616,13 +615,14 @@ namespace XivVoices.Voice {
             if (!_plugin.Config.Active) return;
             try {
                 uint id = 0;
+                int skeleton = 0;
                 byte body = 0; // 1 = adult, 3 = old,  4 = child
                 bool gender = false;
                 byte race = 0;
                 byte tribe = 0;
                 byte eyes = 0;
 
-                GameObject npcObject = DiscoverNpc(npcName, ref id, ref body, ref gender, ref tribe, ref race, ref eyes);
+                GameObject npcObject = DiscoverNpc(npcName, ref id, ref skeleton, ref body, ref gender, ref tribe, ref race, ref eyes);
 
                 // Gender Adjustment
                 if (npcName.ToLower().Contains("gaia"))
@@ -637,7 +637,7 @@ namespace XivVoices.Voice {
                 string genderType = gender ? "Female":"Male";
                 string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-                Engine.XivEngine.Instance.Process("Dialogue", correctSender, id.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as Character, user);
+                Engine.XivEngine.Instance.Process("Dialogue", correctSender, id.ToString(), skeleton.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as Character, user);
 
                 lastNPCDialogue = npcName + correctedMessage;
             }
@@ -645,7 +645,7 @@ namespace XivVoices.Voice {
             }
         }
         
-        private async void NPCText(string name, string id, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
+        private async void NPCText(string name, string id, string skeleton, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
             if (!_plugin.Config.Active || !_plugin.Config.BubblesEnabled) return;
             try {
                 Character npcObject = null;
@@ -685,7 +685,7 @@ namespace XivVoices.Voice {
                     string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
                     _plugin.Chat.Print("Bubble: " + correctedMessage);
-                    Engine.XivEngine.Instance.Process("Bubble", correctSender, id, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
+                    Engine.XivEngine.Instance.Process("Bubble", correctSender, id, skeleton, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
 
                     lastBubbleDialogue = correctedMessage;
                 }
@@ -701,7 +701,7 @@ namespace XivVoices.Voice {
             }
         }
 
-        private GameObject DiscoverNpc(string npcName, ref uint id, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
+        private GameObject DiscoverNpc(string npcName, ref uint id, ref int skeleton, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
             if (npcName == "???") {
                 /*
                 foreach (var item in _objectTable) {
@@ -727,26 +727,26 @@ namespace XivVoices.Voice {
                     if (item.Name.TextValue == npcName) {
                         _namesToRemove.Add(npcName);
                         //_plugin.webSocketServer.SendMessage($"DiscoverNpc: FOUND {item.Name.TextValue} WITH {item.DataId}");
-                        return GetCharacterData(item, ref id, ref body, ref gender, ref tribe, ref race, ref eyes);
+                        return GetCharacterData(item, ref id, ref skeleton, ref body, ref gender, ref tribe, ref race, ref eyes);
                     }
                 }
             }
             return null;
         }
 
-        private GameObject GetCharacterData(GameObject gameObject, ref uint id, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
+        private unsafe GameObject GetCharacterData(GameObject gameObject, ref uint id, ref int skeleton, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
             Character character = gameObject as Character;
             if (character != null) {
                 id = gameObject.DataId;
+                skeleton = ((FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)character.Address)->CharacterData.ModelSkeletonId;
                 body = character.Customize[(int)CustomizeIndex.ModelType];
                 gender = Convert.ToBoolean(character.Customize[(int)CustomizeIndex.Gender]);
                 race = character.Customize[(int)CustomizeIndex.Race];
                 tribe = character.Customize[(int)CustomizeIndex.Tribe];
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape];
-                // _plugin.webSocketServer.SendMessage($" ModelSkeletonId: [{character->CharacterData.ModelSkeletonId}]");
-                //_plugin.webSocketServer.SendMessage($"GetCharacterData: Name {character.Name.TextValue} Position {character.Position}");
+                
 //#if DEBUG
-//                _plugin.Chat.Print(character.Name.TextValue + " is model type " + body + ", and race " + race + ".");
+                _plugin.Chat.Print($"{character.Name.TextValue}: id[{id}] skeleton[{skeleton}] body[{body}] race[{race}] tribe[{tribe}] eyes[{eyes}]");
 //#endif
             }
             return character;

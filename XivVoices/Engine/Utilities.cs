@@ -7,10 +7,11 @@ namespace XivVoices.Engine
     [System.Serializable]
     public class TTSData
     {
-        public TTSData(string type, string speaker, string npcID, string message, string body, string gender, string race, string tribe, string eyes, string language, Vector3 position, Character character, string user) {
+        public TTSData(string type, string speaker, string npcID, string skeletonID, string message, string body, string gender, string race, string tribe, string eyes, string language, Vector3 position, Character character, string user) {
             Type = type;
             Speaker = speaker;
             NpcID = npcID;
+            SkeletonID = skeletonID;
             Message = message;
             Body = body;
             Gender = gender;
@@ -28,6 +29,7 @@ namespace XivVoices.Engine
         public string Type;
         public string Speaker;
         public string NpcID;
+        public string SkeletonID;
         public string Message;
         public string Body;
         public string Gender;
@@ -162,6 +164,7 @@ namespace XivVoices.Engine
         public string speaker;
         public string sentence;
         public string npcid;
+        public string skeletonid;
         public string body;
         public string race;
         public string gender;

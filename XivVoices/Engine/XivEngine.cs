@@ -165,9 +165,9 @@ namespace XivVoices.Engine
 
 
         #region Processing Methods
-        public void Process(string type, string speaker, string npcID, string message, string body, string gender, string race, string tribe, string eyes, string language, Vector3 position, Character character, string user)
+        public void Process(string type, string speaker, string npcID, string skeletonID, string message, string body, string gender, string race, string tribe, string eyes, string language, Vector3 position, Character character, string user)
         {
-            TTSData ttsData = new TTSData(type, speaker, npcID, message, body, gender, race, tribe, eyes, language, position, character, user);
+            TTSData ttsData = new TTSData(type, speaker, npcID, skeletonID, message, body, gender, race, tribe, eyes, language, position, character, user);
             XivMessage msg = new XivMessage(ttsData);
             msg.Ignored = false;
 
@@ -193,7 +193,7 @@ namespace XivVoices.Engine
             if (msg.TtsData.Body == "Beastman")
             {
                 PluginLog.Information("Race before Mapper: " + msg.TtsData.Race);
-                msg.TtsData.Race = mapper.GetSkeleton(int.Parse(msg.TtsData.NpcID));
+                msg.TtsData.Race = mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID));
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
 
@@ -1555,6 +1555,7 @@ namespace XivVoices.Engine
                 speaker = xivMessage.Speaker,
                 sentence = xivMessage.TtsData.Message,
                 npcid = xivMessage.NpcId,
+                skeletonid = xivMessage.TtsData.SkeletonID,
                 body = xivMessage.TtsData.Body,
                 gender = xivMessage.TtsData.Gender,
                 race = xivMessage.TtsData.Race,

@@ -355,11 +355,11 @@ namespace XivVoices {
 
             if (sender.Contains(_clientState.LocalPlayer.Name.TextValue))
             {
-                Engine.XivEngine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), _clientState.LocalPlayer, user);
+                Engine.XivEngine.Instance.Process(stringtype, correctSender, "-1", "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), _clientState.LocalPlayer, user);
             }
             else
             {
-                Engine.XivEngine.Instance.Process(stringtype, correctSender, "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
+                Engine.XivEngine.Instance.Process(stringtype, correctSender, "-1", "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
             }
         } 
 
