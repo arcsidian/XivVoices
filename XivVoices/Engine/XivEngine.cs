@@ -214,6 +214,8 @@ namespace XivVoices.Engine
                     msg = this.Database.GetNameless(msg);
                 msg = UpdateXivMessage(msg);
 
+                if (msg.FilePath == null)
+                    msg.Reported = true;
             }
             else
             {
@@ -249,7 +251,7 @@ namespace XivVoices.Engine
             if (msg.VoiceName == "Retainer" && !this.Database.Plugin.Config.RetainersEnabled) return;
             if (IgnoredDialogues.Contains(msg.Speaker + msg.Sentence) || this.Database.Ignored.Contains(msg.Speaker)) return;
 
-            PluginLog.Information($"NPC Data From FFXIV: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes}");
+            PluginLog.Information($"NPC Data From FFXIV: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}");
             if (msg.NPC == null)
                 PluginLog.Information("npc is null, voice name is " + msg.VoiceName);
 

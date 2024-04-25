@@ -756,7 +756,7 @@ namespace XivVoices.Voice {
 
         private AddonTalkState GetTalkAddonState() {
             if (!this.addonTalkManager.IsVisible()) {
-                return default;
+                return default; 
             }
 
             var addonTalkText = this.addonTalkManager.ReadText();

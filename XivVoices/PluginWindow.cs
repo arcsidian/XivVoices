@@ -826,40 +826,42 @@ namespace XivVoices {
                     }
 
                     // Show Player Progress Bar
-                    int progressSize = 220;
+                    int progressSize = 218;
                     if (item.type == "xivv")
                         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
                     else if (item.type == "empty")
                     {
                         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
-                        progressSize = 335;
+                        progressSize = 275;
                     }
                     ImGui.ProgressBar(item.percentage, new Vector2(progressSize, 24), $"{item.state}");
                     if (item.type == "xivv" || item.type == "empty")
                         ImGui.PopStyleColor();
 
-                    
-                    if (item.type != "empty")
+                    // Show Report Button
+                    ImGui.SameLine();
+                    string reportTitle = "Report";
+                    if(item.type != "xivv")
+                        reportTitle = "Mute";
+                    if (ImGui.Button($"{reportTitle}##report{item.id}", new Vector2(50, 24)))
                     {
-                        ImGui.SameLine();
+                        reportInput = new string('\0', 250);
+                        ImGui.OpenPopup($"ReportDialogue##{item.id}");
+                    }
 
-                        // Show Report Button
-                        if (ImGui.Button($"Report##report{item.id}", new Vector2(50, 24)))
-                        {
-                            reportInput = new string('\0', 250);
-                            ImGui.OpenPopup($"ReportDialogue##{item.id}");
-                        }
+                    // Report Popup
+                    bool open = true;
+                    ImGui.SetNextWindowSizeConstraints(new Vector2(350, 350), new Vector2(350, float.MaxValue));
+                    if (ImGui.BeginPopupModal($"ReportDialogue##{item.id}", ref open, ImGuiWindowFlags.AlwaysAutoResize))
+                    {
+                        ImGui.Dummy(new Vector2(0, 5));
+                        ImGui.Text($"Speaker: {item.data.Speaker}");
+                        ImGui.Dummy(new Vector2(0, 5));
+                        ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
+                        ImGui.Dummy(new Vector2(0, 20));
 
-                        // Report Popup
-                        bool open = true;
-                        ImGui.SetNextWindowSizeConstraints(new Vector2(350, 350), new Vector2(350, float.MaxValue));
-                        if (ImGui.BeginPopupModal($"ReportDialogue##{item.id}", ref open, ImGuiWindowFlags.AlwaysAutoResize))
+                        if (item.type == "xivv")
                         {
-                            ImGui.Dummy(new Vector2(0, 5));
-                            ImGui.Text($"Speaker: {item.data.Speaker}");
-                            ImGui.Dummy(new Vector2(0, 5));
-                            ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
-                            ImGui.Dummy(new Vector2(0, 20));
                             ImGui.TextWrapped("Tell me why this dialogue needs to be redone or muted");
                             ImGui.Dummy(new Vector2(0, 5));
                             ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 250, new Vector2(335, 100));
@@ -871,19 +873,23 @@ namespace XivVoices {
                                 ImGui.CloseCurrentPopup();
                             }
                             ImGui.Dummy(new Vector2(0, 2));
-                            if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
-                            {
-                                PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
-                                PluginReference.xivEngine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
-                                ImGui.CloseCurrentPopup();
-                            }
-                            ImGui.Dummy(new Vector2(0, 2));
-                            if (ImGui.Button("Close", new Vector2(335, 25)))
-                                ImGui.CloseCurrentPopup();
-                            ImGui.Dummy(new Vector2(0, 2));
-                            ImGui.EndPopup();
                         }
+                        
+                        if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
+                        {
+                            PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
+                            PluginReference.xivEngine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
+                            ImGui.CloseCurrentPopup();
+                        }
+                        ImGui.Dummy(new Vector2(0, 2));
+                        if (ImGui.Button("Close", new Vector2(335, 25)))
+                            ImGui.CloseCurrentPopup();
+                        ImGui.Dummy(new Vector2(0, 2));
+                        ImGui.EndPopup();
+                    }
 
+                    if (item.type != "empty")
+                    {
                         // Show Play and Stop Buttons
                         ImGui.SameLine();
                         if (item.state == "playing")
