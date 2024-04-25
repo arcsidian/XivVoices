@@ -13,9 +13,9 @@ namespace XivVoices.Engine
     public class Audio
     {
         private bool audioIsStopped = false;
-        public bool AudioIsPlaying { get; set; } = false;
 
         private Plugin Plugin;
+        public Queue<string> dialogueQueue { get; set; }
         public Queue<string> bubbleQueue { get; set; }
         public Queue<string> unknownQueue { get; set; }
         public LinkedList<AudioInfo> AudioInfoState { get; set; }
@@ -25,6 +25,7 @@ namespace XivVoices.Engine
             this.Plugin = plugin;
             Plugin.Chat.Print("Audio: I am awake");
             AudioInfoState = new LinkedList<AudioInfo>();
+            dialogueQueue = new Queue<string>();
             bubbleQueue = new Queue<string>();
             unknownQueue = new Queue<string>();
 
@@ -36,15 +37,28 @@ namespace XivVoices.Engine
             AudioInfoState = null;
             bubbleQueue.Clear();
             bubbleQueue = null;
+            dialogueQueue.Clear();
+            dialogueQueue = null;
         }
 
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
-            
-            while (AudioIsPlaying)
-                await Task.Delay(50);
+            bool initialization = false;
 
-            AudioIsPlaying = true;
+            while (true)
+            {
+                if (!initialization)
+                {
+                    dialogueQueue.Enqueue(xivMessage.Speaker + xivMessage.Sentence);
+                    initialization = true;
+                }
+
+                if (dialogueQueue.Peek() == xivMessage.Speaker + xivMessage.Sentence)
+                    break;
+
+                await Task.Delay(30);
+            }
+
             audioIsStopped = false;
 
             var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
@@ -80,7 +94,7 @@ namespace XivVoices.Engine
             audioInfo.percentage = 1f;
             waveStream?.Dispose();
             audioIsStopped = false;
-            AudioIsPlaying = false;
+            dialogueQueue.Dequeue();
         }
 
         public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream, string type)
