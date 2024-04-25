@@ -406,13 +406,19 @@ namespace XivVoices.Engine
             return xivMessage;
         }
 
-        public XivMessage UpdateXivMessage(XivMessage xivMessage, bool retainerRun = false)
+        public XivMessage UpdateXivMessage(XivMessage xivMessage)
         {
             if (xivMessage.Ignored)
             {
                 xivMessage.VoiceName = "Unknown";
                 xivMessage.Network = "Online";
                 return xivMessage;
+            }
+
+            // Check if it belongs to a retainer
+            if (this.Database.Plugin.Config.RetainersEnabled)
+            {
+                xivMessage = this.Database.GetRetainer(xivMessage);
             }
 
             // Changing 2-letter names because fuck windows defender
@@ -434,20 +440,6 @@ namespace XivVoices.Engine
 
             if (xivMessage.VoiceName == "Unknown" && xivMessage.Speaker != "???")
             {
-                // Check if it belongs to a retainer
-                if (!retainerRun)
-                {
-                    xivMessage = this.Database.GetRetainer(xivMessage);
-                    if (xivMessage.VoiceName == "Retainer")
-                    {
-                        if (this.Database.Plugin.Config.RetainersEnabled)
-                            return UpdateXivMessage(xivMessage, true);
-                        else
-                            return xivMessage;
-                    }
-                }
-
-                // If not then report it as unknown
                 if (!xivMessage.Reported)
                 {
                     ReportUnknown(xivMessage);
