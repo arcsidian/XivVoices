@@ -193,7 +193,7 @@ namespace XivVoices.Engine
             if (msg.TtsData.Body == "Beastman")
             {
                 PluginLog.Information("Race before Mapper: " + msg.TtsData.Race);
-                msg.TtsData.Race = mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID));
+                msg.TtsData.Race = mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), Database.Plugin.ClientState.TerritoryType);
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
 

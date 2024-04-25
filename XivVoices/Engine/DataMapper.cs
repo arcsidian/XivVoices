@@ -60,28 +60,80 @@ namespace XivVoices.Engine
             {133, "Option 6"},
         };
 
-        private Dictionary<int, string> skeletonMap = new Dictionary<int, string>()
+        private Dictionary<(int, ushort), string> skeletonRegionMap = new Dictionary<(int, ushort), string>()
         {
-            {60, "Dragon"}, // Medium size Sooh Non
-            {63, "Dragon"}, // Large size Ess Khas
-            {239, "Dragon"}, // Small size Khash Thah
-            {11001, "Amalj'aa"}, // Vanu Vanu too
-            {11002, "Ixal"},
-            {11003, "Kobold"},
-            {11004, "Goblin"},
-            {11005, "Sylph"},
-            {11006, "Moogle"},
-            {11007, "Sahagin"},
-            {11013, "Qiqirn"},
-            {11028, "Kojin"}
+            {(60,0), "Dragon"}, // Medium size --> Sooh Non
+            {(60,398), "Dragon"},
+            {(63,0), "Dragon"}, // Large size --> Ess Khas
+            {(63,398), "Dragon"},
+            {(239,0), "Dragon"}, // Small size --> Khash Thah
+            {(239,398), "Dragon"},
+
+            {(494, 0), "Namazu"},
+            {(494, 614), "Namazu"},
+            {(494, 622), "Namazu"},
+
+            {(11001, 0), "Amalj'aa"},
+            {(11001, 146), "Amalj'aa"},
+            {(11001, 401), "Vanu Vanu"},
+
+            {(11002,0), "Ixal"},
+            {(11002,154), "Ixal"},
+
+            {(11003,0), "Kobold"},
+            {(11003,180), "Kobold"},
+
+            {(11004,0), "Goblin"},
+            {(11004,478), "Goblin"},
+
+            {(11005,0), "Sylph"},
+            {(11005,152), "Sylph"},
+
+            {(11006,0), "Moogle"},
+            {(11006,400), "Moogle"},
+
+            {(11007,0), "Sahagin"},
+            {(11007,138), "Sahagin"},
+
+            {(11013,0), "Qiqirn"},
+            {(11013,139), "Qiqirn"},
+
+            {(11020,0), "Vath"},
+            {(11020,398), "Vath"},
+
+            {(11028,0), "Kojin"},
+            {(11028,613), "Kojin"},
+
+            {(11029,0), "Ananta"},
+            {(11029,612), "Ananta"},
+
+            {(11030,614), "Lupin"},
+
+            {(11038,0), "Pixie"},
+            {(11038,816), "Pixie"},
+
+            {(11051,0), "Omicron"},
+            {(11051,960), "Omicron"},
+
+            {(11052,0), "Loporrit"},
+            {(11052,959), "Loporrit"}
         };
-
-
 
         public string GetBody(int id) => bodyMap.TryGetValue(id, out var name) ? name : "Adult";
         public string GetRace(int id) => raceMap.TryGetValue(id, out var name) ? name : "Unknown:" + id.ToString();
         public string GetTribe(int id) => tribeMap.TryGetValue(id, out var name) ? name : "Unknown:" + id.ToString();
         public string GetEyes(int id) => eyesMap.TryGetValue(id, out var name) ? name : "Unknown:" + id.ToString();
-        public string GetSkeleton(int id) => skeletonMap.TryGetValue(id, out var name) ? name : "Unknown:" + id.ToString();
+        public string GetSkeleton(int id, ushort region)
+        {
+            if (skeletonRegionMap.TryGetValue((id, region), out var name))
+            {
+                return name;
+            }
+            else if (skeletonRegionMap.TryGetValue((id, 0), out var defaultName))
+            {
+                return defaultName;
+            }
+            return "Unknown combination: ID " + id.ToString() + ", Region " + region.ToString();
+        }
     }
 }
