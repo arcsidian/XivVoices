@@ -64,8 +64,6 @@ namespace XivVoices.Engine
             this.Audio = _audio;
             this.Updater = _updater;
             this.ttsEngine = null;
-            //AiVoicesEnabled = PlayerPrefs.GetInt("aiVoicesEnabled", 1) == 1;
-            //RetainersEnabled = PlayerPrefs.GetInt("retainersEnabled", 1) == 1;
             Mapper = new DataMapper();
             _updateTimer = new Timer(Update, null, 0, 50);
             _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
