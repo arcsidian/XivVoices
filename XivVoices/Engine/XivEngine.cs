@@ -1209,13 +1209,15 @@ namespace XivVoices.Engine
                 this.ttsEngine = new TTSEngine(Database.Plugin);
 
             if (localTTS[0] == null)
-                localTTS[0] = TTSVoiceNative.LoadVoiceFromDisk("en-gb-northern_english_male-medium");
+                localTTS[0] = TTSVoiceNative.LoadVoiceFromDisk(this.Database.Plugin.Config.LocalTTSMale);
             if (localTTS[1] == null)
-                localTTS[1] = TTSVoiceNative.LoadVoiceFromDisk("en-gb-jenny_dioco-medium");
+                localTTS[1] = TTSVoiceNative.LoadVoiceFromDisk(this.Database.Plugin.Config.LocalTTSFemale);
 
             try
             {
-                int speaker = 0;
+                int speaker = this.Database.Plugin.Config.LocalTTSUngendered;
+                if (msg.TtsData.Gender == "Male")
+                    speaker = 0;
                 if (msg.TtsData.Gender == "Female")
                     speaker = 1;
 

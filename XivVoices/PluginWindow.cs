@@ -794,6 +794,19 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Local TTS Enabled");
 
+            ImGui.Indent(20);
+            ImGui.Dummy(new Vector2(0, 5));
+            ImGui.Text("Local TTS Ungendered Voice:");
+            ImGui.SameLine();
+            var localTTSUngendered = this.Configuration.LocalTTSUngendered;
+            string[] genders = { "Male", "Female" };
+            ImGui.SetNextItemWidth(120);
+            if (ImGui.Combo("##localTTSUngendered", ref localTTSUngendered, genders, genders.Length))
+            {
+                this.Configuration.LocalTTSUngendered = localTTSUngendered;
+                needSave = true;
+            }
+            ImGui.Unindent(20);
 
             // Polly Settings ----------------------------------------------
 
@@ -813,7 +826,6 @@ namespace XivVoices {
 
         private void LogsSettings()
         {
-            // Polly Settings ----------------------------------------------
             if (!configuration.Active)
             {
                 ImGui.Dummy(new Vector2(0, 20));

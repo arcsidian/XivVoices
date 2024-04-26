@@ -405,7 +405,6 @@ namespace XivVoices {
 
             //Chat.Print($"{correctSender}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}]");
             XivEngine.Instance.Process(stringtype, correctSender, id, skeleton, message.ToString(), body, gender, race, tribe, eyes, _clientState.ClientLanguage.ToString(), new Vector3(-99), character, user);
-
         }
 
         public void TriggerLipSync(Character character, string length)
@@ -539,39 +538,6 @@ namespace XivVoices {
                             this.pluginInterface.SavePluginConfig(config);
                             config.Active = false;
                             break;
-#if DEBUG
-
-                        case "lips1":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "1");
-                            break;
-                        case "lips2":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "2");
-                            break;
-                        case "lips3":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "3");
-                            break;
-                        case "lips4":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "4");
-                            break;
-                        case "lips5":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "5");
-                            break;
-                        case "lips6":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "6");
-                            break;
-                        case "lips7":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "7");
-                            break;
-                        case "lips8":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "8");
-                            break;
-                        case "lips9":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "9");
-                            break;
-                        case "lips10":
-                            _addonTalkHandler.TriggerLipSync(_clientState.LocalPlayer, "10");
-                            break;
-#endif
                         default:
                             _window.Toggle();
                             break;

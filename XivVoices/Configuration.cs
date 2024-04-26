@@ -40,6 +40,9 @@ namespace XivVoices
         public int AudioEngine { get; set; } = 1;
         public bool PollyEnabled { get; set; } = false;
         public bool LocalTTSEnabled { get; set; } = false;
+        public string LocalTTSMale { get; set; } = "en-gb-northern_english_male-medium";
+        public string LocalTTSFemale { get; set; } = "en-gb-jenny_dioco-medium";
+        public int LocalTTSUngendered { get; set; } = 1;
         public bool WebsocketRedirectionEnabled { get; set; } = false;
 
         // Framework Settings
