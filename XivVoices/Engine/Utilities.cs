@@ -174,4 +174,16 @@ namespace XivVoices.Engine
         public string user;
         public string comment;
     }
+
+
+    [System.Serializable]
+    public class PlayerCharacter
+    {
+        public string Body { get; set; }
+        public string Gender { get; set; }
+        public string Race { get; set; }
+        public string Tribe { get; set; }
+        public string EyeShape { get; set; }
+    }
+
 }

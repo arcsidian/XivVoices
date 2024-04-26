@@ -28,7 +28,7 @@ namespace XivVoices.Engine
         private Timer _updateTimer;
         private Timer _autoUpdateTimer;
         private bool speakLocallyIsBusy = false;
-        private DataMapper mapper;
+        
         private Queue<XivMessage> ffxivMessages = new Queue<XivMessage>();
         private TTSEngine ttsEngine;
         TTSVoiceNative[] localTTS = new TTSVoiceNative[2];
@@ -39,7 +39,7 @@ namespace XivVoices.Engine
         private bool Active { get; set; } = false;
         public Database Database { get; set; }
         public Audio Audio { get; set; }
-
+        public DataMapper Mapper { get; set; }
         public Updater Updater { get; set; }
         public bool OnlineTTS { get; set; } = false;
 
@@ -66,7 +66,7 @@ namespace XivVoices.Engine
             this.ttsEngine = null;
             //AiVoicesEnabled = PlayerPrefs.GetInt("aiVoicesEnabled", 1) == 1;
             //RetainersEnabled = PlayerPrefs.GetInt("retainersEnabled", 1) == 1;
-            mapper = new DataMapper();
+            Mapper = new DataMapper();
             _updateTimer = new Timer(Update, null, 0, 50);
             _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
             localTTS[0] = null;
@@ -190,14 +190,14 @@ namespace XivVoices.Engine
                 return;
             }
 
-            msg.TtsData.Body = mapper.GetBody(int.Parse(msg.TtsData.Body));
-            msg.TtsData.Race = mapper.GetRace(int.Parse(msg.TtsData.Race));
-            msg.TtsData.Tribe = mapper.GetTribe(int.Parse(msg.TtsData.Tribe));
-            msg.TtsData.Eyes = mapper.GetEyes(int.Parse(msg.TtsData.Eyes));
+            msg.TtsData.Body = Mapper.GetBody(int.Parse(msg.TtsData.Body));
+            msg.TtsData.Race = Mapper.GetRace(int.Parse(msg.TtsData.Race));
+            msg.TtsData.Tribe = Mapper.GetTribe(int.Parse(msg.TtsData.Tribe));
+            msg.TtsData.Eyes = Mapper.GetEyes(int.Parse(msg.TtsData.Eyes));
             if (msg.TtsData.Body == "Beastman")
             {
                 PluginLog.Information("Race before Mapper: " + msg.TtsData.Race);
-                msg.TtsData.Race = mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), Database.Plugin.ClientState.TerritoryType);
+                msg.TtsData.Race = Mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), Database.Plugin.ClientState.TerritoryType);
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
 

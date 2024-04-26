@@ -31,7 +31,8 @@ namespace XivVoices.Engine
         public string ToolsPath { get { return "C:/XIV_Voices/Tools";  } }
         public string Firstname { get; } = "_FIRSTNAME_";
         public string Lastname { get; } = "_LASTNAME_";
-        public Dictionary<string, XivNPC> Npcs { get; set; }
+        public Dictionary<string, XivNPC> NpcData { get; set; }
+        public Dictionary<string, PlayerCharacter> PlayerData { get; set; }
         public Dictionary<string, string> Data { get; set; }
         public Dictionary<string, string> VoiceNames { get; set; }
         public Dictionary<string, string> Lexicon { get; set; }
@@ -165,6 +166,9 @@ namespace XivVoices.Engine
                 Plugin.Chat.Print("Loading NPC Data...");
                 await LoadNPCsAsync();
 
+                Plugin.Chat.Print("Loading Player Data...");
+                await LoadPlayersAsync();
+
                 Plugin.Chat.Print("Loading Voice Names...");
                 //if (XivVoices.Instance.ArcFramework != null)
                 //{
@@ -244,12 +248,50 @@ namespace XivVoices.Engine
         {
             string resourceName = "XivVoices.Data.npcData.json";
             string filePath = DirectoryPath + "/npcData.json";
-            Npcs = ReadResourceNPCs(resourceName);
-            if (Npcs == null)
+            NpcData = ReadResourceNPCs(resourceName);
+            if (NpcData == null)
             {
-                Npcs = new Dictionary<string, XivNPC>();
+                NpcData = new Dictionary<string, XivNPC>();
                 PluginLog.LogError("Something is wrong with the NPC database");
             }
+        }
+
+        public async Task LoadPlayersAsync() //= new Dictionary<string, PlayerCharacter>();
+        {
+            string filePath = DirectoryPath + "/playerData.json";
+
+            if (File.Exists(filePath))
+            {
+                string jsonContent = File.ReadAllText(filePath);
+                PlayerData = JsonConvert.DeserializeObject<Dictionary<string, PlayerCharacter>>(jsonContent);
+            }
+            else
+            {
+                PlayerData = new Dictionary<string, PlayerCharacter>();
+                await WriteJSON(filePath, PlayerData);
+            }
+        }
+
+        public void UpdateAndSavePlayerData(string name, PlayerCharacter playerCharacter) //= new Dictionary<string, PlayerCharacter>();
+        {
+            string filePath = DirectoryPath + "/playerData.json";
+            if (!PlayerData.ContainsKey(name) || !IsEqual(PlayerData[name], playerCharacter))
+            {
+                PlayerData[name] = playerCharacter;
+                string jsonContent = JsonConvert.SerializeObject(PlayerData, Formatting.Indented);
+                // Asynchronously write text to the file
+                File.WriteAllTextAsync(filePath, jsonContent);
+            }
+            
+        }
+
+        private bool IsEqual(PlayerCharacter pc1, PlayerCharacter pc2)
+        {
+            return pc1.Body == pc2.Body &&
+                   pc1.Gender == pc2.Gender &&
+                   pc1.Race == pc2.Race &&
+                   pc1.Tribe == pc2.Tribe &&
+                   pc1.EyeShape == pc2.EyeShape;
         }
 
         public async Task LoadVoiceNamesAsync()
@@ -294,6 +336,7 @@ namespace XivVoices.Engine
             await LoadNamelessAsync(true);
             await LoadIgnoredAsync(true);
             await LoadNPCsAsync();
+            await LoadPlayersAsync();
             //if (XivVoices.Instance.ArcFramework) XivVoices.Instance.ArcFramework.LoadDatabase();
             await LoadVoiceNamesAsync();
         }
@@ -366,6 +409,7 @@ namespace XivVoices.Engine
                 return null;
             }
         }
+
 
         public Dictionary<string, XivNPC> ReadResourceNPCs(string resourceName)
         {
@@ -641,13 +685,13 @@ namespace XivVoices.Engine
                 npc.EyeShape = ttsData.Eyes;
                 return npc;
             }
-            if (!npcId.IsNullOrEmpty() && Npcs.ContainsKey(npcId))
+            if (!npcId.IsNullOrEmpty() && NpcData.ContainsKey(npcId))
             {
                 fetchedByID = true;
-                return Npcs[npcId];
+                return NpcData[npcId];
             }
-            else if (Npcs.ContainsKey(npcName))
-                return Npcs[npcName];
+            else if (NpcData.ContainsKey(npcName))
+                return NpcData[npcName];
             else
                 return null;
         }
