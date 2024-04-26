@@ -184,6 +184,10 @@ namespace XivVoices.Engine
             {
                 PluginLog.Information("[Ignored] " + ttsData.Speaker + ":" + ttsData.Message);
                 msg.Ignored = true;
+                msg.VoiceName = "Unknown";
+                msg.Network = "Online";
+                AddToQueue(msg);
+                return;
             }
 
             msg.TtsData.Body = mapper.GetBody(int.Parse(msg.TtsData.Body));

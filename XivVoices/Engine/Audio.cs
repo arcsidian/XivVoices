@@ -66,7 +66,8 @@ namespace XivVoices.Engine
 
             if (!XivEngine.Instance.Database.Plugin.Config.Mute)
             {
-                Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
+                if(!xivMessage.Ignored)
+                    Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
                 using (var audioOutput = GetAudioEngine())
                 {
                     audioOutput.Init(volumeProvider);
@@ -82,7 +83,8 @@ namespace XivVoices.Engine
                         if (audioIsStopped)
                         {
                             audioOutput.Stop();
-                            Plugin.StopLipSync(xivMessage.TtsData.Character);
+                            if (!xivMessage.Ignored)
+                                Plugin.StopLipSync(xivMessage.TtsData.Character);
                             break;
                         }
                         await Task.Delay(50);
@@ -192,7 +194,10 @@ namespace XivVoices.Engine
         {
             var audioInfo = GetAudioInfo(xivMessage, "empty");
             audioInfo.percentage = 1f;
-            audioInfo.state = "Reported";
+            if(xivMessage.Reported)
+                audioInfo.state = "Reported";
+            else
+                audioInfo.state = "";
         }
 
         float AdjustVolume(float distance)

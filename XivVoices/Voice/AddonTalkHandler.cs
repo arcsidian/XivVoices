@@ -26,7 +26,6 @@ using System.Text.RegularExpressions;
 using Dalamud.Game.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-using XivVoices.Engine;
 
 namespace XivVoices.Voice {
     public class AddonTalkHandler : IDisposable {
@@ -449,7 +448,7 @@ namespace XivVoices.Voice {
                         {
                             await Task.Delay(100, token);
 
-                            if(!token.IsCancellationRequested && mouthMovement[6] > 0)
+                            if(!token.IsCancellationRequested && mouthMovement[6] > 0 && character != null && actorMemory != null && actorMemory != null)
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[6].Timeline.AnimationId;
                                 MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
@@ -461,7 +460,7 @@ namespace XivVoices.Voice {
 #endif
                                 await Task.Delay(adjustedDelay, token);
 
-                                if (!token.IsCancellationRequested && character != null)
+                                if (!token.IsCancellationRequested && character != null && actorMemory != null)
                                 {
 #if DEBUG
                                     _chatGui.Print($"Task mouthMovement[6] was finished");
@@ -473,7 +472,7 @@ namespace XivVoices.Voice {
 
                             }
 
-                            if (!token.IsCancellationRequested && mouthMovement[5] > 0)
+                            if (!token.IsCancellationRequested && mouthMovement[5] > 0 && character != null && actorMemory != null)
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[5].Timeline.AnimationId;
                                 MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
@@ -483,7 +482,7 @@ namespace XivVoices.Voice {
                                 _chatGui.Print($"Task was started mouthMovement[5] durationMs[{mouthMovement[5] * 2}] delay [{adjustedDelay}]");
 #endif
                                 await Task.Delay(adjustedDelay, token);
-                                if (!token.IsCancellationRequested && character != null)
+                                if (!token.IsCancellationRequested && character != null && actorMemory != null)
                                 {
 #if DEBUG
                                     _chatGui.Print($"Task mouthMovement[5] was finished");
@@ -495,7 +494,7 @@ namespace XivVoices.Voice {
 
                             }
 
-                            if (!token.IsCancellationRequested && mouthMovement[4] > 0)
+                            if (!token.IsCancellationRequested && mouthMovement[4] > 0 && character != null && actorMemory != null)
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[4].Timeline.AnimationId;
                                 MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
@@ -505,7 +504,7 @@ namespace XivVoices.Voice {
                                 _chatGui.Print($"Task was started mouthMovement[4] durationMs[{mouthMovement[4]}] delay [{adjustedDelay}]");
 #endif
                                 await Task.Delay(adjustedDelay, token);
-                                if (!token.IsCancellationRequested && character != null)
+                                if (!token.IsCancellationRequested && character != null && actorMemory != null)
                                 {
 #if DEBUG
                                     _chatGui.Print($"Task mouthMovement[4] was finished");
@@ -524,8 +523,6 @@ namespace XivVoices.Voice {
                                 cts.Dispose();
                                 taskCancellations.Remove(character);
                             }
-
-
                         }
                         catch (TaskCanceledException)
                         {
@@ -753,6 +750,20 @@ namespace XivVoices.Voice {
             return character;
         }
 
+        public Character GetCharacterFromName(string name)
+        {
+            foreach (var item in _objectTable) {
+
+                if (item as Character == null|| item.Name.TextValue == "") continue;
+
+                Character character = item as Character;
+                if (name == character.Name.TextValue)
+                {
+                    return character;
+                }
+            }
+            return null;
+        }
 
         private AddonTalkState GetTalkAddonState() {
             if (!this.addonTalkManager.IsVisible()) {
