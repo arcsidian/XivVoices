@@ -471,7 +471,20 @@ namespace XivVoices.Engine
 
         string GetVoiceName(XivMessage message, bool fetchedByID)
         {
-            if (!fetchedByID && this.Database.VoiceNames.TryGetValue(message.Speaker, out string voiceName))
+            bool npcWithVariedLooksFound = false;
+            
+            if(this.Database.NpcWithVariedLooks.Contains(message.Speaker))
+            {
+                this.Database.Plugin.Chat.Print(message.Speaker + " --> npcWithVariedLooks ");
+                message.NPC.BodyType = message.TtsData.Body;
+                message.NPC.Gender = message.TtsData.Gender;
+                message.NPC.Race = message.TtsData.Race;
+                message.NPC.Clan = message.TtsData.Tribe;
+                message.NPC.EyeShape = message.TtsData.Eyes;
+                npcWithVariedLooksFound = true;
+            }
+
+            if (!fetchedByID && this.Database.VoiceNames.TryGetValue(message.Speaker, out string voiceName) && !npcWithVariedLooksFound)
             {
                 PluginLog.Information("GetVoiceName: fetchedByID is " + fetchedByID);
                 return voiceName;
