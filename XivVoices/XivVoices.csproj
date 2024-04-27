@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0-windows</TargetFramework>
 		<LangVersion>11.0</LangVersion>
-		<Version>0.2.2.2</Version>
+		<Version>0.2.2.3</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -102,6 +102,50 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>false</Visible>
     </Content>
+	<Content Include="..\Data\icon.png">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<Visible>false</Visible>
+	</Content>
+		<Content Include="..\Data\generalSettings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\generalSettingsActive.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\dialogueSettings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\dialogueSettingsActive.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\audioSettings.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\audioSettingsActive.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\archive.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\archiveActive.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\discord.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
+		<Content Include="..\Data\ko-fi.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Visible>false</Visible>
+		</Content>
 	</ItemGroup>
 
 

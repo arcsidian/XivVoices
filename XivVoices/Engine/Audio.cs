@@ -123,6 +123,7 @@ namespace XivVoices.Engine
                 PanningSampleProvider panningProvider = new PanningSampleProvider(volumeProvider);
 
                 var audioInfo = GetAudioInfo(xivMessage, type);
+                ushort initialRegion = XivEngine.Instance.Database.Plugin.ClientState.TerritoryType;
 
                 if (!XivEngine.Instance.Database.Plugin.Config.Mute)
                 { 
@@ -139,6 +140,11 @@ namespace XivVoices.Engine
                         {
                             var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
                             audioInfo.percentage = (float)(currentPosition / totalDuration);
+                            if (initialRegion != XivEngine.Instance.Database.Plugin.ClientState.TerritoryType)
+                            {
+                                audioOutput.Stop();
+                                break;
+                            }
                             data = GetDistanceAndBalance(xivMessage.TtsData.Position);
                             volumeProvider.Volume = AdjustVolume(data.Distance);
                             panningProvider.Pan = data.Balance;
@@ -246,7 +252,7 @@ namespace XivVoices.Engine
                 AudioInfoState.AddFirst(audioInfo);
                 audioInfo.state = "new";
             }
-            if (AudioInfoState.Count > 50)
+            if (AudioInfoState.Count > 100)
             {
                 var oldestFinished = AudioInfoState.LastOrDefault(ddi => ddi.state == "stopped" || ddi.state == "Reported");
                 if (oldestFinished != null)

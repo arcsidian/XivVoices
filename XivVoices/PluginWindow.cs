@@ -28,10 +28,11 @@ namespace XivVoices {
         private string selectedDrive = string.Empty;
         private string reportInput = new string('\0', 250);
         private bool isFrameworkWindowOpen = false;
+        private string currentTab = "General";
 
 
-        public PluginWindow() : base("Xiv Voices by Arcsidian") {
-            Size = new Vector2(350, 650);
+        public PluginWindow() : base("      XIVV                                       ~  Xiv Voices by Arcsidian  ~") {
+            Size = new Vector2(440, 650);
             initialSize = Size;
             SizeCondition = ImGuiCond.Always;
             Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize;
@@ -63,6 +64,12 @@ namespace XivVoices {
 
         private void ClientState_Login() {
         }
+
+        public void InitializeImages()
+        {
+
+        }
+
         public override void Draw() {
             if (clientState.IsLoggedIn) {
 
@@ -78,38 +85,149 @@ namespace XivVoices {
                     }
                     else
                     {
-                        if (ImGui.BeginTabBar("ConfigTabs"))
+                        // The sidebar with the tab buttons
+                        ImGui.BeginChild("Sidebar", new Vector2(50, 550), false);
+                        var backupColor = ImGui.GetStyle().Colors[(int)ImGuiCol.Button];
+                        ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = new Vector4(0, 0, 0, 0);
+                        if(currentTab == "General")
                         {
-                            if (ImGui.BeginTabItem("General"))
-                            {
-                                DrawGeneral();
-                                ImGui.EndTabItem();
-                            }
-
-                            if (ImGui.BeginTabItem("Dialogue Settings"))
-                            {
-                                DrawSettings();
-                                ImGui.EndTabItem();
-                            }
-
-                            if (ImGui.BeginTabItem("Audio Settings"))
-                            {
-                                AudioSettings();
-                                ImGui.EndTabItem();
-                            }
-
-                            if (ImGui.BeginTabItem("Audio Logs"))
-                            {
-                                LogsSettings();
-                                ImGui.EndTabItem();
-                            }
-                            ImGui.EndTabBar();
+                            if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "General";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("General Settings");
                         }
+                        else
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.GeneralSettings.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "General";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("General Settings");
+                        }
+
+                        if (currentTab == "Dialogue Settings")
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.DialogueSettingsActive.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Dialogue Settings";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Dialogue Settings");
+                        }
+                        else
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.DialogueSettings.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Dialogue Settings";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Dialogue Settings");
+                        }
+
+                        if (currentTab == "Audio Settings")
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.AudioSettingsActive.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Audio Settings";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Audio Settings");
+                        }
+                        else
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.AudioSettings.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Audio Settings";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Audio Settings");
+                        }
+
+                        if (currentTab == "Audio Logs")
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.ArchiveActive.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Audio Logs";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Audio Logs");
+                        }
+                        else
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.Archive.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Audio Logs";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Audio Logs");
+                        }
+
+                        if (ImGui.ImageButton(this.PluginReference.Discord.ImGuiHandle, new Vector2(42, 42)))
+                        {
+                            Process process = new Process();
+                            try
+                            {
+                                // true is the default, but it is important not to set it to false
+                                process.StartInfo.UseShellExecute = true;
+                                process.StartInfo.FileName = "https://arcsidian.com/discord";
+                                process.Start();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+                        if (ImGui.IsItemHovered())
+                            ImGui.SetTooltip("Join Our Discord Community");
+
+                        if (ImGui.ImageButton(this.PluginReference.KoFi.ImGuiHandle, new Vector2(42, 42)))
+                        {
+                            Process process = new Process();
+                            try
+                            {
+                                // true is the default, but it is important not to set it to false
+                                process.StartInfo.UseShellExecute = true;
+                                process.StartInfo.FileName = "https://ko-fi.com/arcsidian";
+                                process.Start();
+                            }
+                            catch (Exception e)
+                            {
+
+                            }
+                        }
+                        if (ImGui.IsItemHovered())
+                            ImGui.SetTooltip("Support the Project on Ko-Fi");
+
+                        if (ImGui.ImageButton(this.PluginReference.Icon.ImGuiHandle, new Vector2(42, 42)))
+                        {
+                            isFrameworkWindowOpen = true;
+                        }
+                        Framework();
+
+                        ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = backupColor;
+                        ImGui.EndChild();
+
+                        // Draw a vertical line separator
+                        ImGui.SameLine();
+                        ImDrawListPtr drawList = ImGui.GetWindowDrawList();
+                        Vector2 lineStart = ImGui.GetCursorScreenPos() - new Vector2(0,10);
+                        Vector2 lineEnd = new Vector2(lineStart.X, lineStart.Y + 630);
+                        drawList.AddLine(lineStart, lineEnd, ImGui.GetColorU32(ImGuiCol.WindowBg), 3f);
+                        ImGui.SameLine(80);
+
+                        // The content area where the selected tab's contents will be displayed
+                        ImGui.BeginGroup();
+
+                        if (currentTab == "General")
+                        {
+                            DrawGeneral();
+                        }
+                        else if (currentTab == "Dialogue Settings")
+                        {
+                            DrawSettings();
+                        }
+                        else if (currentTab == "Audio Settings")
+                        {
+                            AudioSettings();
+                        }
+                        else if (currentTab == "Audio Logs")
+                        {
+                            LogsSettings();
+                        }
+
+                        ImGui.EndGroup();
                     }
                 }
                 
                 DrawErrors();
-                Close();
+                //Close();
             } else {
                 ImGui.TextUnformatted("Please login to access and configure settings.");
             }
@@ -119,88 +237,37 @@ namespace XivVoices {
           ".png",
         };
 
-        private void Close() {
-            var originPos = ImGui.GetCursorPos();
-            
-            // Place Ko-fi Button to the left
-            ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMax().X + 15f);
-            ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
-            if (ImGui.Button("   Ko-Fi   ")) {
-                Process process = new Process();
-                try
-                {
-                    // true is the default, but it is important not to set it to false
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = "https://ko-fi.com/arcsidian";
-                    process.Start();
-                }
-                catch (Exception e)
-                {
-
-                }
-            }
-            ImGui.SetCursorPos(originPos);
-
-            // Place Discord Button to the right
-            ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.CalcTextSize("Discord").X - 22f);
-            ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
-            if (ImGui.Button(" Discord ")) {
-                Process process = new Process();
-                try
-                {
-                    // true is the default, but it is important not to set it to false
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = "https://arcsidian.com/discord";
-                    process.Start();
-                }
-                catch (Exception e)
-                {
-
-                }
-            }
-            ImGui.SetCursorPos(originPos);
-            if (this.configuration.FrameworkActive)
+        private void Framework() {
+            if (isFrameworkWindowOpen)
             {
-                // Place Framework Button at the center
-                ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X / 2 - 40f);
-                ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 10f);
-                if (ImGui.Button(" Framework "))
+                ImGui.SetNextWindowSize(new Vector2(400, 650));
+                ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize;
+                if (ImGui.Begin("Framework", ref isFrameworkWindowOpen, windowFlags))
                 {
-                    isFrameworkWindowOpen = true;
-                }
-                if (isFrameworkWindowOpen)
-                {
-                    ImGui.SetNextWindowSize(new Vector2(400, 650));
-                    ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize;
-                    if (ImGui.Begin("Framework", ref isFrameworkWindowOpen, windowFlags))
+                    if (ImGui.BeginTabBar("FrameworkTabs"))
                     {
-                        if (ImGui.BeginTabBar("FrameworkTabs"))
+                        if (ImGui.BeginTabItem("General Framework"))
                         {
-                            if (ImGui.BeginTabItem("General Framework"))
-                            {
-                                Framework_General();
-                                ImGui.EndTabItem();
-                            }
-
-                            if (ImGui.BeginTabItem(" Unknown Dialogues "))
-                            {
-                                Framework_Unknown();
-                                ImGui.EndTabItem();
-                            }
-
-                            if (ImGui.BeginTabItem("    Audio Monitoring    "))
-                            {
-                                Framework_Audio();
-                                ImGui.EndTabItem();
-                            }
-                            ImGui.EndTabBar();
+                            Framework_General();
+                            ImGui.EndTabItem();
                         }
-                        ImGui.End();
+
+                        if (ImGui.BeginTabItem(" Unknown Dialogues "))
+                        {
+                            Framework_Unknown();
+                            ImGui.EndTabItem();
+                        }
+
+                        if (ImGui.BeginTabItem("    Audio Monitoring    "))
+                        {
+                            Framework_Audio();
+                            ImGui.EndTabItem();
+                        }
+                        ImGui.EndTabBar();
                     }
+                    ImGui.End();
                 }
-                ImGui.SetCursorPos(originPos);
             }
-            
         }
 
         private void RequestSave()
@@ -448,9 +515,9 @@ namespace XivVoices {
             ImGui.PopStyleColor();
 
             // Update Button
-            ImGui.Unindent(75);
+            ImGui.Unindent(65);
             ImGui.Dummy(new Vector2(0, 10));
-            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(ImGui.GetWindowSize().X - 16, 60)))
+            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(330, 60)))
             {
                 Updater.Instance.Check();
             }
@@ -834,103 +901,99 @@ namespace XivVoices {
             }
             else
             {
-                foreach (var item in PluginReference.audio.AudioInfoState.Take(7))
+                // Begin a scrollable region
+                if (ImGui.BeginChild("ScrollingRegion", new Vector2(-1, -1), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
                 {
-                    // Show Dialogue Details (Name: Sentence)
-                    if (ImGui.BeginChild(item.id, new Vector2(340, 43), false))
+                    
+                    foreach (var item in PluginReference.audio.AudioInfoState)
                     {
-                        float textHeight = ImGui.CalcTextSize($"{item.data.Speaker}: {item.data.Sentence}", 340.0f).Y;
-                        float paddingHeight = Math.Max(35 - textHeight, 0);
-                        ImGui.Dummy(new Vector2(1, 3));
-                        if (paddingHeight > 3)
-                            ImGui.Dummy(new Vector2(1, paddingHeight-3));
-
+                        // Show Dialogue Details (Name: Sentence)
                         ImGui.TextWrapped($"{item.data.Speaker}: {item.data.Sentence}");
-                        ImGui.EndChild();
-                    }
 
-                    // Show Player Progress Bar
-                    int progressSize = 218;
-                    if (item.type == "xivv")
-                        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
-                    else if (item.type == "empty")
-                    {
-                        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
-                        progressSize = 275;
-                    }
-                    ImGui.ProgressBar(item.percentage, new Vector2(progressSize, 24), $"{item.state}");
-                    if (item.type == "xivv" || item.type == "empty")
-                        ImGui.PopStyleColor();
-
-                    // Show Report Button
-                    ImGui.SameLine();
-                    string reportTitle = "Report";
-                    if(item.type != "xivv")
-                        reportTitle = "Mute";
-                    if (ImGui.Button($"{reportTitle}##report{item.id}", new Vector2(50, 24)))
-                    {
-                        reportInput = new string('\0', 250);
-                        ImGui.OpenPopup($"ReportDialogue##{item.id}");
-                    }
-
-                    // Report Popup
-                    bool open = true;
-                    ImGui.SetNextWindowSizeConstraints(new Vector2(350, 350), new Vector2(350, float.MaxValue));
-                    if (ImGui.BeginPopupModal($"ReportDialogue##{item.id}", ref open, ImGuiWindowFlags.AlwaysAutoResize))
-                    {
-                        ImGui.Dummy(new Vector2(0, 5));
-                        ImGui.Text($"Speaker: {item.data.Speaker}");
-                        ImGui.Dummy(new Vector2(0, 5));
-                        ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
-                        ImGui.Dummy(new Vector2(0, 20));
-
+                        // Show Player Progress Bar
+                        int progressSize = 208;
                         if (item.type == "xivv")
+                            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
+                        else if (item.type == "empty")
                         {
-                            ImGui.TextWrapped("Tell me why this dialogue needs to be redone or muted");
+                            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
+                            progressSize = 265;
+                        }
+                        ImGui.ProgressBar(item.percentage, new Vector2(progressSize, 24), $"{item.state}");
+                        if (item.type == "xivv" || item.type == "empty")
+                            ImGui.PopStyleColor();
+
+                        // Show Report Button
+                        ImGui.SameLine();
+                        string reportTitle = "Report";
+                        if(item.type != "xivv")
+                            reportTitle = "Mute";
+                        if (ImGui.Button($"{reportTitle}##report{item.id}", new Vector2(50, 24)))
+                        {
+                            reportInput = new string('\0', 250);
+                            ImGui.OpenPopup($"ReportDialogue##{item.id}");
+                        }
+
+                        // Report Popup
+                        bool open = true;
+                        ImGui.SetNextWindowSizeConstraints(new Vector2(350, 350), new Vector2(350, float.MaxValue));
+                        if (ImGui.BeginPopupModal($"ReportDialogue##{item.id}", ref open, ImGuiWindowFlags.AlwaysAutoResize))
+                        {
                             ImGui.Dummy(new Vector2(0, 5));
-                            ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 250, new Vector2(335, 100));
+                            ImGui.Text($"Speaker: {item.data.Speaker}");
                             ImGui.Dummy(new Vector2(0, 5));
-                            if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
+                            ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
+                            ImGui.Dummy(new Vector2(0, 20));
+
+                            if (item.type == "xivv")
                             {
-                                //PluginReference.webSocketServer.SendMessage("input:" + reportInput);
-                                PluginReference.xivEngine.ReportRedoToArc(item.data, reportInput);
+                                ImGui.TextWrapped("Tell me why this dialogue needs to be redone or muted");
+                                ImGui.Dummy(new Vector2(0, 5));
+                                ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 250, new Vector2(335, 100));
+                                ImGui.Dummy(new Vector2(0, 5));
+                                if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
+                                {
+                                    //PluginReference.webSocketServer.SendMessage("input:" + reportInput);
+                                    PluginReference.xivEngine.ReportRedoToArc(item.data, reportInput);
+                                    ImGui.CloseCurrentPopup();
+                                }
+                                ImGui.Dummy(new Vector2(0, 2));
+                            }
+                        
+                            if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
+                            {
+                                PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
+                                PluginReference.xivEngine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
                                 ImGui.CloseCurrentPopup();
                             }
                             ImGui.Dummy(new Vector2(0, 2));
+                            if (ImGui.Button("Close", new Vector2(335, 25)))
+                                ImGui.CloseCurrentPopup();
+                            ImGui.Dummy(new Vector2(0, 2));
+                            ImGui.EndPopup();
                         }
-                        
-                        if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
-                        {
-                            PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
-                            PluginReference.xivEngine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
-                            ImGui.CloseCurrentPopup();
-                        }
-                        ImGui.Dummy(new Vector2(0, 2));
-                        if (ImGui.Button("Close", new Vector2(335, 25)))
-                            ImGui.CloseCurrentPopup();
-                        ImGui.Dummy(new Vector2(0, 2));
-                        ImGui.EndPopup();
-                    }
 
-                    if (item.type != "empty")
-                    {
-                        // Show Play and Stop Buttons
-                        ImGui.SameLine();
-                        if (item.state == "playing")
+                        if (item.type != "empty")
                         {
-                            if (ImGui.Button("Stop", new Vector2(50, 24)))
-                                PluginReference.audio.StopAudio();
-                        }
-                        else
-                        {
-                            if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
+                            // Show Play and Stop Buttons
+                            ImGui.SameLine();
+                            if (item.state == "playing")
                             {
-                                PluginReference.audio.StopAudio();
-                                PluginReference.xivEngine.AddToQueue(item.data);
+                                if (ImGui.Button("Stop", new Vector2(50, 24)))
+                                    PluginReference.audio.StopAudio();
+                            }
+                            else
+                            {
+                                if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
+                                {
+                                    PluginReference.audio.StopAudio();
+                                    PluginReference.xivEngine.AddToQueue(item.data);
+                                }
                             }
                         }
+                        ImGui.Dummy(new Vector2(0, 10));
+
                     }
-                    
                 }
             }
         }

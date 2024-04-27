@@ -69,6 +69,17 @@ namespace XivVoices {
         private MediaCameraObject _playerCamera;
 
         public IDalamudTextureWrap Logo;
+        public IDalamudTextureWrap Icon;
+        public IDalamudTextureWrap GeneralSettings;
+        public IDalamudTextureWrap GeneralSettingsActive;
+        public IDalamudTextureWrap DialogueSettings;
+        public IDalamudTextureWrap DialogueSettingsActive;
+        public IDalamudTextureWrap AudioSettings;
+        public IDalamudTextureWrap AudioSettingsActive;
+        public IDalamudTextureWrap Archive;
+        public IDalamudTextureWrap ArchiveActive;
+        public IDalamudTextureWrap Discord;
+        public IDalamudTextureWrap KoFi;
         public string Name => "XivVoices Plugin";
 
         public ISigScanner SigScanner { get => _sigScanner; set => _sigScanner = value; }
@@ -97,6 +108,7 @@ namespace XivVoices {
 
         public IChatGui Chat => _chat;
         public IClientState ClientState => _clientState;
+        public ITextureProvider TextureProvider => _textureProvider;
 
         public AddonTalkHandler AddonTalkHandler { get => _addonTalkHandler; set => _addonTalkHandler = value; }
 
@@ -494,6 +506,28 @@ namespace XivVoices {
                 {
                     var imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png"));
                     Logo = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "icon.png"));
+                    Icon = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "generalSettings.png"));
+                    GeneralSettings = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "generalSettingsActive.png"));
+                    GeneralSettingsActive = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "dialogueSettings.png"));
+                    DialogueSettings = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "dialogueSettingsActive.png"));
+                    DialogueSettingsActive = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "audioSettings.png"));
+                    AudioSettings = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "audioSettingsActive.png"));
+                    AudioSettingsActive = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "archive.png"));
+                    Archive = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "archiveActive.png"));
+                    ArchiveActive = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "discord.png"));
+                    Discord = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "ko-fi.png"));
+                    KoFi = _textureProvider.GetTextureFromFile(imagePath);
                     if (Logo != null)
                     {
                         texturesLoaded = true; // Set the flag if the logo is successfully loaded
