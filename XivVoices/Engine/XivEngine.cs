@@ -418,10 +418,8 @@ namespace XivVoices.Engine
             }
 
             // Check if it belongs to a retainer
-            if (this.Database.Plugin.Config.RetainersEnabled)
-            {
-                xivMessage = this.Database.GetRetainer(xivMessage);
-            }
+            xivMessage = this.Database.GetRetainer(xivMessage);
+            
 
             // Changing 2-letter names because fuck windows defender
             if (xivMessage.Speaker.Length == 2)
