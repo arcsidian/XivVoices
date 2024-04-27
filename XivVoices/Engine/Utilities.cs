@@ -73,6 +73,8 @@ namespace XivVoices.Engine
 
         public bool Ignored;
         public bool Reported;
+
+        public string FrameworkPath = "";
     }
 
 

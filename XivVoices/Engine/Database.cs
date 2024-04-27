@@ -724,11 +724,11 @@ namespace XivVoices.Engine
             return msg;
         }
 
-        public string GenerateRandomSuffix()
+        public string GenerateRandomSuffix(int x = 3)
         {
             System.Random random = new System.Random();
-            int randomNumber = random.Next(0, 1000);
-            return randomNumber.ToString("D3");
+            int randomNumber = random.Next(0, 10 * x);
+            return randomNumber.ToString("D" + x.ToString());
         }
 
         public async Task<string> FetchDateFromServer(string url)

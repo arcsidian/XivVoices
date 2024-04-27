@@ -990,12 +990,12 @@ namespace XivVoices.Engine
                 return "Qiqirn";
 
             // HW Beast Tribes
-            if (message.NPC.Race == "Dragon")
+            if (message.NPC.Race.StartsWith("Dragon"))
             {
                 if (this.Database.VoiceNames.TryGetValue(message.Speaker, out string voiceName))
                     return voiceName;
                 else
-                    return "Dragon";
+                    return message.NPC.Race;
             }
 
             if (message.NPC.Race == "Goblin")
