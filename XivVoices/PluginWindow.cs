@@ -185,11 +185,14 @@ namespace XivVoices {
                         if (ImGui.IsItemHovered())
                             ImGui.SetTooltip("Support the Project on Ko-Fi");
 
-                        if (ImGui.ImageButton(this.PluginReference.Icon.ImGuiHandle, new Vector2(42, 42)))
-                        {
-                            isFrameworkWindowOpen = true;
+                        if (this.configuration.FrameworkActive) {
+                            if (ImGui.ImageButton(this.PluginReference.Icon.ImGuiHandle, new Vector2(42, 42)))
+                            {
+                                isFrameworkWindowOpen = true;
+                            }
+                            Framework();
                         }
-                        Framework();
+                        
 
                         ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = backupColor;
                         ImGui.EndChild();
