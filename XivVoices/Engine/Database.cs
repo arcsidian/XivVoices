@@ -259,7 +259,9 @@ namespace XivVoices.Engine
                     dataAndToolsExist = false;
             }
 
-            if(dataAndToolsExist)
+            DeleteLeftoverZipFiles();
+
+            if (dataAndToolsExist)
                 this.Plugin.Config.Initialized = true;
 
             
@@ -886,7 +888,7 @@ namespace XivVoices.Engine
             return msg;
         }
 
-        public string GenerateRandomSuffix(int x = 3)
+        public string GenerateRandomSuffix(int x = 4)
         {
             System.Random random = new System.Random();
             int randomNumber = random.Next(0, 10 * x);
@@ -915,6 +917,23 @@ namespace XivVoices.Engine
                 {
                     PluginLog.LogError("Failed to load the data from the server: " + ex.Message);
                     return null;
+                }
+            }
+        }
+
+        public void DeleteLeftoverZipFiles()
+        {
+            var zipFiles = Directory.GetFiles(DirectoryPath, "*.zip", SearchOption.TopDirectoryOnly);
+            foreach (var zipFile in zipFiles)
+            {
+                try
+                {
+                    File.Delete(zipFile);
+                    PluginLog.Information($"Deleted zip file: {zipFile}");
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.LogError($"Failed to delete zip file: {zipFile}. Error: {ex.Message}");
                 }
             }
         }

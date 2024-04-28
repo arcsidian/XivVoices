@@ -66,7 +66,7 @@ namespace XivVoices.Engine
 
             if (!XivEngine.Instance.Database.Plugin.Config.Mute)
             {
-                if(!xivMessage.Ignored)
+                if(!xivMessage.Ignored && xivMessage.TtsData != null)
                     Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
                 using (var audioOutput = GetAudioEngine())
                 {
@@ -83,7 +83,7 @@ namespace XivVoices.Engine
                         if (audioIsStopped)
                         {
                             audioOutput.Stop();
-                            if (!xivMessage.Ignored)
+                            if (!xivMessage.Ignored && xivMessage.TtsData != null)
                                 Plugin.StopLipSync(xivMessage.TtsData.Character);
                             break;
                         }

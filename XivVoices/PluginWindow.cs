@@ -214,10 +214,10 @@ namespace XivVoices {
                             {
                                 isFrameworkWindowOpen = true;
                             }
-                            Framework();
                         }
 
                         ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = backupColor;
+                        Framework();
                         ImGui.EndChild();
 
                         // Draw a vertical line separator
@@ -396,12 +396,13 @@ namespace XivVoices {
         private void InitializationWindow()
         {
             ImGui.Dummy(new Vector2(0, 10));
-            ImGui.Indent(90);
+            ImGui.Indent(150);
             ImGui.TextWrapped("Xiv Voices Initialization");
-            ImGui.Unindent(90);
+            ImGui.Unindent(140);
             ImGui.Dummy(new Vector2(0, 10));
             ImGui.TextWrapped("Choose a working directory that will hold all the voice files in your computer, afterwards press \"Start\" to begin downloading Xiv Voices into your computer.");
 
+            ImGui.Indent(35);
             ImGui.Dummy(new Vector2(0, 20));
             ImGui.Indent(65);
 
@@ -434,6 +435,7 @@ namespace XivVoices {
                 if(selectedDrive != string.Empty)
                     Updater.Instance.Check();
             }
+            ImGui.Unindent(45);
 
         }
 
@@ -513,7 +515,6 @@ namespace XivVoices {
             {
                 ImGui.TextWrapped("Done Updating.");
             }
-
         }
 
         private void DrawGeneral() {

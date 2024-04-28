@@ -24,7 +24,11 @@ namespace XivVoices.Engine
             User = user;
         }
 
-        public TTSData() { }
+        public TTSData() {
+            Language = "English";
+            Position = new Vector3(-99);
+            Character = null;
+        }
 
         public string Type;
         public string Speaker;
@@ -46,7 +50,11 @@ namespace XivVoices.Engine
     [System.Serializable]
     public class XivMessage
     {
-        public XivMessage() { }
+        public XivMessage() {
+            Ignored = false;
+            Reported = false;
+            isRetainer = false;
+        }
         public XivMessage(TTSData ttsData)
         {
             if (ttsData.Speaker == "")
