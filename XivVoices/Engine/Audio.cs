@@ -6,17 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace XivVoices.Engine
 {
     public class Audio
     {
-        private bool audioIsStopped = false;
-
         private Plugin Plugin;
-        public Queue<string> dialogueQueue { get; set; }
-        public Queue<string> bubbleQueue { get; set; }
+        private SemaphoreSlim playAudioLock { get; set; }
+        private SemaphoreSlim playBubbleLock { get; set; }
+        private bool audioIsStopped { get; set; }
         public Queue<string> unknownQueue { get; set; }
         public LinkedList<AudioInfo> AudioInfoState { get; set; }
 
@@ -24,98 +24,79 @@ namespace XivVoices.Engine
         {
             this.Plugin = plugin;
             Plugin.Chat.Print("Audio: I am awake");
-            AudioInfoState = new LinkedList<AudioInfo>();
-            dialogueQueue = new Queue<string>();
-            bubbleQueue = new Queue<string>();
+            playAudioLock = new SemaphoreSlim(1, 1);
+            playBubbleLock = new SemaphoreSlim(1, 1);
+            audioIsStopped = false;
             unknownQueue = new Queue<string>();
-
+            AudioInfoState = new LinkedList<AudioInfo>();
         }
 
         public void Dispose()
         {
+            playAudioLock.Dispose();
+            playBubbleLock.Dispose();
+            unknownQueue.Clear();
+            unknownQueue = null;
             AudioInfoState.Clear();
             AudioInfoState = null;
-            bubbleQueue.Clear();
-            bubbleQueue = null;
-            dialogueQueue.Clear();
-            dialogueQueue = null;
         }
 
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
-            bool initialization = false;
+            await playAudioLock.WaitAsync();
 
-            while (true)
+            try
             {
-                if (!initialization)
+                var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
+                var audioInfo = GetAudioInfo(xivMessage, type);
+
+                if (!XivEngine.Instance.Database.Plugin.Config.Mute)
                 {
-                    dialogueQueue.Enqueue(xivMessage.Speaker + xivMessage.Sentence);
-                    initialization = true;
-                }
-
-                if (dialogueQueue.Peek() == xivMessage.Speaker + xivMessage.Sentence)
-                    break;
-
-                await Task.Delay(30);
-            }
-
-            audioIsStopped = false;
-
-            var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
-            var audioInfo = GetAudioInfo(xivMessage, type);
-
-            if (!XivEngine.Instance.Database.Plugin.Config.Mute)
-            {
-                if(!xivMessage.Ignored && xivMessage.TtsData != null)
-                    Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
-                using (var audioOutput = GetAudioEngine())
-                {
-                    audioOutput.Init(volumeProvider);
-                    volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
-                    audioOutput.Play();
-                    audioInfo.state = "playing";
-                    var totalDuration = waveStream.TotalTime.TotalMilliseconds;
-                    while (audioOutput.PlaybackState == PlaybackState.Playing)
+                    if(!xivMessage.Ignored && xivMessage.TtsData != null)
+                        Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
+                    using (var audioOutput = GetAudioEngine())
                     {
-                        var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
-                        audioInfo.percentage = (float)(currentPosition / totalDuration);
+                        audioOutput.Init(volumeProvider);
                         volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
-                        if (audioIsStopped)
+                        audioOutput.Play();
+                        audioInfo.state = "playing";
+                        var totalDuration = waveStream.TotalTime.TotalMilliseconds;
+                        while (audioOutput.PlaybackState == PlaybackState.Playing)
                         {
-                            audioOutput.Stop();
-                            if (!xivMessage.Ignored && xivMessage.TtsData != null)
-                                Plugin.StopLipSync(xivMessage.TtsData.Character);
-                            break;
+                            var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
+                            audioInfo.percentage = (float)(currentPosition / totalDuration);
+                            volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
+                            if (audioIsStopped)
+                            {
+                                audioOutput.Stop();
+                                audioIsStopped = false;
+                                if (!xivMessage.Ignored && xivMessage.TtsData != null)
+                                    Plugin.StopLipSync(xivMessage.TtsData.Character);
+                                break;
+                            }
+                            await Task.Delay(50);
                         }
-                        await Task.Delay(50);
                     }
                 }
-            }
 
-            audioInfo.state = "stopped";
-            audioInfo.percentage = 1f;
-            waveStream?.Dispose();
-            audioIsStopped = false;
-            dialogueQueue.Dequeue();
+                audioInfo.state = "stopped";
+                audioInfo.percentage = 1f;
+            }
+            catch (Exception ex)
+            {
+                Plugin.Chat.PrintError("Error during audio playback. " + ex);
+            }
+            finally
+            {
+                waveStream?.Dispose();
+                playAudioLock.Release();
+            }
+            
         }
 
         public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream, string type)
         {
-            bool initialization = false;
-
-            while (true)
-            {
-                if (!initialization)
-                {
-                    bubbleQueue.Enqueue(xivMessage.NpcId+xivMessage.Sentence);
-                    initialization = true;
-                }
-
-                if (bubbleQueue.Peek() == xivMessage.NpcId + xivMessage.Sentence)
-                    break;
-
-                await Task.Delay(30);
-            }
+            await playBubbleLock.WaitAsync();
 
             try
             {
@@ -156,6 +137,7 @@ namespace XivVoices.Engine
                             if (audioIsStopped)
                             {
                                 audioOutput.Stop();
+                                audioIsStopped = false;
                                 break;
                             }
                             if (waveStream.Position > waveStream.Length - 100)
@@ -169,17 +151,15 @@ namespace XivVoices.Engine
 
                 audioInfo.state = "stopped";
                 audioInfo.percentage = 1f;
-                bubbleQueue.Dequeue();
             }
             catch (Exception ex)
             {
-                // Handle exceptions that may occur during playback
-                waveStream?.Dispose();
-                Plugin.Chat.PrintError("Error during audio playback. " + ex);
+                Plugin.Chat.PrintError("Error during bubble playback. " + ex);
             }
             finally
             {
                 waveStream?.Dispose();
+                playBubbleLock.Release();
             }
         }
 

@@ -1095,10 +1095,16 @@ namespace XivVoices {
             ImGui.Unindent(15);
             if (ImGui.BeginChild("ChangelogScrollingRegion", new Vector2(362, 592), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
             {
-                ImGui.Columns(2, "ChangelogColumns", false); // 'false' means no borders between columns
-                ImGui.SetColumnWidth(0, 350); // Set the width of the first column where the changelog will be
+                ImGui.Columns(2, "ChangelogColumns", false);
+                ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.2.6 (Latest)",ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.2.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved audio playback and its performance.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where duplicated dialogues play at the same time.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.6"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added a new menu window: \"Changelog\" to keep users informed about each update, small or big.");
                 }
