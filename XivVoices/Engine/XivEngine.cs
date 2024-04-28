@@ -177,6 +177,8 @@ namespace XivVoices.Engine
                 return;
             }
 
+            PluginLog.Information($"New Dialogue: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Message]:{msg.TtsData.Message},");
+
             if (ttsData.Type != "Dialogue" && ttsData.Type != "Bubble" && ttsData.Type != "NPCDialogueAnnouncements")
             {
                 PluginLog.Information("[Ignored] " + ttsData.Speaker + ":" + ttsData.Message);
@@ -197,7 +199,6 @@ namespace XivVoices.Engine
                 msg.TtsData.Race = Mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), Database.Plugin.ClientState.TerritoryType);
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
-
 
             string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
 
@@ -252,7 +253,7 @@ namespace XivVoices.Engine
             if (msg.isRetainer && !this.Database.Plugin.Config.RetainersEnabled) return;
             if (IgnoredDialogues.Contains(msg.Speaker + msg.Sentence) || this.Database.Ignored.Contains(msg.Speaker)) return;
 
-            PluginLog.Information($"NPC Data From FFXIV: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}");
+            PluginLog.Information($"After processing: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Message]:{msg.TtsData.Message},");
             if (msg.NPC == null)
                 PluginLog.Information("npc is null, voice name is " + msg.VoiceName);
 
@@ -339,23 +340,27 @@ namespace XivVoices.Engine
             pattern = @"Come one, come all - drawing number \d{4}";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Come one, come all - drawing number");
 
-            // 2- Delivery Moogle carrier level removal
+            // 2-  Cactpot Winning Prize
+            if (xivMessage.Speaker == "Cactpot Cashier" && xivMessage.Sentence.StartsWith("Congratulations! You have won"))
+                xivMessage.Sentence = "Congratulations! You have won!";
+
+            // 3- Delivery Moogle carrier level removal
             pattern = @"Your postal prowess has earned you carrier level \d{2}";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Your postal prowess has earned you this carrier level");
 
-            // 3- Chocobo Eligible to Participate In Races
+            // 4- Chocobo Eligible to Participate In Races
             pattern = @"^Congratulations.*eligible to participate in sanctioned chocobo races\.*";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Congratulations! Your chocobo is now eligible to participate in sanctioned chocobo races.");
 
-            // 4- Chocobo Training
+            // 5- Chocobo Training
             pattern = @"^What sort of training did you have in mind for .*, (madam|sir)\?$";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "What sort of training did you have in mind for your chocobo?");
 
-            // 5- Teaching Chocobo an Ability
+            // 6- Teaching Chocobo an Ability
             pattern = @"^You wish to teach .*, (madam|sir)\? Then, if you would be so kind as to provide the requisite manual\.$";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "You wish to teach your chocobo an ability? Then, if you would be so kind as to provide the requisite manual.");
 
-            // 6- Removing Chocobo Ability
+            // 7- Removing Chocobo Ability
             pattern = @"^You wish for .+ to unlearn an ability\? Very well, if you would be so kind as to specify the undesired ability\.\.\.$";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "You wish for your chocobo to unlearn an ability? Very well, if you would be so kind as to specify the undesired ability...");
 

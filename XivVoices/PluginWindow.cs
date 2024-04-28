@@ -1098,7 +1098,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.2.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.2.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed Retainers List.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Retainers Recognition.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added a new Cactpot Varient Sentence for Prize Winning.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.7"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Improved audio playback and its performance.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where duplicated dialogues play at the same time.");
