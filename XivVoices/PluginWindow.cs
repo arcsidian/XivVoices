@@ -1098,7 +1098,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.2.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.2.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Implemented a new initialization routine that waits for the game process to become fully responsive before beginning operations.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Modified the service initialization process to be contingent upon the successful verification of the game's process stability.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Introduced error handling around memory read operations.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.8"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed Retainers List.");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved Retainers Recognition.");
