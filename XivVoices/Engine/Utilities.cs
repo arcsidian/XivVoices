@@ -57,7 +57,9 @@ namespace XivVoices.Engine
             NpcId = ttsData.NpcID;
             Sentence = ttsData.Message;
             TtsData = ttsData;
+            Ignored = false;
             Reported = false;
+            isRetainer = false;
         }
 
         public string ChatType;
@@ -73,6 +75,7 @@ namespace XivVoices.Engine
 
         public bool Ignored;
         public bool Reported;
+        public bool isRetainer;
 
         public string FrameworkPath = "";
     }

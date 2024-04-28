@@ -186,7 +186,7 @@ namespace XivVoices {
                             ImGui.SetTooltip("Support the Project on Ko-Fi");
 
                         if (this.configuration.FrameworkActive) {
-                            if (ImGui.ImageButton(this.PluginReference.Icon.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.Icon.ImGuiHandle, new Vector2(42, 42),new Vector2(1,1)))
                             {
                                 isFrameworkWindowOpen = true;
                             }
@@ -203,7 +203,7 @@ namespace XivVoices {
                         Vector2 lineStart = ImGui.GetCursorScreenPos() - new Vector2(0,10);
                         Vector2 lineEnd = new Vector2(lineStart.X, lineStart.Y + 630);
                         drawList.AddLine(lineStart, lineEnd, ImGui.GetColorU32(ImGuiCol.WindowBg), 3f);
-                        ImGui.SameLine(80);
+                        ImGui.SameLine(90);
 
                         // The content area where the selected tab's contents will be displayed
                         ImGui.BeginGroup();
@@ -491,7 +491,7 @@ namespace XivVoices {
 
         private void DrawGeneral() {
             ImGui.Dummy(new Vector2(0, 10));
-            ImGui.Indent(65);
+            ImGui.Indent(55);
             
             if (this.PluginReference.Logo != null)
                 ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(200, 200));
@@ -914,13 +914,13 @@ namespace XivVoices {
                         ImGui.TextWrapped($"{item.data.Speaker}: {item.data.Sentence}");
 
                         // Show Player Progress Bar
-                        int progressSize = 208;
+                        int progressSize = 198;
                         if (item.type == "xivv")
                             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
                         else if (item.type == "empty")
                         {
                             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
-                            progressSize = 265;
+                            progressSize = 255;
                         }
                         ImGui.ProgressBar(item.percentage, new Vector2(progressSize, 24), $"{item.state}");
                         if (item.type == "xivv" || item.type == "empty")

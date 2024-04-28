@@ -167,7 +167,6 @@ namespace XivVoices.Engine
         {
             TTSData ttsData = new TTSData(type, speaker, npcID, skeletonID, message, body, gender, race, tribe, eyes, language, position, character, user);
             XivMessage msg = new XivMessage(ttsData);
-            msg.Ignored = false;
 
             if (ttsData.Type != "Cancel" && ttsData.Language != "English")
                 return;
@@ -250,7 +249,7 @@ namespace XivVoices.Engine
            
 
 
-            if (msg.VoiceName == "Retainer" && !this.Database.Plugin.Config.RetainersEnabled) return;
+            if (msg.isRetainer && !this.Database.Plugin.Config.RetainersEnabled) return;
             if (IgnoredDialogues.Contains(msg.Speaker + msg.Sentence) || this.Database.Ignored.Contains(msg.Speaker)) return;
 
             PluginLog.Information($"NPC Data From FFXIV: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}");

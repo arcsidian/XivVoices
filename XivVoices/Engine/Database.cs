@@ -881,7 +881,7 @@ namespace XivVoices.Engine
             if (Retainers.ContainsKey(msg.Sentence))
             {
                 msg.Speaker = Retainers[msg.Sentence];
-                msg.VoiceName = "Retainer";
+                msg.isRetainer = true;
             }
             return msg;
         }
