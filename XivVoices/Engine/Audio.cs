@@ -49,7 +49,7 @@ namespace XivVoices.Engine
             {
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 var audioInfo = GetAudioInfo(xivMessage, type);
-
+                audioIsStopped = false;
                 if (!XivEngine.Instance.Database.Plugin.Config.Mute)
                 {
                     if(!xivMessage.Ignored && xivMessage.TtsData != null)

@@ -97,6 +97,30 @@ namespace XivVoices.Voice {
             _scanner = sigScanner;
             bubbleCooldown.Start();
 
+            InitializeAsync().ContinueWith(t => {
+                if (t.Exception != null)
+                    PluginLog.LogError("Initialization failed: " + t.Exception);
+            });
+        }
+
+        private async Task InitializeAsync()
+        {
+            await WaitForGameProcessStability();
+            InitializeServices();
+        }
+
+        private async Task WaitForGameProcessStability()
+        {
+            // Wait until the game process is stable
+            while (Process.GetCurrentProcess() == null || !Process.GetCurrentProcess().Responding)
+            {
+                await Task.Delay(1000); // Check every second
+            }
+        }
+
+        private void InitializeServices()
+        {
+            // Initialize all services that depend on the game process
             _memoryService = new MemoryService();
             _gameService = new GameService();
             _settingService = new SettingsService();
@@ -108,26 +132,30 @@ namespace XivVoices.Voice {
             _poseService = new PoseService();
             _targetService = new TargetService();
 
-            _memoryService.Initialize();
-            _memoryService.OpenProcess(Process.GetCurrentProcess());
-            _gameService.Initialize();
-            _settingService.Initialize();
-            _gameDataService.Initialize();
-            _actorService.Initialize();
-            _gposeService.Initialize();
-            _addressService.Initialize();
-            _poseService.Initialize();
-            _targetService.Initialize();
+            StartServices();
+        }
+
+        private async void StartServices()
+        {
+            await _memoryService.Initialize();
+            await _memoryService.OpenProcess(Process.GetCurrentProcess());
+            await _gameService.Initialize();
+            await _settingService.Initialize();
+            await _gameDataService.Initialize();
+            await _actorService.Initialize();
+            await _gposeService.Initialize();
+            await _addressService.Initialize();
+            await _poseService.Initialize();
+            await _targetService.Initialize();
 
             LipSyncTypes = GenerateLipList().ToList();
-            _animationService.Initialize();
-            _gposeService.Start();
-            _animationService.Start();
-            _memoryService.Start();
-            _addressService.Start();
-            _poseService.Start();
-            _targetService.Start();
-
+            await _animationService.Initialize();
+            await _gposeService.Start();
+            await _animationService.Start();
+            await _memoryService.Start();
+            await _addressService.Start();
+            await _poseService.Start();
+            await _targetService.Start();
         }
 
         private IEnumerable<ActionTimeline> GenerateLipList()
@@ -571,7 +599,6 @@ namespace XivVoices.Voice {
 
             return 404;
         }
-
 
         public async void StopLipSync(Character character)
         {
