@@ -85,10 +85,33 @@ namespace XivVoices {
                     }
                     else
                     {
-                        // The sidebar with the tab buttons
-                        ImGui.BeginChild("Sidebar", new Vector2(50, 550), false);
                         var backupColor = ImGui.GetStyle().Colors[(int)ImGuiCol.Button];
                         ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = new Vector4(0, 0, 0, 0);
+
+                        // Floating Button ----------------------------------
+                        var originPos = ImGui.GetCursorPos();
+                        ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMax().X + 8f);
+                        ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 26f);
+                        if (currentTab == "Changelog")
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.ChangelogActive.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Changelog";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Changelog");
+                        }
+                        else
+                        {
+                            if (ImGui.ImageButton(this.PluginReference.Changelog.ImGuiHandle, new Vector2(42, 42)))
+                                currentTab = "Changelog";
+                            if (ImGui.IsItemHovered())
+                                ImGui.SetTooltip("Changelog");
+                        }
+                        ImGui.SetCursorPos(originPos);
+                        // Floating Button ----------------------------------
+
+                        // The sidebar with the tab buttons
+                        ImGui.BeginChild("Sidebar", new Vector2(50, 500), false);
+                        
                         if(currentTab == "General")
                         {
                             if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.ImGuiHandle, new Vector2(42, 42)))
@@ -149,6 +172,7 @@ namespace XivVoices {
                                 ImGui.SetTooltip("Audio Logs");
                         }
 
+
                         if (ImGui.ImageButton(this.PluginReference.Discord.ImGuiHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
@@ -192,7 +216,6 @@ namespace XivVoices {
                             }
                             Framework();
                         }
-                        
 
                         ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = backupColor;
                         ImGui.EndChild();
@@ -202,7 +225,7 @@ namespace XivVoices {
                         ImDrawListPtr drawList = ImGui.GetWindowDrawList();
                         Vector2 lineStart = ImGui.GetCursorScreenPos() - new Vector2(0,10);
                         Vector2 lineEnd = new Vector2(lineStart.X, lineStart.Y + 630);
-                        drawList.AddLine(lineStart, lineEnd, ImGui.GetColorU32(ImGuiCol.WindowBg), 3f);
+                        drawList.AddLine(lineStart, lineEnd, ImGui.GetColorU32(ImGuiCol.WindowBg), 2f);
                         ImGui.SameLine(90);
 
                         // The content area where the selected tab's contents will be displayed
@@ -223,6 +246,10 @@ namespace XivVoices {
                         else if (currentTab == "Audio Logs")
                         {
                             LogsSettings();
+                        }
+                        else if (currentTab == "Changelog")
+                        {
+                            Changelog();
                         }
 
                         ImGui.EndGroup();
@@ -1060,6 +1087,101 @@ namespace XivVoices {
                 needSave = false;
             }
         }
+
+
+        private void Changelog()
+        {
+            ImGui.Unindent(15);
+            if (ImGui.BeginChild("ChangelogScrollingRegion", new Vector2(362, 592), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
+            {
+                ImGui.Columns(2, "ChangelogColumns", false); // 'false' means no borders between columns
+                ImGui.SetColumnWidth(0, 350); // Set the width of the first column where the changelog will be
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.6 (Latest)",ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added a new menu window: \"Changelog\" to keep users informed about each update, small or big.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.5"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed a bug where \"Retainer Enabled\" does not block retainers dialogues.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.4"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("More improvements on the new UI.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where bubbles try to play even when you've left the map.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.3"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Redesigned the UI, changing horizontal tabs to vertical tabs, added icons, hover text and other UI changes..");
+                    ImGui.Bullet(); ImGui.TextWrapped("Audio Logs now can show up to 100 dialogues in a scrollable window.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.2"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Data.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Nameless Data.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Beast Tribe Data.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Implemented a system that processes dialogues made by NPCs with similar names but different looks.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.1"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hot fix: Retainers no longer play in LocalTTS when disabled.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Hot fix: Killing Servant-one again.");
+                }
+
+                if (ImGui.CollapsingHeader(" Version 0.2.2.0"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed bubbles positional audio skipping the first word of every sentence.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added delay between multiple bubbles showing up at the same time.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed volume slider affecting game audio volume.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated XIVV Window.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Local TTS dialogues will have a different color from normal dialogues in the Audio Logs.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Missing Dialogues now show in the Audio Logs.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue causing crashes when trying to stop a lipsync for a character that no longer exists in the scene.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Dynamic sentences for Chocobo Trainer regarding races, learning and unlearning abilities.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Changed filename processing to get rid of Accented Letters for users unable to open such files.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.1.0"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved quality of reports.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added an option to choose the playback engine for users having trouble with the audio player.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved data fetching and added skeleton mapper for beast tribes.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Report Button in the Audio Logs changes to Mute Button for Local TTS.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue with reports being sent with the player's name incorrectly.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added a dialogue queue for correct order of dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated how retainers' dialogues are processed.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added 'Report Missing Dialogues Automatically' option.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.0.0"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("The plugin no longer needs the app to work; it can now run the entire process of Xiv Voices alone.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Feel free to delete everything in the Xiv Voices folder except for the Data folder.");
+                    ImGui.Bullet(); ImGui.TextWrapped("The plugin can now play dialogue audio files directly.");
+                    ImGui.Bullet(); ImGui.TextWrapped("The plugin can now report missing and unknown dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added new tabs to the plugin config window: Dialogue Settings, Audio Settings, Audio Logs.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Users can change the volume and playback speed from the Audio Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Local TTS can be enabled or disabled from the Audio Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Introduced two Local TTS voices, one for each gender.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Dialogue history is now available in the Audio Logs, with options to replay or report dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Websocket connection has been disabled.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bubbles now have position audio that changes based on the user's position relative to the NPC.");
+                    ImGui.Bullet(); ImGui.TextWrapped("General Tab in the config window includes an option to download the latest tools and audio files.");
+                    ImGui.Bullet(); ImGui.TextWrapped("The process of downloading audio files has been made faster and more efficient.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added an initialization process for first-time users to select the drive for installing audio files.");
+                }
+
+                ImGui.Columns(1);
+                ImGui.EndChild();
+            }
+            ImGui.Indent(15);
+        }
+
 
         private void Framework_Audio()
         {

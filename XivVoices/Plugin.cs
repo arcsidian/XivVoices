@@ -80,6 +80,8 @@ namespace XivVoices {
         public IDalamudTextureWrap ArchiveActive;
         public IDalamudTextureWrap Discord;
         public IDalamudTextureWrap KoFi;
+        public IDalamudTextureWrap Changelog;
+        public IDalamudTextureWrap ChangelogActive;
         public string Name => "XivVoices Plugin";
 
         public ISigScanner SigScanner { get => _sigScanner; set => _sigScanner = value; }
@@ -528,6 +530,10 @@ namespace XivVoices {
                     Discord = _textureProvider.GetTextureFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "ko-fi.png"));
                     KoFi = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "changelog.png"));
+                    Changelog = _textureProvider.GetTextureFromFile(imagePath);
+                    imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "changelogActive.png"));
+                    ChangelogActive = _textureProvider.GetTextureFromFile(imagePath);
                     if (Logo != null)
                     {
                         texturesLoaded = true; // Set the flag if the logo is successfully loaded
