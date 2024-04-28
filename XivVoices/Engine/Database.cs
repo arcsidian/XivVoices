@@ -880,10 +880,16 @@ namespace XivVoices.Engine
 
         public XivMessage GetRetainer(XivMessage msg)
         {
-            if (Retainers.ContainsKey(msg.Sentence))
+            string sanitizedMessage = Regex.Replace(msg.Sentence, @"[\s,.]", "");
+            foreach (var key in Retainers.Keys)
             {
-                msg.Speaker = Retainers[msg.Sentence];
-                msg.isRetainer = true;
+                string sanitizedKey = Regex.Replace(key, @"[\s,.]", "");
+                if (sanitizedMessage.Equals(sanitizedKey))
+                {
+                    msg.Speaker = Retainers[key];
+                    msg.isRetainer = true;
+                    break;
+                }
             }
             return msg;
         }
