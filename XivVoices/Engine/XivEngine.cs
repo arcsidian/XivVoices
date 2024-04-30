@@ -1430,6 +1430,26 @@ namespace XivVoices.Engine
             if (polly)
                 filterArgs = "\"volume=6dB\"";
 
+            // determine a pitch based on string msg.Speaker
+            /*
+            {
+                int hash;
+                if (msg.Speaker == "Bubble")
+                    hash = msg.Sentence.GetHashCode();
+                else
+                    hash= msg.Speaker.GetHashCode();
+                float normalized = (hash & 0x7FFFFFFF) / (float)Int32.MaxValue;
+                float pitch = 2 * normalized - 1;
+                pitch = (float)Math.Round(pitch * 10) / 200;
+                float setRate = 44100 * (1 + pitch);
+                float tempo = 1.0f / (1 + pitch);
+                XivEngine.Instance.Database.Plugin.Chat.Print($"Pitch for {msg.Speaker} is {pitch}");
+                XivEngine.Instance.Database.Plugin.Chat.Print($"\"atempo={tempo},asetrate={setRate}\"");
+                if (filterArgs != "") filterArgs += ",";
+                //filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+            }
+            */
+
             if (changeSpeed)
             {
                 if (filterArgs != "") filterArgs += ",";

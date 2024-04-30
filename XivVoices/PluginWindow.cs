@@ -1108,7 +1108,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.2.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue related to Anamnesis that causes a crash during loading to some users.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Linkshell to the list of chat dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added the option to enable and disable Linkshell messages in the Dialogue Settings.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.2.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Implemented a new initialization routine that waits for the game process to become fully responsive before beginning operations.");
                     ImGui.Bullet(); ImGui.TextWrapped("Modified the service initialization process to be contingent upon the successful verification of the game's process stability.");
