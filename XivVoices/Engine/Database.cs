@@ -798,10 +798,12 @@ namespace XivVoices.Engine
                     json_no_space = json_no_space[3..];
                 //PluginLog.Information(json_no_space);
 
-                PluginLog.Information("Sentence from XIVV:" + sentence_no_spaces);
-                PluginLog.Information("Sentence from JSON:" + json_no_space);
                 if (sentence_no_spaces != json_no_space && !sentence.Contains("<"))
+                {
+                    PluginLog.Information("Sentence from XIVV:" + sentence_no_spaces);
+                    PluginLog.Information("Sentence from JSON:" + json_no_space);
                     return "report";
+                }
                 else
                     return filePath + ".ogg";
             }

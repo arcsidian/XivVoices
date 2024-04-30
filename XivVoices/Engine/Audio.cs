@@ -266,7 +266,8 @@ namespace XivVoices.Engine
 
         public void StopAudio()
         {
-            audioIsStopped = true;
+            if (this.Plugin.Config.SkipEnabled)
+                audioIsStopped = true;
         }
 
     }
