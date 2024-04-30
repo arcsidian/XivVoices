@@ -955,7 +955,7 @@ namespace XivVoices {
                     foreach (var item in PluginReference.audio.AudioInfoState)
                     {
                         // Show Dialogue Details (Name: Sentence)
-                        ImGui.TextWrapped($"{item.data.Speaker}: {item.data.Sentence}");
+                        ImGui.TextWrapped($"{item.data.Speaker}: {item.data.TtsData.Message}");
 
                         // Show Player Progress Bar
                         int progressSize = 198;
@@ -989,7 +989,7 @@ namespace XivVoices {
                             ImGui.Dummy(new Vector2(0, 5));
                             ImGui.Text($"Speaker: {item.data.Speaker}");
                             ImGui.Dummy(new Vector2(0, 5));
-                            ImGui.TextWrapped($"Sentence: {item.data.Sentence}");
+                            ImGui.TextWrapped($"Sentence: {item.data.TtsData.Message}");
                             ImGui.Dummy(new Vector2(0, 20));
 
                             if (item.type == "xivv")
