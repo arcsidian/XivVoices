@@ -257,6 +257,9 @@ namespace XivVoices.Engine
             if (msg.NPC == null)
                 PluginLog.Information("npc is null, voice name is " + msg.VoiceName);
 
+            if (this.Database.Plugin.Config.FrameworkActive)
+                this.Database.Plugin.Chat.Print($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
+
             AddToQueue(msg);
 
         }
@@ -1432,20 +1435,19 @@ namespace XivVoices.Engine
 
             /* determine a pitch based on string msg.Speaker
             {
-                int hash;
-                if (msg.Speaker == "Bubble")
-                    hash = msg.Sentence.GetHashCode();
-                else
-                    hash= msg.Speaker.GetHashCode();
+                int hash = msg.Speaker == "Bubble" ? msg.Sentence.GetHashCode() : msg.Speaker.GetHashCode();
                 float normalized = (hash & 0x7FFFFFFF) / (float)Int32.MaxValue;
-                float pitch = 2 * normalized - 1;
-                pitch = (float)Math.Round(pitch * 10) / 10;
+                float pitch = (normalized - 0.5f) * 0.5f;
+                pitch = (float)Math.Round(pitch * 10) / 50;
                 float setRate = 44100 * (1 + pitch);
                 float tempo = 1.0f / (1 + pitch);
                 XivEngine.Instance.Database.Plugin.Chat.Print($"Pitch for {msg.Speaker} is {pitch}");
                 XivEngine.Instance.Database.Plugin.Chat.Print($"\"atempo={tempo},asetrate={setRate}\"");
-                if (filterArgs != "") filterArgs += ",";
-                filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+                if (pitch != 0)
+                {
+                    if (filterArgs != "") filterArgs += ",";
+                    filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+                }
             }
             //*/
 

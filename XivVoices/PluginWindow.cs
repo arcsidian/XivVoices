@@ -889,7 +889,9 @@ namespace XivVoices {
             // Speed Slider ---------------------------------------------
 
             ImGui.Dummy(new Vector2(0, 30));
+            ImGui.Unindent(15);
             ImGui.Separator();
+            ImGui.Indent(15);
 
             // Local AI Settings Settings ----------------------------------------------
 
@@ -1106,7 +1108,6 @@ namespace XivVoices {
             }
         }
 
-
         private void Changelog()
         {
             ImGui.Unindent(8);
@@ -1115,7 +1116,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Slight UI Improvements for better visuals.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved the Dialogue Skip so skipping quickly works every time.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Mamool Ja to the Beast Tribe Mapping Process.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue related to Anamnesis that causes a crash during loading to some users.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added Linkshell to the list of chat dialogues.");
@@ -1226,7 +1234,6 @@ namespace XivVoices {
             }
             ImGui.Indent(8);
         }
-
 
         private void Framework_Audio()
         {
@@ -1345,7 +1352,6 @@ namespace XivVoices {
                 needSave = false;
             }
         }
-
 
         public class MessageEventArgs : EventArgs {
             string message;

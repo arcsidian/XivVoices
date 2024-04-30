@@ -99,6 +99,9 @@ namespace XivVoices.Engine
             {(11007,0), "Sahagin"},
             {(11007,138), "Sahagin"},
 
+            {(11008,0), "Mamool Ja"},
+            {(11008,129), "Mamool Ja"},
+
             {(11012,0), "Qiqirn"},
             {(11013,0), "Qiqirn"},
             {(11013,139), "Qiqirn"},
