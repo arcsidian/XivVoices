@@ -674,6 +674,16 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Free Company Enabled");
 
+            // LinkshellEnabled
+            var linkshellEnabled = this.Configuration.LinkshellEnabled;
+            if (ImGui.Checkbox("##linkshellEnabled", ref linkshellEnabled))
+            {
+                this.configuration.LinkshellEnabled = linkshellEnabled;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Linkshell Enabled");
+
             // BattleDialoguesEnabled
             var battleDialoguesEnabled = this.Configuration.BattleDialoguesEnabled;
             if (ImGui.Checkbox("##battleDialoguesEnabled", ref battleDialoguesEnabled))

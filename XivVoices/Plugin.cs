@@ -309,6 +309,25 @@ namespace XivVoices {
                         break;
                     case XivChatType.NPCDialogueAnnouncements:
                         break;
+                    case XivChatType.CrossLinkShell1:
+                    case XivChatType.CrossLinkShell2:
+                    case XivChatType.CrossLinkShell3:
+                    case XivChatType.CrossLinkShell4:
+                    case XivChatType.CrossLinkShell5:
+                    case XivChatType.CrossLinkShell6:
+                    case XivChatType.CrossLinkShell7:
+                    case XivChatType.CrossLinkShell8:
+                    case XivChatType.Ls1:
+                    case XivChatType.Ls2:
+                    case XivChatType.Ls3:
+                    case XivChatType.Ls4:
+                    case XivChatType.Ls5:
+                    case XivChatType.Ls6:
+                    case XivChatType.Ls7:
+                    case XivChatType.Ls8:
+                        if (config.LinkshellEnabled)
+                            ChatText(playerName, message.TextValue, type, senderId);
+                        break;
                     case (XivChatType)2729:
                     case (XivChatType)2091:
                     case (XivChatType)2234:
