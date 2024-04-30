@@ -225,8 +225,9 @@ namespace XivVoices {
                         ImDrawListPtr drawList = ImGui.GetWindowDrawList();
                         Vector2 lineStart = ImGui.GetCursorScreenPos() - new Vector2(0,10);
                         Vector2 lineEnd = new Vector2(lineStart.X, lineStart.Y + 630);
-                        drawList.AddLine(lineStart, lineEnd, ImGui.GetColorU32(ImGuiCol.WindowBg), 2f);
-                        ImGui.SameLine(90);
+                        uint lineColor = ImGui.ColorConvertFloat4ToU32(new System.Numerics.Vector4(0.15f, 0.15f, 0.15f, 1));
+                        drawList.AddLine(lineStart, lineEnd, lineColor, 1f);
+                        ImGui.SameLine(85);
 
                         // The content area where the selected tab's contents will be displayed
                         ImGui.BeginGroup();
@@ -519,7 +520,7 @@ namespace XivVoices {
 
         private void DrawGeneral() {
             ImGui.Dummy(new Vector2(0, 10));
-            ImGui.Indent(55);
+            ImGui.Indent(60);
             
             if (this.PluginReference.Logo != null)
                 ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(200, 200));
@@ -546,9 +547,9 @@ namespace XivVoices {
             ImGui.PopStyleColor();
 
             // Update Button
-            ImGui.Unindent(65);
+            ImGui.Unindent(70);
             ImGui.Dummy(new Vector2(0, 10));
-            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(330, 60)))
+            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(336, 60)))
             {
                 Updater.Instance.Check();
             }
@@ -942,10 +943,13 @@ namespace XivVoices {
             }
             else
             {
+                ImGui.Unindent(8);
                 // Begin a scrollable region
-                if (ImGui.BeginChild("ScrollingRegion", new Vector2(-1, -1), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
+                if (ImGui.BeginChild("ScrollingRegion", new Vector2(360, -1), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
                 {
-                    
+                    ImGui.Columns(2, "ScrollingRegionColumns", false);
+                    ImGui.SetColumnWidth(0, 350);
+
                     foreach (var item in PluginReference.audio.AudioInfoState)
                     {
                         // Show Dialogue Details (Name: Sentence)
@@ -1035,7 +1039,10 @@ namespace XivVoices {
                         ImGui.Dummy(new Vector2(0, 10));
 
                     }
+
+                    ImGui.Columns(1);
                 }
+                ImGui.Indent(8);
             }
         }
 
@@ -1102,8 +1109,8 @@ namespace XivVoices {
 
         private void Changelog()
         {
-            ImGui.Unindent(15);
-            if (ImGui.BeginChild("ChangelogScrollingRegion", new Vector2(362, 592), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
+            ImGui.Unindent(8);
+            if (ImGui.BeginChild("ChangelogScrollingRegion", new Vector2(360, 592), false, ImGuiWindowFlags.AlwaysVerticalScrollbar))
             {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
@@ -1217,7 +1224,7 @@ namespace XivVoices {
                 ImGui.Columns(1);
                 ImGui.EndChild();
             }
-            ImGui.Indent(15);
+            ImGui.Indent(8);
         }
 
 

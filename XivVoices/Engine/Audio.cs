@@ -50,7 +50,7 @@ namespace XivVoices.Engine
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 var audioInfo = GetAudioInfo(xivMessage, type);
                 audioIsStopped = false;
-                if (!XivEngine.Instance.Database.Plugin.Config.Mute)
+                if (!this.Plugin.Config.Mute)
                 {
                     if(!xivMessage.Ignored && xivMessage.TtsData != null)
                         Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
@@ -104,9 +104,9 @@ namespace XivVoices.Engine
                 PanningSampleProvider panningProvider = new PanningSampleProvider(volumeProvider);
 
                 var audioInfo = GetAudioInfo(xivMessage, type);
-                ushort initialRegion = XivEngine.Instance.Database.Plugin.ClientState.TerritoryType;
+                ushort initialRegion = this.Plugin.ClientState.TerritoryType;
 
-                if (!XivEngine.Instance.Database.Plugin.Config.Mute)
+                if (!this.Plugin.Config.Mute)
                 { 
                     using (var audioOutput = GetAudioEngine())
                     {
@@ -121,7 +121,7 @@ namespace XivVoices.Engine
                         {
                             var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
                             audioInfo.percentage = (float)(currentPosition / totalDuration);
-                            if (initialRegion != XivEngine.Instance.Database.Plugin.ClientState.TerritoryType)
+                            if (initialRegion != this.Plugin.ClientState.TerritoryType)
                             {
                                 audioOutput.Stop();
                                 break;
@@ -165,7 +165,7 @@ namespace XivVoices.Engine
 
         IWavePlayer GetAudioEngine()
         {
-            switch (XivEngine.Instance.Database.Plugin.Config.AudioEngine)
+            switch (this.Plugin.Config.AudioEngine)
             {
                 case 1:
                     return new DirectSoundOut();
