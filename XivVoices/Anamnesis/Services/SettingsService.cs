@@ -3,13 +3,11 @@
 
 namespace Anamnesis.Services;
 
-using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
 using Anamnesis;
 using Anamnesis.Files;
-using Anamnesis.Serialization;
 
 public class SettingsService : ServiceBase<SettingsService>
 {
@@ -29,8 +27,8 @@ public class SettingsService : ServiceBase<SettingsService>
 
 	public static void Save()
 	{
-		string json = SerializerService.Serialize(Instance.Settings!);
-		File.WriteAllText(SettingsPath, json);
+		//string json = SerializerService.Serialize(Instance.Settings!);
+		//File.WriteAllText(SettingsPath, json);
 	}
 
 	public static void ApplyTheme()

@@ -820,16 +820,16 @@ namespace XivVoices.Voice {
             _clientState.TerritoryChanged -= _clientState_TerritoryChanged;
             disposed = true;
 
-            _memoryService.Shutdown();
-            _gameService.Shutdown();
-            _settingService.Shutdown();
-            _gameDataService.Shutdown();
-            _actorService.Shutdown();
-            _gposeService.Shutdown();
-            _addressService.Shutdown();
-            _poseService.Shutdown();
-            _targetService.Shutdown();
-            _openChatBubbleHook.Dispose();
+            _memoryService?.Shutdown();
+            _gameService?.Shutdown();
+            _settingService?.Shutdown();
+            _gameDataService?.Shutdown();
+            _actorService?.Shutdown();
+            _gposeService?.Shutdown();
+            _addressService?.Shutdown();
+            _poseService?.Shutdown();
+            _targetService?.Shutdown();
+            _openChatBubbleHook?.Dispose();
         }
 
         public class UserAnimationOverride

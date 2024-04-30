@@ -617,10 +617,10 @@ namespace XivVoices {
                 Filter?.Dispose();
                 _addonTalkHandler?.Dispose();
 
-                updater.Dispose();
-                database.Dispose();
-                audio.Dispose();
-                xivEngine.Dispose();
+                updater?.Dispose();
+                database?.Dispose();
+                audio?.Dispose();
+                xivEngine?.Dispose();
                 //webSocketServer.Stop();
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
