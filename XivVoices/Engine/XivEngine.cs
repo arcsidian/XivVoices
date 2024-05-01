@@ -25,9 +25,9 @@ namespace XivVoices.Engine
     public class XivEngine
     {
         #region Private Parameters
+        private SemaphoreSlim speakBlock { get; set; }
         private Timer _updateTimer;
         private Timer _autoUpdateTimer;
-        private bool speakLocallyIsBusy = false;
         
         private Queue<XivMessage> ffxivMessages = new Queue<XivMessage>();
         private TTSEngine ttsEngine;
@@ -60,6 +60,7 @@ namespace XivVoices.Engine
             else
                 return;
 
+            speakBlock = new SemaphoreSlim(1, 1);
             this.Database = _database;
             this.Audio = _audio;
             this.Updater = _updater;
@@ -152,6 +153,7 @@ namespace XivVoices.Engine
 
         public void Dispose()
         {
+            speakBlock.Dispose();
             StopTTS();
             _autoUpdateTimer?.Dispose();
             _autoUpdateTimer = null;
@@ -1262,9 +1264,7 @@ namespace XivVoices.Engine
 
         public async Task SpeakLocallyAsync(XivMessage msg, bool isMp3 = false)
         {
-            while (speakLocallyIsBusy)
-                await Task.Delay(50);
-            speakLocallyIsBusy = true;
+            await speakBlock.WaitAsync();
 
             if (isMp3)
             {
@@ -1316,7 +1316,7 @@ namespace XivVoices.Engine
                 }
             }
 
-            speakLocallyIsBusy = false;
+            speakBlock.Release();
         }
 
         public static WaveStream DecodeOggOpusToPCM(string filePath)
