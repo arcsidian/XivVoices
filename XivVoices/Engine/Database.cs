@@ -864,19 +864,15 @@ namespace XivVoices.Engine
 
         public XivMessage GetNameless(XivMessage msg)
         {
-            string filePath = DirectoryPath + "/Nameless.json";
-            string jsonContent = File.ReadAllText(filePath);
-            Nameless = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonContent);
-
             if (Nameless.ContainsKey(msg.Sentence))
             {
                 msg.Speaker = Nameless[msg.Sentence];
             }
-            else
-            {
-                Nameless[msg.Sentence] = msg.Speaker;
-                Task.Run(async () => await WriteJSON(filePath, Nameless));
-            }
+            //else
+            //{
+            //    Nameless[msg.Sentence] = msg.Speaker;
+            //    Task.Run(async () => await WriteJSON(filePath, Nameless));
+            //}
             return msg;
         }
 
