@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -54,6 +55,7 @@ namespace XivVoices.Engine
             Ignored = false;
             Reported = false;
             isRetainer = false;
+            Time = DateTime.Now;
         }
         public XivMessage(TTSData ttsData)
         {
@@ -68,6 +70,7 @@ namespace XivVoices.Engine
             Ignored = false;
             Reported = false;
             isRetainer = false;
+            Time = DateTime.Now;
         }
 
         public string ChatType;
@@ -84,6 +87,7 @@ namespace XivVoices.Engine
         public bool Ignored;
         public bool Reported;
         public bool isRetainer;
+        public DateTime Time;
 
         public string FrameworkPath = "";
     }

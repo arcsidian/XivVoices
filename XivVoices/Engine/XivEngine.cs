@@ -102,6 +102,7 @@ namespace XivVoices.Engine
             {
                 if (ffxivMessages.TryDequeue(out XivMessage msg))
                 {
+                    PluginLog.Information($"Update ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
                     if (msg.Network == "Online")
                     {
                         //this.Database.Plugin.Chat.Print("CheckMessages: Online");
@@ -180,6 +181,8 @@ namespace XivVoices.Engine
                 return;
 
             PluginLog.Information($"New Dialogue: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Message]:{msg.TtsData.Message},");
+            PluginLog.Information($"PROCESS ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
+
 
             if (ttsData.Type != "Dialogue" && ttsData.Type != "Bubble" && ttsData.Type != "NPCDialogueAnnouncements")
             {
@@ -1087,6 +1090,7 @@ namespace XivVoices.Engine
 
         public void AddToQueue(XivMessage msg)
         {
+            PluginLog.Information($"AddToQueue ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
             ffxivMessages.Enqueue(msg);
         }
         #endregion
@@ -1265,6 +1269,7 @@ namespace XivVoices.Engine
         public async Task SpeakLocallyAsync(XivMessage msg, bool isMp3 = false)
         {
             await speakBlock.WaitAsync();
+            PluginLog.Information($"SpeakLocallyAsync ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
 
             if (isMp3)
             {

@@ -1116,7 +1116,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Audio Logs now have the unfiltered version of the dialogue with the user's name in it.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug related to the Nameless Database causing a crash.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added commands /xivv mute and /xivv unmute.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.1"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Slight UI Improvements for better visuals.");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved the Dialogue Skip so skipping quickly works every time.");

@@ -597,6 +597,18 @@ namespace XivVoices {
                             this.pluginInterface.SavePluginConfig(config);
                             config.Active = false;
                             break;
+                        case "mute":
+                            config.Mute = true;
+                            _window.Configuration = config;
+                            this.pluginInterface.SavePluginConfig(config);
+                            config.Mute = true;
+                            break;
+                        case "unmute":
+                            config.Mute = false;
+                            _window.Configuration = config;
+                            this.pluginInterface.SavePluginConfig(config);
+                            config.Mute = false;
+                            break;
                         default:
                             _window.Toggle();
                             break;
