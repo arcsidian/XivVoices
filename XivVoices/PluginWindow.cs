@@ -952,7 +952,9 @@ namespace XivVoices {
                     ImGui.Columns(2, "ScrollingRegionColumns", false);
                     ImGui.SetColumnWidth(0, 350);
 
-                    foreach (var item in PluginReference.audio.AudioInfoState)
+                    var audioInfoStateCopy = PluginReference.audio.AudioInfoState.ToList();
+
+                    foreach (var item in audioInfoStateCopy)
                     {
                         // Show Dialogue Details (Name: Sentence)
                         ImGui.TextWrapped($"{item.data.Speaker}: {item.data.TtsData.Message}");
