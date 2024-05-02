@@ -911,12 +911,25 @@ namespace XivVoices {
             ImGui.SameLine();
             var localTTSUngendered = this.Configuration.LocalTTSUngendered;
             string[] genders = { "Male", "Female" };
-            ImGui.SetNextItemWidth(120);
+            ImGui.SetNextItemWidth(129);
             if (ImGui.Combo("##localTTSUngendered", ref localTTSUngendered, genders, genders.Length))
             {
                 this.Configuration.LocalTTSUngendered = localTTSUngendered;
                 needSave = true;
             }
+            
+
+            // LocalTTS Volume Slider
+            ImGui.Dummy(new Vector2(0, 5));
+            ImGui.Text("Volume:");
+            ImGui.SameLine();
+            int localTTSVolume = this.Configuration.LocalTTSVolume;
+            if (ImGui.SliderInt("##localTTSVolumeSlider", ref localTTSVolume, 0, 100, localTTSVolume.ToString()))
+            {
+                this.Configuration.LocalTTSVolume = localTTSVolume;
+                needSave = true;
+            }
+            
             ImGui.Unindent(20);
 
             // Polly Settings ----------------------------------------------

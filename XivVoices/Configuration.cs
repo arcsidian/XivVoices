@@ -11,7 +11,7 @@ namespace XivVoices
         public string Port { get; set; } = "16969";
         public bool Active { get; set; } = true;
         public bool Initialized { get; set; } = false;
-        public string WorkingDirectory { get; set; } = "C:/XIV_User";
+        public string WorkingDirectory { get; set; } = "C:/XIV_Voices";
         public bool Reports { get; set; } = false;
         public bool AutoUpdate { get; set; } = true;
         public DateTime LastUpdate { get; set; } = new DateTime(1969, 7, 20);
@@ -44,6 +44,7 @@ namespace XivVoices
         public string LocalTTSMale { get; set; } = "en-gb-northern_english_male-medium";
         public string LocalTTSFemale { get; set; } = "en-gb-jenny_dioco-medium";
         public int LocalTTSUngendered { get; set; } = 1;
+        public int LocalTTSVolume { get; set; } = 100;
         public bool WebsocketRedirectionEnabled { get; set; } = false;
 
         // Framework Settings

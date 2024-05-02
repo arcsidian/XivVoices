@@ -57,7 +57,12 @@ namespace XivVoices.Engine
                     using (var audioOutput = GetAudioEngine())
                     {
                         audioOutput.Init(volumeProvider);
-                        volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
+
+                        if (type == "ai")
+                            volumeProvider.Volume = (float)Plugin.Config.LocalTTSVolume / 100f;
+                        else
+                            volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
+
                         audioOutput.Play();
                         audioInfo.state = "playing";
                         var totalDuration = waveStream.TotalTime.TotalMilliseconds;
@@ -65,7 +70,12 @@ namespace XivVoices.Engine
                         {
                             var currentPosition = waveStream.CurrentTime.TotalMilliseconds;
                             audioInfo.percentage = (float)(currentPosition / totalDuration);
-                            volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
+
+                            if (type == "ai")
+                                volumeProvider.Volume = (float)Plugin.Config.LocalTTSVolume / 100f;
+                            else
+                                volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
+
                             if (audioIsStopped)
                             {
                                 audioOutput.Stop();
