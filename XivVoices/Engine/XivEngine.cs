@@ -176,7 +176,8 @@ namespace XivVoices.Engine
 
             //PluginLog.Information($"------> Icoming: [Type]: {type}, [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Speaker]:{speaker}, [Message]:{msg.TtsData.Message},");
 
-            Audio.StopAudio();
+            if (this.Database.Plugin.Config.SkipEnabled)
+                Audio.StopAudio();
             if (ttsData.Type == "Cancel")
                 return;
 
