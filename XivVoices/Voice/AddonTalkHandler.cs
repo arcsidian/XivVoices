@@ -138,6 +138,8 @@ namespace XivVoices.Voice {
         private async void StartServices()
         {
             await _memoryService.Initialize();
+            while (!Process.GetCurrentProcess().Responding)
+                await Task.Delay(100);
             await _memoryService.OpenProcess(Process.GetCurrentProcess());
             await _gameService.Initialize();
             await _settingService.Initialize();

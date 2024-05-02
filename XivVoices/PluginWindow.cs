@@ -1131,7 +1131,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a crash related to the process being unavailable during initialization.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.3"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added a separate volume slider for Local TTS.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed concurrent modification issue in LogsSettings.");
