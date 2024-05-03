@@ -124,7 +124,7 @@ namespace XivVoices.Engine
             if (reports.Count > 0)
             {
                 ReportXivMessage report = reports.Dequeue();
-                if (report.message.TtsData.User != "Arc Xiv@Twintania")
+                if (!this.Database.Plugin.Config.FrameworkActive)
                     Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
             }
         }
@@ -168,6 +168,7 @@ namespace XivVoices.Engine
         #region Processing Methods
         public void Process(string type, string speaker, string npcID, string skeletonID, string message, string body, string gender, string race, string tribe, string eyes, string language, Vector3 position, Character character, string user)
         {
+
             TTSData ttsData = new TTSData(type, speaker, npcID, skeletonID, message, body, gender, race, tribe, eyes, language, position, character, user);
             XivMessage msg = new XivMessage(ttsData);
 
@@ -272,14 +273,31 @@ namespace XivVoices.Engine
 
         public static List<string> GetPossibleSentences(string sentence, string firstName, string lastName)
         {
-            var replacements = new Dictionary<string, string>
+            var replacements = new Dictionary<string, string>();
+            var names = new List<string>();
+
+            // Special case where firstname == lastname and the full name is mentioned
+            if(firstName == lastName)
             {
-                { firstName, "_FIRSTNAME_" },
-                { lastName, "_LASTNAME_" }
-            };
+                string pattern = "\\b" + firstName + " " + lastName + "\\b";
+                sentence = Regex.Replace(sentence, pattern, firstName);
+            }
+
+            // Add unique names to replacements and names list
+            if (!replacements.ContainsKey(firstName))
+            {
+                replacements.Add(firstName, "_FIRSTNAME_");
+                names.Add(firstName);
+            }
+
+            if (!firstName.Equals(lastName) && !replacements.ContainsKey(lastName))
+            {
+                replacements.Add(lastName, "_LASTNAME_");
+                names.Add(lastName);
+            }
 
             List<string> results = new List<string>();
-            RecurseCombinations(sentence, replacements, new List<string> { firstName, lastName }, 0, results);
+            RecurseCombinations(sentence, replacements, names, 0, results);
             return results;
         }
 
