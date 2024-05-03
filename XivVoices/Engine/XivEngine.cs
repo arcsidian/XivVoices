@@ -1263,6 +1263,9 @@ namespace XivVoices.Engine
                     speaker = 1;
 
                 string sentence = Regex.Replace(msg.TtsData.Message, "[“”]", "\"");
+                if (msg.Ignored)
+                    sentence = ProcessPlayerChat(sentence, msg.Speaker);
+
                 var pcmData = await ttsEngine.SpeakTTS(sentence, localTTS[speaker]);
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
                 var stream = new MemoryStream();
@@ -1283,7 +1286,44 @@ namespace XivVoices.Engine
             }
         }
 
+        public static string ProcessPlayerChat(string sentence, string speaker)
+        {
+            sentence = sentence.Trim();
 
+            // Check for waving gesture
+            if (sentence.Equals("o/"))
+                return speaker.Split(" ")[0] + " is waving.";
+
+            sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!");
+            sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much");
+            sentence = Regex.Replace(sentence, @"\bty\b", "thank you");
+            sentence = Regex.Replace(sentence, @"\brp\b", "role play");
+            sentence = Regex.Replace(sentence, @"\bo7\b", "salute");
+            sentence = Regex.Replace(sentence, @"\bafk\b", "away from keyboard");
+            sentence = Regex.Replace(sentence, @"\bbrb\b", "be right back");
+            sentence = Regex.Replace(sentence, @"\bprog\b", "progress");
+            sentence = Regex.Replace(sentence, @"\bcomms\b", "commendations");
+            sentence = Regex.Replace(sentence, @"\bcomm\b", "commendation");
+            sentence = Regex.Replace(sentence, @"\blq\b", "low quality");
+            sentence = Regex.Replace(sentence, @"\bhq\b", "high quality");
+            sentence = Regex.Replace(sentence, @"\bfl\b", "friend list");
+            sentence = Regex.Replace(sentence, @"\bfc\b", "free company");
+            sentence = Regex.Replace(sentence, @"\bdot\b", "damage over time");
+            sentence = Regex.Replace(sentence, @"\bcrit\b", "critical hit");
+            sentence = Regex.Replace(sentence, @"\blol\b", "ha-ha");
+            sentence = Regex.Replace(sentence, @"\bkek\b", "ha-ha");
+            sentence = Regex.Replace(sentence, @"\blmao\b", "ha-ha");
+            sentence = Regex.Replace(sentence, @"\bgg\b", "good game");
+            sentence = Regex.Replace(sentence, @"\bggs\b", "good game");
+            sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer");
+            sentence = Regex.Replace(sentence, @"\bbis\b", "best in slot");
+            sentence = Regex.Replace(sentence, @"(?<=\s|^):\)(?=\s|$)", "smile");
+            sentence = Regex.Replace(sentence, @"(?<=\s|^):\((?=\s|$)", "sadge");
+            sentence = Regex.Replace(sentence, @"\b<3\b", "heart");
+            sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut");
+
+            return sentence;
+        }
 
         public async Task SpeakLocallyAsync(XivMessage msg, bool isMp3 = false)
         {
