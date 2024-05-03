@@ -28,7 +28,7 @@ namespace XivVoices.Engine
         private SemaphoreSlim speakBlock { get; set; }
         private Timer _updateTimer;
         private Timer _autoUpdateTimer;
-        
+
         private Queue<XivMessage> ffxivMessages = new Queue<XivMessage>();
         private TTSEngine ttsEngine;
         TTSVoiceNative[] localTTS = new TTSVoiceNative[2];
@@ -44,7 +44,7 @@ namespace XivVoices.Engine
         public bool OnlineTTS { get; set; } = false;
 
         public List<string> IgnoredDialogues = new List<string>();
-        
+
         #endregion
 
 
@@ -254,7 +254,7 @@ namespace XivVoices.Engine
                     }
                 }
             }
-           
+
 
 
             if (msg.isRetainer && !this.Database.Plugin.Config.RetainersEnabled) return;
@@ -277,7 +277,7 @@ namespace XivVoices.Engine
             var names = new List<string>();
 
             // Special case where firstname == lastname and the full name is mentioned
-            if(firstName == lastName)
+            if (firstName == lastName)
             {
                 string pattern = "\\b" + firstName + " " + lastName + "\\b";
                 sentence = Regex.Replace(sentence, pattern, firstName);
@@ -450,7 +450,7 @@ namespace XivVoices.Engine
 
             // Check if it belongs to a retainer
             xivMessage = this.Database.GetRetainer(xivMessage);
-            
+
 
             // Changing 2-letter names because fuck windows defender
             if (xivMessage.Speaker.Length == 2)
@@ -503,8 +503,8 @@ namespace XivVoices.Engine
         string GetVoiceName(XivMessage message, bool fetchedByID)
         {
             bool npcWithVariedLooksFound = false;
-            
-            if(this.Database.NpcWithVariedLooks.Contains(message.Speaker))
+
+            if (this.Database.NpcWithVariedLooks.Contains(message.Speaker))
             {
                 this.Database.Plugin.Chat.Print(message.Speaker + " --> npcWithVariedLooks ");
                 message.NPC.BodyType = message.TtsData.Body;
@@ -1265,6 +1265,8 @@ namespace XivVoices.Engine
                 string sentence = Regex.Replace(msg.TtsData.Message, "[“”]", "\"");
                 if (msg.Ignored)
                     sentence = ProcessPlayerChat(sentence, msg.Speaker);
+                
+                sentence = ApplyLexicon(sentence, msg.Speaker);
 
                 var pcmData = await ttsEngine.SpeakTTS(sentence, localTTS[speaker]);
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
@@ -1323,6 +1325,17 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut");
 
             return sentence;
+        }
+        public static string ApplyLexicon(string sentence, string speaker)
+        {
+            // Use Lexicon
+            string cleanedMessage = sentence;
+            foreach (KeyValuePair<string, string> entry in XivEngine.Instance.Database.Lexicon)
+            {
+                string pattern = "\\b" + entry.Key + "\\b";
+                cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
+            }
+            return cleanedMessage;
         }
 
         public async Task SpeakLocallyAsync(XivMessage msg, bool isMp3 = false)

@@ -1131,7 +1131,16 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated retainers list to cover a mismatched dialogue for Male Viera Retainer.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing to handle names that end with a symbol.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing for players with their first name identical to their last name.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Implemented Player Chat Processing to Local TTS so messages like o/ are expressed better.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Implemented Lexicon Processing to Local TTS.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a crash related to the process being unavailable during initialization.");
                 }
