@@ -292,7 +292,7 @@ namespace XivVoices.Engine
             }
 
             string name = names[index];
-            string pattern = $@"\b{Regex.Escape(name)}\b";
+            string pattern = $@"(?<=^|\W){Regex.Escape(name)}(?=\W|$)";
             Regex regex = new Regex(pattern);
 
             // Get all distinct positions where the name occurs
