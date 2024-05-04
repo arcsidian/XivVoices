@@ -1131,7 +1131,15 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to handle case sensitivity.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to ignore web links.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to ignore coordinates in <pos>.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Player chat no longer skips NPC dialogues.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.5"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated retainers list to cover a mismatched dialogue for Male Viera Retainer.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing to handle names that end with a symbol.");

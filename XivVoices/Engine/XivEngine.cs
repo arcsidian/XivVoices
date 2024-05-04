@@ -177,8 +177,11 @@ namespace XivVoices.Engine
 
             //PluginLog.Information($"------> Icoming: [Type]: {type}, [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Speaker]:{speaker}, [Message]:{msg.TtsData.Message},");
 
-            if (this.Database.Plugin.Config.SkipEnabled)
+            if (this.Database.Plugin.Config.SkipEnabled && (ttsData.Type == "Dialogue" || ttsData.Type == "Cancel") )
                 Audio.StopAudio();
+
+            XivEngine.Instance.Database.Plugin.Chat.Print("Type: " + ttsData.Type);
+
             if (ttsData.Type == "Cancel")
                 return;
 
@@ -1321,9 +1324,8 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bfc\b", "free company", options);
             sentence = Regex.Replace(sentence, @"\bdot\b", "damage over time", options);
             sentence = Regex.Replace(sentence, @"\bcrit\b", "critical hit", options);
-            sentence = Regex.Replace(sentence, @"\blol\b", "ha-ha", options);
-            sentence = Regex.Replace(sentence, @"\bkek\b", "ha-ha", options);
-            sentence = Regex.Replace(sentence, @"\blmao\b", "ha-ha", options);
+            sentence = Regex.Replace(sentence, @"\blol\b", "\"L-O-L\"", options);
+            sentence = Regex.Replace(sentence, @"\blmao\b", "\"Lah-mao\"", options);
             sentence = Regex.Replace(sentence, @"\bgg\b", "good game", options);
             sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
             sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer", options);
