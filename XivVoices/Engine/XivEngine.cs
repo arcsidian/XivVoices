@@ -1298,10 +1298,13 @@ namespace XivVoices.Engine
 
             var options = RegexOptions.IgnoreCase;
 
-            // Regex remove links
+            // Regex: remove links
             sentence = Regex.Replace(sentence, @"https?\S*", "", options);
 
-            // Regex replacements
+            // Regex: remove coordinates
+            sentence = Regex.Replace(sentence, @"(\ue0bb[^\(]*?)\([^\)]*\)", "$1", options);
+
+            // Regex: replacements
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
             sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much", options);
             sentence = Regex.Replace(sentence, @"\bty\b", "thank you", options);
