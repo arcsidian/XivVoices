@@ -180,14 +180,10 @@ namespace XivVoices.Engine
             if (this.Database.Plugin.Config.SkipEnabled && (ttsData.Type == "Dialogue" || ttsData.Type == "Cancel") )
                 Audio.StopAudio();
 
-            XivEngine.Instance.Database.Plugin.Chat.Print("Type: " + ttsData.Type);
-
             if (ttsData.Type == "Cancel")
                 return;
 
             PluginLog.Information($"New Dialogue: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Message]:{msg.TtsData.Message},");
-            PluginLog.Information($"PROCESS ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
-
 
             if (ttsData.Type != "Dialogue" && ttsData.Type != "Bubble" && ttsData.Type != "NPCDialogueAnnouncements")
             {
