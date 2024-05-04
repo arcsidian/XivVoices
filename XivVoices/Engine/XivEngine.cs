@@ -1296,36 +1296,39 @@ namespace XivVoices.Engine
             if (sentence.Equals("o/"))
                 return speaker.Split(" ")[0] + " is waving.";
 
-            sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!");
-            sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much");
-            sentence = Regex.Replace(sentence, @"\bty\b", "thank you");
-            sentence = Regex.Replace(sentence, @"\brp\b", "role play");
-            sentence = Regex.Replace(sentence, @"\bo7\b", "salute");
-            sentence = Regex.Replace(sentence, @"\bafk\b", "away from keyboard");
-            sentence = Regex.Replace(sentence, @"\bbrb\b", "be right back");
-            sentence = Regex.Replace(sentence, @"\bprog\b", "progress");
-            sentence = Regex.Replace(sentence, @"\bcomms\b", "commendations");
-            sentence = Regex.Replace(sentence, @"\bcomm\b", "commendation");
-            sentence = Regex.Replace(sentence, @"\blq\b", "low quality");
-            sentence = Regex.Replace(sentence, @"\bhq\b", "high quality");
-            sentence = Regex.Replace(sentence, @"\bfl\b", "friend list");
-            sentence = Regex.Replace(sentence, @"\bfc\b", "free company");
-            sentence = Regex.Replace(sentence, @"\bdot\b", "damage over time");
-            sentence = Regex.Replace(sentence, @"\bcrit\b", "critical hit");
-            sentence = Regex.Replace(sentence, @"\blol\b", "ha-ha");
-            sentence = Regex.Replace(sentence, @"\bkek\b", "ha-ha");
-            sentence = Regex.Replace(sentence, @"\blmao\b", "ha-ha");
-            sentence = Regex.Replace(sentence, @"\bgg\b", "good game");
-            sentence = Regex.Replace(sentence, @"\bggs\b", "good game");
-            sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer");
-            sentence = Regex.Replace(sentence, @"\bbis\b", "best in slot");
-            sentence = Regex.Replace(sentence, @"(?<=\s|^):\)(?=\s|$)", "smile");
-            sentence = Regex.Replace(sentence, @"(?<=\s|^):\((?=\s|$)", "sadge");
-            sentence = Regex.Replace(sentence, @"\b<3\b", "heart");
-            sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut");
+            // Regex replacements with case-insensitivity
+            var options = RegexOptions.IgnoreCase;
+            sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
+            sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much", options);
+            sentence = Regex.Replace(sentence, @"\bty\b", "thank you", options);
+            sentence = Regex.Replace(sentence, @"\brp\b", "role play", options);
+            sentence = Regex.Replace(sentence, @"\bo7\b", "salute", options);
+            sentence = Regex.Replace(sentence, @"\bafk\b", "away from keyboard", options);
+            sentence = Regex.Replace(sentence, @"\bbrb\b", "be right back", options);
+            sentence = Regex.Replace(sentence, @"\bprog\b", "progress", options);
+            sentence = Regex.Replace(sentence, @"\bcomms\b", "commendations", options);
+            sentence = Regex.Replace(sentence, @"\bcomm\b", "commendation", options);
+            sentence = Regex.Replace(sentence, @"\blq\b", "low quality", options);
+            sentence = Regex.Replace(sentence, @"\bhq\b", "high quality", options);
+            sentence = Regex.Replace(sentence, @"\bfl\b", "friend list", options);
+            sentence = Regex.Replace(sentence, @"\bfc\b", "free company", options);
+            sentence = Regex.Replace(sentence, @"\bdot\b", "damage over time", options);
+            sentence = Regex.Replace(sentence, @"\bcrit\b", "critical hit", options);
+            sentence = Regex.Replace(sentence, @"\blol\b", "ha-ha", options);
+            sentence = Regex.Replace(sentence, @"\bkek\b", "ha-ha", options);
+            sentence = Regex.Replace(sentence, @"\blmao\b", "ha-ha", options);
+            sentence = Regex.Replace(sentence, @"\bgg\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer", options);
+            sentence = Regex.Replace(sentence, @"\bbis\b", "best in slot", options);
+            sentence = Regex.Replace(sentence, @"(?<=\s|^):\)(?=\s|$)", "smile", options);
+            sentence = Regex.Replace(sentence, @"(?<=\s|^):\((?=\s|$)", "sadge", options);
+            sentence = Regex.Replace(sentence, @"\b<3\b", "heart", options);
+            sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut", options);
 
             return sentence;
         }
+
         public static string ApplyLexicon(string sentence, string speaker)
         {
             // Use Lexicon
