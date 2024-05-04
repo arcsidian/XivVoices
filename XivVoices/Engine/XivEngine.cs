@@ -1296,8 +1296,12 @@ namespace XivVoices.Engine
             if (sentence.Equals("o/"))
                 return speaker.Split(" ")[0] + " is waving.";
 
-            // Regex replacements with case-insensitivity
             var options = RegexOptions.IgnoreCase;
+
+            // Regex remove links
+            sentence = Regex.Replace(sentence, @"https?\S*", "", options);
+
+            // Regex replacements
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
             sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much", options);
             sentence = Regex.Replace(sentence, @"\bty\b", "thank you", options);
