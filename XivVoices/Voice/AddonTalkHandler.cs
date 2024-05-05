@@ -610,7 +610,14 @@ namespace XivVoices.Voice {
             if (taskCancellations.TryGetValue(character, out var cts))
             {
                 //_chatGui.Print("Cancellation " + character.Name);
-                cts.Cancel();
+                try
+                {
+                    cts.Cancel();
+                }
+                catch (ObjectDisposedException)
+                {
+                    PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already.");
+                }
                 return;
             }
 
