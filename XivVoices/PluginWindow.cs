@@ -1131,7 +1131,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.3.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to handle emotions such as \":)\"  \":(\"  \":D\"  \":C\"  \"XD\"  \">_<\"  \"^_^\" ...etc.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Fixed a crash related to stopping lipsync when it has already stopped.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.7"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Quick Bug Fix, don't worry about it :)");
                 }

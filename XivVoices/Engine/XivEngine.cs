@@ -1290,18 +1290,40 @@ namespace XivVoices.Engine
         public static string ProcessPlayerChat(string sentence, string speaker)
         {
             sentence = sentence.Trim();
-
-            // Check for waving gesture
-            if (sentence.Equals("o/"))
-                return speaker.Split(" ")[0] + " is waving.";
-
+            string playerName = speaker.Split(" ")[0];
             var options = RegexOptions.IgnoreCase;
+            var emoticons = new Dictionary<string, string>
+            {
+                { @"(^|\s)o/($|\s)", "waves and says " },
+                { @"(^|\s)(:\)|\^\^|\^[^\s]\^)($|\s)", "smiles and says " },
+                { @"(^|\s)(:D|:>)($|\s)", "looks happy and says " },
+                { @"(^|\s):O($|\s)", "looks surprised and says " },
+                { @"(^|\s)(:\(|:<|:C|>([^\s]+)<)($|\s)", "looks sad and says " },
+                { @"\bxD\b", "laughs and says " },
+                { @"\bT[^\s]T\b", "cries and says " },
+                { @"(^|\s);\)($|\s)", "winks and says " }
+            };
 
             // Regex: remove links
             sentence = Regex.Replace(sentence, @"https?\S*", "", options);
 
             // Regex: remove coordinates
             sentence = Regex.Replace(sentence, @"(\ue0bb[^\(]*?)\([^\)]*\)", "$1", options);
+
+            // Check if the player is waving
+            if (sentence.Equals("o/"))
+                return playerName + " is waving.";
+
+            // Check other emotions
+            foreach (var emoticon in emoticons)
+            {
+                if (Regex.IsMatch(sentence, emoticon.Key, options))
+                {
+                    sentence = Regex.Replace(sentence, emoticon.Key, " ", options).Trim();
+                    sentence = playerName + " " + emoticon.Value + sentence;
+                    break;
+                }
+            }
 
             // Regex: replacements
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
