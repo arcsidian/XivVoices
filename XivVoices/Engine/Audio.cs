@@ -198,11 +198,12 @@ namespace XivVoices.Engine
 
         float AdjustVolume(float distance)
         {
+            float volume = (float)Plugin.Config.Volume / 100f;
             (float distanceStart, float distanceEnd, float volumeStart, float volumeEnd)[] volumeRanges =
             {
-                (0f, 3f, 1f, 0.85f),   // 0 to 3 units: 100% to 85%
-                (3f, 5f, 0.85f, 0.3f),   // 3 to 5 units: 85% to 30% 
-                (5f, 20f, 0.3f, 0.05f)     // 5 to 20 units: 30% to 5%
+                (0f, 3f, volume*1f, volume*0.85f),   // 0 to 3 units: 100% to 85%
+                (3f, 5f, volume*0.85f, volume*0.3f),   // 3 to 5 units: 85% to 30% 
+                (5f, 20f, volume*0.3f, volume*0.05f)     // 5 to 20 units: 30% to 5%
             };
 
             if(Conditions.IsBoundByDuty)
@@ -218,8 +219,8 @@ namespace XivVoices.Engine
                 {
                     float slope = (range.volumeEnd - range.volumeStart) / (range.distanceEnd - range.distanceStart);
                     float yIntercept = range.volumeStart - slope * range.distanceStart;
-                    float volume = slope * distance + yIntercept;
-                    return Math.Clamp(volume, Math.Min(range.volumeStart, range.volumeEnd), Math.Max(range.volumeStart, range.volumeEnd));
+                    float _volume = slope * distance + yIntercept;
+                    return Math.Clamp(_volume, Math.Min(range.volumeStart, range.volumeEnd), Math.Max(range.volumeStart, range.volumeEnd));
                 }
             }
             return volumeRanges[^1].volumeEnd;
