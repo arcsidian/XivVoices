@@ -1381,6 +1381,74 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\b<3\b", "heart", options);
             sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut", options);
 
+            // Regex: Job Abbreviations
+            sentence = JobReplacement(sentence);
+
+            return sentence;
+        }
+
+        public static string JobReplacement(string sentence)
+        {
+            var jobReplacementsCaseSensitive = new Dictionary<string, string>
+            {
+                { "WAR", "Warrior" },
+                { "ARC", "Archer" },
+                { "SAM", "Samurai" }
+            };
+
+            var jobReplacementsCaseInsensitive = new Dictionary<string, string>
+            {
+                { "CRP", "Carpenter" },
+                { "BSM", "Blacksmith" },
+                { "ARM", "Armorer" },
+                { "GSM", "Goldsmith" },
+                { "LTW", "Leatherworker" },
+                { "WVR", "Weaver" },
+                { "ALC", "Alchemist" },
+                { "CUL", "Culinarian" },
+                { "MIN", "Miner" },
+                { "BTN", "Botanist" },
+                { "FSH", "Fisher" },
+                { "GLA", "Gladiator" },
+                { "PGL", "Pugilist" },
+                { "MRD", "Marauder" },
+                { "LNC", "Lancer" },
+                { "ROG", "Rogue" },
+                { "CNJ", "Conjurer" },
+                { "THM", "Thaumaturge" },
+                { "ACN", "Arcanist" },
+                { "PLD", "Paladin" },
+                { "DRK", "Dark Knight" },
+                { "GNB", "Gunbreaker" },
+                { "RPR", "Reaper" },
+                { "MNK", "Monk" },
+                { "DRG", "Dragoon" },
+                { "NIN", "Ninja" },
+                { "WHM", "White Mage" },
+                { "SCH", "Scholar" },
+                { "AST", "Astrologian" },
+                { "SGE", "Sage" },
+                { "BRD", "Bard" },
+                { "MCH", "Machinist" },
+                { "DNC", "Dancer" },
+                { "BLM", "Black Mage" },
+                { "SMN", "Summoner" },
+                { "RDM", "Red Mage" },
+                { "BLU", "Blue Mage" }
+            };
+
+            // Apply case-insensitive replacements for most job abbreviations
+            foreach (var job in jobReplacementsCaseInsensitive)
+            {
+                sentence = Regex.Replace(sentence, $@"\b{job.Key}\b", job.Value, RegexOptions.IgnoreCase);
+            }
+
+            // Apply case-sensitive replacements for "WAR," "ARC," and "SAM"
+            foreach (var job in jobReplacementsCaseSensitive)
+            {
+                sentence = Regex.Replace(sentence, $@"\b{job.Key}\b", job.Value);
+            }
+
             return sentence;
         }
 

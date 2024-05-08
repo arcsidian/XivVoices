@@ -1141,7 +1141,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added the option in the Dialogue Settings to enable and disable printing Bubbles in chat.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved player chat processing to include self emoticons, so emotes such as 'o/' will be read as 'You are waving' instead of 'Name is waving'.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added job abbreviations to player chat processing so things such as PLD and BRD will be read as Paladin and Bard by Local TTS.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.3.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Linked Bubble Dialogues to the main Volume Slider.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added dynamic dialogue processing for Feo Ul.");
@@ -1210,73 +1217,23 @@ namespace XivVoices {
                     ImGui.Bullet(); ImGui.TextWrapped("Added the option to enable and disable Linkshell messages in the Dialogue Settings.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.2.9"))
+                if (ImGui.CollapsingHeader("Version 0.2.2.0"))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Implemented a new initialization routine that waits for the game process to become fully responsive before beginning operations.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Modified the service initialization process to be contingent upon the successful verification of the game's process stability.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Introduced error handling around memory read operations.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.8"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed Retainers List.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved Retainers Recognition.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added a new Cactpot Varient Sentence for Prize Winning.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.7"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved audio playback and its performance.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where duplicated dialogues play at the same time.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.6"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added a new menu window: \"Changelog\" to keep users informed about each update, small or big.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.5"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed a bug where \"Retainer Enabled\" does not block retainers dialogues.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.4"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("More improvements on the new UI.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where bubbles try to play even when you've left the map.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.3"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Redesigned the UI, changing horizontal tabs to vertical tabs, added icons, hover text and other UI changes..");
-                    ImGui.Bullet(); ImGui.TextWrapped("Audio Logs now can show up to 100 dialogues in a scrollable window.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.2"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Data.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Nameless Data.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Beast Tribe Data.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Implemented a system that processes dialogues made by NPCs with similar names but different looks.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.2.1"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hot fix: Retainers no longer play in LocalTTS when disabled.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Hot fix: Killing Servant-one again.");
-                }
-
-                if (ImGui.CollapsingHeader(" Version 0.2.2.0"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed bubbles positional audio skipping the first word of every sentence.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added delay between multiple bubbles showing up at the same time.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed volume slider affecting game audio volume.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated XIVV Window.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Local TTS dialogues will have a different color from normal dialogues in the Audio Logs.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Missing Dialogues now show in the Audio Logs.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue causing crashes when trying to stop a lipsync for a character that no longer exists in the scene.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Dynamic sentences for Chocobo Trainer regarding races, learning and unlearning abilities.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Changed filename processing to get rid of Accented Letters for users unable to open such files.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Implemented a new initialization routine that waits for the game process to be fully responsive before starting operations.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Modified the service initialization to verify the game's stability.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added error handling around memory read operations.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed and improved Retainers List recognition.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC, Nameless, and Beast Tribe data.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Implemented a system to process dialogues from similar-named NPCs with different looks.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Redesigned the UI to use vertical tabs with icons and hover text.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Audio Logs now show up to 100 dialogues in a scrollable window.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed bubbles' positional audio skipping the first word of each sentence.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed volume slider issues affecting game audio.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug where 'Retainer Enabled' doesn't block retainers' dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed repeated dialogues playing simultaneously.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added new menu window 'Changelog' to keep users informed about updates.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added a Cactpot variant sentence for prize-winning.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Changed filename processing to remove accented letters.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.1.0"))
