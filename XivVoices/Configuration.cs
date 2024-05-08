@@ -33,6 +33,7 @@ namespace XivVoices
         public bool BubblesEverywhere { get; set; } = true;
         public bool BubblesInSafeZones { get; set; } = false;
         public bool BubblesInBattleZones { get; set; } = false;
+        public bool BubbleChatEnabled { get; set; } = true;
 
         // Engine Settings
         public bool Mute { get; set; } = false;

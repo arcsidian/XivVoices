@@ -586,7 +586,7 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Report Missing Dialogues Automatically");
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
-            ImGui.Text("( English dialogues only, do not enable for other languages )");
+            ImGui.Text("( English lines only, do not enable for other languages )");
             ImGui.PopStyleColor();
             
 
@@ -781,6 +781,16 @@ namespace XivVoices {
                     ImGui.Checkbox("##null", ref nullcheck);
                 ImGui.SameLine();
                 ImGui.Text("Only Enable Chat Bubbles in Battle Zones");
+
+                // BubbleChatEnabled
+                var bubbleChatEnabled = this.Configuration.BubbleChatEnabled;
+                if (ImGui.Checkbox("##bubbleChatEnabled", ref bubbleChatEnabled))
+                {
+                    this.configuration.BubbleChatEnabled = bubbleChatEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Print Bubbles in Chat");
 
 
             ImGui.Unindent(28);
