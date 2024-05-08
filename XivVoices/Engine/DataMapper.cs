@@ -102,9 +102,14 @@ namespace XivVoices.Engine
             {(11008,0), "Mamool Ja"},
             {(11008,129), "Mamool Ja"},
 
+            {(11009,0), "Matanga"},     // TODO: Find Areas for Them
+            {(11009,1), "Giant"},       // TODO: Make a Giant Voice
+
             {(11012,0), "Qiqirn"},
             {(11013,0), "Qiqirn"},
             {(11013,139), "Qiqirn"},
+
+            {(11016,0), "Skeleton"},    // TODO: Make a Dead Voice
 
             {(11020,0), "Vath"},
             {(11020,398), "Vath"},
@@ -113,9 +118,8 @@ namespace XivVoices.Engine
             {(11028,613), "Kojin"},
 
             {(11029,0), "Ananta"},
-            {(11029,612), "Ananta"},
 
-            {(11030,614), "Lupin"},
+            {(11030,0), "Lupin"},
 
             {(11038,0), "Pixie"},
             {(11038,816), "Pixie"},

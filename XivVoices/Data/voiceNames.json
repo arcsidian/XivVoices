@@ -81,7 +81,7 @@
   },
   {
     "voiceName": "Carvallain",
-    "speakers": ["Carvallain", "Adjunct Ostyrgrein", "Ostyrgrein"]
+    "speakers": [ "Carvallain", "Adjunct Ostyrgrein", "Ostyrgrein", "Captain Carvallain" ]
   },
   {
     "voiceName": "Kan_E_Senna",
@@ -113,7 +113,7 @@
   },
   {
     "voiceName": "Raubahn",
-    "speakers": ["Raubahn"]
+    "speakers": [ "Raubahn", "Flame General Aldynn" ]
   },
   {
     "voiceName": "Pipin",
