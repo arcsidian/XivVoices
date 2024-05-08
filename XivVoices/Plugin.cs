@@ -309,6 +309,10 @@ namespace XivVoices {
                         if (config.PartyEnabled)
                             ChatText(playerName, message.TextValue, type, senderId);
                         break;
+                    case XivChatType.Alliance:
+                        if (config.AllianceEnabled)
+                            ChatText(playerName, message.TextValue, type, senderId);
+                        break;
                     case XivChatType.FreeCompany:
                         if (config.FreeCompanyEnabled)
                             ChatText(playerName, message.TextValue, type, senderId);

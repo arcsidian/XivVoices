@@ -271,7 +271,7 @@ namespace XivVoices {
         private void Framework() {
             if (isFrameworkWindowOpen)
             {
-                ImGui.SetNextWindowSize(new Vector2(400, 650));
+                ImGui.SetNextWindowSize(new Vector2(430, 650));
                 ImGuiWindowFlags windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize;
                 if (ImGui.Begin("Framework", ref isFrameworkWindowOpen, windowFlags))
                 {
@@ -283,13 +283,13 @@ namespace XivVoices {
                             ImGui.EndTabItem();
                         }
 
-                        if (ImGui.BeginTabItem(" Unknown Dialogues "))
+                        if (ImGui.BeginTabItem("Unknown Dialogues"))
                         {
                             Framework_Unknown();
                             ImGui.EndTabItem();
                         }
 
-                        if (ImGui.BeginTabItem("    Audio Monitoring    "))
+                        if (ImGui.BeginTabItem("   Audio Monitoring   "))
                         {
                             Framework_Audio();
                             ImGui.EndTabItem();
@@ -664,6 +664,16 @@ namespace XivVoices {
             };
             ImGui.SameLine();
             ImGui.Text("Party Enabled");
+
+            // AllianceEnabled
+            var allianceEnabled = this.Configuration.AllianceEnabled;
+            if (ImGui.Checkbox("##allianceEnabled", ref allianceEnabled))
+            {
+                this.configuration.AllianceEnabled = allianceEnabled;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Alliance Enabled");
 
             // FreeCompanyEnabled
             var freeCompanyEnabled = this.Configuration.FreeCompanyEnabled;

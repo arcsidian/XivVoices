@@ -25,6 +25,7 @@ namespace XivVoices
         public bool TellEnabled { get; set; } = true;
         public bool ShoutEnabled { get; set; } = true;
         public bool PartyEnabled { get; set; } = true;
+        public bool AllianceEnabled { get; set; } = true;
         public bool FreeCompanyEnabled { get; set; } = true;
         public bool LinkshellEnabled { get; set; } = true;
         public bool BattleDialoguesEnabled { get; set; } = true;
