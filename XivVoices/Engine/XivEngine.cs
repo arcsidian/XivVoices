@@ -390,8 +390,22 @@ namespace XivVoices.Engine
             pattern = @"^You wish for .+ to unlearn an ability\? Very well, if you would be so kind as to specify the undesired ability\.\.\.$";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "You wish for your chocobo to unlearn an ability? Very well, if you would be so kind as to specify the undesired ability...");
 
-
-            // =====================================================
+            // 8- Feoul Lines
+            if(xivMessage.Speaker == "Feo Ul")
+            {
+                if (xivMessage.Sentence.StartsWith("A whispered word, and off"))
+                    xivMessage.Sentence = "A whispered word, and off goes yours on a grand adventure! What wonders await at journey's end?";
+                else if (xivMessage.Sentence.StartsWith("Carried by the wind, the leaf flutters to the ground"))
+                    xivMessage.Sentence = "Carried by the wind, the leaf flutters to the ground - and so does yours return to your side. Was the journey a fruitful one?";
+                else if (xivMessage.Sentence.StartsWith("From verdant green to glittering gold"))
+                    xivMessage.Sentence = "From verdant green to glittering gold, so does the leaf take on delightful hues with each new season. If you would see yours dressed in new colors, your beautiful branch will attend to the task.";
+                else if (xivMessage.Sentence.StartsWith("Oh, my adorable sapling! You have need"))
+                    xivMessage.Sentence = "Oh, my adorable sapling! You have need of yours, yes? But sing the word, and let your beautiful branch do what only they can.";
+                else if (xivMessage.Sentence.StartsWith("Very well. I shall slip quietly from"))
+                    xivMessage.Sentence = "Very well. I shall slip quietly from your servant's dreams. May your leaf flutter, float, and find a way back to you.";
+                else if (xivMessage.Sentence.StartsWith("You have no more need of"))
+                    xivMessage.Sentence = "You have no more need of yours? So be it! I shall steal quietly from your loyal servant's dreams.";
+            }
 
             // Send help
             xivMessage.Sentence = xivMessage.Sentence
