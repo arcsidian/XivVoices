@@ -263,8 +263,7 @@ namespace XivVoices.Engine
             if (msg.NPC == null)
                 PluginLog.Information("npc is null, voice name is " + msg.VoiceName);
 
-            if (this.Database.Plugin.Config.FrameworkActive)
-                this.Database.Plugin.Chat.Print($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
+            this.Database.Plugin.PrintLog($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
 
             AddToQueue(msg);
 
@@ -519,7 +518,7 @@ namespace XivVoices.Engine
 
             if (this.Database.NpcWithVariedLooks.Contains(message.Speaker))
             {
-                this.Database.Plugin.Chat.Print(message.Speaker + " --> npcWithVariedLooks ");
+                this.Database.Plugin.PrintLog(message.Speaker + " --> npcWithVariedLooks ");
                 message.NPC.BodyType = message.TtsData.Body;
                 message.NPC.Gender = message.TtsData.Gender;
                 message.NPC.Race = message.TtsData.Race;
@@ -1305,6 +1304,7 @@ namespace XivVoices.Engine
         {
             sentence = sentence.Trim();
             string playerName = speaker.Split(" ")[0];
+            bool iAmSpeaking = XivEngine.Instance.Database.Plugin.ClientState.LocalPlayer.Name.TextValue == speaker;
             var options = RegexOptions.IgnoreCase;
             var emoticons = new Dictionary<string, string>
             {
@@ -1318,6 +1318,14 @@ namespace XivVoices.Engine
                 { @"(^|\s);\)($|\s)", "winks and says " }
             };
 
+            if(iAmSpeaking)
+            {
+                playerName = "You";
+                var keys = new List<string>(emoticons.Keys);
+                foreach (var key in keys)
+                    emoticons[key] = Regex.Replace(emoticons[key], "s ", " ");
+            }
+
             // Regex: remove links
             sentence = Regex.Replace(sentence, @"https?\S*", "", options);
 
@@ -1326,7 +1334,13 @@ namespace XivVoices.Engine
 
             // Check if the player is waving
             if (sentence.Equals("o/"))
-                return playerName + " is waving.";
+            {
+                if(iAmSpeaking)
+                    return playerName + " wave.";
+                else
+                    return playerName + " is waving.";
+            }
+            
 
             // Check other emotions
             foreach (var emoticon in emoticons)
@@ -1603,7 +1617,7 @@ namespace XivVoices.Engine
         #region Framework
         public void RedoAudio(XivMessage xivMessage)
         {
-            XivEngine.Instance.Database.Plugin.Chat.Print("ArcFramework: RedoAudio");
+            XivEngine.Instance.Database.Plugin.PrintLog("ArcFramework: RedoAudio");
             if (xivMessage.VoiceName == "Unknown")
             {
                 xivMessage = XivEngine.Instance.CleanXivMessage(xivMessage);
@@ -1673,7 +1687,7 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
+            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "mute", input));
         }
 
@@ -1682,7 +1696,7 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
+            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));
         }
 
@@ -1692,7 +1706,7 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            this.Database.Plugin.Chat.Print($"Reporting line: \"{msg.Sentence}\"");
+            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
         }
 

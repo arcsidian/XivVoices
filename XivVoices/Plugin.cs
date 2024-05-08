@@ -221,8 +221,16 @@ namespace XivVoices {
             _recentCFPop = 1;
         }
         #endregion Plugin Initiialization
-        #region Configuration
-
+        #region Debugging
+        public void Print(string text)
+        {
+            this.Chat.Print(text);
+        }
+        public void PrintLog(string text)
+        {
+            if (this.Config.FrameworkActive)
+                this.Chat.Print(text);
+        }
         #endregion
         #region Sound Management
         private void framework_Update(IFramework framework) {
