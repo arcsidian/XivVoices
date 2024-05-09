@@ -47,6 +47,7 @@ namespace XivVoices
         public string LocalTTSFemale { get; set; } = "en-gb-jenny_dioco-medium";
         public int LocalTTSUngendered { get; set; } = 1;
         public int LocalTTSVolume { get; set; } = 100;
+        public bool LocalTTSPlayerSays { get; set; } = false;
         public bool WebsocketRedirectionEnabled { get; set; } = false;
 
         // Framework Settings

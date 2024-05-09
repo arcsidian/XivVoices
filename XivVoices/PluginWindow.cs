@@ -949,7 +949,17 @@ namespace XivVoices {
                 this.Configuration.LocalTTSVolume = localTTSVolume;
                 needSave = true;
             }
-            
+
+            ImGui.Dummy(new Vector2(0, 5));
+            var localTTSPlayerSays = this.Configuration.LocalTTSPlayerSays;
+            if (ImGui.Checkbox("##localTTSPlayerSays", ref localTTSPlayerSays))
+            {
+                this.configuration.LocalTTSPlayerSays = localTTSPlayerSays;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Say Speaker Name in Chat");
+
             ImGui.Unindent(20);
 
             // Polly Settings ----------------------------------------------
@@ -1151,7 +1161,16 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing, adding : ggty, cs, sry, kk, oki, gn, nn..etc");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Bubble message in chat to say the NPC name when available.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed player name in party chat.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added the option to say the speaker's name for Local TTS.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added the command /xivv skip to skip currently playing dialogue.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.1"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added Alliance Chat to the list of enabled chats in the Dialogue Settings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed an error caused by SayWhat Plugin.");

@@ -1305,7 +1305,6 @@ namespace XivVoices.Engine
 
         public static string ProcessPlayerChat(string sentence, string speaker)
         {
-            XivEngine.Instance.Database.Plugin.PrintLog(sentence);
             sentence = sentence.Trim();
             string playerName = speaker.Split(" ")[0];
             bool iAmSpeaking = XivEngine.Instance.Database.Plugin.ClientState.LocalPlayer.Name.TextValue == speaker;
@@ -1347,14 +1346,22 @@ namespace XivVoices.Engine
             }
 
             // Check other emotions
+            bool saysAdded = false;
             foreach (var emoticon in emoticons)
             {
                 if (Regex.IsMatch(sentence, emoticon.Key, options))
                 {
+                    saysAdded = true;
                     sentence = Regex.Replace(sentence, emoticon.Key, " ", options).Trim();
                     sentence = playerName + " " + emoticon.Value + sentence;
                     break;
                 }
+            }
+
+            if (!saysAdded && XivEngine.Instance.Database.Plugin.Config.LocalTTSPlayerSays)
+            {
+                string says = iAmSpeaking ? " say " : " says ";
+                sentence = playerName + says + sentence;
             }
                 
 
@@ -1398,6 +1405,9 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bcs\b", "cutscene", options);
             sentence = Regex.Replace(sentence, @"\bttyl\b", "talk to you later", options);
             sentence = Regex.Replace(sentence, @"\boki\b", "okay", options);
+            sentence = Regex.Replace(sentence, @"\bkk\b", "okay", options);
+            sentence = Regex.Replace(sentence, @"\bffs\b", "for fuck's sake", options);
+            sentence = Regex.Replace(sentence, @"\baight\b", "ight", options);
             sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
             sentence = Regex.Replace(sentence, @"\bgn\b", "good night", options);
             sentence = Regex.Replace(sentence, @"\bnn\b", "ight night", options);
@@ -1409,7 +1419,6 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut", options);
             sentence = Regex.Replace(sentence, @"\bIT\b", "it");
 
-            XivEngine.Instance.Database.Plugin.PrintLog(sentence);
             // Regex: Job Abbreviations
             sentence = JobReplacement(sentence);
             return sentence;
