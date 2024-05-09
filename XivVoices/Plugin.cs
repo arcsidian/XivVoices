@@ -382,6 +382,9 @@ namespace XivVoices {
         private void ChatText(string sender, SeString message, XivChatType type, uint senderId, bool cancel = false) {
             if (!config.Active || !config.Initialized) return;
 
+            if (sender.Length == 1)
+                sender = _clientState.LocalPlayer.Name.TextValue;
+
             string stringtype = type.ToString();
             string correctSender = _addonTalkHandler.CleanSender(sender);
             string user = $"{ClientState.LocalPlayer.Name}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
@@ -403,7 +406,7 @@ namespace XivVoices {
             string tribe = "-1";
             string eyes = "-1";
 
-
+            
             // Get Character Data
             if (sender.Contains(_clientState.LocalPlayer.Name.TextValue)){
                 character = _clientState.LocalPlayer;
@@ -433,7 +436,7 @@ namespace XivVoices {
                 tribe = character.Customize[(int)CustomizeIndex.Tribe].ToString();
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape].ToString();
 
-                if(type == XivChatType.TellIncoming || type == XivChatType.Party || type == XivChatType.Alliance || type == XivChatType.FreeCompany)
+                if (type == XivChatType.TellIncoming || type == XivChatType.Party || type == XivChatType.Alliance || type == XivChatType.FreeCompany)
                 {
                     var playerCharacter = new PlayerCharacter
                     {
