@@ -1305,6 +1305,7 @@ namespace XivVoices.Engine
 
         public static string ProcessPlayerChat(string sentence, string speaker)
         {
+            XivEngine.Instance.Database.Plugin.PrintLog(sentence);
             sentence = sentence.Trim();
             string playerName = speaker.Split(" ")[0];
             bool iAmSpeaking = XivEngine.Instance.Database.Plugin.ClientState.LocalPlayer.Name.TextValue == speaker;
@@ -1317,8 +1318,9 @@ namespace XivVoices.Engine
                 { @"(^|\s)(:O|:0)($|\s)", "looks surprised and says " },
                 { @"(^|\s)(:\(|:<|:C|>([^\s]+)<)($|\s)", "looks sad and says " },
                 { @"\bxD\b", "laughs and says " },
+                { @"(^|\s)(:3)($|\s)", "gives a playful smile and says " },
                 { @"\bT[^\s]T\b", "cries and says " },
-                { @"(^|\s);\)($|\s)", "winks and says " }
+                { @"(^|\s);\)($|\s)", "winks and says " },
             };
 
             if (iAmSpeaking)
@@ -1354,7 +1356,15 @@ namespace XivVoices.Engine
                     break;
                 }
             }
-            
+                
+
+
+            // Replace "min" following numbers with "minutes", ensuring proper pluralization
+            sentence = Regex.Replace(sentence, @"(\b\d+)\s*min\b", m =>
+            {
+                return int.Parse(m.Groups[1].Value) == 1 ? $"{m.Groups[1].Value} minute" : $"{m.Groups[1].Value} minutes";
+            }, options);
+
             // Clean "and says" at the end of the sentence
             string pattern = @"\s*and says\s*$";
             if (iAmSpeaking)
@@ -1382,19 +1392,24 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\blol\b", "\"L-O-L\"", options);
             sentence = Regex.Replace(sentence, @"\blmao\b", "\"Lah-mao\"", options);
             sentence = Regex.Replace(sentence, @"\bgg\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bgl\b", "good luck", options);
             sentence = Regex.Replace(sentence, @"\bsry\b", "sorry", options);
             sentence = Regex.Replace(sentence, @"\bsrry\b", "sorry", options);
             sentence = Regex.Replace(sentence, @"\bcs\b", "cutscene", options);
             sentence = Regex.Replace(sentence, @"\bttyl\b", "talk to you later", options);
             sentence = Regex.Replace(sentence, @"\boki\b", "okay", options);
             sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bgn\b", "good night", options);
+            sentence = Regex.Replace(sentence, @"\bnn\b", "ight night", options);
             sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer", options);
             sentence = Regex.Replace(sentence, @"\bbis\b", "best in slot", options);
             sentence = Regex.Replace(sentence, @"(?<=\s|^):\)(?=\s|$)", "smile", options);
             sentence = Regex.Replace(sentence, @"(?<=\s|^):\((?=\s|$)", "sadge", options);
             sentence = Regex.Replace(sentence, @"\b<3\b", "heart", options);
             sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut", options);
+            sentence = Regex.Replace(sentence, @"\bIT\b", "it");
 
+            XivEngine.Instance.Database.Plugin.PrintLog(sentence);
             // Regex: Job Abbreviations
             sentence = JobReplacement(sentence);
             return sentence;
