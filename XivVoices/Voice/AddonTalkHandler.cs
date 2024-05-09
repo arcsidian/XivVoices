@@ -719,7 +719,12 @@ namespace XivVoices.Voice {
                     string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
                     if(_plugin.Config.BubbleChatEnabled)
-                        _plugin.Chat.Print("Bubble: " + correctedMessage);
+                        _plugin.Chat.Print(new XivChatEntry
+                        {
+                            Name = "Bubble",
+                            Message = correctedMessage,
+                            Type = XivChatType.NPCDialogue
+                        });
                     Engine.XivEngine.Instance.Process("Bubble", correctSender, id, skeleton, correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), position, npcObject, user);
 
                     lastBubbleDialogue = correctedMessage;

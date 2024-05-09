@@ -175,6 +175,9 @@ namespace XivVoices.Engine
             if (ttsData.Type != "Cancel" && ttsData.Language != "English")
                 return;
 
+            if (ttsData.Speaker == "NPC")
+                return;
+
             //PluginLog.Information($"------> Icoming: [Type]: {type}, [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Speaker]:{speaker}, [Message]:{msg.TtsData.Message},");
 
             if (this.Database.Plugin.Config.SkipEnabled && (ttsData.Type == "Dialogue" || ttsData.Type == "Cancel") )

@@ -1151,7 +1151,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Alliance Chat to the list of enabled chats in the Dialogue Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an error caused by SayWhat Plugin.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bubble chat now is printed as a green NPC Dialogue Message so users can filter it as they see fit.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added the option in the Dialogue Settings to enable and disable printing Bubbles in chat.");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved player chat processing to include self emoticons, so emotes such as 'o/' will be read as 'You are waving' instead of 'Name is waving'.");
