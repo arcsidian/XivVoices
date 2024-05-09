@@ -624,6 +624,9 @@ namespace XivVoices {
                             this.pluginInterface.SavePluginConfig(config);
                             config.Mute = false;
                             break;
+                        case "skip":
+                            this.audio.StopAudio();
+                            break;
                         default:
                             _window.Toggle();
                             break;
