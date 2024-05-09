@@ -721,7 +721,7 @@ namespace XivVoices.Voice {
                     if(_plugin.Config.BubbleChatEnabled)
                         _plugin.Chat.Print(new XivChatEntry
                         {
-                            Name = "Bubble",
+                            Name = correctSender,
                             Message = correctedMessage,
                             Type = XivChatType.NPCDialogue
                         });

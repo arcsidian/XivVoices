@@ -1321,7 +1321,7 @@ namespace XivVoices.Engine
                 { @"(^|\s);\)($|\s)", "winks and says " }
             };
 
-            if(iAmSpeaking)
+            if (iAmSpeaking)
             {
                 playerName = "You";
                 var keys = new List<string>(emoticons.Keys);
@@ -1343,7 +1343,7 @@ namespace XivVoices.Engine
                 else
                     return playerName + " is waving.";
             }
-            
+
             // Check other emotions
             foreach (var emoticon in emoticons)
             {
@@ -1382,7 +1382,11 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\blol\b", "\"L-O-L\"", options);
             sentence = Regex.Replace(sentence, @"\blmao\b", "\"Lah-mao\"", options);
             sentence = Regex.Replace(sentence, @"\bgg\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bsry\b", "sorry", options);
+            sentence = Regex.Replace(sentence, @"\bsrry\b", "sorry", options);
             sentence = Regex.Replace(sentence, @"\bcs\b", "cutscene", options);
+            sentence = Regex.Replace(sentence, @"\bttyl\b", "talk to you later", options);
+            sentence = Regex.Replace(sentence, @"\boki\b", "okay", options);
             sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
             sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer", options);
             sentence = Regex.Replace(sentence, @"\bbis\b", "best in slot", options);
@@ -1393,7 +1397,6 @@ namespace XivVoices.Engine
 
             // Regex: Job Abbreviations
             sentence = JobReplacement(sentence);
-
             return sentence;
         }
 
