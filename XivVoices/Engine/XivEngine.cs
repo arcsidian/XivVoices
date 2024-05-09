@@ -1362,6 +1362,7 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, pattern, "", options);
 
             // Regex: replacements
+            sentence = Regex.Replace(sentence, @"\bggty\b", "good game, thank you", options);
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
             sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much", options);
             sentence = Regex.Replace(sentence, @"\bty\b", "thank you", options);
@@ -1381,6 +1382,7 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\blol\b", "\"L-O-L\"", options);
             sentence = Regex.Replace(sentence, @"\blmao\b", "\"Lah-mao\"", options);
             sentence = Regex.Replace(sentence, @"\bgg\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bcs\b", "cutscene", options);
             sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
             sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer", options);
             sentence = Regex.Replace(sentence, @"\bbis\b", "best in slot", options);
