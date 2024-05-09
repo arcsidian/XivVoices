@@ -1314,7 +1314,7 @@ namespace XivVoices.Engine
                 { @"(^|\s)o/($|\s)", "waves and says " },
                 { @"(^|\s)(:\)|\^\^|\^[^\s]\^)($|\s)", "smiles and says " },
                 { @"(^|\s)(:D|:>)($|\s)", "looks happy and says " },
-                { @"(^|\s):O($|\s)", "looks surprised and says " },
+                { @"(^|\s)(:O|:0)($|\s)", "looks surprised and says " },
                 { @"(^|\s)(:\(|:<|:C|>([^\s]+)<)($|\s)", "looks sad and says " },
                 { @"\bxD\b", "laughs and says " },
                 { @"\bT[^\s]T\b", "cries and says " },
@@ -1344,7 +1344,6 @@ namespace XivVoices.Engine
                     return playerName + " is waving.";
             }
             
-
             // Check other emotions
             foreach (var emoticon in emoticons)
             {
@@ -1355,6 +1354,12 @@ namespace XivVoices.Engine
                     break;
                 }
             }
+            
+            // Clean "and says" at the end of the sentence
+            string pattern = @"\s*and says\s*$";
+            if (iAmSpeaking)
+                pattern = @"\s*and say\s*$";
+            sentence = Regex.Replace(sentence, pattern, "", options);
 
             // Regex: replacements
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
