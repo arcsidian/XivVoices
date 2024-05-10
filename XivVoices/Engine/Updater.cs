@@ -109,8 +109,8 @@ namespace XivVoices.Engine
             // Manifest Check
             if (!serverManifestLoaded || !localManifestLoaded)
             {
-                if (!serverManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.PrintError("Server is updating right now!");
-                if (!localManifestLoaded) XivEngine.Instance.Database.Plugin.Chat.PrintError("Local Manifest check failed!");
+                if (!serverManifestLoaded) XivEngine.Instance.Database.Plugin.PrintError("Server is updating right now!");
+                if (!localManifestLoaded) XivEngine.Instance.Database.Plugin.PrintError("Local Manifest check failed!");
                 State.Add(-1); // Error 1: Unable to load Manifests
                 await Task.Delay(1000);
                 State.Clear();

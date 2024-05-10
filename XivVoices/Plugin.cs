@@ -187,7 +187,7 @@ namespace XivVoices {
 
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
-                _chat.PrintError("[XivVoices] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
+                PrintError("[XivVoices] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
             #endregion
         }
@@ -213,7 +213,7 @@ namespace XivVoices {
 
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
-                _chat.PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
+                PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
         }
 
@@ -224,12 +224,39 @@ namespace XivVoices {
         #region Debugging
         public void Print(string text)
         {
-            this.Chat.Print(text);
+            this.Chat.Print(new XivChatEntry
+            {
+                Message = text,
+                Type = XivChatType.CustomEmote
+            });
         }
-        public void PrintLog(string text)
+        public void PrintError(string text)
+        {
+            this.Chat.Print(new XivChatEntry
+            {
+                Message = text,
+                Type = XivChatType.Urgent
+            });
+        }
+
+        public void Log(string text)
         {
             if (this.Config.FrameworkActive)
-                this.Chat.Print(text);
+                this.Chat.Print(new XivChatEntry
+                {
+                    Message = text,
+                    Type = XivChatType.CustomEmote
+                });
+        }
+
+        public void LogError(string text)
+        {
+            if (this.Config.FrameworkActive)
+                this.Chat.Print(new XivChatEntry
+                {
+                    Message = text,
+                    Type = XivChatType.Urgent
+                });
         }
         #endregion
         #region Sound Management
@@ -575,7 +602,7 @@ namespace XivVoices {
                 }
                 catch (Exception e)
                 {
-                    _chat.PrintError("Failed to load textures: " + e.Message);
+                    PrintError("Failed to load textures: " + e.Message);
                 }
             }
             this.windowSystem.Draw();

@@ -94,7 +94,7 @@ namespace XivVoices.Engine
             }
             catch (Exception ex)
             {
-                Plugin.Chat.PrintError("Error during audio playback. " + ex);
+                Plugin.PrintError("Error during audio playback. " + ex);
             }
             finally
             {
@@ -164,7 +164,7 @@ namespace XivVoices.Engine
             }
             catch (Exception ex)
             {
-                Plugin.Chat.PrintError("Error during bubble playback. " + ex);
+                Plugin.PrintError("Error during bubble playback. " + ex);
             }
             finally
             {

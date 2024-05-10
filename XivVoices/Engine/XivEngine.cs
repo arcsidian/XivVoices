@@ -266,7 +266,7 @@ namespace XivVoices.Engine
             if (msg.NPC == null)
                 PluginLog.Information("npc is null, voice name is " + msg.VoiceName);
 
-            this.Database.Plugin.PrintLog($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
+            this.Database.Plugin.Log($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
 
             AddToQueue(msg);
 
@@ -521,7 +521,7 @@ namespace XivVoices.Engine
 
             if (this.Database.NpcWithVariedLooks.Contains(message.Speaker))
             {
-                this.Database.Plugin.PrintLog(message.Speaker + " --> npcWithVariedLooks ");
+                this.Database.Plugin.Log(message.Speaker + " --> npcWithVariedLooks ");
                 message.NPC.BodyType = message.TtsData.Body;
                 message.NPC.Gender = message.TtsData.Gender;
                 message.NPC.Race = message.TtsData.Race;
@@ -1722,7 +1722,7 @@ namespace XivVoices.Engine
         #region Framework
         public void RedoAudio(XivMessage xivMessage)
         {
-            XivEngine.Instance.Database.Plugin.PrintLog("ArcFramework: RedoAudio");
+            XivEngine.Instance.Database.Plugin.Log("ArcFramework: RedoAudio");
             if (xivMessage.VoiceName == "Unknown")
             {
                 xivMessage = XivEngine.Instance.CleanXivMessage(xivMessage);
@@ -1776,6 +1776,7 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             PluginLog.Information("ReportUnknown");
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 
