@@ -1161,7 +1161,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Potential fix for random crashes related to other plugins such as Mare");
+                    ImGui.Bullet(); ImGui.TextWrapped("Performance Improvements.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.2"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing, adding : ggty, cs, sry, kk, oki, gn, nn..etc");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Bubble message in chat to say the NPC name when available.");

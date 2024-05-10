@@ -56,6 +56,7 @@ namespace XivVoices.Voice {
         //private readonly Object mGameChatInfoLockObj = new();
 
         private MemoryService _memoryService;
+        private AnimationService _animationService;
         private GameDataService _gameDataService;
         private List<GameObject> _threadSafeObjectTable;
         public List<ActionTimeline> LipSyncTypes { get; private set; }
@@ -113,7 +114,7 @@ namespace XivVoices.Voice {
             // Initialize all services that depend on the game process
             _memoryService = new MemoryService();
             _gameDataService = new GameDataService();
-
+            _animationService = new AnimationService();
             StartServices();
         }
 
@@ -126,6 +127,8 @@ namespace XivVoices.Voice {
             await _gameDataService.Initialize();
 
             LipSyncTypes = GenerateLipList().ToList();
+            await _animationService.Initialize();
+            await _animationService.Start();
             await _memoryService.Start();
         }
 
@@ -806,6 +809,7 @@ namespace XivVoices.Voice {
 
             _memoryService?.Shutdown();
             _gameDataService?.Shutdown();
+            _animationService?.Shutdown();
             _openChatBubbleHook?.Dispose();
         }
 
