@@ -56,17 +56,7 @@ namespace XivVoices.Voice {
         //private readonly Object mGameChatInfoLockObj = new();
 
         private MemoryService _memoryService;
-        private GameService _gameService;
-        private SettingsService _settingService;
-        private AnimationService _animationService;
-        private ActorMemory _actorMemory;
         private GameDataService _gameDataService;
-        private ActorService _actorService;
-        private GposeService _gposeService;
-        private AddressService _addressService;
-        private UserAnimationOverride _animationOverride;
-        private PoseService _poseService;
-        private TargetService _targetService;
         private List<GameObject> _threadSafeObjectTable;
         public List<ActionTimeline> LipSyncTypes { get; private set; }
 
@@ -122,15 +112,7 @@ namespace XivVoices.Voice {
         {
             // Initialize all services that depend on the game process
             _memoryService = new MemoryService();
-            _gameService = new GameService();
-            _settingService = new SettingsService();
             _gameDataService = new GameDataService();
-            _animationService = new AnimationService();
-            _actorService = new ActorService();
-            _gposeService = new GposeService();
-            _addressService = new AddressService();
-            _poseService = new PoseService();
-            _targetService = new TargetService();
 
             StartServices();
         }
@@ -141,23 +123,10 @@ namespace XivVoices.Voice {
             while (!Process.GetCurrentProcess().Responding)
                 await Task.Delay(100);
             await _memoryService.OpenProcess(Process.GetCurrentProcess());
-            await _gameService.Initialize();
-            await _settingService.Initialize();
             await _gameDataService.Initialize();
-            await _actorService.Initialize();
-            await _gposeService.Initialize();
-            await _addressService.Initialize();
-            await _poseService.Initialize();
-            await _targetService.Initialize();
 
             LipSyncTypes = GenerateLipList().ToList();
-            await _animationService.Initialize();
-            await _gposeService.Start();
-            await _animationService.Start();
             await _memoryService.Start();
-            await _addressService.Start();
-            await _poseService.Start();
-            await _targetService.Start();
         }
 
         private IEnumerable<ActionTimeline> GenerateLipList()
@@ -836,14 +805,7 @@ namespace XivVoices.Voice {
             disposed = true;
 
             _memoryService?.Shutdown();
-            _gameService?.Shutdown();
-            _settingService?.Shutdown();
             _gameDataService?.Shutdown();
-            _actorService?.Shutdown();
-            _gposeService?.Shutdown();
-            _addressService?.Shutdown();
-            _poseService?.Shutdown();
-            _targetService?.Shutdown();
             _openChatBubbleHook?.Dispose();
         }
 
