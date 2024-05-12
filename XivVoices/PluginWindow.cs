@@ -1161,7 +1161,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed an extremely rare instance where bubble chat processing is not initialized.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added a potential fix for bubble chats not being initialized correctly.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing.");

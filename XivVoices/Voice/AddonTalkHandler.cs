@@ -166,13 +166,12 @@ namespace XivVoices.Voice {
 
         unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, GameObject* pActor, IntPtr pString, bool param3) {
             try {
-                if (!alreadyConfiguredBubbles)
-                    _plugin.Print("Initializing Bubbles");
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
                     if (pString != IntPtr.Zero &&
                     !Service.ClientState.IsPvPExcludingDen) {
                         //	Idk if the actor can ever be null, but if it can, assume that we should print the bubble just in case.  Otherwise, only don't print if the actor is a player.
                         if (pActor == null || pActor->ObjectKind != ObjectKind.Player) {
+                            PluginLog.Information("NPCBubbleTextDetour is running.");
                             long currentTime_mSec = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
                             SeString speakerName = SeString.Empty;
