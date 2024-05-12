@@ -166,6 +166,8 @@ namespace XivVoices.Voice {
 
         unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, GameObject* pActor, IntPtr pString, bool param3) {
             try {
+                if (!alreadyConfiguredBubbles)
+                    _plugin.Print("Initializing Bubbles");
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
                     if (pString != IntPtr.Zero &&
                     !Service.ClientState.IsPvPExcludingDen) {

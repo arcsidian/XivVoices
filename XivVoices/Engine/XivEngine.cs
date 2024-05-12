@@ -1409,6 +1409,7 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bffs\b", "for fuck's sake", options);
             sentence = Regex.Replace(sentence, @"\baight\b", "ight", options);
             sentence = Regex.Replace(sentence, @"\bggs\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bwp\b", "well played", options);
             sentence = Regex.Replace(sentence, @"\bgn\b", "good night", options);
             sentence = Regex.Replace(sentence, @"\bnn\b", "ight night", options);
             sentence = Regex.Replace(sentence, @"\bdd\b", "damage dealer", options);
@@ -1416,8 +1417,15 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"(?<=\s|^):\)(?=\s|$)", "smile", options);
             sentence = Regex.Replace(sentence, @"(?<=\s|^):\((?=\s|$)", "sadge", options);
             sentence = Regex.Replace(sentence, @"\b<3\b", "heart", options);
+            sentence = Regex.Replace(sentence, @"\bARR\b", "A Realm Reborn");
+            sentence = Regex.Replace(sentence, @"\bHW\b", "Heavensward");
+            sentence = Regex.Replace(sentence, @"\bSB\b", "Storm Blood");
+            sentence = Regex.Replace(sentence, @"\bSHB\b", "Shadow Bangers");
+            sentence = Regex.Replace(sentence, @"\bEW\b", "End Walker");
             sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut", options);
             sentence = Regex.Replace(sentence, @"\bIT\b", "it");
+            sentence = Regex.Replace(sentence, @"r says", "rr says");
+            sentence = Regex.Replace(sentence, @"Eleanorr says", "el-uh-ner says");
 
             // Regex: Job Abbreviations
             sentence = JobReplacement(sentence);
