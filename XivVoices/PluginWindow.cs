@@ -894,7 +894,7 @@ namespace XivVoices {
             // Playback Engine  ---------------------------------------------
             ImGui.Dummy(new Vector2(0, 20));
             ImGui.TextWrapped("Playback Engine");
-            string[] audioEngines = new string[] { "DirectSound", "Wasapi" }; 
+            string[] audioEngines = new string[] { "DirectSound", "Wasapi", "WaveOut" }; 
             int currentEngine = this.Configuration.AudioEngine - 1;
 
             if (ImGui.Combo("##audioEngine", ref currentEngine, audioEngines, audioEngines.Length))
