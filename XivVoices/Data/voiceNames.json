@@ -9,51 +9,51 @@
   },
   {
     "voiceName": "Minfilia",
-    "speakers": ["Minfilia", "Minfilia's Avatar", "The Word of the Mother", "Oracle of Light"]
+    "speakers": [ "Minfilia", "Minfilia's Avatar", "The Word of the Mother", "Oracle of Light" ]
   },
   {
     "voiceName": "Tataru",
-    "speakers": ["Tataru", "Tataru's Avatar"]
+    "speakers": [ "Tataru", "Tataru's Avatar" ]
   },
   {
     "voiceName": "Yshtola",
-    "speakers": ["Y'shtola", "Y'shtola's Avatar", "Cultured Conjurer"]
+    "speakers": [ "Y'shtola", "Y'shtola's Avatar", "Cultured Conjurer" ]
   },
   {
     "voiceName": "Papalymo",
-    "speakers": ["Papalymo", "Papalymo's Avatar"]
+    "speakers": [ "Papalymo", "Papalymo's Avatar" ]
   },
   {
     "voiceName": "Yda",
-    "speakers": ["Yda", "Yda's Avatar"]
+    "speakers": [ "Yda", "Yda's Avatar" ]
   },
   {
     "voiceName": "Thancred",
-    "speakers": ["Thancred", "Thancred's Avatar", "Handsome Stranger"]
+    "speakers": [ "Thancred", "Thancred's Avatar", "Handsome Stranger" ]
   },
   {
     "voiceName": "Urianger",
-    "speakers": ["Urianger", "Urianger's Avatar"]
+    "speakers": [ "Urianger", "Urianger's Avatar" ]
   },
   {
     "voiceName": "Alphinaud",
-    "speakers": ["Alphinaud", "Alphinaud's Avatar", "Alphinaud's Voice"]
+    "speakers": [ "Alphinaud", "Alphinaud's Avatar", "Alphinaud's Voice" ]
   },
   {
     "voiceName": "Alisaie",
-    "speakers": ["Alisaie", "Alisaie's Avatar"]
+    "speakers": [ "Alisaie", "Alisaie's Avatar" ]
   },
   {
     "voiceName": "Krile",
-    "speakers": ["Krile", "Krile's Avatar"]
+    "speakers": [ "Krile", "Krile's Avatar" ]
   },
   {
     "voiceName": "Estinien",
-    "speakers": ["Estinien", "Estinien's Avatar", "Estinien Wyrmblood"]
+    "speakers": [ "Estinien", "Estinien's Avatar", "Estinien Wyrmblood" ]
   },
   {
     "voiceName": "Graha_Tia",
-    "speakers": ["G'raha Tia", "G'raha Tia's Avatar", "Crystal Exarch", "Disembodied Voice", "Familiar Voice"]
+    "speakers": [ "G'raha Tia", "G'raha Tia's Avatar", "Crystal Exarch", "Disembodied Voice", "Familiar Voice" ]
   },
   {
     "voiceName": "Flhaminn",
@@ -61,23 +61,23 @@
   },
   {
     "voiceName": "Moenbryda",
-    "speakers": ["Moenbryda"]
+    "speakers": [ "Moenbryda" ]
   },
   {
     "voiceName": "Merlwyb",
-    "speakers": ["Merlwyb", "Bloefhiswyn", "Admiral Bloefhiswyn"]
+    "speakers": [ "Merlwyb", "Bloefhiswyn", "Admiral Bloefhiswyn" ]
   },
   {
     "voiceName": "Eynzahr_Slafyrsyn",
-    "speakers": ["Eynzahr", "Eynzahr Slafyrsyn", "Mistbeard", "Musosai"]
+    "speakers": [ "Eynzahr", "Eynzahr Slafyrsyn", "Mistbeard", "Musosai" ]
   },
   {
     "voiceName": "Sicard",
-    "speakers": ["Sicard", "Sicard the Last Word"]
+    "speakers": [ "Sicard", "Sicard the Last Word" ]
   },
   {
     "voiceName": "Baderon",
-    "speakers": ["Baderon"]
+    "speakers": [ "Baderon" ]
   },
   {
     "voiceName": "Carvallain",
@@ -85,7 +85,7 @@
   },
   {
     "voiceName": "Kan_E_Senna",
-    "speakers": ["Kan-E-Senna", "Elder Seedseer"]
+    "speakers": [ "Kan-E-Senna", "Elder Seedseer" ]
   },
   {
     "voiceName": "Serpent_Marshal_Brookstone",
@@ -97,11 +97,11 @@
   },
   {
     "voiceName": "A_Ruhn_Senna",
-    "speakers": ["A-Ruhn-Senna"]
+    "speakers": [ "A-Ruhn-Senna" ]
   },
   {
     "voiceName": "E_Sumi_Yan",
-    "speakers": ["E-Sumi-Yan"]
+    "speakers": [ "E-Sumi-Yan" ]
   },
   {
     "voiceName": "Mother_Miounne",
@@ -109,7 +109,7 @@
   },
   {
     "voiceName": "Nanamo_Ul_Namo",
-    "speakers": ["Nanamo Ul Namo", "Lilira"]
+    "speakers": [ "Nanamo Ul Namo", "Lilira" ]
   },
   {
     "voiceName": "Raubahn",
@@ -117,15 +117,15 @@
   },
   {
     "voiceName": "Pipin",
-    "speakers": ["Pipin", "Pipin of the Steel Heart"]
+    "speakers": [ "Pipin", "Pipin of the Steel Heart" ]
   },
   {
     "voiceName": "Lolorito",
-    "speakers": ["Lolorito", "Gurumi Borlumi"]
+    "speakers": [ "Lolorito", "Gurumi Borlumi" ]
   },
   {
     "voiceName": "Teledji_Adeledji",
-    "speakers": ["Teledji Adeledji"]
+    "speakers": [ "Teledji Adeledji" ]
   },
   {
     "voiceName": "Momodi",
@@ -133,31 +133,31 @@
   },
   {
     "voiceName": "Aymeric",
-    "speakers": ["Aymeric", "Aymeric the Blue"]
+    "speakers": [ "Aymeric", "Aymeric the Blue" ]
   },
   {
     "voiceName": "Lucia",
-    "speakers": ["Lucia", "Taciturn Temple Knight", "Lucia the Radiant"]
+    "speakers": [ "Lucia", "Taciturn Temple Knight", "Lucia the Radiant" ]
   },
   {
     "voiceName": "Count_Edmont_de_Fortemps",
-    "speakers": ["Count Edmont de Fortemps", "Louisoix"]
+    "speakers": [ "Count Edmont de Fortemps", "Louisoix" ]
   },
   {
     "voiceName": "Haurchefant",
-    "speakers": ["Haurchefant"]
+    "speakers": [ "Haurchefant" ]
   },
   {
     "voiceName": "Emmanellain",
-    "speakers": ["Emmanellain", "Emmanellain the Lofty"]
+    "speakers": [ "Emmanellain", "Emmanellain the Lofty" ]
   },
   {
     "voiceName": "Honoroit",
-    "speakers": ["Honoroit"]
+    "speakers": [ "Honoroit" ]
   },
   {
     "voiceName": "Hilda",
-    "speakers": ["Hilda", "Hilda Ware", "Hilda the Mongrel", "The Mongrel"]
+    "speakers": [ "Hilda", "Hilda Ware", "Hilda the Mongrel", "The Mongrel" ]
   },
   {
     "voiceName": "Artoirel",
@@ -165,87 +165,87 @@
   },
   {
     "voiceName": "Ysayle",
-    "speakers": ["Ysayle", "Iceheart"]
+    "speakers": [ "Ysayle", "Iceheart" ]
   },
   {
     "voiceName": "Lyse",
-    "speakers": ["Lyse"]
+    "speakers": [ "Lyse" ]
   },
   {
     "voiceName": "Arenvald",
-    "speakers": ["Arenvald"]
+    "speakers": [ "Arenvald" ]
   },
   {
     "voiceName": "Conrad",
-    "speakers": ["Conrad", "Conrad Farsight"]
+    "speakers": [ "Conrad", "Conrad Farsight" ]
   },
   {
     "voiceName": "Mnaago",
-    "speakers": ["M'naago"]
+    "speakers": [ "M'naago" ]
   },
   {
     "voiceName": "Meffrid",
-    "speakers": ["Meffrid"]
+    "speakers": [ "Meffrid" ]
   },
   {
     "voiceName": "Fordola",
-    "speakers": ["Fordola", "Fordola rem Lupis", "Fordola Lupis"]
+    "speakers": [ "Fordola", "Fordola rem Lupis", "Fordola Lupis" ]
   },
   {
     "voiceName": "Hien",
-    "speakers": ["Hien"]
+    "speakers": [ "Hien" ]
   },
   {
     "voiceName": "Yugiri",
-    "speakers": ["Yugiri", "Yugiri Mistwalker", "Refugee Leader"]
+    "speakers": [ "Yugiri", "Yugiri Mistwalker", "Refugee Leader" ]
   },
   {
     "voiceName": "Gosetsu",
-    "speakers": ["Gosetsu", "Gosetsu Everfall", "Xande"]
+    "speakers": [ "Gosetsu", "Gosetsu Everfall", "Xande" ]
   },
   {
     "voiceName": "Hancock",
-    "speakers": ["Hancock"]
+    "speakers": [ "Hancock" ]
   },
   {
     "voiceName": "Rasho",
-    "speakers": ["Rasho"]
+    "speakers": [ "Rasho" ]
   },
   {
     "voiceName": "Tansui",
-    "speakers": ["Tansui", "Tansui the Foxed"]
+    "speakers": [ "Tansui", "Tansui the Foxed" ]
   },
   {
     "voiceName": "Isse",
-    "speakers": ["Isse"]
+    "speakers": [ "Isse" ]
   },
   {
     "voiceName": "Yotsuyu",
-    "speakers": ["Yotsuyu", "Tsuyu", "Tsukuyomi"]
+    "speakers": [ "Yotsuyu", "Tsuyu", "Tsukuyomi" ]
   },
   {
     "voiceName": "Asahi",
-    "speakers": ["Asahi"]
+    "speakers": [ "Asahi" ]
   },
   {
     "voiceName": "Temulun",
-    "speakers": ["Temulun"]
+    "speakers": [ "Temulun" ]
   },
   {
     "voiceName": "Cirina",
-    "speakers": ["Cirina", "Cirina of the Laughing Reeds"]
+    "speakers": [ "Cirina", "Cirina of the Laughing Reeds" ]
   },
   {
     "voiceName": "Magnai",
-    "speakers": ["Magnai", "Magnai the Older"]
+    "speakers": [ "Magnai", "Magnai the Older" ]
   },
   {
     "voiceName": "Sadu",
-    "speakers": ["Sadu", "Sadu Heavensflame"]
+    "speakers": [ "Sadu", "Sadu Heavensflame" ]
   },
   {
     "voiceName": "Shar",
-    "speakers": ["Shar"]
+    "speakers": [ "Shar" ]
   },
   {
     "voiceName": "Louisoix",
@@ -253,7 +253,7 @@
   },
   {
     "voiceName": "Matoya",
-    "speakers": ["Matoya"]
+    "speakers": [ "Matoya" ]
   },
   {
     "voiceName": "Rammbroes",
@@ -261,7 +261,7 @@
   },
   {
     "voiceName": "Cid",
-    "speakers": ["Cid", "Marques"]
+    "speakers": [ "Cid", "Marques" ]
   },
   {
     "voiceName": "Biggs",
@@ -273,7 +273,7 @@
   },
   {
     "voiceName": "Ilberd",
-    "speakers": ["Ilberd", "The Griffin", "Ilberd of the Dull Blade"]
+    "speakers": [ "Ilberd", "The Griffin", "Ilberd of the Dull Blade" ]
   },
   {
     "voiceName": "Yuyuhase",
@@ -293,15 +293,15 @@
   },
   {
     "voiceName": "Varis_zos_Galvus",
-    "speakers": ["Varis", "Varis zos Galvus", ]
+    "speakers": [ "Varis", "Varis zos Galvus" ]
   },
   {
     "voiceName": "Zenos_yae_Galvus",
-    "speakers": ["Zenos yae Galvus", "Zenos", "Zenos viator Galvus"]
+    "speakers": [ "Zenos yae Galvus", "Zenos", "Zenos viator Galvus" ]
   },
   {
     "voiceName": "Gaius_van_Baelsar",
-    "speakers": ["Gaius", "Gaius Baelsar", "Gaius van Baelsar", "Shadowhunter", "Menacing Mercenary"]
+    "speakers": [ "Gaius", "Gaius Baelsar", "Gaius van Baelsar", "Shadowhunter", "Menacing Mercenary" ]
   },
   {
     "voiceName": "Nero_tol_Scaeva",
@@ -309,135 +309,135 @@
   },
   {
     "voiceName": "Livia_sas_Junius",
-    "speakers": ["Livia", "Livia sas Junius", "Livia the Undeterred", "Drusilla", "The Reaper"]
+    "speakers": [ "Livia", "Livia sas Junius", "Livia the Undeterred", "Drusilla", "The Reaper" ]
   },
   {
     "voiceName": "Nero",
-    "speakers": ["Nero", "Nero tol Scaeva", "Iron Nero", "Outlandish Man", "Nero Scaeva"]
+    "speakers": [ "Nero", "Nero tol Scaeva", "Iron Nero", "Outlandish Man", "Nero Scaeva" ]
   },
   {
     "voiceName": "Maxima",
-    "speakers": ["Maxima", "Maxima the Neoteric", "Ugetsu", "Ugetsu Tachikake", "Ugetsu, Slayer of a Thousand Souls"]
+    "speakers": [ "Maxima", "Maxima the Neoteric", "Ugetsu", "Ugetsu Tachikake", "Ugetsu, Slayer of a Thousand Souls" ]
   },
   {
     "voiceName": "Jullus",
-    "speakers": ["Jullus"]
+    "speakers": [ "Jullus" ]
   },
   {
     "voiceName": "Midgardsormr",
-    "speakers": ["Midgardsormr", "Voice of Midgardsormr"]
+    "speakers": [ "Midgardsormr", "Voice of Midgardsormr" ]
   },
   {
     "voiceName": "Emet_Selch",
-    "speakers": ["Emet-Selch", "Sol zos Galvus", "Solus zos Galvus"]
+    "speakers": [ "Emet-Selch", "Sol zos Galvus", "Solus zos Galvus" ]
   },
   {
     "voiceName": "Elidibus",
-    "speakers": ["Elidibus", "Themis"]
+    "speakers": [ "Elidibus", "Themis" ]
   },
   {
     "voiceName": "Lahabrea",
-    "speakers": ["Lahabrea", "Ascian Lahabrea", "Masked Magus"]
+    "speakers": [ "Lahabrea", "Ascian Lahabrea", "Masked Magus" ]
   },
   {
     "voiceName": "Ardbert",
-    "speakers": ["Ardbert", "“Ardbert”"]
+    "speakers": [ "Ardbert", "“Ardbert”" ]
   },
   {
     "voiceName": "Nabriales",
-    "speakers": ["Nabriales"]
+    "speakers": [ "Nabriales" ]
   },
   {
     "voiceName": "Hythlodaeus",
-    "speakers": ["Hythlodaeus"]
+    "speakers": [ "Hythlodaeus" ]
   },
   {
     "voiceName": "Hermes",
-    "speakers": ["Hermes"]
+    "speakers": [ "Hermes" ]
   },
   {
     "voiceName": "Meteion",
-    "speakers": ["Meteion"]
+    "speakers": [ "Meteion" ]
   },
   {
     "voiceName": "Venat",
-    "speakers": ["Venat", "Lady of the Light", "Hydaelyn", "Azem"]
+    "speakers": [ "Venat", "Lady of the Light", "Hydaelyn", "Azem" ]
   },
   {
     "voiceName": "Ryne",
-    "speakers": ["Ryne"]
+    "speakers": [ "Ryne" ]
   },
   {
     "voiceName": "Gaia",
-    "speakers": ["Gaia", "Oracle of Darkness", "Voidwalker"]
+    "speakers": [ "Gaia", "Oracle of Darkness", "Voidwalker" ]
   },
   {
     "voiceName": "Lyna",
-    "speakers": ["Lyna", "Curt Gateguard"]
+    "speakers": [ "Lyna", "Curt Gateguard" ]
   },
   {
     "voiceName": "Tesleen",
-    "speakers": ["Tesleen", "Tesleen, the Forgiven"]
+    "speakers": [ "Tesleen", "Tesleen, the Forgiven" ]
   },
   {
     "voiceName": "Dulia",
-    "speakers": ["Dulia-Chai", "Renda-Sue"]
+    "speakers": [ "Dulia-Chai", "Renda-Sue" ]
   },
   {
     "voiceName": "Chai",
-    "speakers": ["Chai-Nuzz"]
+    "speakers": [ "Chai-Nuzz" ]
   },
   {
     "voiceName": "Runar",
-    "speakers": ["Runar"]
+    "speakers": [ "Runar" ]
   },
   {
     "voiceName": "Nidhana",
-    "speakers": ["Nidhana"]
+    "speakers": [ "Nidhana" ]
   },
   {
     "voiceName": "Fourchenault",
-    "speakers": ["Fourchenault", "Fourchenault Leveilleur"]
+    "speakers": [ "Fourchenault", "Fourchenault Leveilleur" ]
   },
   {
     "voiceName": "Matsya",
-    "speakers": ["Matsya"]
+    "speakers": [ "Matsya" ]
   },
   {
     "voiceName": "Varshahn",
-    "speakers": ["Varshahn"]
+    "speakers": [ "Varshahn" ]
   },
   {
     "voiceName": "2B",
-    "speakers": ["2B", "2P", "FUDefender_2B", "FUDefender_2P"]
+    "speakers": [ "2B", "2P", "FUDefender_2B", "FUDefender_2P" ]
   },
   {
     "voiceName": "9S",
-    "speakers": ["9S","FUDefender_9S"]
+    "speakers": [ "9S", "FUDefender_9S" ]
   },
   {
     "voiceName": "Clive",
-    "speakers": ["Clive", "Strange Man"]
+    "speakers": [ "Clive", "Strange Man" ]
   },
   {
     "voiceName": "Others_YoshiP",
-    "speakers": ["Naoki Yoshida", "Wandering Minstrel"]
+    "speakers": [ "Naoki Yoshida", "Wandering Minstrel" ]
   },
   {
     "voiceName": "Others_Bre",
-    "speakers": ["Bremondt","Grizzled Passenger", "Brendt", "Brennan"]
+    "speakers": [ "Bremondt", "Grizzled Passenger", "Brendt", "Brennan" ]
   },
   {
     "voiceName": "Others_Hildibrand",
-    "speakers": ["Hildibrand","Hildibrand Manderville", "Well-spoken Zombie", "Zombibrand", "Perturbed Gentleman", "Hildibella", "The Forgiven Gentleman"]
+    "speakers": [ "Hildibrand", "Hildibrand Manderville", "Well-spoken Zombie", "Zombibrand", "Perturbed Gentleman", "Hildibella", "The Forgiven Gentleman" ]
   },
   {
     "voiceName": "Others_Nashu",
-    "speakers": ["Nashu","Nashu Mhakaracca"]
+    "speakers": [ "Nashu", "Nashu Mhakaracca" ]
   },
   {
     "voiceName": "Others_Widargelt",
-    "speakers": ["Widargelt","Widargelt the Watcher", "Widargelt Beake", "Theodred"]
+    "speakers": [ "Widargelt", "Widargelt the Watcher", "Widargelt Beake", "Theodred" ]
   },
   {
     "voiceName": "Au_Ra_Raen_Female_01",
@@ -1191,7 +1191,7 @@
     "voiceName": "Child_Miqote_Female_3_4",
     "speakers": []
   },
-  
+
   {
     "voiceName": "Amaljaa",
     "speakers": []
@@ -1213,12 +1213,24 @@
     "speakers": []
   },
   {
-    "voiceName": "Dragon",
+    "voiceName": "Dragon_Large",
     "speakers": []
   },
   {
+    "voiceName": "Dragon_Medium",
+    "speakers": []
+  },
+  {
+    "voiceName": "Dragon_Small",
+    "speakers": []
+  },
+  {
+    "voiceName": "Dragon_Female",
+    "speakers": [ "Vidofnir", "Tiamat", "Azdaja" ]
+  },
+  {
     "voiceName": "Dragon_Midgardsormr",
-    "speakers": ["Midgardsormr", "Voice of Midgardsormr"]
+    "speakers": [ "Midgardsormr", "Voice of Midgardsormr" ]
   },
   {
     "voiceName": "Goblin_Female",
@@ -1286,7 +1298,7 @@
   },
   {
     "voiceName": "Loporrit_Mappingway",
-    "speakers": ["Mappingway"]
+    "speakers": [ "Mappingway" ]
   },
   {
     "voiceName": "Omicron",
@@ -1294,107 +1306,107 @@
   },
   {
     "voiceName": "Ifrit",
-    "speakers": ["Ifrit"]
+    "speakers": [ "Ifrit" ]
   },
   {
     "voiceName": "Titan",
-    "speakers": ["Titan"]
+    "speakers": [ "Titan" ]
   },
   {
     "voiceName": "Garuda",
-    "speakers": ["Garuda"]
+    "speakers": [ "Garuda" ]
   },
   {
     "voiceName": "Phoenix",
-    "speakers": ["Phoenix"]
+    "speakers": [ "Phoenix" ]
   },
   {
     "voiceName": "Leviathan",
-    "speakers": ["Leviathan"]
+    "speakers": [ "Leviathan" ]
   },
   {
     "voiceName": "Ramuh",
-    "speakers": ["Ramuh"]
+    "speakers": [ "Ramuh" ]
   },
   {
     "voiceName": "Shiva",
-    "speakers": ["Shiva"]
+    "speakers": [ "Shiva" ]
   },
   {
     "voiceName": "Ravana",
-    "speakers": ["Ravana"]
+    "speakers": [ "Ravana" ]
   },
   {
     "voiceName": "Bismarck",
-    "speakers": ["Bismarck"]
+    "speakers": [ "Bismarck" ]
   },
   {
     "voiceName": "Knights_of_the_Round",
-    "speakers": ["Knights of the Round"]
+    "speakers": [ "Knights of the Round" ]
   },
   {
     "voiceName": "Alexander",
-    "speakers": ["Alexander"]
+    "speakers": [ "Alexander" ]
   },
   {
     "voiceName": "Shinryu",
-    "speakers": ["Shinryu"]
+    "speakers": [ "Shinryu" ]
   },
   {
     "voiceName": "Lakshmi",
-    "speakers": ["Lakshmi"]
+    "speakers": [ "Lakshmi" ]
   },
   {
     "voiceName": "Halone",
-    "speakers": ["Halone"]
+    "speakers": [ "Halone" ]
   },
   {
     "voiceName": "Menphina",
-    "speakers": ["Menphina"]
+    "speakers": [ "Menphina" ]
   },
   {
     "voiceName": "Thaliak",
-    "speakers": ["Thaliak"]
+    "speakers": [ "Thaliak" ]
   },
   {
     "voiceName": "Nymeia",
-    "speakers": ["Nymeia"]
+    "speakers": [ "Nymeia" ]
   },
   {
     "voiceName": "Llymlaen",
-    "speakers": ["Llymlaen"]
+    "speakers": [ "Llymlaen" ]
   },
   {
     "voiceName": "Oschon",
-    "speakers": ["Oschon"]
+    "speakers": [ "Oschon" ]
   },
   {
     "voiceName": "Byregot",
-    "speakers": ["Byregot"]
+    "speakers": [ "Byregot" ]
   },
   {
     "voiceName": "Rhalgr",
-    "speakers": ["Rhalgr"]
+    "speakers": [ "Rhalgr" ]
   },
   {
     "voiceName": "Azeyma",
-    "speakers": ["Azeyma"]
+    "speakers": [ "Azeyma" ]
   },
   {
     "voiceName": "Naldthal",
-    "speakers": ["Nald'thal"]
+    "speakers": [ "Nald'thal" ]
   },
   {
     "voiceName": "Nophica",
-    "speakers": ["Nophica"]
+    "speakers": [ "Nophica" ]
   },
   {
     "voiceName": "Althyk",
-    "speakers": ["Althyk"]
+    "speakers": [ "Althyk" ]
   },
   {
     "voiceName": "Eulogia",
-    "speakers": ["Eulogia"]
+    "speakers": [ "Eulogia" ]
   },
   {
     "voiceName": "Boss1",

@@ -1049,12 +1049,12 @@ namespace XivVoices.Engine
                 return "Qiqirn";
 
             // HW Beast Tribes
-            if (message.NPC.Race.StartsWith("Dragon"))
+            if (message.TtsData.Race.StartsWith("Dragon"))
             {
                 if (this.Database.VoiceNames.TryGetValue(message.Speaker, out string voiceName))
                     return voiceName;
                 else
-                    return message.NPC.Race;
+                    return message.TtsData.Race;
             }
 
             if (message.NPC.Race == "Goblin")
@@ -1417,10 +1417,10 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"(?<=\s|^):\)(?=\s|$)", "smile", options);
             sentence = Regex.Replace(sentence, @"(?<=\s|^):\((?=\s|$)", "sadge", options);
             sentence = Regex.Replace(sentence, @"\b<3\b", "heart", options);
-            sentence = Regex.Replace(sentence, @"\bARR\b", "A Realm Reborn");
+            sentence = Regex.Replace(sentence, @"\bARR\b", "A Realm Reborn", options);
             sentence = Regex.Replace(sentence, @"\bHW\b", "Heavensward");
             sentence = Regex.Replace(sentence, @"\bSB\b", "Storm Blood");
-            sentence = Regex.Replace(sentence, @"\bSHB\b", "Shadow Bangers");
+            sentence = Regex.Replace(sentence, @"\bSHB\b", "Shadow Bangers", options);
             sentence = Regex.Replace(sentence, @"\bEW\b", "End Walker");
             sentence = Regex.Replace(sentence, @"\bucob\b", "ultimate coils of bahamut", options);
             sentence = Regex.Replace(sentence, @"\bIT\b", "it");
@@ -1698,6 +1698,47 @@ namespace XivVoices.Engine
                 }
             }
             //*/
+
+            if (msg.TtsData.Race.StartsWith("Dragon"))
+            {
+                float setRate = 44100;
+                float tempo = 1.0f;
+
+                switch(msg.TtsData.Race)
+                {
+                    case "Dragon_Medium":
+                        setRate *= (1 - 0.03f);
+                        tempo /= (1 + 0.02f);
+                        break;
+                    case "Dragon_Small": 
+                        setRate *= (1 + 0.1f);
+                        tempo /= (1 - 0.07f);
+                        break;
+                    case "Dragon_Female":
+                        setRate *= (1 - 0.04f);
+                        tempo /= (1 + 0.1f);
+                        break;
+                    default:
+                        setRate *= (1 + 0.01f);
+                        tempo /= (1 - 0.02f); 
+                        break;
+                }
+
+                filterArgs = "\"aecho=0.8:0.9:500:0.1\"";
+                if(tempo!=1)
+                    filterArgs += $",\"atempo={tempo},asetrate={setRate}\"" ;
+            }
+
+            /*
+            if (true)
+            {
+                float setRate = 44100;
+                float tempo = 1.0f;
+                setRate *= (1 + 0.1f);
+                tempo /= (1 + 0.1f);
+                if (filterArgs != "") filterArgs += ",";
+                filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+            }*/
 
             if (changeSpeed)
             {
