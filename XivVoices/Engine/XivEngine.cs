@@ -17,8 +17,6 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
 using System.Linq;
-//using Amazon.Polly;
-//using Amazon.Polly.Model;
 
 namespace XivVoices.Engine
 {
@@ -106,9 +104,6 @@ namespace XivVoices.Engine
                     PluginLog.Information($"Update ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
                     if (msg.Network == "Online")
                     {
-                        //this.Database.Plugin.Chat.Print("CheckMessages: Online");
-                        //if (Configuration.PollyEnabled && !Configuration.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // && !AudioIsMuted?
-                        //    Task.Run(async () => await SpeakPollyAsync(msg));
                         if (this.Database.Plugin.Config.LocalTTSEnabled && !this.Database.Plugin.Config.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // !&& AudioIsMuted?
                             Task.Run(async () => await SpeakAI(msg));
                         else
@@ -116,7 +111,6 @@ namespace XivVoices.Engine
                     }
                     else
                     {
-                        //this.Database.Plugin.Chat.Print("CheckMessages: Offline");
                         Task.Run(async () => await SpeakLocallyAsync(msg));
                     }
                 }
@@ -147,10 +141,6 @@ namespace XivVoices.Engine
                 this.Updater.ServerLastUpdate = serverDateTime;
                 await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
             }
-            else
-            {
-                //this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... You're up to date!");
-            }
         }
 
         public void Dispose()
@@ -178,8 +168,6 @@ namespace XivVoices.Engine
 
             if (ttsData.Speaker == "NPC")
                 return;
-
-            //PluginLog.Information($"------> Icoming: [Type]: {type}, [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}, [Speaker]:{speaker}, [Message]:{msg.TtsData.Message},");
 
             if (this.Database.Plugin.Config.SkipEnabled && (ttsData.Type == "Dialogue" || ttsData.Type == "Cancel") )
                 Audio.StopAudio();
@@ -523,11 +511,11 @@ namespace XivVoices.Engine
             if (this.Database.NpcWithVariedLooks.Contains(message.Speaker))
             {
                 this.Database.Plugin.Log(message.Speaker + " --> npcWithVariedLooks ");
-                message.NPC.BodyType = message.TtsData.Body;
+                message.NPC.Body = message.TtsData.Body;
                 message.NPC.Gender = message.TtsData.Gender;
                 message.NPC.Race = message.TtsData.Race;
-                message.NPC.Clan = message.TtsData.Tribe;
-                message.NPC.EyeShape = message.TtsData.Eyes;
+                message.NPC.Tribe = message.TtsData.Tribe;
+                message.NPC.Eyes = message.TtsData.Eyes;
                 npcWithVariedLooksFound = true;
             }
 
@@ -544,391 +532,391 @@ namespace XivVoices.Engine
 
         string GetOtherVoiceNames(XivMessage message)
         {
-            if (message.NPC.BodyType == "Adult")
+            if (message.NPC.Body == "Adult")
             {
                 if (message.NPC.Race == "Au Ra")
                 {
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Au_Ra_Raen_Female_01";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Au_Ra_Raen_Female_02";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Au_Ra_Raen_Female_03";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Au_Ra_Raen_Female_04";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Au_Ra_Raen_Female_05";
 
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Au_Ra_Raen_Male_01";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Au_Ra_Raen_Male_02";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Au_Ra_Raen_Male_03";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Au_Ra_Raen_Male_04";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Au_Ra_Raen_Male_05";
-                    if (message.NPC.Clan == "Raen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Raen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Au_Ra_Raen_Male_06";
 
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Au_Ra_Xaela_Female_01";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Au_Ra_Xaela_Female_02";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Au_Ra_Xaela_Female_03";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Au_Ra_Xaela_Female_04";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Au_Ra_Xaela_Female_05";
 
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Au_Ra_Xaela_Male_01";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Au_Ra_Xaela_Male_02";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Au_Ra_Xaela_Male_03";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Au_Ra_Xaela_Male_04";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Au_Ra_Xaela_Male_05";
-                    if (message.NPC.Clan == "Xaela" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Xaela" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Au_Ra_Xaela_Male_06";
                 }
 
                 if (message.NPC.Race == "Elezen")
                 {
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Elezen_Duskwight_Female_01";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Elezen_Duskwight_Female_02";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Elezen_Duskwight_Female_03";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Elezen_Duskwight_Female_04";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Elezen_Duskwight_Female_05_06";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Elezen_Duskwight_Female_05_06";
 
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Elezen_Duskwight_Male_01";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Elezen_Duskwight_Male_02";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Elezen_Duskwight_Male_03";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Elezen_Duskwight_Male_04";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Elezen_Duskwight_Male_05";
-                    if (message.NPC.Clan == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Duskwight" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Elezen_Duskwight_Male_06";
 
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Elezen_Wildwood_Female_01";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Elezen_Wildwood_Female_02";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Elezen_Wildwood_Female_03";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Elezen_Wildwood_Female_04";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Elezen_Wildwood_Female_05";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Elezen_Wildwood_Female_06";
 
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Elezen_Wildwood_Male_01";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Elezen_Wildwood_Male_02";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Elezen_Wildwood_Male_03";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Elezen_Wildwood_Male_04";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Elezen_Wildwood_Male_05";
-                    if (message.NPC.Clan == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Wildwood" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Elezen_Wildwood_Male_06";
                 }
 
                 if (message.NPC.Race == "Hrothgar")
                 {
-                    if (message.NPC.Clan == "Helions" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Helions" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Hrothgar_Helion_01_05";
-                    if (message.NPC.Clan == "Helions" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Helions" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Hrothgar_Helion_02";
-                    if (message.NPC.Clan == "Helions" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Helions" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Hrothgar_Helion_03";
-                    if (message.NPC.Clan == "Helions" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Helions" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Hrothgar_Helion_04";
-                    if (message.NPC.Clan == "Helions" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Helions" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Hrothgar_Helion_01_05";
 
-                    if (message.NPC.Clan == "The Lost" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "The Lost" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Hrothgar_The_Lost_01";
-                    if (message.NPC.Clan == "The Lost" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "The Lost" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Hrothgar_The_Lost_02";
-                    if (message.NPC.Clan == "The Lost" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "The Lost" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Hrothgar_The_Lost_03";
-                    if (message.NPC.Clan == "The Lost" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "The Lost" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Hrothgar_The_Lost_04_05";
-                    if (message.NPC.Clan == "The Lost" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "The Lost" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Hrothgar_The_Lost_04_05";
                 }
 
                 if (message.NPC.Race == "Hyur")
                 {
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Hyur_Highlander_Female_01";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Hyur_Highlander_Female_02";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Hyur_Highlander_Female_03";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Hyur_Highlander_Female_04";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Hyur_Highlander_Female_05";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Hyur_Highlander_Female_06";
 
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Hyur_Highlander_Male_01";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Hyur_Highlander_Male_02";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Hyur_Highlander_Male_03";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Hyur_Highlander_Male_04";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Hyur_Highlander_Male_05";
-                    if (message.NPC.Clan == "Highlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Highlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Hyur_Highlander_Male_06";
 
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Hyur_Midlander_Female_01";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Hyur_Midlander_Female_02";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Hyur_Midlander_Female_03";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Hyur_Midlander_Female_04";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Hyur_Midlander_Female_05";
 
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Hyur_Midlander_Male_01";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Hyur_Midlander_Male_02";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Hyur_Midlander_Male_03";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Hyur_Midlander_Male_04";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Hyur_Midlander_Male_05";
-                    if (message.NPC.Clan == "Midlander" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Midlander" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Hyur_Midlander_Male_06";
                 }
 
                 if (message.NPC.Race == "Lalafell")
                 {
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Lalafell_Dunesfolk_Female_01";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Lalafell_Dunesfolk_Female_02";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Lalafell_Dunesfolk_Female_03";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Lalafell_Dunesfolk_Female_04";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Lalafell_Dunesfolk_Female_05";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Lalafell_Dunesfolk_Female_06";
 
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Lalafell_Dunesfolk_Male_01";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Lalafell_Dunesfolk_Male_02";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Lalafell_Dunesfolk_Male_03";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Lalafell_Dunesfolk_Male_04";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Lalafell_Dunesfolk_Male_05";
-                    if (message.NPC.Clan == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Dunesfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Lalafell_Dunesfolk_Male_06";
 
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Lalafell_Plainsfolk_Female_01";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Lalafell_Plainsfolk_Female_02";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Lalafell_Plainsfolk_Female_03";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Lalafell_Plainsfolk_Female_04";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Lalafell_Plainsfolk_Female_05";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Lalafell_Plainsfolk_Female_06";
 
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Lalafell_Plainsfolk_Male_01";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Lalafell_Plainsfolk_Male_02";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Lalafell_Plainsfolk_Male_03";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Lalafell_Plainsfolk_Male_04";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Lalafell_Plainsfolk_Male_05";
-                    if (message.NPC.Clan == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Plainsfolk" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Lalafell_Plainsfolk_Male_06";
                 }
 
                 if (message.NPC.Race == "Miqo'te")
                 {
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Miqote_Keeper_of_the_Moon_Female_01";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Miqote_Keeper_of_the_Moon_Female_02";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Miqote_Keeper_of_the_Moon_Female_03";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Miqote_Keeper_of_the_Moon_Female_04";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Miqote_Keeper_of_the_Moon_Female_05";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Miqote_Keeper_of_the_Moon_Female_06";
 
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Miqote_Keeper_of_the_Moon_Male_01";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Miqote_Keeper_of_the_Moon_Male_02_06";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Miqote_Keeper_of_the_Moon_Male_03";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Miqote_Keeper_of_the_Moon_Male_04";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Miqote_Keeper_of_the_Moon_Male_05";
-                    if (message.NPC.Clan == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Keeper of the Moon" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Miqote_Keeper_of_the_Moon_Male_02_06";
 
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Miqote_Seeker_of_the_Sun_Female_01";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Miqote_Seeker_of_the_Sun_Female_02";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Miqote_Seeker_of_the_Sun_Female_03";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Miqote_Seeker_of_the_Sun_Female_04";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Miqote_Seeker_of_the_Sun_Female_05";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                         return "Miqote_Seeker_of_the_Sun_Female_06";
 
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Miqote_Seeker_of_the_Sun_Male_01";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Miqote_Seeker_of_the_Sun_Male_02";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Miqote_Seeker_of_the_Sun_Male_03";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Miqote_Seeker_of_the_Sun_Male_04";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Miqote_Seeker_of_the_Sun_Male_05";
-                    if (message.NPC.Clan == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                    if (message.NPC.Tribe == "Seeker of the Sun" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                         return "Miqote_Seeker_of_the_Sun_Male_06";
 
-                    //if (message.NPC.Clan == "Fat Cat")
+                    //if (message.NPC.Tribe == "Fat Cat")
                     //    return "Miqote_Fat";
                 }
 
                 if (message.NPC.Race == "Roegadyn")
                 {
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Roegadyn_Hellsguard_Female_01";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Roegadyn_Hellsguard_Female_02";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Roegadyn_Hellsguard_Female_03";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Roegadyn_Hellsguard_Female_04";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Roegadyn_Hellsguard_Female_05";
 
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Roegadyn_Hellsguard_Male_01";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Roegadyn_Hellsguard_Male_02";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Roegadyn_Hellsguard_Male_03";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Roegadyn_Hellsguard_Male_04";
-                    if (message.NPC.Clan == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Hellsguard" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Roegadyn_Hellsguard_Male_05";
 
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Roegadyn_Sea_Wolves_Female_01";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Roegadyn_Sea_Wolves_Female_02";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Roegadyn_Sea_Wolves_Female_03";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Roegadyn_Sea_Wolves_Female_04";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Roegadyn_Sea_Wolves_Female_05";
 
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Roegadyn_Sea_Wolves_Male_01";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Roegadyn_Sea_Wolves_Male_02";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Roegadyn_Sea_Wolves_Male_03";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Roegadyn_Sea_Wolves_Male_04";
-                    if (message.NPC.Clan == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Sea Wolf" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                         return "Roegadyn_Sea_Wolves_Male_05";
                 }
 
                 if (message.NPC.Race == "Viera")
                 {
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Viera_Rava_Female_01_05";
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Viera_Rava_Female_02";
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Viera_Rava_Female_03";
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Viera_Rava_Female_04";
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Viera_Rava_Female_01_05";
 
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                         return "Viera_Rava_Male_01";
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Viera_Rava_Male_03";
-                    if (message.NPC.Clan == "Rava" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Rava" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                         return "Viera_Rava_Male_04";
 
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                         return "Viera_Veena_Female_01_05";
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                         return "Viera_Veena_Female_02";
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                         return "Viera_Veena_Female_03";
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                         return "Viera_Veena_Female_04";
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                         return "Viera_Veena_Female_01_05";
 
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                         return "Viera_Veena_Male_02";
-                    if (message.NPC.Clan == "Veena" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                    if (message.NPC.Tribe == "Veena" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                         return "Viera_Veena_Male_03";
                 }
             }
 
-            if (message.NPC.BodyType == "Elderly")
+            if (message.NPC.Body == "Elderly")
             {
                 if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male")
                     return "Elderly_Male_Hyur";
@@ -940,85 +928,85 @@ namespace XivVoices.Engine
                     return "Elderly_Female";
             }
 
-            if (message.NPC.BodyType == "Child")
+            if (message.NPC.Body == "Child")
             {
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                     return "Child_Hyur_Female_1";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                     return "Child_Hyur_Female_2";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                     return "Child_Hyur_Female_3_5";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                     return "Child_Hyur_Female_4";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                     return "Child_Hyur_Female_3_5";
 
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                     return "Child_Hyur_Male_1";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                     return "Child_Hyur_Male_2";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                     return "Child_Hyur_Male_3_6";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                     return "Child_Hyur_Male_4";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                     return "Child_Hyur_Male_5";
-                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                if (message.NPC.Race == "Hyur" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                     return "Child_Hyur_Male_3_6";
 
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                     return "Child_Elezen_Female_1_3";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                     return "Child_Elezen_Female_2";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                     return "Child_Elezen_Female_1_3";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                     return "Child_Elezen_Female_4";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                     return "Child_Elezen_Female_5_6";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 6")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 6")
                     return "Child_Elezen_Female_5_6";
 
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                     return "Child_Elezen_Male_1";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                     return "Child_Elezen_Male_2";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                     return "Child_Elezen_Male_3";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                     return "Child_Elezen_Male_4";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                     return "Child_Elezen_Male_5_6";
-                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                if (message.NPC.Race == "Elezen" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                     return "Child_Elezen_Male_5_6";
 
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 1")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 1")
                     return "Child_Aura_Female_1_5";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                     return "Child_Aura_Female_2";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                     return "Child_Aura_Female_4";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 5")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 5")
                     return "Child_Aura_Female_1_5";
 
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 1")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 1")
                     return "Child_Aura_Male_1";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 2")
                     return "Child_Aura_Male_2";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 3")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 3")
                     return "Child_Aura_Male_3";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 4")
                     return "Child_Aura_Male_4";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 5")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 5")
                     return "Child_Aura_Male_5_6";
-                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.EyeShape == "Option 6")
+                if (message.NPC.Race == "Au Ra" && message.NPC.Gender == "Male" && message.NPC.Eyes == "Option 6")
                     return "Child_Aura_Male_5_6";
 
-                if (message.NPC.Race == "Miqo'te" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 2")
+                if (message.NPC.Race == "Miqo'te" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 2")
                     return "Child_Miqote_Female_2";
-                if (message.NPC.Race == "Miqo'te" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 3")
+                if (message.NPC.Race == "Miqo'te" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 3")
                     return "Child_Miqote_Female_3_4";
-                if (message.NPC.Race == "Miqo'te" && message.NPC.Gender == "Female" && message.NPC.EyeShape == "Option 4")
+                if (message.NPC.Race == "Miqo'te" && message.NPC.Gender == "Female" && message.NPC.Eyes == "Option 4")
                     return "Child_Miqote_Female_3_4";
 
 
@@ -1139,126 +1127,6 @@ namespace XivVoices.Engine
             else
                 Audio.PlayEmptyAudio(_msg);
         }
-
-        /*
-        public async Task SpeakPollyAsync(XivMessage msg)
-        {
-            this.Database.Plugin.Chat.Print("starting polly tts");
-            var credentials = new Amazon.Runtime.BasicAWSCredentials(XivPolly.Instance.AccessKey, XivPolly.Instance.SecretKey);
-            yield return Polly(msg, credentials);
-        }
-
-        public async Task Polly(XivMessage msg, Amazon.Runtime.AWSCredentials credentials)
-        {
-            // Decide the Gender
-            VoiceId voiceId;
-            if (msg.TtsData.Gender == "Male")
-                voiceId = XivPolly.Instance.PolyMale;
-            else if (msg.TtsData.Gender == "Female")
-                voiceId = XivPolly.Instance.PolyFemale;
-            else
-                voiceId = XivPolly.Instance.PolyUngendered;
-
-            this.Database.Plugin.Chat.Print($"Polly: {msg.Speaker}'s Gender from FFXIV is {msg.TtsData.Gender}");
-            if (msg.VoiceName != "Unknown" && msg.VoiceName != "Retainer")
-                this.Database.Plugin.Chat.Print($"Polly: {msg.Speaker}'s Gender from XIVV is {msg.NPC.Gender}");
-
-            // Fix the Name
-            string pattern = "\\b" + "_NAME_" + "\\b";
-            string sentence = Regex.Replace(msg.Sentence, pattern, msg.TtsData.User.Split(' ')[0]);
-
-            // Use Lexicon
-            foreach (KeyValuePair<string, string> entry in this.Database.Lexicon)
-            {
-                pattern = "\\b" + entry.Key + "\\b";
-                sentence = Regex.Replace(sentence, pattern, entry.Value, RegexOptions.IgnoreCase);
-            }
-
-            // Start the Process
-            using (var client = new AmazonPollyClient(credentials, XivPolly.Instance.Region))
-            {
-                var request = new SynthesizeSpeechRequest
-                {
-                    VoiceId = voiceId,
-                    Engine = "neural",
-                    OutputFormat = OutputFormat.Ogg_vorbis,
-                    SampleRate = "24000",
-                    Text = sentence
-                };
-
-                SynthesizeSpeechResponse res;
-                try
-                {
-                    res = await client.SynthesizeSpeechAsync(request);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("Synthesis request failed: " + e.Message);
-                    return;
-                }
-
-                var memoryStream = new MemoryStream();
-                await res.AudioStream.CopyToAsync(memoryStream);
-                memoryStream.Seek(0, SeekOrigin.Begin);
-                var audioData = memoryStream.ToArray();
-
-                string outputPollyPath = System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, "polly.ogg");
-                string outputFilePath = System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, "current" + this.Database.GenerateRandomSuffix() + ".ogg");
-                await File.WriteAllBytesAsync(outputPollyPath, audioData);
-
-                // Effects
-                string filterArgs = SoundEffects(msg, true);
-                string arguments = $"-i \"{outputPollyPath}\" -filter:a \"{filterArgs}\" -c:a libopus \"{outputFilePath}\"";
-                string ffmpegDirectoryPath = Path.Combine(Engine.Instance.Database.DirectoryPath, "Tools");
-                FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
-
-                IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
-                await conversion.Start();
-
-
-                // Read the Opus file
-                using (FileStream fileStream = new FileStream(outputFilePath, FileMode.Open, FileAccess.Read))
-                {
-                    // Initialize the decoder
-                    OpusDecoder decoder = new OpusDecoder(48000, 1);
-                    OpusOggReadStream oggStream = new OpusOggReadStream(decoder, fileStream);
-                    List<float> pcmSamples = new List<float>();
-                    while (oggStream.HasNextPacket)
-                    {
-                        short[] packet = oggStream.DecodeNextPacket();
-                        if (packet != null)
-                        {
-                            foreach (var sample in packet)
-                            {
-                                pcmSamples.Add(sample / 32768f); // Convert to float and normalize
-                            }
-                        }
-                    }
-                    float[] pcmData = pcmSamples.ToArray();
-
-                    AudioClip audioClip = AudioClip.Create("Decoded Opus Clip", pcmData.Length, 1, 48000, false);
-                    audioClip.SetData(pcmData, 0);
-                    Audio.PlayAudioFromClip(msg, audioClip, messagesContainer);
-                    fileStream.Close();
-
-                }
-
-                // Delete the ogg file after reading and decoding it
-                try
-                {
-                    File.Delete(outputPollyPath);
-                    File.Delete(outputFilePath);
-                }
-                catch (Exception ex)
-                {
-                    Debug.LogError($"Error deleting temporary files: {ex.Message}");
-                }
-                //------------------------------------------------------------------------------------
-
-
-            }
-        }
-        */
 
         public async Task SpeakAI(XivMessage msg)
         {
@@ -1709,30 +1577,33 @@ namespace XivVoices.Engine
             }
             //*/
 
-            float setRate = 44100;
+            float setRate = 48000;
             float tempo = 1.0f;
 
+            // Sound Effects for Dragons
             if (msg.TtsData.Race.StartsWith("Dragon"))
             {
-                switch(msg.TtsData.Race)
+                if(msg.NPC.Type == "Female")
                 {
-                    case "Dragon_Medium":
-                        setRate *= (1 - 0.03f);
-                        tempo /= (1 + 0.02f);
-                        break;
-                    case "Dragon_Small": 
-                        setRate *= (1 + 0.1f);
-                        tempo /= (1 - 0.07f);
-                        break;
-                    case "Dragon_Female":
-                        setRate *= (1 - 0.04f);
-                        tempo /= (1 + 0.1f);
-                        break;
-                    default:
-                        setRate *= (1 + 0.01f);
-                        tempo /= (1 - 0.02f); 
-                        break;
+                    setRate *= (1 - 0.1f);
+                    tempo /= (1 + 0.1f);
                 }
+                else
+                    switch(msg.TtsData.Race)
+                    {
+                        case "Dragon_Medium":
+                            setRate *= (1 - 0.1f);
+                            tempo /= (1 + 0.1f);
+                            break;
+                        case "Dragon_Small": 
+                            setRate *= (1 - 0.03f);
+                            tempo /= (1 + 0.06f);
+                            break;
+                        default:
+                            setRate *= (1 - 0.05f);
+                            tempo /= (1 + 0.05f); 
+                            break;
+                    }
 
                 filterArgs = "\"aecho=0.8:0.9:500:0.1\"";
                 if(tempo!=1)

@@ -887,9 +887,9 @@ namespace XivVoices.Engine
                 XivNPC npc = new XivNPC();
                 npc.Gender = ttsData.Gender;
                 npc.Race = ttsData.Race;
-                npc.Clan = ttsData.Tribe;
-                npc.BodyType = ttsData.Body;
-                npc.EyeShape = ttsData.Eyes;
+                npc.Tribe = ttsData.Tribe;
+                npc.Body = ttsData.Body;
+                npc.Eyes = ttsData.Eyes;
                 return npc;
             }
             if (!npcId.IsNullOrEmpty() && NpcData.ContainsKey(npcId))

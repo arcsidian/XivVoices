@@ -98,33 +98,19 @@ namespace XivVoices.Engine
     {
         public string Gender;
         public string Race;
-        public string Clan;
-        public string BodyType;
-        public string Height;
-        public string Jaw;
-        public string EyeShape;
-        public string IrisSize;
-        public string Eyebrows;
-        public string Nose;
-        public string Mouth;
-        public string HairType;
-        public string FaceShape;
+        public string Tribe;
+        public string Body;
+        public string Eyes;
+        public string Type;
 
         public string Data()
         {
             return "Gender: " + Gender + "\n" +
                 "Race: " + Race + "\n" +
-                "Clan: " + Clan + "\n" +
-                "BodyType: " + BodyType + "\n" +
-                "Height: " + Height + "\n" +
-                "Jaw: " + Jaw + "\n" +
-                "EyeShape: " + EyeShape + "\n" +
-                "IrisSize: " + IrisSize + "\n" +
-                "Eyebrows: " + Eyebrows + "\n" +
-                "Nose: " + Nose + "\n" +
-                "Mouth: " + Mouth + "\n" +
-                "HairType: " + HairType + "\n" +
-                "FaceShape: " + FaceShape;
+                "Tribe: " + Tribe + "\n" +
+                "Body: " + Body + "\n" +
+                "Eyes: " + Eyes + "\n" +
+                "Type: " + Type;
         }
     }
 
