@@ -1161,7 +1161,18 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Local TTS to not make weird sounds when a dialogue has no words.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Beast Tribe Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database and changed its structure to remove redundant data such as Height, Hair and Mouth, and to add new data related to sound effects."); 
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Dialogue Processing to recognize beast tribe dialogues better.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Retainers List to cover more dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Sound Effects for Dragons.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Sound Effects for Primals.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.6"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added a new Audio Playback Engine option in the Audio Settings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added Dragon beast tribe voices to the Voice Names Database.");

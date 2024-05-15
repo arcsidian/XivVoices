@@ -1610,6 +1610,15 @@ namespace XivVoices.Engine
                     filterArgs += $",\"atempo={tempo},asetrate={setRate}\"" ;
             }
 
+            // Sound Effects for Primals
+            if (msg.NPC.Type == "Primal M1")
+            { 
+                setRate *= (1 - 0.15f);
+                tempo /= (1 - 0.1f);
+                filterArgs = "\"aecho=0.8:0.9:500:0.1\"";
+                filterArgs += $",\"atempo={tempo},asetrate={setRate}\"";
+            }
+
             /*
             if (msg.TtsData.Race == "Pixie")
             {
@@ -1618,7 +1627,7 @@ namespace XivVoices.Engine
                 if (filterArgs != "") filterArgs += ",";
                 filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
             }
-            */ 
+            */
 
             if (changeSpeed)
             {
