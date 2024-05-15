@@ -24441,11 +24441,11 @@
   },
   "Cloud of Darkness": {
     "Gender": "",
-    "Race": "Boss_Female1",
+    "Race": "Non-Humanoid",
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Boss F1"
   },
   "Agrias": {
     "Gender": "",

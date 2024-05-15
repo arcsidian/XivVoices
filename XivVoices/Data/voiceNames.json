@@ -1435,5 +1435,9 @@
   {
     "voiceName": "Boss4",
     "speakers": []
+  },
+  {
+    "voiceName": "BossF1",
+    "speakers": [ "Cloud of Darkness" ]
   }
 ]

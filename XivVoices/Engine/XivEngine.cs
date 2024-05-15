@@ -1489,7 +1489,7 @@ namespace XivVoices.Engine
             string outputFilePath = System.IO.Path.Combine(XivEngine.Instance.Database.DirectoryPath, "current" + XivEngine.Instance.Database.GenerateRandomSuffix() + ".ogg");
 
             string filterArgs = SoundEffects(msg);
-            string arguments = $"-i \"{msg.FilePath}\" -filter:a \"{filterArgs}\" -c:a libopus \"{outputFilePath}\"";
+            string arguments = $"-i \"{msg.FilePath}\" -filter_complex \"{filterArgs}\" -c:a libopus \"{outputFilePath}\"";
 
             string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath); ;
             FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
@@ -1547,7 +1547,7 @@ namespace XivVoices.Engine
             }
         }
 
-        static string SoundEffects(XivMessage msg, bool polly = false)
+        static string SoundEffects(XivMessage msg)
         {
             bool changeSpeed = false;
             string additionalChanges = "";
@@ -1555,9 +1555,7 @@ namespace XivVoices.Engine
             if (msg.VoiceName == "Omicron" || msg.VoiceName == "Node") additionalChanges = "robot";
 
             string filterArgs = "";
-
-            if (polly)
-                filterArgs = "\"volume=6dB\"";
+            bool addEcho = false;
 
             /* determine a pitch based on string msg.Speaker
             {
@@ -1605,9 +1603,9 @@ namespace XivVoices.Engine
                             break;
                     }
 
-                filterArgs = "\"aecho=0.8:0.9:500:0.1\"";
                 if(tempo!=1)
                     filterArgs += $",\"atempo={tempo},asetrate={setRate}\"" ;
+                addEcho = true;
             }
 
             // Sound Effects for Primals
@@ -1615,8 +1613,15 @@ namespace XivVoices.Engine
             { 
                 setRate *= (1 - 0.15f);
                 tempo /= (1 - 0.1f);
-                filterArgs = "\"aecho=0.8:0.9:500:0.1\"";
                 filterArgs += $",\"atempo={tempo},asetrate={setRate}\"";
+                addEcho = true;
+            }
+
+            // Sound Effects for Bosses
+            if (msg.NPC.Type == "Boss F1")
+            {
+                filterArgs += "\"[0:a]asplit=2[sc][oc];[sc]rubberband=pitch=0.8[sc];[oc]rubberband=pitch=1.0[oc];[sc][oc]amix=inputs=2:duration=longest,volume=2\"";
+                addEcho = true;
             }
 
             /*
@@ -1628,6 +1633,12 @@ namespace XivVoices.Engine
                 filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
             }
             */
+
+            if (addEcho)
+            {
+                if (filterArgs != "") filterArgs += ",";
+                filterArgs += "\"aecho=0.8:0.9:500:0.1\"";
+            }
 
             if (changeSpeed)
             {
