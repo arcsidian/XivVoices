@@ -16,6 +16,7 @@ using System.Net.Http;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
+using System.Linq;
 //using Amazon.Polly;
 //using Amazon.Polly.Model;
 
@@ -1030,22 +1031,22 @@ namespace XivVoices.Engine
 
 
             // ARR Beast Tribes
-            if (message.NPC.Race == "Amalj'aa")
+            if (message.NPC.Race == "Amalj'aa" || message.TtsData.Race == "Amalj'aa")
                 return "Amaljaa";
 
-            if (message.NPC.Race == "Sylph")
+            if (message.NPC.Race == "Sylph" || message.TtsData.Race == "Sylph")
                 return "Sylph";
 
-            if (message.NPC.Race == "Kobold")
+            if (message.NPC.Race == "Kobold" || message.TtsData.Race == "Kobold")
                 return "Kobold";
 
-            if (message.NPC.Race == "Sahagin")
+            if (message.NPC.Race == "Sahagin" || message.TtsData.Race == "Sahagin")
                 return "Sahagin";
 
-            if (message.NPC.Race == "Ixal")
+            if (message.NPC.Race == "Ixal" || message.TtsData.Race == "Ixal")
                 return "Ixal";
 
-            if (message.NPC.Race == "Qiqirn")
+            if (message.NPC.Race == "Qiqirn" || message.TtsData.Race == "Qiqirn")
                 return "Qiqirn";
 
             // HW Beast Tribes
@@ -1057,61 +1058,61 @@ namespace XivVoices.Engine
                     return message.TtsData.Race;
             }
 
-            if (message.NPC.Race == "Goblin")
+            if (message.NPC.Race == "Goblin" || message.TtsData.Race == "Goblin")
             {
-                if (message.NPC.Gender == "Female")
+                if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
                     return "Goblin_Female";
                 else
                     return "Goblin_Male";
             }
 
-            if (message.NPC.Race == "Vanu Vanu")
+            if (message.NPC.Race == "Vanu Vanu" || message.TtsData.Race == "Vanu Vanu")
             {
-                if (message.NPC.Gender == "Female")
+                if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
                     return "Vanu_Female";
                 else
                     return "Vanu_Male";
             }
 
-            if (message.NPC.Race == "Vath")
+            if (message.NPC.Race == "Vath" || message.TtsData.Race == "Vath")
                 return "Vath";
 
-            if (message.NPC.Race == "Moogle")
+            if (message.NPC.Race == "Moogle" || message.TtsData.Race == "Moogle")
                 return "Moogle";
 
-            if (message.NPC.Race == "Node")
+            if (message.NPC.Race == "Node" || message.TtsData.Race == "Node")
                 return "Node";
 
             // SB Beast Tribes
-            if (message.NPC.Race == "Kojin")
+            if (message.NPC.Race == "Kojin" || message.TtsData.Race == "Kojin")
                 return "Kojin";
 
-            if (message.NPC.Race == "Ananta")
+            if (message.NPC.Race == "Ananta" || message.TtsData.Race == "Ananta")
                 return "Ananta";
 
-            if (message.NPC.Race == "Namazu")
+            if (message.NPC.Race == "Namazu" || message.TtsData.Race == "Namazu")
                 return "Namazu";
 
-            if (message.NPC.Race == "Lupin")
+            if (message.NPC.Race == "Lupin" || message.TtsData.Race == "Lupin")
                 return "Lupin";
 
             // Shb Beast Tribes
-            if (message.NPC.Race == "Pixie")
+            if (message.NPC.Race == "Pixie" || message.TtsData.Race == "Pixie")
                 return "Pixie";
 
             // EW Beast Tribes
-            if (message.NPC.Race == "Matanga")
+            if (message.NPC.Race == "Matanga" || message.TtsData.Race == "Matanga")
             {
-                if (message.NPC.Gender == "Female")
+                if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
                     return "Matanga_Female";
                 else
                     return "Matanga_Male";
             }
 
-            if (message.NPC.Race == "Loporrit")
+            if (message.NPC.Race == "Loporrit" || message.TtsData.Race == "Loporrit")
                 return "Loporrit";
 
-            if (message.NPC.Race == "Omicron")
+            if (message.NPC.Race == "Omicron" || message.TtsData.Race == "Omicron")
                 return "Omicron";
 
             // Bosses
@@ -1126,7 +1127,7 @@ namespace XivVoices.Engine
         {
             PluginLog.Information($"AddToQueue ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
             ffxivMessages.Enqueue(msg);
-        }
+        } 
         #endregion
 
 
@@ -1261,6 +1262,15 @@ namespace XivVoices.Engine
 
         public async Task SpeakAI(XivMessage msg)
         {
+            // Remove anything that's not a letter, number, ',' or '.'
+            string cleanedMessage = new string(msg.TtsData.Message.Where(c => char.IsLetterOrDigit(c) || c == ',' || c == '.').ToArray());
+            msg.TtsData.Message = cleanedMessage;
+
+            // Check if the cleaned message has no letters at all
+            if (!cleanedMessage.Any(char.IsLetter))
+                return;
+
+            // Start Local TTS Engine
             if (this.ttsEngine == null)
                 this.ttsEngine = new TTSEngine(Database.Plugin);
 
@@ -1699,11 +1709,11 @@ namespace XivVoices.Engine
             }
             //*/
 
+            float setRate = 44100;
+            float tempo = 1.0f;
+
             if (msg.TtsData.Race.StartsWith("Dragon"))
             {
-                float setRate = 44100;
-                float tempo = 1.0f;
-
                 switch(msg.TtsData.Race)
                 {
                     case "Dragon_Medium":
@@ -1730,15 +1740,14 @@ namespace XivVoices.Engine
             }
 
             /*
-            if (true)
+            if (msg.TtsData.Race == "Pixie")
             {
-                float setRate = 44100;
-                float tempo = 1.0f;
-                setRate *= (1 + 0.1f);
+                setRate *= (1 + 0.15f);
                 tempo /= (1 + 0.1f);
                 if (filterArgs != "") filterArgs += ",";
                 filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
-            }*/
+            }
+            */ 
 
             if (changeSpeed)
             {
