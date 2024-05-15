@@ -293,7 +293,7 @@
   },
   {
     "voiceName": "Varis_zos_Galvus",
-    "speakers": [ "Varis", "Varis zos Galvus" ]
+    "speakers": [ "Varis", "Varis zos Galvus", "Varis yae Galvus" ]
   },
   {
     "voiceName": "Zenos_yae_Galvus",
@@ -329,7 +329,7 @@
   },
   {
     "voiceName": "Emet_Selch",
-    "speakers": [ "Emet-Selch", "Sol zos Galvus", "Solus zos Galvus" ]
+    "speakers": [ "Emet-Selch", "Sol zos Galvus", "Solus zos Galvus", "How to Drink Ludicrously Strong Alcohol and Not Die" ]
   },
   {
     "voiceName": "Elidibus",
@@ -341,7 +341,7 @@
   },
   {
     "voiceName": "Ardbert",
-    "speakers": [ "Ardbert", "“Ardbert”" ]
+    "speakers": [ "Ardbert", "“Ardbert”", "Warrior of Darkness" ]
   },
   {
     "voiceName": "Nabriales",
@@ -370,6 +370,10 @@
   {
     "voiceName": "Gaia",
     "speakers": [ "Gaia", "Oracle of Darkness", "Voidwalker" ]
+  },
+  {
+    "voiceName": "Ranjit",
+    "speakers": [ "Ran'jit" ]
   },
   {
     "voiceName": "Lyna",
@@ -1242,7 +1246,7 @@
   },
   {
     "voiceName": "Moogle",
-    "speakers": []
+    "speakers": [ "Delivery Moogle" ]
   },
   {
     "voiceName": "Vanu_Female",
@@ -1273,8 +1277,16 @@
     "speakers": []
   },
   {
-    "voiceName": "Kojin",
+    "voiceName": "Namazu",
     "speakers": []
+  },
+  {
+    "voiceName": "Pixie",
+    "speakers": []
+  },
+  {
+    "voiceName": "FeoUl",
+    "speakers": [ "Feo Ul" ]
   },
   {
     "voiceName": "Ananta",
