@@ -1161,7 +1161,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug in Local TTS that removes spaces (oops).");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.7"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Improved Local TTS to not make weird sounds when a dialogue has no words.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Beast Tribe Database.");

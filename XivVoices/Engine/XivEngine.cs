@@ -1130,14 +1130,6 @@ namespace XivVoices.Engine
 
         public async Task SpeakAI(XivMessage msg)
         {
-            // Remove anything that's not a letter, number, ',' or '.'
-            string cleanedMessage = new string(msg.TtsData.Message.Where(c => char.IsLetterOrDigit(c) || c == ',' || c == '.').ToArray());
-            msg.TtsData.Message = cleanedMessage;
-
-            // Check if the cleaned message has no letters at all
-            if (!cleanedMessage.Any(char.IsLetter))
-                return;
-
             // Start Local TTS Engine
             if (this.ttsEngine == null)
                 this.ttsEngine = new TTSEngine(Database.Plugin);
@@ -1160,6 +1152,12 @@ namespace XivVoices.Engine
                     sentence = ProcessPlayerChat(sentence, msg.Speaker);
                 
                 sentence = ApplyLexicon(sentence, msg.Speaker);
+
+                // Remove anything that's not a letter, number, space, ',' or '.'
+                string cleanedMessage = new string(sentence.Where(c => char.IsLetterOrDigit(c) || c == ',' || c == '.' || c == ' ').ToArray());
+                if (!cleanedMessage.Any(char.IsLetter))
+                    return;
+                sentence = cleanedMessage;
 
                 var pcmData = await ttsEngine.SpeakTTS(sentence, localTTS[speaker]);
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
