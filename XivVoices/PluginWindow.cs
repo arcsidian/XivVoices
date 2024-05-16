@@ -1161,7 +1161,17 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.4.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database and VoiceName Database to reflect the addition of new characters and Primals.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for older people.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for Primals.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for Bosses.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Fixed an bug where bubbles cannot have sound effects.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Fixed an bug where Moogles may be mistaken with Qiqirn due to having similar skeleton IDs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.8"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug in Local TTS that removes spaces (oops).");
                 }

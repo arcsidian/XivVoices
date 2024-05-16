@@ -890,6 +890,7 @@ namespace XivVoices.Engine
                 npc.Tribe = ttsData.Tribe;
                 npc.Body = ttsData.Body;
                 npc.Eyes = ttsData.Eyes;
+                npc.Type = "Default";
                 return npc;
             }
             if (!npcId.IsNullOrEmpty() && NpcData.ContainsKey(npcId))

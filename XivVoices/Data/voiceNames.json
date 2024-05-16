@@ -329,7 +329,7 @@
   },
   {
     "voiceName": "Emet_Selch",
-    "speakers": [ "Emet-Selch", "Sol zos Galvus", "Solus zos Galvus", "How to Drink Ludicrously Strong Alcohol and Not Die" ]
+    "speakers": [ "Emet-Selch", "The Voice of Emet-Selch", "Sol zos Galvus", "Solus zos Galvus", "How to Drink Ludicrously Strong Alcohol and Not Die" ]
   },
   {
     "voiceName": "Elidibus",
@@ -434,6 +434,10 @@
   {
     "voiceName": "Others_Hildibrand",
     "speakers": [ "Hildibrand", "Hildibrand Manderville", "Well-spoken Zombie", "Zombibrand", "Perturbed Gentleman", "Hildibella", "The Forgiven Gentleman" ]
+  },
+  {
+    "voiceName": "Others_Godbert",
+    "speakers": [ "Godbert", "Godbert-like Gentleman", "Godbert Mandaville", "Saint of Nymeia", "Godbrand" ]
   },
   {
     "voiceName": "Others_Nashu",
@@ -1246,7 +1250,7 @@
   },
   {
     "voiceName": "Moogle",
-    "speakers": [ "Delivery Moogle" ]
+    "speakers": []
   },
   {
     "voiceName": "Vanu_Female",
@@ -1321,6 +1325,22 @@
     "speakers": [ "Ifrit" ]
   },
   {
+    "voiceName": "Primal_Azeyma",
+    "speakers": [ "Azeyma" ]
+  },
+  {
+    "voiceName": "Primal_Byregot",
+    "speakers": [ "Byregot" ]
+  },
+  {
+    "voiceName": "Primal_Naldthal",
+    "speakers": [ "Nald'thal", "Nald", "Thal" ]
+  },
+  {
+    "voiceName": "Primal_Rhalgr",
+    "speakers": [ "Rhalgr" ]
+  },
+  {
     "voiceName": "Titan",
     "speakers": [ "Titan" ]
   },
@@ -1391,22 +1411,6 @@
   {
     "voiceName": "Oschon",
     "speakers": [ "Oschon" ]
-  },
-  {
-    "voiceName": "Byregot",
-    "speakers": [ "Byregot" ]
-  },
-  {
-    "voiceName": "Rhalgr",
-    "speakers": [ "Rhalgr" ]
-  },
-  {
-    "voiceName": "Azeyma",
-    "speakers": [ "Azeyma" ]
-  },
-  {
-    "voiceName": "Naldthal",
-    "speakers": [ "Nald'thal" ]
   },
   {
     "voiceName": "Nophica",

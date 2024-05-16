@@ -4719,6 +4719,14 @@
     "Eyes": "Option 5",
     "Type": "Default"
   },
+  "Armed Imperial Citizen": {
+    "Gender": "Male",
+    "Race": "",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Default"
+  },
   "Armed Imperial Citizen (A)": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -6016,12 +6024,12 @@
     "Type": "Default"
   },
   "Azeyma": {
-    "Gender": "",
-    "Race": "Non-Humanoid",
+    "Gender": "Female",
+    "Race": "Primal",
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Primal"
   },
   "Azure-furred Rabbit": {
     "Gender": "Male",
@@ -9653,7 +9661,7 @@
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Primal"
   },
   "Byrglaent": {
     "Gender": "Male",
@@ -25775,13 +25783,29 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
-  "Godbrand": {
+  "Saint of Nymeia": {
     "Gender": "Male",
     "Race": "Hyur",
     "Tribe": "Highlander",
     "Body": "Adult",
     "Eyes": "Option 1",
     "Type": "Default"
+  },
+  "Godbert Mandaville": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Godbrand": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Old"
   },
   "Godebert": {
     "Gender": "Male",
@@ -46533,7 +46557,23 @@
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Primal Dual"
+  },
+  "Nald": {
+    "Gender": "",
+    "Race": "Non-Humanoid",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Primal Dual"
+  },
+  "Thal": {
+    "Gender": "",
+    "Race": "Non-Humanoid",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Primal Dual"
   },
   "Nalipponcque": {
     "Gender": "Female",
@@ -48949,7 +48989,7 @@
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Primal Robot"
   },
   "Omicron Aggressor": {
     "Gender": "",
@@ -50314,10 +50354,10 @@
   "Papashan": {
     "Gender": "Male",
     "Race": "Lalafell",
-    "Tribe": "Dunesfolk",
+    "Tribe": "Plainsfolk",
     "Body": "Adult",
     "Eyes": "Option 2",
-    "Type": "Default"
+    "Type": "Old"
   },
   "Papasu": {
     "Gender": "Female",
@@ -55149,7 +55189,7 @@
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Primal"
   },
   "Rhei End": {
     "Gender": "Male",

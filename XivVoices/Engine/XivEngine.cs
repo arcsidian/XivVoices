@@ -1015,97 +1015,102 @@ namespace XivVoices.Engine
 
 
 
+            this.Database.Plugin.Log("message.NPC.Race"+message.NPC.Race);
 
-
-
-            // ARR Beast Tribes
-            if (message.NPC.Race == "Amalj'aa" || message.TtsData.Race == "Amalj'aa")
-                return "Amaljaa";
-
-            if (message.NPC.Race == "Sylph" || message.TtsData.Race == "Sylph")
-                return "Sylph";
-
-            if (message.NPC.Race == "Kobold" || message.TtsData.Race == "Kobold")
-                return "Kobold";
-
-            if (message.NPC.Race == "Sahagin" || message.TtsData.Race == "Sahagin")
-                return "Sahagin";
-
-            if (message.NPC.Race == "Ixal" || message.TtsData.Race == "Ixal")
-                return "Ixal";
-
-            if (message.NPC.Race == "Qiqirn" || message.TtsData.Race == "Qiqirn")
-                return "Qiqirn";
-
-            // HW Beast Tribes
-            if (message.TtsData.Race.StartsWith("Dragon"))
+            string race;
+            for (int i = 0; i < 2; i++)
             {
-                if (this.Database.VoiceNames.TryGetValue(message.Speaker, out string voiceName))
-                    return voiceName;
-                else
-                    return message.TtsData.Race;
+                race = i == 0 ? message.NPC.Race : message.TtsData.Race;
+
+                // ARR Beast Tribes
+                if (race == "Amalj'aa")
+                    return "Amaljaa";
+
+                if (race == "Sylph")
+                    return "Sylph";
+
+                if (race == "Kobold")
+                    return "Kobold";
+
+                if (race == "Sahagin")
+                    return "Sahagin";
+
+                if (race == "Ixal")
+                    return "Ixal";
+
+                if (race == "Qiqirn")
+                    return "Qiqirn";
+
+                // HW Beast Tribes
+                if (message.TtsData.Race.StartsWith("Dragon"))
+                {
+                    if (this.Database.VoiceNames.TryGetValue(message.Speaker, out string voiceName))
+                        return voiceName;
+                    else
+                        return message.TtsData.Race;
+                }
+
+                if (race == "Goblin")
+                {
+                    if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
+                        return "Goblin_Female";
+                    else
+                        return "Goblin_Male";
+                }
+
+                if (race == "Vanu Vanu")
+                {
+                    if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
+                        return "Vanu_Female";
+                    else
+                        return "Vanu_Male";
+                }
+
+                if (race == "Vath")
+                    return "Vath";
+
+                if (race == "Moogle")
+                    return "Moogle";
+
+                if (race == "Node")
+                    return "Node";
+
+                // SB Beast Tribes
+                if (race == "Kojin")
+                    return "Kojin";
+
+                if (race == "Ananta")
+                    return "Ananta";
+
+                if (race == "Namazu")
+                    return "Namazu";
+
+                if (race == "Lupin")
+                    return "Lupin";
+
+                // Shb Beast Tribes
+                if (race == "Pixie")
+                    return "Pixie";
+
+                // EW Beast Tribes
+                if (race == "Matanga")
+                {
+                    if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
+                        return "Matanga_Female";
+                    else
+                        return "Matanga_Male";
+                }
+
+                if (race == "Loporrit")
+                    return "Loporrit";
+
+                if (race == "Omicron")
+                    return "Omicron";
+
+                // Bosses
+                if (message.NPC.Race.StartsWith("Boss"))
+                    return message.NPC.Race;
             }
-
-            if (message.NPC.Race == "Goblin" || message.TtsData.Race == "Goblin")
-            {
-                if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
-                    return "Goblin_Female";
-                else
-                    return "Goblin_Male";
-            }
-
-            if (message.NPC.Race == "Vanu Vanu" || message.TtsData.Race == "Vanu Vanu")
-            {
-                if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
-                    return "Vanu_Female";
-                else
-                    return "Vanu_Male";
-            }
-
-            if (message.NPC.Race == "Vath" || message.TtsData.Race == "Vath")
-                return "Vath";
-
-            if (message.NPC.Race == "Moogle" || message.TtsData.Race == "Moogle")
-                return "Moogle";
-
-            if (message.NPC.Race == "Node" || message.TtsData.Race == "Node")
-                return "Node";
-
-            // SB Beast Tribes
-            if (message.NPC.Race == "Kojin" || message.TtsData.Race == "Kojin")
-                return "Kojin";
-
-            if (message.NPC.Race == "Ananta" || message.TtsData.Race == "Ananta")
-                return "Ananta";
-
-            if (message.NPC.Race == "Namazu" || message.TtsData.Race == "Namazu")
-                return "Namazu";
-
-            if (message.NPC.Race == "Lupin" || message.TtsData.Race == "Lupin")
-                return "Lupin";
-
-            // Shb Beast Tribes
-            if (message.NPC.Race == "Pixie" || message.TtsData.Race == "Pixie")
-                return "Pixie";
-
-            // EW Beast Tribes
-            if (message.NPC.Race == "Matanga" || message.TtsData.Race == "Matanga")
-            {
-                if (message.NPC.Gender == "Female" || message.TtsData.Gender == "Female")
-                    return "Matanga_Female";
-                else
-                    return "Matanga_Male";
-            }
-
-            if (message.NPC.Race == "Loporrit" || message.TtsData.Race == "Loporrit")
-                return "Loporrit";
-
-            if (message.NPC.Race == "Omicron" || message.TtsData.Race == "Omicron")
-                return "Omicron";
-
-            // Bosses
-            if (message.NPC.Race.StartsWith("Boss"))
-                return message.NPC.Race;
 
             PluginLog.Information("Cannot find a voice for " + message.Speaker);
             return "Unknown";
@@ -1550,7 +1555,7 @@ namespace XivVoices.Engine
             bool changeSpeed = false;
             string additionalChanges = "";
             if (XivEngine.Instance.Database.Plugin.Config.Speed != 100) changeSpeed = true;
-            if (msg.VoiceName == "Omicron" || msg.VoiceName == "Node") additionalChanges = "robot";
+            if (msg.VoiceName == "Omicron" || msg.VoiceName == "Node" || msg.NPC.Type.Contains("Robot")) additionalChanges = "robot";
 
             string filterArgs = "";
             bool addEcho = false;
@@ -1575,6 +1580,15 @@ namespace XivVoices.Engine
 
             float setRate = 48000;
             float tempo = 1.0f;
+
+            // Sounds Effects for Age
+            if (msg.NPC.Type == "Old")
+            {
+                setRate *= (1 - 0.1f);
+                tempo /= (1 - 0.1f);
+                if (filterArgs != "") filterArgs += ",";
+                filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+            }
 
             // Sound Effects for Dragons
             if (msg.TtsData.Race.StartsWith("Dragon"))
@@ -1607,19 +1621,35 @@ namespace XivVoices.Engine
             }
 
             // Sound Effects for Primals
+            if (msg.NPC.Type.StartsWith("Primal"))
+                addEcho = true; 
+
             if (msg.NPC.Type == "Primal M1")
             { 
                 setRate *= (1 - 0.15f);
                 tempo /= (1 - 0.1f);
-                filterArgs += $",\"atempo={tempo},asetrate={setRate}\"";
-                addEcho = true;
+                if (filterArgs != "") filterArgs += ",";
+                filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+            }
+
+            else if (msg.NPC.Type == "Primal Dual")
+            {
+                if (msg.Speaker == "Thal" || msg.Sentence.StartsWith("Nald"))
+                    filterArgs += "\"rubberband=pitch=0.92\"";
+                else if (msg.Speaker == "Nald" || msg.Sentence.StartsWith("Thal"))
+                    filterArgs += "\"rubberband=pitch=1.03\"";
+                else
+                    filterArgs += "\"[0:a]asplit=2[sc][oc];[sc]rubberband=pitch=0.93[sc];[oc]rubberband=pitch=1.04[oc];[sc][oc]amix=inputs=2:duration=longest,volume=2\"";
             }
 
             // Sound Effects for Bosses
+            if (msg.NPC.Type.StartsWith("Boss"))
+                addEcho = true;
+
             if (msg.NPC.Type == "Boss F1")
             {
+                if (filterArgs != "") filterArgs += ",";
                 filterArgs += "\"[0:a]asplit=2[sc][oc];[sc]rubberband=pitch=0.8[sc];[oc]rubberband=pitch=1.0[oc];[sc][oc]amix=inputs=2:duration=longest,volume=2\"";
-                addEcho = true;
             }
 
             /*
