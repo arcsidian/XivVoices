@@ -1615,8 +1615,12 @@ namespace XivVoices.Engine
                             break;
                     }
 
-                if(tempo!=1)
-                    filterArgs += $",\"atempo={tempo},asetrate={setRate}\"" ;
+                if (tempo != 1)
+                {
+                    if (filterArgs != "") filterArgs += ",";
+                    filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+                }
+                    
                 addEcho = true;
             }
 

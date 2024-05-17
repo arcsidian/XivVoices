@@ -1161,7 +1161,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.4.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug in the sound effects that stopped playing dialogues for Dragon.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.4.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database and VoiceName Database to reflect the addition of new characters and Primals.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for older people.");
