@@ -108,6 +108,8 @@ namespace XivVoices {
 
         public MediaCameraObject PlayerCamera => _playerCamera;
 
+        public DalamudPluginInterface Interface => pluginInterface;
+
         public IChatGui Chat => _chat;
         public IClientState ClientState => _clientState;
         public ITextureProvider TextureProvider => _textureProvider;

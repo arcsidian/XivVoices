@@ -1,4 +1,5 @@
-﻿using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using Dalamud.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -43,8 +44,9 @@ namespace XivVoices.Engine
 
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
+            PluginLog.Information($"PlayAudio ---> start");
             await playAudioLock.WaitAsync();
-
+            
             try
             {
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
@@ -106,6 +108,7 @@ namespace XivVoices.Engine
 
         public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream, string type)
         {
+            PluginLog.Information($"PlayBubble ---> start");
             await playBubbleLock.WaitAsync();
 
             try
@@ -171,6 +174,36 @@ namespace XivVoices.Engine
                 waveStream?.Dispose();
                 playBubbleLock.Release();
             }
+        }
+
+        public async Task PlaySystemAudio(WaveStream waveStream)
+        {
+            PluginLog.Information($"PlaySystemAudio ---> start");
+
+            try
+            {
+                var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
+                if (!this.Plugin.Config.Mute)
+                {
+                    using (var audioOutput = GetAudioEngine())
+                    {
+                        audioOutput.Init(volumeProvider);
+                        volumeProvider.Volume = 1f;
+                        audioOutput.Play();
+                        while (audioOutput.PlaybackState == PlaybackState.Playing)
+                            await Task.Delay(50);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.PrintError("Error during system audio playback. " + ex);
+            }
+            finally
+            {
+                waveStream?.Dispose();
+            }
+
         }
 
         IWavePlayer GetAudioEngine()
