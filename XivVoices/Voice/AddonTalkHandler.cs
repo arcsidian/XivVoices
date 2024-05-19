@@ -96,7 +96,9 @@ namespace XivVoices.Voice {
 
         private async Task InitializeAsync()
         {
+            PluginLog.Information("InitializeAsync --> Waiting for Game Process Stability");
             await WaitForGameProcessStability();
+            PluginLog.Information("InitializeAsync --> Done waiting");
             InitializeServices();
         }
 
@@ -121,8 +123,10 @@ namespace XivVoices.Voice {
         private async void StartServices()
         {
             await _memoryService.Initialize();
+            PluginLog.Information("StartServices --> Waiting for Process Response");
             while (!Process.GetCurrentProcess().Responding)
                 await Task.Delay(100);
+            PluginLog.Information("StartServices --> Done waiting");
             await _memoryService.OpenProcess(Process.GetCurrentProcess());
             await _gameDataService.Initialize();
 
