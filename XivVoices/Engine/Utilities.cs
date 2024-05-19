@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -189,4 +190,12 @@ namespace XivVoices.Engine
         public string EyeShape { get; set; }
     }
 
+    public class GitHubRelease
+    {
+        [JsonProperty("tag_name")]
+        public string TagName { get; set; }
+
+        [JsonProperty("name")]
+        public string Name { get; set; }
+    }
 }

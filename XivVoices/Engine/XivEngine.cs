@@ -17,6 +17,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using System.Numerics;
 using XivVoices.LocalTTS;
 using System.Linq;
+using System.Reflection;
 
 namespace XivVoices.Engine
 {
@@ -24,6 +25,9 @@ namespace XivVoices.Engine
     public class XivEngine
     {
         #region Private Parameters
+        private string currentVersion { get; set; }
+
+        bool CheckingForNewVersion { get; set; } = false;
         private SemaphoreSlim speakBlock { get; set; }
         private Timer _updateTimer;
         private Timer _autoUpdateTimer;
@@ -59,6 +63,7 @@ namespace XivVoices.Engine
             else
                 return;
 
+            currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             speakBlock = new SemaphoreSlim(1, 1);
             this.Database = _database;
             this.Audio = _audio;
@@ -71,6 +76,8 @@ namespace XivVoices.Engine
             localTTS[1] = null;
             Active = true;
             this.Database.Plugin.Chat.Print("Engine: I am awake");
+            PluginLog.Information($"Version[{currentVersion}]");
+
         }
 
 
@@ -92,6 +99,7 @@ namespace XivVoices.Engine
                 localTTS[1] = null;
             }
         }
+
 
         private void Update(object state)
         {
@@ -127,9 +135,46 @@ namespace XivVoices.Engine
         private async void AutoUpdate(object state)
         {
             if (!Active) return;
+            if (!this.Database.Plugin.Config.Initialized) return;
+
+            // Version Update Check
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "MyGitHubApp");
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("https://api.github.com/repos/arcsidian/XivVoices/releases/latest");
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+
+                    var releaseInfo = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
+
+                    if (releaseInfo.TagName == currentVersion)
+                        this.Database.Plugin.Log($"Latest Release Tag: {releaseInfo.TagName}, you're up to date!");
+                    else
+                    {
+                        this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
+                        Random random = new Random();
+                        string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 5) + ".ogg");
+                        Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    this.Database.Plugin.PrintError("\nException Caught!");
+                    this.Database.Plugin.PrintError("Message: " + e.Message);
+                }
+                finally
+                {
+                    await Task.Delay(600000);
+                    CheckingForNewVersion = false;
+                }
+            }
+
             if (!this.Database.Plugin.Config.AutoUpdate) return;
             if (Updater.Busy) return;
-            if (!this.Database.Plugin.Config.Initialized) return;
+
+            // Voice Files Update Check
             string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
             if (dateString == null) return;
 
@@ -1199,6 +1244,7 @@ namespace XivVoices.Engine
                 { @"(^|\s)(:\(|:<|:C|>([^\s]+)<)($|\s)", "looks sad and says " },
                 { @"\bxD\b", "laughs and says " },
                 { @"(^|\s)(:3)($|\s)", "gives a playful smile and says " },
+                { @"(^|\s)(:P)($|\s)", "sticks a tongue out and says " },
                 { @"\bT[^\s]T\b", "cries and says " },
                 { @"(^|\s);\)($|\s)", "winks and says " },
             };
@@ -1450,6 +1496,7 @@ namespace XivVoices.Engine
 
         public static WaveStream DecodeOggOpusToPCM(string filePath)
         {
+            PluginLog.Information($"DecodeOggOpusToPCM ---> start");
             // Read the Opus file
             using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
@@ -1488,6 +1535,7 @@ namespace XivVoices.Engine
         static bool changeTimeBusy = false;
         public static async Task<WaveStream> FFmpegFileToWaveStream(XivMessage msg)
         {
+            PluginLog.Information($"FFmpegFileToWaveStream ---> start");
             changeTimeBusy = true;
             string outputFilePath = System.IO.Path.Combine(XivEngine.Instance.Database.DirectoryPath, "current" + XivEngine.Instance.Database.GenerateRandomSuffix() + ".ogg");
 
@@ -1684,11 +1732,13 @@ namespace XivVoices.Engine
                 filterArgs += $"\"flanger=depth=10:delay=15,volume=15dB,aphaser=in_gain=0.4\"";
             }
 
+            PluginLog.Information($"SoundEffects ---> done");
             return filterArgs;
         }
 
         private void PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
+            PluginLog.Information($"PlayAudio ---> type: " + type);
             if (xivMessage.TtsData != null && xivMessage.TtsData.Position != new Vector3(-99))
             {
                 Audio.PlayBubble(xivMessage, waveStream, type);

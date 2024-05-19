@@ -1161,7 +1161,15 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added a system audio player.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added a version check that plays audio when a new version is available.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added more logging for future debugging purposes.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug in the sound effects that stopped playing dialogues for Dragon.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
