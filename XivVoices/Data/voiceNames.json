@@ -412,6 +412,10 @@
     "speakers": [ "Varshahn" ]
   },
   {
+    "voiceName": "Wuk_Lamat",
+    "speakers": [ "Wuk Lamat" ]
+  },
+  {
     "voiceName": "2B",
     "speakers": [ "2B", "2P", "FUDefender_2B", "FUDefender_2P" ]
   },

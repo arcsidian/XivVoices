@@ -1161,7 +1161,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Wuk Lamat to the NPC Database.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.1"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added a system audio player.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing.");
