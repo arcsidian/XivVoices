@@ -627,7 +627,9 @@ namespace XivVoices {
                         case "help":
                             _chat.Print("Xiv Voices Commands:\r\n" +
                              "on (Enable Xiv Voices)\r\n" +
-                             "off (Disable Xiv Voices)");
+                             "off (Disable Xiv Voices)\r\n" +
+                             "mute (Mute/Unmute Volume)\r\n" +
+                             "skip (Skips currently playing dialogue)");
                             break;
                         case "on":
                             config.Active = true;
