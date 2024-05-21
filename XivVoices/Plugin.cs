@@ -642,16 +642,20 @@ namespace XivVoices {
                             config.Active = false;
                             break;
                         case "mute":
-                            config.Mute = true;
-                            _window.Configuration = config;
-                            this.pluginInterface.SavePluginConfig(config);
-                            config.Mute = true;
-                            break;
-                        case "unmute":
-                            config.Mute = false;
-                            _window.Configuration = config;
-                            this.pluginInterface.SavePluginConfig(config);
-                            config.Mute = false;
+                            if (!config.Mute)
+                            {
+                                config.Mute = true;
+                                _window.Configuration = config;
+                                this.pluginInterface.SavePluginConfig(config);
+                                config.Mute = true;
+                            }
+                            else
+                            {
+                                config.Mute = false;
+                                _window.Configuration = config;
+                                this.pluginInterface.SavePluginConfig(config);
+                                config.Mute = false;
+                            }
                             break;
                         case "skip":
                             this.audio.StopAudio();
