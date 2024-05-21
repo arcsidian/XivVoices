@@ -1161,7 +1161,15 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Regula van Hydrus now has an older voice.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Mute command now is a toggle, it mutes and unmutes XIVV audio each time");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated command: /xivv help");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated command: /xivv mute");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.2"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added Wuk Lamat to the NPC Database.");
                 }
