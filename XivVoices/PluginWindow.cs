@@ -81,7 +81,28 @@ namespace XivVoices {
                 {
                     if (Updater.Instance.State.Count > 0)
                     {
-                        UpdateWindow();
+                        if (ImGui.BeginTabBar("ConfigTabs"))
+                        {
+                            if (ImGui.BeginTabItem("  (           Update Process           )  "))
+                            {
+                                UpdateWindow();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem("Dialogue Settings"))
+                            {
+                                DrawSettings();
+                                ImGui.EndTabItem();
+                            }
+
+                            if (ImGui.BeginTabItem("Audio Settings"))
+                            {
+                                AudioSettings();
+                                ImGui.EndTabItem();
+                            }
+
+                            ImGui.EndTabBar();
+                        }
                     }
                     else
                     {
@@ -1161,7 +1182,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Plugin Update Voices will no longer play when the user is in a duty or in the middle of a cutscene or event.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Users now can access Dialogue Settings and Audio Settings while in the middle of a Voice Files Update.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.3"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Regula van Hydrus now has an older voice.");
                     ImGui.Bullet(); ImGui.TextWrapped("Mute command now is a toggle, it mutes and unmutes XIVV audio each time");
