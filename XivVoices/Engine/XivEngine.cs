@@ -18,6 +18,7 @@ using System.Numerics;
 using XivVoices.LocalTTS;
 using System.Linq;
 using System.Reflection;
+using FFXIVClientStructs.FFXIV.Client.Game;
 
 namespace XivVoices.Engine
 {
@@ -156,7 +157,8 @@ namespace XivVoices.Engine
                         this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
                         Random random = new Random();
                         string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 5) + ".ogg");
-                        Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
+                        if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
+                            Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
                     }
                 }
                 catch (HttpRequestException e)
