@@ -629,7 +629,9 @@ namespace XivVoices {
                              "on (Enable Xiv Voices)\r\n" +
                              "off (Disable Xiv Voices)\r\n" +
                              "mute (Mute/Unmute Volume)\r\n" +
-                             "skip (Skips currently playing dialogue)");
+                             "skip (Skips currently playing dialogue)\r\n" +
+                             "volup (Increases volume by 10%)\r\n" +
+                             "voldown (Decreases volume by 10%)");
                             break;
                         case "on":
                             config.Active = true;
@@ -661,6 +663,16 @@ namespace XivVoices {
                             break;
                         case "skip":
                             this.audio.StopAudio();
+                            break;
+                        case "volup":
+                            config.Volume = Math.Clamp(config.Volume + 10, 0, 100);
+                            config.LocalTTSVolume = Math.Clamp(config.LocalTTSVolume + 10, 0, 100);
+                            this.pluginInterface.SavePluginConfig(config);
+                            break;
+                        case "voldown":
+                            config.Volume = Math.Clamp(config.Volume - 10, 0, 100);
+                            config.LocalTTSVolume = Math.Clamp(config.LocalTTSVolume - 10, 0, 100);
+                            this.pluginInterface.SavePluginConfig(config);
                             break;
                         default:
                             _window.Toggle();
