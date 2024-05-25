@@ -1182,7 +1182,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added command: /xivv volup: increases volume by 10%.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added command: /xivv voldown: decreases volume by 10%.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Wood Wailer Lance to the list of npcs processed by their appearance.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Plugin Update Voices will no longer play when the user is in a duty or in the middle of a cutscene or event.");
                     ImGui.Bullet(); ImGui.TextWrapped("Users now can access Dialogue Settings and Audio Settings while in the middle of a Voice Files Update.");

@@ -231,6 +231,7 @@ namespace XivVoices.Engine
                 "Vexed Villager",
                 "Vault Friar",
                 "Well-informed Adventurer",
+                "Wood Wailer Lance",
                 "Wounded Imperial",
                 "Wounded Resistance Fighter",
                 "Yellow Moon Admirer",
