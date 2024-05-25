@@ -44,6 +44,7 @@ namespace XivVoices.Engine
 
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
+            if (!Plugin.Config.Active) return;
             PluginLog.Information($"PlayAudio ---> start");
             await playAudioLock.WaitAsync();
             
@@ -108,6 +109,7 @@ namespace XivVoices.Engine
 
         public async Task PlayBubble(XivMessage xivMessage, WaveStream waveStream, string type)
         {
+            if (!Plugin.Config.Active) return;
             PluginLog.Information($"PlayBubble ---> start");
             await playBubbleLock.WaitAsync();
 
@@ -178,6 +180,7 @@ namespace XivVoices.Engine
 
         public async Task PlaySystemAudio(WaveStream waveStream)
         {
+            if (!Plugin.Config.Active) return;
             PluginLog.Information($"PlaySystemAudio ---> start");
 
             try

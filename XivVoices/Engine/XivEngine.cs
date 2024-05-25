@@ -104,7 +104,7 @@ namespace XivVoices.Engine
 
         private void Update(object state)
         {
-            if (!Active) return;
+            if (!Active || !this.Database.Plugin.Config.Active) return;
 
             if (ffxivMessages.Count > 0)
             {
@@ -135,7 +135,7 @@ namespace XivVoices.Engine
 
         private async void AutoUpdate(object state)
         {
-            if (!Active) return;
+            if (!Active || !this.Database.Plugin.Config.Active) return;
             if (!this.Database.Plugin.Config.Initialized) return;
 
             // Version Update Check

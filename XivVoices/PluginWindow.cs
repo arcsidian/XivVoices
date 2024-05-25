@@ -31,7 +31,7 @@ namespace XivVoices {
         private string currentTab = "General";
 
 
-        public PluginWindow() : base("      XIVV                                       ~  Xiv Voices by Arcsidian  ~") {
+        public PluginWindow() : base("    XIVV                                      ~  Xiv Voices by Arcsidian  ~") {
             Size = new Vector2(440, 650);
             initialSize = Size;
             SizeCondition = ImGuiCond.Always;
@@ -1182,7 +1182,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Linked Xiv Voices Enabled with New Update Notificatiton as well as other functionalities.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.5"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added command: /xivv volup: increases volume by 10%.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added command: /xivv voldown: decreases volume by 10%.");
@@ -1295,70 +1300,34 @@ namespace XivVoices {
                     ImGui.Bullet(); ImGui.TextWrapped("Added job abbreviations to player chat processing so things such as PLD and BRD will be read as Paladin and Bard by Local TTS.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.3.9"))
+                if (ImGui.CollapsingHeader("Version 0.2.3.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Linked Bubble Dialogues to the main Volume Slider.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added dynamic dialogue processing for Feo Ul.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added Matanga, Giants and Skeletons to the beast tribe mapper.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated the NPC Database to work with May's voice data update.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.8"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to handle emotions such as \":)\"  \":(\"  \":D\"  \":C\"  \"XD\"  \">_<\"  \"^_^\" ...etc.");
                     ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Fixed a crash related to stopping lipsync when it has already stopped.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.7"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Quick Bug Fix, don't worry about it :)");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.6"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to handle case sensitivity.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to ignore web links.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Player LocalTTS to ignore coordinates in <pos>.");
                     ImGui.Bullet(); ImGui.TextWrapped("Player chat no longer skips NPC dialogues.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.5"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated retainers list to cover a mismatched dialogue for Male Viera Retainer.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing to handle names that end with a symbol.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing for players with their first name identical to their last name.");
                     ImGui.Bullet(); ImGui.TextWrapped("Implemented Player Chat Processing to Local TTS so messages like o/ are expressed better.");
                     ImGui.Bullet(); ImGui.TextWrapped("Implemented Lexicon Processing to Local TTS.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.4"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a crash related to the process being unavailable during initialization.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.3"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Added a separate volume slider for Local TTS.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed concurrent modification issue in LogsSettings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where the stop button doesn't work if you don't have Skip enabled.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.2"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Audio Logs now have the unfiltered version of the dialogue with the user's name in it.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug related to the Nameless Database causing a crash.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added commands /xivv mute and /xivv unmute.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.1"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Slight UI Improvements for better visuals.");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved the Dialogue Skip so skipping quickly works every time.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added Mamool Ja to the Beast Tribe Mapping Process.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.3.0"))
-                {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue related to Anamnesis that causes a crash during loading to some users.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added Linkshell to the list of chat dialogues.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added the option to enable and disable Linkshell messages in the Dialogue Settings.");

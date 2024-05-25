@@ -149,7 +149,7 @@ namespace XivVoices.Voice {
 
         
         private void _chatGui_ChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
-            if (_clientState.IsLoggedIn && bubbleCooldown.ElapsedMilliseconds >= 200 && Conditions.IsBoundByDuty) {
+            if (_plugin.Config.Active && _clientState.IsLoggedIn && bubbleCooldown.ElapsedMilliseconds >= 200 && Conditions.IsBoundByDuty) {
                 if (_state == null) {
                     switch (type) {
                         case XivChatType.NPCDialogueAnnouncements:
@@ -169,6 +169,7 @@ namespace XivVoices.Voice {
         }
 
         unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, GameObject* pActor, IntPtr pString, bool param3) {
+            if (_plugin.Config.Active)
             try {
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
                     if (pString != IntPtr.Zero &&
@@ -250,7 +251,7 @@ namespace XivVoices.Voice {
             if (!disposed)
                 try {
                     if (_clientState != null) {
-                        if (_clientState.IsLoggedIn) {
+                        if (_clientState.IsLoggedIn && _plugin.Config.Active) {
                             // Filter ------------------------------------------
                             if (_plugin.Filter.IsCutsceneDetectionNull())
                             {
@@ -406,6 +407,7 @@ namespace XivVoices.Voice {
         public async void TriggerLipSync(Character character, string length)
         {
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
+            if (!_plugin.Config.Active) return;
 
             ActorMemory actorMemory = null;
             AnimationMemory animationMemory = null;
@@ -582,7 +584,8 @@ namespace XivVoices.Voice {
         public async void StopLipSync(Character character)
         {
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
-            if(character == null) return;
+            if (!_plugin.Config.Active) return;
+            if (character == null) return;
 
             if (taskCancellations.TryGetValue(character, out var cts))
             {
