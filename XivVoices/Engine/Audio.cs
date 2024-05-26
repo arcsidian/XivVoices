@@ -45,13 +45,14 @@ namespace XivVoices.Engine
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
             if (!Plugin.Config.Active) return;
-            PluginLog.Information($"PlayAudio ---> start");
-            await playAudioLock.WaitAsync();
-            
             try
             {
+                PluginLog.Information($"PlayAudio ---> start");
+                await playAudioLock.WaitAsync();
+                PluginLog.Information($"PlayAudio ---> playAudioLock done");
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 var audioInfo = GetAudioInfo(xivMessage, type);
+                PluginLog.Information($"PlayAudio ---> audioinfo receieved");
                 audioIsStopped = false;
                 if (!this.Plugin.Config.Mute)
                 {
@@ -59,6 +60,7 @@ namespace XivVoices.Engine
                         Plugin.TriggerLipSync(xivMessage.TtsData.Character, waveStream.TotalTime.TotalSeconds.ToString());
                     using (var audioOutput = GetAudioEngine())
                     {
+                        PluginLog.Information($"PlayAudio ---> audioengine chosen");
                         audioOutput.Init(volumeProvider);
 
                         if (type == "ai")
@@ -67,6 +69,7 @@ namespace XivVoices.Engine
                             volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
 
                         audioOutput.Play();
+                        PluginLog.Information($"PlayAudio ---> playing");
                         audioInfo.state = "playing";
                         var totalDuration = waveStream.TotalTime.TotalMilliseconds;
                         while (audioOutput.PlaybackState == PlaybackState.Playing)
@@ -93,6 +96,7 @@ namespace XivVoices.Engine
                 }
 
                 audioInfo.state = "stopped";
+                PluginLog.Information($"PlayAudio ---> stopped");
                 audioInfo.percentage = 1f;
             }
             catch (Exception ex)
