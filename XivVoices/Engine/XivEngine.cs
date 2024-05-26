@@ -1355,6 +1355,15 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bIT\b", "it");
             sentence = Regex.Replace(sentence, @"r says", "rr says");
             sentence = Regex.Replace(sentence, @"Eleanorr says", "el-uh-ner says");
+            sentence = Regex.Replace(sentence, @"\bm1\b", "\"Melee one\"", options);
+            sentence = Regex.Replace(sentence, @"\bm2\b", "\"Melee two\"", options);
+            sentence = Regex.Replace(sentence, @"\bot\b", "\"Off-Tank\"", options);
+            sentence = Regex.Replace(sentence, @"\bmt\b", "\"Main-Tank\"", options);
+            sentence = Regex.Replace(sentence, @"\br1\b", "\"Ranged One\"", options);
+            sentence = Regex.Replace(sentence, @"\br2\b", "\"Ranged Two\"", options);
+            sentence = Regex.Replace(sentence, @"\bh1\b", "\"Healer One\"", options);
+            sentence = Regex.Replace(sentence, @"\bh2\b", "\"Healer Two\"", options);
+            sentence = Regex.Replace(sentence, @"\brn\b", "\"right now\"", options);
 
             // Regex: Job Abbreviations
             sentence = JobReplacement(sentence);
