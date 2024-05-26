@@ -157,7 +157,7 @@ namespace XivVoices.Engine
                         this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
                         Random random = new Random();
                         string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 5) + ".ogg");
-                        if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
+                        if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent && this.Database.Plugin.Config.UpdateAudioNotification)
                             Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
                     }
                 }

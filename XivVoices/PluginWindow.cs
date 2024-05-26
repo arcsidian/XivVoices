@@ -596,6 +596,17 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Auto Update Enabled");
 
+            // Update Audio Notification Enabled
+            ImGui.Dummy(new Vector2(0, 8));
+            var updateAudioNotification = this.Configuration.UpdateAudioNotification;
+            if (ImGui.Checkbox("##updateAudioNotification", ref updateAudioNotification))
+            {
+                this.configuration.UpdateAudioNotification = updateAudioNotification;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("New Update Audio Notification Enabled");
+
             // Xiv Voices Enabled
             ImGui.Dummy(new Vector2(0, 8));
             var reports = this.Configuration.Reports;
