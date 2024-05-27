@@ -1193,7 +1193,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed a bug related to auto update crashing the game when the connection is unstable.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.7"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added the option in the settings to turn off the New Update Audio Notification.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated player chat progressing and added party roles: m1, m2, mt, ot, r1, r2, h1, h2.");

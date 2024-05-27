@@ -141,6 +141,7 @@ namespace XivVoices.Engine
             // Version Update Check
             using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromMinutes(2);
                 client.DefaultRequestHeaders.Add("User-Agent", "MyGitHubApp");
                 try
                 {
@@ -165,6 +166,17 @@ namespace XivVoices.Engine
                 {
                     this.Database.Plugin.PrintError("\nException Caught!");
                     this.Database.Plugin.PrintError("Message: " + e.Message);
+                }
+                catch (TaskCanceledException e)
+                {
+                    this.Database.Plugin.PrintError("\nRequest Timed Out!");
+                    this.Database.Plugin.PrintError("Message: " + e.Message);
+                }
+                catch (Exception e)
+                {
+                    this.Database.Plugin.PrintError("\nUnexpected Exception Caught!");
+                    this.Database.Plugin.PrintError("Message: " + e.Message);
+                    this.Database.Plugin.LogError("Stack Trace: " + e.StackTrace);
                 }
                 finally
                 {
