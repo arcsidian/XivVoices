@@ -1193,7 +1193,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.5.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: More logging and crash handling.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.8"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed a bug related to auto update crashing the game when the connection is unstable.");
                 }

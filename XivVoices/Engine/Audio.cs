@@ -49,7 +49,7 @@ namespace XivVoices.Engine
             {
                 PluginLog.Information($"PlayAudio ---> start");
                 await playAudioLock.WaitAsync();
-                PluginLog.Information($"PlayAudio ---> playAudioLock done");
+                PluginLog.Information($"PlayAudio ---> playAudioLock acquired");
                 var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                 var audioInfo = GetAudioInfo(xivMessage, type);
                 PluginLog.Information($"PlayAudio ---> audioinfo receieved");
@@ -102,11 +102,13 @@ namespace XivVoices.Engine
             catch (Exception ex)
             {
                 Plugin.PrintError("Error during audio playback. " + ex);
+                PluginLog.Error($"PlayAudio ---> Exception: {ex}");
             }
             finally
             {
                 waveStream?.Dispose();
                 playAudioLock.Release();
+                PluginLog.Information($"PlayAudio ---> playAudioLock released");
             }
             
         }

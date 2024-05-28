@@ -232,7 +232,7 @@ namespace XivVoices.Voice {
                     }
                 }
             } catch (Exception e) {
-                Dalamud.Logging.PluginLog.Log(e, e.Message);
+                Dalamud.Logging.PluginLog.Error(e, e.Message);
             }
             return _openChatBubbleHook.Original(pThis, pActor, pString, param3);
         }
@@ -327,7 +327,7 @@ namespace XivVoices.Voice {
                         }
                     }
                 } catch (Exception e) {
-                    Dalamud.Logging.PluginLog.Log(e, e.Message);
+                    PluginLog.Log(e, e.Message);
                 }
         }
 
