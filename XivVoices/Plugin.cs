@@ -447,7 +447,7 @@ namespace XivVoices {
             // Fill the Parameters
             if (character == null)
             {
-                if(this.database.PlayerData.ContainsKey(sender))
+                if(this.database.PlayerData != null && this.database.PlayerData.ContainsKey(sender))
                 {
                     body = this.database.PlayerData[sender].Body.ToString();
                     gender = this.database.PlayerData[sender].Gender.ToString();

@@ -1193,7 +1193,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.6.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated the Audio Playing Engine.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug related to playerData not initializing correctly.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Stability improvements.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.5.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: More logging and crash handling.");
                 }
