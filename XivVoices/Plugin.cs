@@ -408,81 +408,91 @@ namespace XivVoices {
 
         }
 
-        private void ChatText(string sender, SeString message, XivChatType type, uint senderId, bool cancel = false) {
-            if (!config.Active || !config.Initialized) return;
-
-            if (sender.Length == 1)
-                sender = _clientState.LocalPlayer.Name.TextValue;
-
-            string stringtype = type.ToString();
-            string correctSender = _addonTalkHandler.CleanSender(sender);
-            string user = $"{ClientState.LocalPlayer.Name}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
-
-            if (cancel)
+        private void ChatText(string sender, SeString message, XivChatType type, uint senderId, bool cancel = false)
+        {
+            try
             {
-                stringtype = "Cancel";
-                XivEngine.Instance.Process(stringtype, correctSender, "-1", "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
-                return;
-            }
+                if (!config.Active || !config.Initialized) return;
 
-            // Default Paramters
-            Character character = null;
-            string id = "-1";
-            string skeleton = "-1";
-            string body = "-1";
-            string gender = "default";
-            string race = "-1";
-            string tribe = "-1";
-            string eyes = "-1";
+                if (sender.Length == 1)
+                    sender = _clientState.LocalPlayer.Name.TextValue;
 
-            
-            // Get Character Data
-            if (sender.Contains(_clientState.LocalPlayer.Name.TextValue)){
-                character = _clientState.LocalPlayer;
-            }
-            else {
-                character = _addonTalkHandler.GetCharacterFromName(sender);
-            }
+                string stringtype = type.ToString();
+                string correctSender = _addonTalkHandler.CleanSender(sender);
+                string user = $"{ClientState.LocalPlayer.Name}@{ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-            // Fill the Parameters
-            if (character == null)
-            {
-                if(this.database.PlayerData != null && this.database.PlayerData.ContainsKey(sender))
+                if (cancel)
                 {
-                    body = this.database.PlayerData[sender].Body.ToString();
-                    gender = this.database.PlayerData[sender].Gender.ToString();
-                    race = this.database.PlayerData[sender].Race.ToString();
-                    tribe = this.database.PlayerData[sender].Tribe.ToString();
-                    eyes = this.database.PlayerData[sender].EyeShape.ToString();
+                    stringtype = "Cancel";
+                    XivEngine.Instance.Process(stringtype, correctSender, "-1", "-1", message.ToString(), "-1", "-1", "-1", "-1", "-1", _clientState.ClientLanguage.ToString(), new Vector3(-99), null, user);
+                    return;
                 }
-            }
-            else
-            {
-                id = character.DataId.ToString();
-                body = character.Customize[(int)CustomizeIndex.ModelType].ToString();
-                gender = Convert.ToBoolean(character.Customize[(int)CustomizeIndex.Gender]) ? "Female" : "Male";
-                race = character.Customize[(int)CustomizeIndex.Race].ToString();
-                tribe = character.Customize[(int)CustomizeIndex.Tribe].ToString();
-                eyes = character.Customize[(int)CustomizeIndex.EyeShape].ToString();
 
-                if (type == XivChatType.TellIncoming || type == XivChatType.Party || type == XivChatType.Alliance || type == XivChatType.FreeCompany)
+                // Default Parameters
+                Character character = null;
+                string id = "-1";
+                string skeleton = "-1";
+                string body = "-1";
+                string gender = "default";
+                string race = "-1";
+                string tribe = "-1";
+                string eyes = "-1";
+
+                // Get Character Data
+                if (sender.Contains(_clientState.LocalPlayer.Name.TextValue))
                 {
-                    var playerCharacter = new PlayerCharacter
+                    character = _clientState.LocalPlayer;
+                }
+                else
+                {
+                    character = _addonTalkHandler.GetCharacterFromName(sender);
+                }
+
+                // Fill the Parameters
+                if (character == null)
+                {
+                    if (this.database.PlayerData != null && this.database.PlayerData.ContainsKey(sender))
                     {
-                        Body = character.Customize[(int)CustomizeIndex.ModelType].ToString(),
-                        Gender = Convert.ToBoolean(character.Customize[(int)CustomizeIndex.Gender]) ? "Female" : "Male",
-                        Race = character.Customize[(int)CustomizeIndex.Race].ToString(),
-                        Tribe = character.Customize[(int)CustomizeIndex.Tribe].ToString(),
-                        EyeShape = character.Customize[(int)CustomizeIndex.EyeShape].ToString()
-                    };
-                    this.database.UpdateAndSavePlayerData(sender, playerCharacter);
+                        body = this.database.PlayerData[sender].Body.ToString();
+                        gender = this.database.PlayerData[sender].Gender.ToString();
+                        race = this.database.PlayerData[sender].Race.ToString();
+                        tribe = this.database.PlayerData[sender].Tribe.ToString();
+                        eyes = this.database.PlayerData[sender].EyeShape.ToString();
+                    }
                 }
-                
-            }
+                else
+                {
+                    id = character.DataId.ToString();
+                    body = character.Customize[(int)CustomizeIndex.ModelType].ToString();
+                    gender = Convert.ToBoolean(character.Customize[(int)CustomizeIndex.Gender]) ? "Female" : "Male";
+                    race = character.Customize[(int)CustomizeIndex.Race].ToString();
+                    tribe = character.Customize[(int)CustomizeIndex.Tribe].ToString();
+                    eyes = character.Customize[(int)CustomizeIndex.EyeShape].ToString();
 
-            //Chat.Print($"{correctSender}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}]");
-            XivEngine.Instance.Process(stringtype, correctSender, id, skeleton, message.ToString(), body, gender, race, tribe, eyes, _clientState.ClientLanguage.ToString(), new Vector3(-99), character, user);
+                    if (type == XivChatType.TellIncoming || type == XivChatType.Party || type == XivChatType.Alliance || type == XivChatType.FreeCompany)
+                    {
+                        var playerCharacter = new PlayerCharacter
+                        {
+                            Body = character.Customize[(int)CustomizeIndex.ModelType].ToString(),
+                            Gender = Convert.ToBoolean(character.Customize[(int)CustomizeIndex.Gender]) ? "Female" : "Male",
+                            Race = character.Customize[(int)CustomizeIndex.Race].ToString(),
+                            Tribe = character.Customize[(int)CustomizeIndex.Tribe].ToString(),
+                            EyeShape = character.Customize[(int)CustomizeIndex.EyeShape].ToString()
+                        };
+                        this.database.UpdateAndSavePlayerData(sender, playerCharacter);
+                    }
+                }
+
+                //Chat.Print($"{correctSender}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}]");
+                XivEngine.Instance.Process(stringtype, correctSender, id, skeleton, message.ToString(), body, gender, race, tribe, eyes, _clientState.ClientLanguage.ToString(), new Vector3(-99), character, user);
+            }
+            catch (Exception ex)
+            {
+                LogError("Error in ChatText method. " + ex);
+                Dalamud.Logging.PluginLog.Error($"ChatText ---> Exception: {ex}");
+            }
         }
+
 
         public void TriggerLipSync(Character character, string length)
         {

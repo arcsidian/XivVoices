@@ -655,7 +655,9 @@ namespace XivVoices.Voice {
 
                 lastNPCDialogue = npcName + correctedMessage;
             }
-            catch {
+            catch (Exception ex)
+            {
+                PluginLog.Error($"NPCText1 ---> Exception: {ex}");
             }
         }
         
@@ -717,7 +719,9 @@ namespace XivVoices.Voice {
                 }
 
             }
-            catch {
+            catch (Exception ex)
+            {
+                PluginLog.Error($"NPCText2 ---> Exception: {ex}");
             }
         }
 
@@ -764,27 +768,33 @@ namespace XivVoices.Voice {
                 race = character.Customize[(int)CustomizeIndex.Race];
                 tribe = character.Customize[(int)CustomizeIndex.Tribe];
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape];
-                
-//#if DEBUG
-                //_plugin.Chat.Print($"{character.Name.TextValue}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}] ---> area[{_plugin.ClientState.TerritoryType}]");
-//#endif
+                //_plugin.Log($"{character.Name.TextValue}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}] ---> area[{_plugin.ClientState.TerritoryType}]");
             }
             return character;
         }
 
         public Character GetCharacterFromName(string name)
         {
-            foreach (var item in _objectTable) {
-
-                if (item as Character == null|| item.Name.TextValue == "") continue;
-
-                Character character = item as Character;
-                if (name == character.Name.TextValue)
+            try
+            {
+                foreach (var item in _objectTable)
                 {
-                    return character;
+
+                    if (item as Character == null || item.Name.TextValue == "") continue;
+
+                    Character character = item as Character;
+                    if (name == character.Name.TextValue)
+                    {
+                        return character;
+                    }
                 }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                PluginLog.Error($"GetCharacterFromName ---> Exception: {ex}");
+                return null;
+            }
         }
 
         private AddonTalkState GetTalkAddonState() {

@@ -176,7 +176,7 @@ namespace XivVoices.Engine
                 {
                     this.Database.Plugin.PrintError("\nUnexpected Exception Caught!");
                     this.Database.Plugin.PrintError("Message: " + e.Message);
-                    this.Database.Plugin.LogError("Stack Trace: " + e.StackTrace);
+                    this.Database.Plugin.LogError("AutoUpdate1 ---> Exception Stack Trace: " + e.StackTrace);
                 }
                 finally
                 {
@@ -192,14 +192,22 @@ namespace XivVoices.Engine
             string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
             if (dateString == null) return;
 
-            DateTime serverDateTime = DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind);
-            int comparisonResult = DateTime.Compare(this.Database.Plugin.Config.LastUpdate, serverDateTime);
-            if (comparisonResult < 0)
+            try
             {
-                this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
-                this.Updater.ServerLastUpdate = serverDateTime;
-                await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
+                DateTime serverDateTime = DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind);
+                int comparisonResult = DateTime.Compare(this.Database.Plugin.Config.LastUpdate, serverDateTime);
+                if (comparisonResult < 0)
+                {
+                    this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
+                    this.Updater.ServerLastUpdate = serverDateTime;
+                    await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
+                }
             }
+            catch (Exception ex)
+            {
+                PluginLog.Error($"AutoUpdate2 ---> Exception: {ex}");
+            }
+            
         }
 
         public void Dispose()
