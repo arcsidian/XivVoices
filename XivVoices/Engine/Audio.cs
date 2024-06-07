@@ -164,9 +164,17 @@ namespace XivVoices.Engine
                                     audioOutput.Stop();
                                     break;
                                 }
-                                data = GetDistanceAndBalance(xivMessage.TtsData.Position);
-                                volumeProvider.Volume = AdjustVolume(data.Distance);
-                                panningProvider.Pan = data.Balance;
+
+                                try
+                                {
+                                    data = GetDistanceAndBalance(xivMessage.TtsData.Position);
+                                    volumeProvider.Volume = AdjustVolume(data.Distance);
+                                    panningProvider.Pan = data.Balance;
+                                }
+                                catch {
+                                    audioOutput.Stop();
+                                    break;
+                                }
 
                                 /* Testing In a Loop
                                 Plugin.Chat.Print("distance:" + data.Distance);
