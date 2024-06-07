@@ -1703,9 +1703,18 @@ namespace XivVoices.Engine
                 addEcho = true;
             }
 
+            // Sound Effects for Golems
+            if (msg.TtsData.Race.StartsWith("Golem"))
+            {
+                setRate *= (1 - 0.15f);
+                tempo /= (1 - 0.15f);
+                if (filterArgs != "") filterArgs += ",";
+                filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+            }
+
             // Sound Effects for Primals
             if (msg.NPC.Type.StartsWith("Primal"))
-                addEcho = true; 
+            addEcho = true; 
 
             if (msg.NPC.Type == "Primal M1")
             { 

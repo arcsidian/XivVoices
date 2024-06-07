@@ -161,7 +161,7 @@
   },
   {
     "voiceName": "Artoirel",
-    "speakers": []
+    "speakers": [ "Artoirel", "Artoirel Ironbone" ]
   },
   {
     "voiceName": "Ysayle",
@@ -366,6 +366,10 @@
   {
     "voiceName": "Ryne",
     "speakers": [ "Ryne" ]
+  },
+  {
+    "voiceName": "Gaia",
+    "speakers": [ "Gaia", "Voidwalker", "Oracle of Darkness" ]
   },
   {
     "voiceName": "Gaia",
@@ -1226,6 +1230,10 @@
   },
   {
     "voiceName": "Dragon_Large",
+    "speakers": []
+  },
+  {
+    "voiceName": "Golem",
     "speakers": []
   },
   {

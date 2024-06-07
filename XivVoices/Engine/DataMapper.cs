@@ -62,6 +62,8 @@ namespace XivVoices.Engine
 
         private Dictionary<(int, ushort), string> skeletonRegionMap = new Dictionary<(int, ushort), string>()
         {
+            {(21,0), "Golem"},
+            {(21,478), "Golem"},
             {(60,0), "Dragon_Medium"}, // Medium size --> Sooh Non
             {(60,398), "Dragon_Medium"},
             {(63,0), "Dragon_Large"}, // Large size --> Ess Khas
