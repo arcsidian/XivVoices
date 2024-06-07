@@ -191,6 +191,7 @@ namespace XivVoices.Engine
                 "Steersman",
                 "Stocky Student",
                 "Stone Torch",
+                "Straggler",
                 "Storm Armorer",
                 "Storm Blacksmith",
                 "Storm Captain",

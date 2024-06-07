@@ -57,7 +57,7 @@ namespace XivVoices.Engine
             {130, "Option 3"},
             {131, "Option 4"},
             {132, "Option 5"},
-            {133, "Option 6"},
+            {133, "Option 6"}, 
         };
 
         private Dictionary<(int, ushort), string> skeletonRegionMap = new Dictionary<(int, ushort), string>()

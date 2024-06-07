@@ -337,7 +337,7 @@
   },
   {
     "voiceName": "Lahabrea",
-    "speakers": [ "Lahabrea", "Ascian Lahabrea", "Masked Magus" ]
+    "speakers": [ "Lahabrea", "Ascian Lahabrea", "Masked Magus", "Lahabrea's Shade" ]
   },
   {
     "voiceName": "Ardbert",
@@ -345,7 +345,7 @@
   },
   {
     "voiceName": "Nabriales",
-    "speakers": [ "Nabriales" ]
+    "speakers": [ "Nabriales", "Nabriales's Shade" ]
   },
   {
     "voiceName": "Hythlodaeus",
@@ -414,6 +414,10 @@
   {
     "voiceName": "Varshahn",
     "speakers": [ "Varshahn" ]
+  },
+  {
+    "voiceName": "Erenville",
+    "speakers": [ "Erenville" ]
   },
   {
     "voiceName": "Wuk_Lamat",
@@ -1337,6 +1341,10 @@
     "speakers": [ "Ifrit" ]
   },
   {
+    "voiceName": "Primal_Garuda",
+    "speakers": [ "Garuda" ]
+  },
+  {
     "voiceName": "Primal_Azeyma",
     "speakers": [ "Azeyma" ]
   },
@@ -1355,10 +1363,6 @@
   {
     "voiceName": "Titan",
     "speakers": [ "Titan" ]
-  },
-  {
-    "voiceName": "Garuda",
-    "speakers": [ "Garuda" ]
   },
   {
     "voiceName": "Phoenix",

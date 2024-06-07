@@ -415,6 +415,22 @@
     "Eyes": "Option 5",
     "Type": "Default"
   },
+  "4th Legion Hoplomachus": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "4th Legion Aquilifer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "4th Platoon Soldier": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -429,6 +445,14 @@
     "Tribe": "Wildwood",
     "Body": "Adult",
     "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "6th Legion Hoplomachus": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
     "Type": "Default"
   },
   "6th Legion Decurion": {
@@ -517,6 +541,14 @@
     "Tribe": "Midlander",
     "Body": "Adult",
     "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "8th Cohort Eques": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 2",
     "Type": "Default"
   },
   "9S": {
@@ -1375,6 +1407,22 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Adorable Voice": {
+    "Gender": "",
+    "Race": "Pixie",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Default"
+  },
+  "Playful Voice": {
+    "Gender": "",
+    "Race": "Pixie",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Default"
+  },
   "Nectar-seeking Pixie": {
     "Gender": "",
     "Race": "Pixie",
@@ -1775,7 +1823,7 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
-  "Ahl Ein (NPC)": {
+  "Ahl Ein": {
     "Gender": "",
     "Race": "Dragon",
     "Tribe": "",
@@ -4560,6 +4608,70 @@
     "Type": "Default"
   },
   "Ardbert": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Wounded Merchant": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Wounded Popularis": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Wounded Resistance Fighter": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Weggfarr Wideaxe": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Werner the Cowardly": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Well-moisturized Researcher": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Well-informed Adventurer": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Warrior of Darkness": {
     "Gender": "Male",
     "Race": "Hyur",
     "Tribe": "Midlander",
@@ -10375,6 +10487,14 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
+  "Captured Resistance Member": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
   "Captured Chocobo": {
     "Gender": "",
     "Race": "Non-Humanoid",
@@ -10522,9 +10642,9 @@
   "Careless Carrier": {
     "Gender": "Male",
     "Race": "Hyur",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Careless Crone": {
@@ -10549,6 +10669,30 @@
     "Tribe": "Hellsguard",
     "Body": "Adult",
     "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Cheerful Soldier": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Child of the Everlasting Dark": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Centurio Praetorianus": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
     "Type": "Default"
   },
   "Caretaking Rider": {
@@ -16279,12 +16423,28 @@
     "Eyes": "Option 4",
     "Type": "Default"
   },
-  "Doman Signifer": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Midlander",
+  "Dreaming Imp": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Keeper of the Moon",
     "Body": "Adult",
     "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Dotharli Hunter": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Dotharli Spiritcaller": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Demonlilith": {
@@ -16329,10 +16489,34 @@
   },
   "Displaced Engineer": {
     "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Doman Hoplomachus": {
+    "Gender": "Male",
     "Race": "Hyur",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Doman Shaman": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Doman Signifer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
     "Type": "Default"
   },
   "Disquieted Villager": {
@@ -18888,6 +19072,14 @@
     "Type": "Default"
   },
   "Emet-Selch": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "The Voice of Emet-Selch": {
     "Gender": "Male",
     "Race": "Elezen",
     "Tribe": "Wildwood",
@@ -24599,14 +24791,6 @@
     "Eyes": "Option 6",
     "Type": "Default"
   },
-  "Garuda": {
-    "Gender": "",
-    "Race": "Non-Humanoid",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "Gascot": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -25335,6 +25519,198 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Hired Guard": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Ishgardian Heavy Infantry": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Jenlyns Straightblade": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Journey's Head Lookout": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Hellsguard",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Ironworks Engineer": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Insurgent Blade": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Independent Merchant": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Imperial Princeps": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Imperial Sagittarius": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Imperial Speculator": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Imposing Imp": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Imperial Hastatus": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Immaculate Healer": {
+    "Gender": "Female",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Immaculate Knight": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Immaculate Magus": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Immaculate Warrior": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Hoplomachus Praetorianus": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Igeyorhm's Shade": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "House Fortemps Archer": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "House Fortemps Banneret": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "House Fortemps Herald": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Hostile Commander": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Hostile Stranger": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "House Durendaire Guard": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
   "Gilpin": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -25343,12 +25719,20 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
+  "Green Confederate": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
   "Ginko": {
     "Gender": "Female",
     "Race": "Au Ra",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
+    "Tribe": "Raen",
+    "Body": "Child",
+    "Eyes": "Option 2",
     "Type": "Default"
   },
   "Ginnade": {
@@ -29751,14 +30135,6 @@
     "Eyes": "Option 5",
     "Type": "Default"
   },
-  "House Fortemps Herald": {
-    "Gender": "Male",
-    "Race": "Elezen",
-    "Tribe": "Wildwood",
-    "Body": "Adult",
-    "Eyes": "Option 3",
-    "Type": "Default"
-  },
   "Housing Enthusiast": {
     "Gender": "Male",
     "Race": "Elezen",
@@ -30215,14 +30591,6 @@
     "Eyes": "Option 5",
     "Type": "Default"
   },
-  "House Durendaire Guard": {
-    "Gender": "",
-    "Race": "Patch 2.0",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "House Durendaire Knight": {
     "Gender": "Male",
     "Race": "Elezen",
@@ -30245,22 +30613,6 @@
     "Tribe": "Wildwood",
     "Body": "Adult",
     "Eyes": "Option 5",
-    "Type": "Default"
-  },
-  "House Fortemps Archer": {
-    "Gender": "Female",
-    "Race": "Elezen",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
-  "House Fortemps Banneret": {
-    "Gender": "Male",
-    "Race": "Elezen",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
     "Type": "Default"
   },
   "House Fortemps Engineer": {
@@ -30691,14 +31043,6 @@
     "Gender": "Male",
     "Race": "Hyur",
     "Tribe": "Midlander",
-    "Body": "Adult",
-    "Eyes": "Option 6",
-    "Type": "Default"
-  },
-  "Imperial Sagittarius": {
-    "Gender": "Male",
-    "Race": "Elezen",
-    "Tribe": "Wildwood",
     "Body": "Adult",
     "Eyes": "Option 6",
     "Type": "Default"
@@ -31527,6 +31871,14 @@
     "Eyes": "",
     "Type": "Primal M1"
   },
+  "Garuda": {
+    "Gender": "",
+    "Race": "Non-Humanoid",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Primal"
+  },
   "Leviathan": {
     "Gender": "",
     "Race": "Non-Humanoid",
@@ -31773,30 +32125,6 @@
     "Tribe": "Wildwood",
     "Body": "Adult",
     "Eyes": "Option 1",
-    "Type": "Default"
-  },
-  "Imperial Hastatus": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Midlander",
-    "Body": "Adult",
-    "Eyes": "Option 5",
-    "Type": "Default"
-  },
-  "Imperial Princeps": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Midlander",
-    "Body": "Adult",
-    "Eyes": "Option 1",
-    "Type": "Default"
-  },
-  "Ishgardian Heavy Infantry": {
-    "Gender": "Male",
-    "Race": "Elezen",
-    "Tribe": "Wildwood",
-    "Body": "Adult",
-    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Ishgardian Merchant": {
@@ -32216,14 +32544,6 @@
     "Type": "Default"
   },
   "Imposing Golem": {
-    "Gender": "",
-    "Race": "Non-Humanoid",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
-  "Imposing Imp": {
     "Gender": "",
     "Race": "Non-Humanoid",
     "Tribe": "",
@@ -37399,6 +37719,30 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Mol Youth": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Meryall of the Crimson Flame": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Militia Musketeer": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
   "Lah-laakh": {
     "Gender": "",
     "Race": "Ea",
@@ -37407,7 +37751,31 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Merchant of Yedlihmad": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Mascot-loving Maiden": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
   "Lahabrea": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Lahabrea's Shade": {
     "Gender": "Male",
     "Race": "Elezen",
     "Tribe": "Wildwood",
@@ -43407,14 +43775,6 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
-  "Meryall of the Crimson Flame": {
-    "Gender": "Female",
-    "Race": "Hyur",
-    "Tribe": "Midlander",
-    "Body": "Adult",
-    "Eyes": "Option 2",
-    "Type": "Default"
-  },
   "Meryall Botanist": {
     "Gender": "Male",
     "Race": "Roegadyn",
@@ -46447,6 +46807,14 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
+  "Nabriales's Shade": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
   "Nacille": {
     "Gender": "Female",
     "Race": "Viera",
@@ -48343,6 +48711,14 @@
     "Eyes": "Option 4",
     "Type": "Default"
   },
+  "Pitiable Patron": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
   "Orn Guincum": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -48351,7 +48727,55 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Olkund Poacher": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Pensive Patron": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Perky Piggy": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Panic-stricken Researcher": {
+    "Gender": "Male",
+    "Race": "Viera",
+    "Tribe": "Rava",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Oroniri Warrior": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
   "Nutiba's Fiancee": {
+    "Gender": "Female",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Nutiba's Fiancée": {
     "Gender": "Female",
     "Race": "Lalafell",
     "Tribe": "Plainsfolk",
@@ -49397,14 +49821,6 @@
     "Tribe": "Xaela",
     "Body": "Adult",
     "Eyes": "Option 1",
-    "Type": "Default"
-  },
-  "Oroniri Warrior": {
-    "Gender": "",
-    "Race": "",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
     "Type": "Default"
   },
   "Oroniri Wrestling Instructor": {
@@ -50959,14 +51375,6 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
-  "Perky Piggy": {
-    "Gender": "",
-    "Race": "Patch 5.5",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "Pernicious Poacher": {
     "Gender": "Female",
     "Race": "Elezen",
@@ -51479,14 +51887,6 @@
     "Eyes": "",
     "Type": "Default"
   },
-  "Playful Voice": {
-    "Gender": "",
-    "Race": "Pixie",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "Pixie Treasurekeeper": {
     "Gender": "",
     "Race": "Pixie",
@@ -51919,6 +52319,134 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Stocky Student": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Staff-waving Training Partner": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Signifer Praetorianus": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Sharp-eyed Showgoer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Severaint Seven Splinter": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Serpent Veteran": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Scion Lancer": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Rururaji": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Round Guard": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Resistance Pikedancer": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Reckless Tomb Raider": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Hellsguard",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Quevain": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Rashvaaz": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Ramza": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Qilmet Redspear": {
+    "Gender": "Female",
+    "Race": "Viera",
+    "Tribe": "Veena",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Prue": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
   "Portelaine": {
     "Gender": "Male",
     "Race": "Elezen",
@@ -51927,12 +52455,20 @@
     "Eyes": "Option 4",
     "Type": "Default"
   },
+  "Proud Soldier": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
   "Porter": {
-    "Gender": "",
+    "Gender": "Male",
     "Race": "Lalafell",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Portly Moogle": {
@@ -52967,6 +53503,14 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
+  "Storm Veteran": {
+    "Gender": "Female",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
   "R'ashaht Rhiki": {
     "Gender": "Female",
     "Race": "Miqo'te",
@@ -53573,14 +54117,6 @@
     "Tribe": "Midlander",
     "Body": "Adult",
     "Eyes": "Option 1",
-    "Type": "Default"
-  },
-  "Rashvaaz": {
-    "Gender": "",
-    "Race": "Patch 6.0",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
     "Type": "Default"
   },
   "Rastaban (NPC)": {
@@ -56951,14 +57487,6 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
-  "Rururaji": {
-    "Gender": "Male",
-    "Race": "Lalafell",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "Rururemu": {
     "Gender": "Male",
     "Race": "Lalafell",
@@ -57311,14 +57839,6 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
-  "Saint of Nymeia": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Highlander",
-    "Body": "Adult",
-    "Eyes": "Option 1",
-    "Type": "Default"
-  },
   "Saint's Big Helper": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -57557,14 +58077,6 @@
     "Tribe": "Rava",
     "Body": "Adult",
     "Eyes": "Option 3",
-    "Type": "Default"
-  },
-  "Scion Lancer": {
-    "Gender": "",
-    "Race": "",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
     "Type": "Default"
   },
   "Sanguine": {
@@ -59085,14 +59597,6 @@
     "Tribe": "Wildwood",
     "Body": "Adult",
     "Eyes": "Option 2",
-    "Type": "Default"
-  },
-  "Serpent Veteran": {
-    "Gender": "",
-    "Race": "",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
     "Type": "Default"
   },
   "Serpent Recruit (Virdjala)": {
@@ -65391,6 +65895,30 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
+  "Tadric the Vainglorious": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Dabog Inivisch": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Old"
+  },
+  "Test Subject VIII Dabog": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Old"
+  },
   "Taff": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -66957,6 +67485,22 @@
     "Tribe": "Rava",
     "Body": "Adult",
     "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Transmutated Traitor": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Xaela",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Traveled Tomb Raider": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 5",
     "Type": "Default"
   },
   "Threadbare Thaumaturge": {
@@ -71639,14 +72183,6 @@
     "Eyes": "",
     "Type": "Default"
   },
-  "Warrior of Darkness": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Midlander",
-    "Body": "Adult",
-    "Eyes": "Option 1",
-    "Type": "Default"
-  },
   "Warriors of Light": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -72341,14 +72877,6 @@
     "Tribe": "Highlander",
     "Body": "Adult",
     "Eyes": "Option 2",
-    "Type": "Default"
-  },
-  "Well-moisturized Researcher": {
-    "Gender": "Female",
-    "Race": "Au Ra",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
     "Type": "Default"
   },
   "Well-muscled Man": {
@@ -73527,14 +74055,6 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
-  "Wounded Resistance Fighter": {
-    "Gender": "",
-    "Race": "",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "Resistance Soldier": {
     "Gender": "",
     "Race": "",
@@ -73912,6 +74432,14 @@
     "Type": "Default"
   },
   "Xamott": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Boisterous Dwarf": {
     "Gender": "Male",
     "Race": "Lalafell",
     "Tribe": "Dunesfolk",
@@ -74999,6 +75527,22 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Bored Pixie": {
+    "Gender": "",
+    "Race": "Pixie",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Default"
+  },
+  "Boisterous Pixie": {
+    "Gender": "",
+    "Race": "Pixie",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Default"
+  },
   "Ys Iala": {
     "Gender": "",
     "Race": "Pixie",
@@ -75543,6 +76087,14 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Coldhearth Resident": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
   "Zooming Moogle": {
     "Gender": "",
     "Race": "Moogle",
@@ -75551,12 +76103,68 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Churning Mists Moogle": {
+    "Gender": "",
+    "Race": "Moogle",
+    "Tribe": "",
+    "Body": "",
+    "Eyes": "",
+    "Type": "Default"
+  },
+  "Devout Pilgrim": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Creepingway": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "The Lost",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Demanding Daughter": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Darmal": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
   "Zozoru": {
     "Gender": "Female",
     "Race": "Lalafell",
     "Tribe": "Dunesfolk",
     "Body": "Adult",
     "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Crystarium Botanist": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Crystal Brave Archer": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Zugg the Riptide": {
@@ -75749,14 +76357,6 @@
     "Tribe": "Hellsguard",
     "Body": "Adult",
     "Eyes": "Option 1",
-    "Type": "Default"
-  },
-  "Storm Veteran": {
-    "Gender": "Male",
-    "Race": "Miqo'te",
-    "Tribe": "Seeker of the Sun",
-    "Body": "Adult",
-    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Flame Sergeant": {
@@ -76373,6 +76973,30 @@
     "Tribe": "",
     "Body": "",
     "Eyes": "",
+    "Type": "Default"
+  },
+  "Garnet Lookout": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "FUDefender_Wy": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Flustered Fisherman": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 4",
     "Type": "Default"
   },
   "Flame Veteran": {
@@ -77495,14 +78119,6 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
-  "Staff-waving Training Partner": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Midlander",
-    "Body": "Adult",
-    "Eyes": "Option 4",
-    "Type": "Default"
-  },
   "Spoils Trader": {
     "Gender": "Male",
     "Race": "Elezen",
@@ -77911,6 +78527,78 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Elven Smuggler": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Enthusiastic Soldier": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Fabineau the Heedless": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Fanow Huntress": {
+    "Gender": "Female",
+    "Race": "Viera",
+    "Tribe": "Veena",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Eulmoran Healer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Emaciated Engineer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Eastern Alliance Shinobi": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Duskwight Lancer": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Drowned Crofter": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Dreaming Kshatriya": {
     "Gender": "Male",
     "Race": "Ananta",
@@ -78223,6 +78911,14 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Canu Vanu": {
+    "Gender": "Male",
+    "Race": "Vanu Vanu",
+    "Tribe": "Unknown:0",
+    "Body": "Beastman",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Lickerish Lad": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -78245,14 +78941,6 @@
     "Tribe": "Highlander",
     "Body": "Adult",
     "Eyes": "Option 3",
-    "Type": "Default"
-  },
-  "Militia Musketeer": {
-    "Gender": "Female",
-    "Race": "Elezen",
-    "Tribe": "Wildwood",
-    "Body": "Adult",
-    "Eyes": "Option 5",
     "Type": "Default"
   },
   "Mild Researcher": {
@@ -78463,20 +79151,20 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Sullen Angler": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Ray Handler": {
     "Gender": "Male",
     "Race": "Kojin",
     "Tribe": "Unknown:0",
     "Body": "Beastman",
     "Eyes": "Option 1",
-    "Type": "Default"
-  },
-  "Reckless Tomb Raider": {
-    "Gender": "Male",
-    "Race": "Roegadyn",
-    "Tribe": "Hellsguard",
-    "Body": "Adult",
-    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Redbelly Conspirator": {
@@ -78671,12 +79359,12 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
-  "Traveled Tomb Raider": {
-    "Gender": "Male",
-    "Race": "Elezen",
-    "Tribe": "Duskwight",
+  "Violet Imp": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
     "Body": "Adult",
-    "Eyes": "Option 5",
+    "Eyes": "Option 1",
     "Type": "Default"
   },
   "Vanisha the One Truth": {
@@ -78903,6 +79591,14 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
+  "Accensor Guard": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
   "Abducted Ala Mhigan": {
     "Gender": "",
     "Race": "",
@@ -78919,12 +79615,92 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
+  "Astonished Aetherologist": {
+    "Gender": "Male",
+    "Race": "Viera",
+    "Tribe": "Rava",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Beaudonet the Blunt": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Avid Attendant": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Blunderville Attendant": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Burchard Swiftspear": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Blunderville Beankeep": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Bloated Conjurer": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Blackening Marketeer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Elderly",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Aisibhir Badwind": {
     "Gender": "Male",
     "Race": "Roegadyn",
     "Tribe": "Sea Wolf",
     "Body": "Adult",
     "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Angry Villager": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Amateur Raider": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 1",
     "Type": "Default"
   },
   "Ala Mhigan Resistance Gate Guard": {
@@ -79045,6 +79821,14 @@
     "Tribe": "Veena",
     "Body": "Adult",
     "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "12th Legion Eques": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 6",
     "Type": "Default"
   },
   "12th Legion Hastatus": {
