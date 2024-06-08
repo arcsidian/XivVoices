@@ -882,10 +882,10 @@ namespace XivVoices.Engine
 
         public XivNPC GetNPC(string npcName, string npcId, TTSData ttsData, ref bool fetchedByID)
         {
-            PluginLog.Information("GetNPC: " + npcName + " - " + npcId);
-
-            if (npcName == "Bubble" && ttsData != null)
+            // Handle Bubbles
+            if (ttsData != null && npcName == "Bubble")
             {
+                PluginLog.Information("GetNPC: " + npcName + " - " + npcId + " --> Grabbed Bubble");
                 XivNPC npc = new XivNPC();
                 npc.Gender = ttsData.Gender;
                 npc.Race = ttsData.Race;
@@ -895,15 +895,42 @@ namespace XivVoices.Engine
                 npc.Type = "Default";
                 return npc;
             }
-            if (!npcId.IsNullOrEmpty() && NpcData.ContainsKey(npcId))
+
+            // Handle NPCs Recognized by ID Rather Than Name
+            else if(!npcId.IsNullOrEmpty() && NpcData.ContainsKey(npcId))
             {
+                PluginLog.Information("GetNPC: " + npcName + ", ID: " + npcId + " --> Grabbed ID");
                 fetchedByID = true;
                 return NpcData[npcId];
             }
+
+            // Handle NPCs Recognized by Name
             else if (NpcData.ContainsKey(npcName))
+            {
+                PluginLog.Information("GetNPC: " + npcName + " --> Grabbed NpcData");
                 return NpcData[npcName];
+            }
+
+            // Handle Beast Tribes
+            else if (ttsData != null && ttsData.Body == "Beastman")
+            {
+                PluginLog.Information("GetNPC: " + npcName + ", Beast Tribe: " + ttsData.Race + " --> Grabbed NpcData");
+                XivNPC npc = new XivNPC();
+                npc.Gender = ttsData.Gender;
+                npc.Race = ttsData.Race;
+                npc.Tribe = ttsData.Tribe;
+                npc.Body = ttsData.Body;
+                npc.Eyes = ttsData.Eyes;
+                npc.Type = "Default";
+                return npc;
+            }
+
+            // When NPC Does Not Exist in NPC Database
             else
+            {
+                PluginLog.Information("GetNPC: " + npcName + ", ID: " + npcId + " --> NULL");
                 return null;
+            }
         }
 
         public XivMessage GetNameless(XivMessage msg)
