@@ -171,7 +171,7 @@ namespace XivVoices.Engine
 
                                 /* Testing In a Loop
                                 Plugin.Chat.Print("distance:" + data.Distance);
-                                Plugin.Chat.Print("audioOutput.Volume:" + audioOutput.Volume);
+                                Plugin.Chat.Print("volumeProvider.Volume:" + volumeProvider.Volume);
 
                                 if (audioIsStopped)
                                 {
@@ -179,11 +179,11 @@ namespace XivVoices.Engine
                                     audioIsStopped = false;
                                     break;
                                 }
-                                if (waveStream.Position > waveStream.Length - 100)
+                                if (waveStream.Position > waveStream.Length - 10000)
                                     waveStream.Position = 0;
                                 */
 
-                                await Task.Delay(50);
+                                await Task.Delay(100);
                             }
                         }
                     }
@@ -273,7 +273,7 @@ namespace XivVoices.Engine
                 volumeRanges[0].volumeStart = 0.85f;
                 volumeRanges[1].volumeEnd = 0.80f;   // 3 to 5 units: 85% to 80% 
                 volumeRanges[2].volumeStart = 0.80f;
-                volumeRanges[2].volumeEnd = 0.70f;   // 5 to 20 units: 80% to 70%
+                volumeRanges[2].volumeEnd = 0.60f;   // 5 to 20 units: 80% to 60%
             }
 
             foreach (var range in volumeRanges)
