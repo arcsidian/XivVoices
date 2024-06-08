@@ -261,7 +261,7 @@ namespace XivVoices.Engine
             if (msg.TtsData.Body == "Beastman")
             {
                 PluginLog.Information("Race before Mapper: " + msg.TtsData.Race);
-                msg.TtsData.Race = Mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), Database.Plugin.ClientState.TerritoryType);
+                msg.TtsData.Race = Mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), msg.TtsData.Region);
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
 
@@ -407,6 +407,9 @@ namespace XivVoices.Engine
 
         public XivMessage CleanXivMessage(XivMessage xivMessage)
         {
+            // Remove '!' and '?' from xivMessage.Speaker
+            xivMessage.Speaker = xivMessage.Speaker.Replace("!", "").Replace("?", "");
+
             // Replace 'full name' with 'firstName'
             string pattern = "\\b" + this.Database.Firstname + " " + this.Database.Lastname + "\\b";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, this.Database.Firstname);
@@ -418,6 +421,7 @@ namespace XivVoices.Engine
             // Replace 'firstName' with 'Arc'
             pattern = "\\b" + this.Database.Firstname + "\\b";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "_NAME_");
+
             // OTHER FUNDAMENTAL CHANGES ===========================
 
             // 1-  Cactpot Broker Drawing numbers removal
@@ -1080,9 +1084,7 @@ namespace XivVoices.Engine
             }
 
 
-
-
-            this.Database.Plugin.Log("message.NPC.Race"+message.NPC.Race);
+            this.Database.Plugin.Log("message.NPC.Race: " + message.NPC.Race);
 
             string race;
             for (int i = 0; i < 2; i++)
@@ -1153,7 +1155,28 @@ namespace XivVoices.Engine
                     return "Namazu";
 
                 if (race == "Lupin")
+                {
+                    if (message.Speaker == "Hakuro" || message.Speaker == "Hakuro Gunji" || message.Speaker == "Hakuro Whitefang")
+                        return "Ranjit";
+
+                    int hashValue = message.Speaker.GetHashCode();
+                    int result = Math.Abs(hashValue) % 10 + 1;
+
+                    switch(result)
+                    {
+                        case 1: return "Hrothgar_Helion_03";
+                        case 2: return "Hrothgar_Helion_04";
+                        case 3: return "Hrothgar_The_Lost_02";
+                        case 4: return "Hrothgar_The_Lost_03";
+                        case 5: return "Lalafell_Dunesfolk_Male_06";
+                        case 6: return "Roegadyn_Hellsguard_Male_04";
+                        case 7: return "Others_Widargelt";
+                        case 8: return "Hyur_Highlander_Male_04";
+                        case 9: return "Hrothgar_Helion_02";
+                        case 10: return "Hyur_Highlander_Male_05";
+                    }
                     return "Lupin";
+                }
 
                 // Shb Beast Tribes
                 if (race == "Pixie")
@@ -1348,6 +1371,7 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\blol\b", "\"L-O-L\"", options);
             sentence = Regex.Replace(sentence, @"\blmao\b", "\"Lah-mao\"", options);
             sentence = Regex.Replace(sentence, @"\bgg\b", "good game", options);
+            sentence = Regex.Replace(sentence, @"\bglhf\b", "good luck, have fun", options);
             sentence = Regex.Replace(sentence, @"\bgl\b", "good luck", options);
             sentence = Regex.Replace(sentence, @"\bsry\b", "sorry", options);
             sentence = Regex.Replace(sentence, @"\bsrry\b", "sorry", options);

@@ -302,7 +302,6 @@ namespace XivVoices.Engine
                     dataAndToolsExist = false;
             }
 
-            DeleteLeftoverZipFiles();
 
             if (dataAndToolsExist)
                 this.Plugin.Config.Initialized = true;
@@ -310,15 +309,6 @@ namespace XivVoices.Engine
             
 
             PluginLog.Information("Working directory is: " + DirectoryPath);
-
-            // Search for any .wav files within directoryPath and all its subdirectories
-            var wavFiles = Directory.GetFiles(VoiceFilesPath, "*.wav", SearchOption.AllDirectories);
-            if (wavFiles.Length > 0)
-            {
-                PluginLog.LogError("You have " + wavFiles.Length + " waves");
-                foreach (var wavFile in wavFiles)
-                    PluginLog.LogError(wavFile);
-            }
 
             Task.Run(async () => await LoadDatabaseAsync());
             Plugin.Chat.Print("Database: I am awake");
@@ -358,36 +348,42 @@ namespace XivVoices.Engine
             {
                 // Assume loadingScreen and other UI components are handled differently
                 Plugin.Chat.Print("Loading Data...");
+                PluginLog.Information("Loading Data...");
                 await LoadDataAsync();
                 await LoadLexiconsAsync();
 
                 Plugin.Chat.Print("Loading Nameless Data...");
+                PluginLog.Information("Loading Nameless Data...");
                 await LoadNamelessAsync();
 
                 Plugin.Chat.Print("Loading Retainers Data...");
+                PluginLog.Information("Loading Nameless Data...");
                 await LoadRetainersAsync();
 
                 Plugin.Chat.Print("Loading Ignored Data...");
+                PluginLog.Information("Loading Ignored Data...");
                 await LoadIgnoredAsync();
 
                 Plugin.Chat.Print("Loading NPC Data...");
+                PluginLog.Information("Loading NPC Data...");
                 await LoadNPCsAsync();
 
                 Plugin.Chat.Print("Loading Player Data...");
+                PluginLog.Information("Loading Player Data...");
                 await LoadPlayersAsync();
 
                 Plugin.Chat.Print("Loading Voice Names...");
-                //if (XivVoices.Instance.ArcFramework != null)
-                //{
-                //    XivVoices.Instance.ArcFramework.LoadDatabase(); // Assuming this is an async method, if not, wrap in Task.Run
-                //}
+                PluginLog.Information("Loading Voice Names...");
 
                 await LoadVoiceNamesAsync();
 
                 Framework = new Framework();
 
                 Plugin.Chat.Print("Done.");
+                PluginLog.Information("Done.");
                 await Task.Delay(200);
+
+                DeleteLeftoverZipFiles();
             }
             catch (Exception ex)
             {

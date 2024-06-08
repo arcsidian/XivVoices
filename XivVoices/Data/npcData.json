@@ -7111,6 +7111,14 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "4th Legion Imaginifer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
   "Beq Lugg": {
     "Gender": "",
     "Race": "Nu Mou",
@@ -24647,6 +24655,14 @@
     "Eyes": "",
     "Type": "Boss F1"
   },
+  "Animated Pugilist": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Agrias": {
     "Gender": "",
     "Race": "Boss_Female2",
@@ -25021,7 +25037,7 @@
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Old"
   },
   "Genevieve": {
     "Gender": "Female",
@@ -28253,6 +28269,46 @@
     "Tribe": "Highlander",
     "Body": "Adult",
     "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Ferae Domitae Blade-wolf": {
+    "Gender": "Male",
+    "Race": "Lupin",
+    "Tribe": "Unknown:0",
+    "Body": "Beastman",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Familiar Temple Knight": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Doman Laquierius": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Ferae Domitae Spear-wolf": {
+    "Gender": "Male",
+    "Race": "Lupin",
+    "Tribe": "Unknown:0",
+    "Body": "Beastman",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Ferae Domitae Centurion": {
+    "Gender": "Male",
+    "Race": "Lupin",
+    "Tribe": "Unknown:0",
+    "Body": "Beastman",
+    "Eyes": "Option 1",
     "Type": "Default"
   },
   "Haisie": {
@@ -34327,12 +34383,28 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Meletos the Inscrutable": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Old"
+  },
+  "Louistiaux of the First Line": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Jajanzo": {
     "Gender": "Male",
     "Race": "Lalafell",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 1",
     "Type": "Default"
   },
   "Jajasamu": {
@@ -64023,12 +64095,36 @@
     "Eyes": "Option 2",
     "Type": "Default"
   },
+  "Yozakura": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Yozakura the Fleeting": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Unamused Botanist": {
+    "Gender": "Female",
+    "Race": "Roegadyn",
+    "Tribe": "Hellsguard",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Storm Commander Bharbennsyn": {
     "Gender": "Male",
     "Race": "Roegadyn",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 3",
     "Type": "Default"
   },
   "Storm Courier": {
@@ -78949,14 +79045,6 @@
     "Tribe": "Keeper of the Moon",
     "Body": "Adult",
     "Eyes": "Option 2",
-    "Type": "Default"
-  },
-  "Metalowy": {
-    "Gender": "Male",
-    "Race": "Hyur",
-    "Tribe": "Highlander",
-    "Body": "Adult",
-    "Eyes": "Option 1",
     "Type": "Default"
   },
   "M Tribe Youth": {
