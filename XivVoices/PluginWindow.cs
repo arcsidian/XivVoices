@@ -1193,7 +1193,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.6.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.6.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed inconsistent bubble speech volume.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.6.2"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated bubble dialogues to work properly when changing zones mid sentence.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database to include Artoirel, Gaia, Garuda and Golems.");

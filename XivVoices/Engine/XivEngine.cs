@@ -1704,7 +1704,7 @@ namespace XivVoices.Engine
             }
 
             // Sound Effects for Golems
-            if (msg.TtsData.Race.StartsWith("Golem"))
+            else if (msg.TtsData.Race.StartsWith("Golem"))
             {
                 setRate *= (1 - 0.15f);
                 tempo /= (1 - 0.15f);

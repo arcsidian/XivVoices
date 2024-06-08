@@ -912,11 +912,12 @@ namespace XivVoices.Engine
             {
                 msg.Speaker = Nameless[msg.Sentence];
             }
-            //else
-            //{
-            //    Nameless[msg.Sentence] = msg.Speaker;
-            //    Task.Run(async () => await WriteJSON(filePath, Nameless));
-            //}
+            else if (this.Plugin.Config.FrameworkActive)
+            {
+                string filePath = DirectoryPath + "/nameless.json";
+                Nameless[msg.Sentence] = msg.Speaker;
+                Task.Run(async () => await WriteJSON(filePath, Nameless));
+            }
             return msg;
         }
 
