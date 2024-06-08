@@ -268,9 +268,12 @@ namespace XivVoices.Engine
 
             if(Conditions.IsBoundByDuty)
             {
-                volumeRanges[1].volumeEnd = 0.8f;
-                volumeRanges[2].volumeStart = 0.8f;
-                volumeRanges[2].volumeEnd = 0.4f;
+                volumeRanges[0].volumeStart = 0.90f;
+                volumeRanges[0].volumeEnd = 0.85f;  // 0 to 3 units: 90% to 85%
+                volumeRanges[0].volumeStart = 0.85f;
+                volumeRanges[1].volumeEnd = 0.80f;   // 3 to 5 units: 85% to 80% 
+                volumeRanges[2].volumeStart = 0.80f;
+                volumeRanges[2].volumeEnd = 0.70f;   // 5 to 20 units: 80% to 70%
             }
 
             foreach (var range in volumeRanges)
