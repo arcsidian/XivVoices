@@ -177,7 +177,7 @@
   },
   {
     "voiceName": "Conrad",
-    "speakers": [ "Conrad", "Conrad Farsight" ]
+    "speakers": [ "Conrad", "Conrad Farsight", "Genbu" ]
   },
   {
     "voiceName": "Mnaago",
@@ -369,7 +369,7 @@
   },
   {
     "voiceName": "Gaia",
-    "speakers": [ "Gaia", "Voidwalker", "Oracle of Darkness" ]
+    "speakers": [ "Gaia", "Voidwalker", "Oracle of Darkness", "Yozakura", "Yozakura the Fleeting" ]
   },
   {
     "voiceName": "Gaia",
@@ -1335,6 +1335,10 @@
   {
     "voiceName": "Omicron",
     "speakers": []
+  },
+  {
+    "voiceName": "Omega",
+    "speakers": [ "Omega" ]
   },
   {
     "voiceName": "Primal_Ifrit",

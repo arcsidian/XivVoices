@@ -71,6 +71,9 @@ namespace XivVoices.Engine
             {(239,0), "Dragon_Small"}, // Small size --> Khash Thah
             {(239,398), "Dragon_Small"},
 
+            {(278,0), "Node"},
+            {(278,402), "Node"},
+
             {(405, 0), "Namazu"},
             {(494, 0), "Namazu"},
             {(494, 614), "Namazu"},
