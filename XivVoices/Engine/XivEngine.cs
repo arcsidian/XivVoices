@@ -407,7 +407,8 @@ namespace XivVoices.Engine
         public XivMessage CleanXivMessage(XivMessage xivMessage)
         {
             // Remove '!' and '?' from xivMessage.Speaker
-            xivMessage.Speaker = xivMessage.Speaker.Replace("!", "").Replace("?", "");
+            if(xivMessage.Speaker != "???")
+                xivMessage.Speaker = xivMessage.Speaker.Replace("!", "").Replace("?", "");
 
             // Replace 'full name' with 'firstName'
             string pattern = "\\b" + this.Database.Firstname + " " + this.Database.Lastname + "\\b";

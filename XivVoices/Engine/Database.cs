@@ -942,6 +942,7 @@ namespace XivVoices.Engine
 
         public XivMessage GetNameless(XivMessage msg)
         {
+            XivEngine.Instance.Database.Plugin.Log("GetNameless");
             if (Nameless.ContainsKey(msg.Sentence))
             {
                 msg.Speaker = Nameless[msg.Sentence];
@@ -1020,6 +1021,48 @@ namespace XivVoices.Engine
                 }
             }
         }
+
+        public string ProcessSentence(string sentence)
+        {
+            // Handle cases where the entire sentence is just "Arc" with various punctuations
+            if (Regex.IsMatch(sentence, @"^_NAME_([.!?]{1,3})?$"))
+            {
+                return string.Empty;
+            }
+
+            if (!XivEngine.Instance.Database.ForcePlayerName)
+            {
+
+                // Handle the specific case where the sentence starts with "Arc, "
+                sentence = Regex.Replace(sentence, @"^_NAME_,\s+", "");
+
+                // Handle the new case where ", Arc - " exists and change it to ", "
+                sentence = Regex.Replace(sentence, @",\s?_NAME_\s?-\s?", ", ");
+
+                // Handle cases where ", Arc" is followed by specific punctuation anywhere in the sentence
+                sentence = Regex.Replace(sentence, @"\s?,\s?_NAME_([,.!?]+)", "$1");
+
+                // Adjusted pattern to handle "Arc" before or after the titles
+                string titlesPattern = @"(?:\b_NAME_\s+)?(Mister|Miss|Master|Mistress|Sir|Lady|Private|Corporal|Sergeant|Lieutenant|Captain|Commander|Scion|Adventurer|Hero)(?:\s+_NAME_)?\b";
+                sentence = Regex.Replace(sentence, titlesPattern, "$1", RegexOptions.IgnoreCase);
+
+            }
+
+            // General replacement for "Arc" not at the start of a sentence or not followed by a comma or period
+            sentence = Regex.Replace(sentence, @"\b_NAME_\b", XivEngine.Instance.Database.PlayerName, RegexOptions.IgnoreCase);
+
+            // Special case: "Arc" at the beginning of the sentence not followed by a punctuation to be removed
+            sentence = Regex.Replace(sentence, @"^_NAME_\s+", XivEngine.Instance.Database.PlayerName, RegexOptions.IgnoreCase);
+
+            // Clean up potential double spaces or incorrect punctuation spacing
+            sentence = Regex.Replace(sentence, @"\s+", " ").Trim();
+            sentence = Regex.Replace(sentence, @"\s([,\.!?])", "$1");
+
+            if (XivEngine.Instance.Database.ForceWholeSentence)
+                return XivEngine.Instance.Database.WholeSentence;
+            else
+                return sentence;
+        }
         #endregion
 
 
@@ -1030,6 +1073,16 @@ namespace XivVoices.Engine
         {
             RequestBusy = true;
             RequestActive = false;
+
+            // Use Lexicon
+            string cleanedMessage = xivMessage.Sentence;
+            foreach (KeyValuePair<string, string> entry in XivEngine.Instance.Database.Lexicon)
+            {
+                string pattern = "\\b" + entry.Key + "\\b";
+                cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
+            }
+            cleanedMessage = ProcessSentence(cleanedMessage);
+            xivMessage.Sentence = Regex.Replace(cleanedMessage, "  ", " ");
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
             string url = $"http://arcsidian.com/xivv/request.php?token={AccessToken}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&type=redo&filename={Uri.EscapeDataString(fileName)}";
