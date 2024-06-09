@@ -1044,7 +1044,7 @@ namespace XivVoices {
                                 {
                                     _ = XivEngine.Instance.Database.Confirm(item.data);
                                     XivEngine.Instance.Database.ForceWholeSentence = false;
-                                    needSave = true;
+                                    XivEngine.Instance.Database.WholeSentence = "";
                                 }
 
                                 ImGui.SameLine();
@@ -1106,6 +1106,8 @@ namespace XivVoices {
                         if (ImGui.Button($"{reportTitle}##report{item.id}", new Vector2(50, 24)))
                         {
                             reportInput = new string('\0', 250);
+                            if (XivEngine.Instance.Database.WholeSentence == "")
+                                XivEngine.Instance.Database.WholeSentence = item.data.Sentence;
                             ImGui.OpenPopup($"{reportTitle}##{item.id}");
                         }
 
@@ -1121,17 +1123,15 @@ namespace XivVoices {
                                 ImGui.Text("Force generated sentence into this:");
                                 ImGui.Dummy(new Vector2(0, 15));
                                 string wholeSentence = XivEngine.Instance.Database.WholeSentence;
-                                if (ImGui.InputTextMultiline("##wholeSentence", ref wholeSentence, 250, new Vector2(335, 100)))
+                                if (ImGui.InputTextMultiline("##wholeSentenceEdit", ref wholeSentence, 250, new Vector2(335, 100)))
                                 {
                                     XivEngine.Instance.Database.WholeSentence = wholeSentence;
-                                    needSave = true;
                                 }
                                 ImGui.Dummy(new Vector2(0, 25));
                                 var forceWholeSentence = XivEngine.Instance.Database.ForceWholeSentence;
-                                if (ImGui.Checkbox("##forceWholeSentence", ref forceWholeSentence))
+                                if (ImGui.Checkbox("##forceWholeSentenceEdit", ref forceWholeSentence))
                                 {
                                     XivEngine.Instance.Database.ForceWholeSentence = forceWholeSentence;
-                                    needSave = true;
                                 };
                                 ImGui.SameLine();
                                 ImGui.Text("Enable new sentence to change into this");
@@ -1270,7 +1270,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.6.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.6.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Utility update.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Performance optimization.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.6.5"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed Nameless Dialogues not connecting to their database correctly.");
                 }
@@ -1568,14 +1574,12 @@ namespace XivVoices {
                 if (ImGui.InputText("##wholeSentence", ref wholeSentence, 200))
                 {
                     XivEngine.Instance.Database.WholeSentence = wholeSentence;
-                    needSave = true;
                 }
                 ImGui.SameLine();
                 var forceWholeSentence = XivEngine.Instance.Database.ForceWholeSentence;
                 if (ImGui.Checkbox("##forceWholeSentence", ref forceWholeSentence))
                 {
                     XivEngine.Instance.Database.ForceWholeSentence = forceWholeSentence;
-                    needSave = true;
                 };
                 ImGui.SameLine();
                 ImGui.Text("Sentence");

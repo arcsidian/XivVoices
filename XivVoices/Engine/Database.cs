@@ -8,13 +8,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Directory = System.IO.Directory;
 using File = System.IO.File;
-using WebSocketSharp;
 using Dalamud.Plugin;
 using Dalamud.Logging;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Net.Http;
 using Xabe.FFmpeg;
+using Dalamud.Utility;
 
 namespace XivVoices.Engine
 {
@@ -1074,6 +1074,8 @@ namespace XivVoices.Engine
             RequestBusy = true;
             RequestActive = false;
 
+            XivEngine.Instance.Database.Plugin.Print("ForceWholeSentence -->" + ForceWholeSentence);
+
             // Use Lexicon
             string cleanedMessage = xivMessage.Sentence;
             foreach (KeyValuePair<string, string> entry in XivEngine.Instance.Database.Lexicon)
@@ -1082,10 +1084,10 @@ namespace XivVoices.Engine
                 cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
             }
             cleanedMessage = ProcessSentence(cleanedMessage);
-            xivMessage.Sentence = Regex.Replace(cleanedMessage, "  ", " ");
+            cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
-            string url = $"http://arcsidian.com/xivv/request.php?token={AccessToken}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&type=redo&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"http://arcsidian.com/xivv/request.php?token={AccessToken}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&sentence={Uri.EscapeDataString(cleanedMessage)}&type=redo&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {
