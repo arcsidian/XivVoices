@@ -1035,17 +1035,82 @@ namespace XivVoices {
                         ImGui.TextWrapped($"{item.data.Speaker}: {item.data.TtsData.Message}");
 
                         // Show Player Progress Bar
-                        int progressSize = 198;
+                        int progressSize = 203;
                         if (item.type == "xivv")
                             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
                         else if (item.type == "empty")
                         {
                             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
-                            progressSize = 255;
+                            progressSize = 260;
                         }
+
+                        if (XivEngine.Instance.Database.Access) progressSize -= 100;
+
                         ImGui.ProgressBar(item.percentage, new Vector2(progressSize, 24), $"{item.state}");
                         if (item.type == "xivv" || item.type == "empty")
                             ImGui.PopStyleColor();
+
+
+                        // Access
+                        
+                        if (XivEngine.Instance.Database.Access && item.type == "xivv")
+                        {
+                            if (XivEngine.Instance.Database.RequestActive)
+                            {
+                                ImGui.SameLine();
+                                if (ImGui.Button($"YES##AccessYes{item.id}", new Vector2(35, 24)))
+                                {
+                                    _ = XivEngine.Instance.Database.Confirm(item.data);
+                                }
+
+                                ImGui.SameLine();
+                                if (ImGui.Button($"NO##AccessNo{item.id}", new Vector2(35, 24)))
+                                {
+                                    _ = XivEngine.Instance.Database.Cancel(item.data);
+                                }
+                            }
+                            else
+                            {
+                                ImGui.SameLine();
+                                string _muteTitle = "Mute";
+                                if (XivEngine.Instance.Database.RequestMuteBusy) _muteTitle = "WAIT";
+                                if (ImGui.Button($"{_muteTitle}##AccessMute{item.id}", new Vector2(40, 24)))
+                                {
+                                    if (!XivEngine.Instance.Database.RequestMuteBusy)
+                                        ImGui.OpenPopup($"MuteConfirmation##AccessMuteConfirmation{item.id}");
+                                }
+
+                                bool muteopen = true;
+                                ImGui.SetNextWindowPos(ImGui.GetMousePos(), ImGuiCond.Appearing);
+                                ImGui.SetNextWindowSizeConstraints(new Vector2(350, 100), new Vector2(350, float.MaxValue));
+                                if (ImGui.BeginPopupModal($"MuteConfirmation##AccessMuteConfirmation{item.id}", ref muteopen, ImGuiWindowFlags.AlwaysAutoResize))
+                                {
+                                    if (ImGui.Button("Confirm To Mute For Everyone", new Vector2(335, 25)))
+                                    {
+                                        _ = XivEngine.Instance.Database.Mute(item.data);
+                                        ImGui.CloseCurrentPopup();
+                                    }
+                                    ImGui.Dummy(new Vector2(0, 2));
+                                    if (ImGui.Button("Cancel Action", new Vector2(335, 25)))
+                                        ImGui.CloseCurrentPopup();
+                                    ImGui.Dummy(new Vector2(0, 2));
+                                    ImGui.EndPopup();
+                                }
+
+                                ImGui.SameLine();
+                                string _accessTitle = "Redo";
+                                if (XivEngine.Instance.Database.RequestBusy) _accessTitle = "WAIT";
+                                if (ImGui.Button($"{_accessTitle}##AccessRedo{item.id}", new Vector2(45, 24)))
+                                {
+                                    if (!XivEngine.Instance.Database.RequestBusy)
+                                    {
+                                        _ = XivEngine.Instance.Database.Request(item.data, item.id);
+                                    }
+
+                                }
+                            }
+
+                        }
 
                         // Show Report Button
                         ImGui.SameLine();
@@ -1193,7 +1258,19 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.6.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.6.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Adjust bubble dialogues in duties to have better volumes depending on the distance.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Genbu, Yozakura and Omega, Nodes and Lupins voices to the NPC Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved beast tribe NPC recognition.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Nameless Dialogues Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Nameless Dialogues Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Player Chat Processing.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Player Chat Processing.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.6.3"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed inconsistent bubble speech volume.");
                 }

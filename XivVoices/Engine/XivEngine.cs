@@ -164,18 +164,17 @@ namespace XivVoices.Engine
                 }
                 catch (HttpRequestException e)
                 {
-                    this.Database.Plugin.PrintError("\nException Caught!");
+                    this.Database.Plugin.PrintError("Exception Caught!");
                     this.Database.Plugin.PrintError("Message: " + e.Message);
                 }
                 catch (TaskCanceledException e)
                 {
-                    this.Database.Plugin.PrintError("\nRequest Timed Out!");
+                    this.Database.Plugin.PrintError("Request Timed Out!");
                     this.Database.Plugin.PrintError("Message: " + e.Message);
                 }
                 catch (Exception e)
                 {
-                    this.Database.Plugin.PrintError("\nUnexpected Exception Caught!");
-                    this.Database.Plugin.PrintError("Message: " + e.Message);
+                    this.Database.Plugin.PrintError("Unexpected Exception Caught: " + e.Message);
                     this.Database.Plugin.LogError("AutoUpdate1 ---> Exception Stack Trace: " + e.StackTrace);
                 }
                 finally
