@@ -1295,6 +1295,112 @@ namespace XivVoices.Engine
             }
         }
 
+        public async Task Run(bool once = false)
+        {
+            XivEngine.Instance.Database.Plugin.Chat.Print("Run: Start");
+            string directoryPath = DirectoryPath + "/redo";
+
+            // Get all json files in directory
+            string[] filePaths = System.IO.Directory.GetFiles(directoryPath, "*.json");
+            int i = 0;
+            foreach (string filePath in filePaths)
+            {
+                if (once)
+                {
+                    if (i > 0)
+                    {
+                        return;
+                    }
+                    i++;
+                }
+
+                await Task.Delay(100);
+                // Read one file json and process it
+                Dictionary<string, string> wavdata = XivEngine.Instance.Database.ReadFile(filePath);
+
+                if (wavdata.Count > 3)
+                {
+                    string[] fullname = wavdata["user"].Split("@")[0].Split(" ");
+                    wavdata["sentence"] = wavdata["sentence"].Replace(fullname[0], "_FIRSTNAME_");
+                    if (fullname.Length > 1)
+                    {
+                        wavdata["sentence"] = wavdata["sentence"].Replace(fullname[1], "_LASTNAME_");
+                    }
+                }
+                else
+                {
+                    wavdata["sentence"] = wavdata["sentence"].Replace("Arc", "_FIRSTNAME_");
+                }
+
+                TTSData TtsData = new TTSData();
+                TtsData.Type = "test";
+                TtsData.NpcID = "-1";
+                TtsData.Speaker = wavdata["speaker"];
+                TtsData.Message = wavdata["sentence"];
+                TtsData.Race = "idk";
+
+                if (!wavdata.ContainsKey("gender") || !wavdata.ContainsKey("body") ||
+                    !wavdata.ContainsKey("race") || !wavdata.ContainsKey("tribe") ||
+                    !wavdata.ContainsKey("eyes"))
+                {
+                    ;
+                }
+                else
+                {
+                    TtsData.Gender = wavdata["gender"];
+                    TtsData.Body = wavdata["body"];
+                    TtsData.Race = wavdata["race"];
+                    if (TtsData.Race.StartsWith("Unknown combination"))
+                    {
+                        // Extract the ID and Region using regex
+                        var match = Regex.Match(TtsData.Race, @"ID (\d+), Region (\d+)");
+                        if (match.Success)
+                        {
+                            TtsData.SkeletonID = match.Groups[1].Value;
+                            TtsData.Region = ushort.Parse(match.Groups[2].Value);
+                            TtsData.Race = XivEngine.Instance.Mapper.GetSkeleton(int.Parse(TtsData.SkeletonID), TtsData.Region);
+                        }
+                    }
+                    XivEngine.Instance.Database.Plugin.Log("---> " + TtsData.Race);
+                    TtsData.Tribe = wavdata["tribe"];
+                    TtsData.Eyes = wavdata["eyes"];
+                }
+
+                XivMessage xivMessage = new XivMessage(TtsData);
+
+                xivMessage = XivEngine.Instance.CleanXivMessage(xivMessage);
+                if (xivMessage.Speaker == "???")
+                    xivMessage = XivEngine.Instance.Database.GetNameless(xivMessage);
+                xivMessage = XivEngine.Instance.UpdateXivMessage(xivMessage);
+                if (xivMessage.VoiceName == "Retainer" && !XivEngine.Instance.Database.Plugin.Config.RetainersEnabled) continue;
+
+                XivEngine.Instance.Database.Plugin.Chat.Print("Run: Speaker: " + xivMessage.Speaker);
+                XivEngine.Instance.Database.Plugin.Chat.Print("Run: Sentence: " + xivMessage.Sentence);
+
+                if (xivMessage.Speaker == "Unknown" || xivMessage.NPC == null || xivMessage.VoiceName == "Unknown")
+                {
+                    XivEngine.Instance.Database.Plugin.Chat.Print("Skipping");
+                    continue;
+                }
+
+                if (xivMessage.Network != "Online")
+                {
+                    XivEngine.Instance.Database.Plugin.Chat.Print("Run: Playing and deleting json file");
+                    try
+                    {
+                        System.IO.File.Delete(filePath);
+                        PluginLog.Information($"Deleted file: {filePath}");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        PluginLog.LogError($"Failed to delete file: {filePath}. Error: {ex.Message}");
+                    }
+                }
+
+                XivEngine.Instance.AddToQueue(xivMessage);
+            }
+        }
+
         #endregion
     }
 

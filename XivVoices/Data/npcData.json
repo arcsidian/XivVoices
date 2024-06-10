@@ -25512,12 +25512,12 @@
     "Type": "Default"
   },
   "Gilgamesh": {
-    "Gender": "Male",
+    "Gender": "",
     "Race": "Non-Humanoid",
     "Tribe": "",
     "Body": "",
     "Eyes": "",
-    "Type": "Default"
+    "Type": "Primal"
   },
   "Gillian": {
     "Gender": "Female",

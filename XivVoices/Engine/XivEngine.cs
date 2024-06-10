@@ -1746,6 +1746,15 @@ namespace XivVoices.Engine
                 filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
             }
 
+            // Sound Effects for Giants
+            else if (msg.TtsData.Race.StartsWith("Giant"))
+            {
+                setRate *= (1 - 0.25f);
+                tempo /= (1 - 0.15f);
+                if (filterArgs != "") filterArgs += ",";
+                filterArgs += $"\"atempo={tempo},asetrate={setRate}\"";
+            }
+
             // Sound Effects for Primals
             if (msg.NPC.Type.StartsWith("Primal"))
             addEcho = true; 

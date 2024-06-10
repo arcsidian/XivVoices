@@ -684,6 +684,10 @@ namespace XivVoices {
                             config.LocalTTSVolume = Math.Clamp(config.LocalTTSVolume - 10, 0, 100);
                             this.pluginInterface.SavePluginConfig(config);
                             break;
+                        case "redo":
+                            if (this.database.Access)
+                                this.database.Run(true);
+                            break;
                         default:
                             _window.Toggle();
                             break;

@@ -460,6 +460,10 @@
     "speakers": [ "Widargelt", "Widargelt the Watcher", "Widargelt Beake", "Theodred" ]
   },
   {
+    "voiceName": "Others_CaitSith",
+    "speakers": [ "Cait Sith" ]
+  },
+  {
     "voiceName": "Au_Ra_Raen_Female_01",
     "speakers": []
   },
@@ -1241,6 +1245,10 @@
     "speakers": []
   },
   {
+    "voiceName": "Giant",
+    "speakers": []
+  },
+  {
     "voiceName": "Dragon_Medium",
     "speakers": []
   },
@@ -1367,6 +1375,10 @@
   {
     "voiceName": "Primal_Rhalgr",
     "speakers": [ "Rhalgr" ]
+  },
+  {
+    "voiceName": "Primal_Gilgamesh",
+    "speakers": [ "Gilgamesh" ]
   },
   {
     "voiceName": "Titan",
