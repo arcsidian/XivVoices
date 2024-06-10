@@ -8,13 +8,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Directory = System.IO.Directory;
 using File = System.IO.File;
+using WebSocketSharp;
 using Dalamud.Plugin;
 using Dalamud.Logging;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Net.Http;
 using Xabe.FFmpeg;
-using Dalamud.Utility;
 
 namespace XivVoices.Engine
 {
