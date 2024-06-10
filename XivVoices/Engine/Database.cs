@@ -1058,8 +1058,8 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\s+", " ").Trim();
             sentence = Regex.Replace(sentence, @"\s([,\.!?])", "$1");
 
-            if (XivEngine.Instance.Database.ForceWholeSentence)
-                return XivEngine.Instance.Database.WholeSentence;
+            if (ForceWholeSentence)
+                return WholeSentence;
             else
                 return sentence;
         }

@@ -1197,6 +1197,9 @@ namespace XivVoices.Engine
                 if (race == "Omicron")
                     return "Omicron";
 
+                if (race == "Ea")
+                    return "Ea";
+
                 // Bosses
                 if (message.NPC.Race.StartsWith("Boss"))
                     return message.NPC.Race;
@@ -1725,6 +1728,13 @@ namespace XivVoices.Engine
                 }
                     
                 addEcho = true;
+            }
+
+            // Sound Effects for Ea
+            if (msg.VoiceName == "Ea")
+            {
+                filterArgs += "\"[0:a]asplit=2[sc][oc];[sc]rubberband=pitch=0.90[sc];[oc]rubberband=pitch=1.02[oc];[sc][oc]amix=inputs=2:duration=longest,volume=2\"";
+                filterArgs += ",\"aecho=0.8:0.88:120:0.4\"";
             }
 
             // Sound Effects for Golems

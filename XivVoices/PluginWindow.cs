@@ -1270,7 +1270,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.6.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.6.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Ea Beast Tribe to the NPC Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added sound effects for Ea voice lines.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.6.6"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Utility update.");
                     ImGui.Bullet(); ImGui.TextWrapped("Performance optimization.");
