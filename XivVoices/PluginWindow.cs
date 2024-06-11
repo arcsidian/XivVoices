@@ -1270,7 +1270,15 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.6.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where bubbles do not work upon starting FFXIV until disabling ffxiv and enabling it again.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where lipsync would sometimes not work until restarting the plugin.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Ignored Database.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.6.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Removed unused libraries.");
                     ImGui.Bullet(); ImGui.TextWrapped("Bug fixes.");
