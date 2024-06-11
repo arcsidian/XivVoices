@@ -120,7 +120,6 @@ namespace XivVoices {
         public XivVoices.Engine.Database database;
         public XivVoices.Engine.Audio audio;
         public XivVoices.Engine.XivEngine xivEngine;
-        public bool HasBeenInitialized => _hasBeenInitialized;
 
         #endregion
         #region Plugin Initiialization
@@ -196,8 +195,6 @@ namespace XivVoices {
 
         private async void InitializeEverything() {
             try {
-                Print("XivVoices is initializing..");
-                await Task.Delay(10000);
                 _chat.ChatMessage += Chat_ChatMessage;
                 _clientState.Login += _clientState_Login;
                 _clientState.Logout += _clientState_Logout;
