@@ -63,6 +63,7 @@ namespace XivVoices {
         uint LockCode = 0x6D617265;
         private AddonTalkManager _addonTalkManager;
         private AddonTalkHandler _addonTalkHandler;
+        private ICondition _condition;
         private IGameGui _gameGui;
         private int _recentCFPop;
         private unsafe FFXIVClientStructs.FFXIV.Client.Game.Camera* _camera;
@@ -180,8 +181,7 @@ namespace XivVoices {
                 _objectTable = objectTable;
                 _framework = framework;
                 _framework.Update += framework_Update;
-                _addonTalkManager = new AddonTalkManager(_framework, _clientState, condition, gameGui);
-                _addonTalkHandler = new AddonTalkHandler(_addonTalkManager, _framework, _objectTable, clientState, this, chat, scanner);
+                _condition = condition;
                 _gameGui = gameGui;
 
             } catch (Exception e) {
@@ -193,6 +193,7 @@ namespace XivVoices {
 
         private async void InitializeEverything() {
             try {
+                InitializeAddonTalk();
                 InitializeCamera();
                 _chat.ChatMessage += Chat_ChatMessage;
                 _clientState.Login += _clientState_Login;
@@ -228,7 +229,24 @@ namespace XivVoices {
             }
             catch (Exception e)
             {
-                Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
+                Dalamud.Logging.PluginLog.LogWarning("InitializeCamera: " + e, e.Message);
+                PrintError("[XivVoices] Fatal Error, the Camera did not initialize correctly!\n" + e.Message);
+            }
+        }
+
+        public unsafe void InitializeAddonTalk()
+        {
+            try
+            {
+                Dalamud.Logging.PluginLog.Information("Initializing AddonTalk");
+                _addonTalkManager = new AddonTalkManager(_framework, _clientState, _condition, _gameGui);
+                _addonTalkHandler = new AddonTalkHandler(_addonTalkManager, _framework, _objectTable, _clientState, this, _chat, _sigScanner);
+
+            }
+            catch (Exception e)
+            {
+                Dalamud.Logging.PluginLog.LogWarning("AddonTalk: " + e, e.Message);
+                PrintError("[XivVoices] Fatal Error, AddonTalk did not initialize correctly!\n" + e.Message);
             }
         }
 
