@@ -1270,7 +1270,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.6.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.6.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Removed unused libraries.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bug fixes.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.6.8"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added Cait Sith, Gilgamesh to the NPC Database.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added Giants and Qiqirn beast tribes.");

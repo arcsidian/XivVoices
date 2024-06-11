@@ -169,7 +169,7 @@ namespace XivVoices.Voice {
         }
 
         unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, GameObject* pActor, IntPtr pString, bool param3) {
-            if (_plugin.Config.Active)
+            if (_plugin.HasBeenInitialized && _plugin.Config.Active)
             try {
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
                     if (pString != IntPtr.Zero &&
