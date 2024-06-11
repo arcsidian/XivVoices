@@ -205,19 +205,16 @@ namespace XivVoices.Voice {
 
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    PluginLog.Information("NPCBubbleTextDetour: 1 --> character->GameObject.Position: " + character->GameObject.Position);
                                                     NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (Conditions.IsBoundByDuty && _plugin.Config.BubblesInBattleZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    PluginLog.Information("NPCBubbleTextDetour: 2 --> character->GameObject.Position: " + character->GameObject.Position);
                                                     NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (!Conditions.IsBoundByDuty && _plugin.Config.BubblesInSafeZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
-                                                    PluginLog.Information("NPCBubbleTextDetour: 3 --> character->GameObject.Position: " + character->GameObject.Position);
                                                     NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
@@ -667,15 +664,11 @@ namespace XivVoices.Voice {
         private async void NPCText(string name, string id, string skeleton, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
             if (!_plugin.Config.Active || !_plugin.Config.BubblesEnabled) return;
             try {
-                if(_plugin.PlayerCamera.Forward != null)
-                {
-                    PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
-                }
-                else
+                
+                if (_plugin.PlayerCamera.Forward == null)
                 {
                     PluginLog.Information($"NPCText ---> Forward Camera is null...");
                     _plugin.InitializeCamera();
-                    PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
                 }
 
                 Character npcObject = null;

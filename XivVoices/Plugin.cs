@@ -193,8 +193,6 @@ namespace XivVoices {
 
         private async void InitializeEverything() {
             try {
-                Print("XivVoices is initializing..");
-                await Task.Delay(5000);
                 InitializeCamera();
                 _chat.ChatMessage += Chat_ChatMessage;
                 _clientState.Login += _clientState_Login;
