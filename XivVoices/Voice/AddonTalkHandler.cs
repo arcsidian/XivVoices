@@ -205,16 +205,19 @@ namespace XivVoices.Voice {
 
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
+                                                    PluginLog.Information("NPCBubbleTextDetour: 1 --> character->GameObject.Position: " + character->GameObject.Position);
                                                     NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (Conditions.IsBoundByDuty && _plugin.Config.BubblesInBattleZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
+                                                    PluginLog.Information("NPCBubbleTextDetour: 2 --> character->GameObject.Position: " + character->GameObject.Position);
                                                     NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }
                                                 else if (!Conditions.IsBoundByDuty && _plugin.Config.BubblesInSafeZones && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
                                                 {
+                                                    PluginLog.Information("NPCBubbleTextDetour: 3 --> character->GameObject.Position: " + character->GameObject.Position);
                                                     NPCText(finalName, id, skeleton, npcBubbleInformaton.MessageText.TextValue, character->DrawData.CustomizeData.Sex == 1,
                                                         character->DrawData.CustomizeData.Race, character->DrawData.CustomizeData.BodyType, character->DrawData.CustomizeData.Tribe, character->DrawData.CustomizeData.EyeShape, character->GameObject.Position);
                                                 }

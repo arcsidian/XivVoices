@@ -194,8 +194,10 @@ namespace XivVoices {
             #endregion
         }
 
-        private void InitializeEverything() {
-            try { 
+        private async void InitializeEverything() {
+            try {
+                Print("XivVoices is initializing..");
+                await Task.Delay(10000);
                 _chat.ChatMessage += Chat_ChatMessage;
                 _clientState.Login += _clientState_Login;
                 _clientState.Logout += _clientState_Logout;
@@ -204,7 +206,7 @@ namespace XivVoices {
                 Filter.Enable();
                 Filter.OnSoundIntercepted += _filter_OnSoundIntercepted;
                 if (_clientState.IsLoggedIn) {
-                    _chat.Print("XivVoices is live.");
+                    Print("XivVoices is live.");
                 }
 
                 
