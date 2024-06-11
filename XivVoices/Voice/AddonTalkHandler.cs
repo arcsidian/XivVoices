@@ -668,6 +668,16 @@ namespace XivVoices.Voice {
             if (!_plugin.Config.Active || !_plugin.Config.BubblesEnabled) return;
             try {
                 PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
+                if(_plugin.PlayerCamera  != null)
+                {
+                    PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
+                }
+                else
+                {
+                    PluginLog.Information($"NPCText ---> Camera is null...");
+                    _plugin.InitializeCamera();
+                    PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
+                }
 
                 Character npcObject = null;
 

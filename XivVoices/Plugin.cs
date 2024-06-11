@@ -178,13 +178,12 @@ namespace XivVoices {
                 _textureProvider = textureProvider;
                 _interopProvider = interopProvider;
                 _objectTable = objectTable;
+                InitializeCamera();
                 _framework = framework;
                 _framework.Update += framework_Update;
                 _addonTalkManager = new AddonTalkManager(_framework, _clientState, condition, gameGui);
                 _addonTalkHandler = new AddonTalkHandler(_addonTalkManager, _framework, _objectTable, clientState, this, chat, scanner);
                 _gameGui = gameGui;
-                _camera = CameraManager.Instance()->GetActiveCamera();
-                _playerCamera = new MediaCameraObject(_camera);
 
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
@@ -193,7 +192,7 @@ namespace XivVoices {
             #endregion
         }
 
-        private async void InitializeEverything() {
+        private void InitializeEverything() {
             try {
                 _chat.ChatMessage += Chat_ChatMessage;
                 _clientState.Login += _clientState_Login;
@@ -215,6 +214,21 @@ namespace XivVoices {
             } catch (Exception e) {
                 Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
                 PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
+            }
+        }
+
+        public unsafe void InitializeCamera()
+        {
+            try
+            {
+                Dalamud.Logging.PluginLog.Information("Initializing Camera");
+                _camera = CameraManager.Instance()->GetActiveCamera();
+                _playerCamera = new MediaCameraObject(_camera);
+
+            }
+            catch (Exception e)
+            {
+                Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
             }
         }
 
