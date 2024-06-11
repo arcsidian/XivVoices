@@ -667,6 +667,8 @@ namespace XivVoices.Voice {
         private async void NPCText(string name, string id, string skeleton, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
             if (!_plugin.Config.Active || !_plugin.Config.BubblesEnabled) return;
             try {
+                PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
+
                 Character npcObject = null;
 
                 string nameToUse = name;
@@ -677,13 +679,8 @@ namespace XivVoices.Voice {
                 string correctSender = CleanSender(nameToUse);
 
                 // Player and NPC positions
-                PluginLog.Information($"NPCText ---> _clientState.LocalPlayer.Position: {_clientState.LocalPlayer.Position}");
                 Vector3 playerPosition = _clientState.LocalPlayer.Position;
-                PluginLog.Information($"NPCText ---> playerPosition: {playerPosition}");
-                PluginLog.Information($"NPCText ---> position: {position}");
                 Vector3 npcPosition = position;
-                PluginLog.Information($"NPCText ---> npcPosition: {npcPosition}");
-                PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
                 // Camera orientation vectors
                 Vector3 cameraForward = Vector3.Normalize(_plugin.PlayerCamera.Forward);
                 Vector3 cameraUp = Vector3.Normalize(_plugin.PlayerCamera.Top);
