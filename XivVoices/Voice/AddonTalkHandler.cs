@@ -667,13 +667,13 @@ namespace XivVoices.Voice {
         private async void NPCText(string name, string id, string skeleton, string message, bool gender, byte race, byte body, byte tribe, byte eyes, Vector3 position) {
             if (!_plugin.Config.Active || !_plugin.Config.BubblesEnabled) return;
             try {
-                if(_plugin.PlayerCamera  != null)
+                if(_plugin.PlayerCamera.Forward != null)
                 {
                     PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
                 }
                 else
                 {
-                    PluginLog.Information($"NPCText ---> Camera is null...");
+                    PluginLog.Information($"NPCText ---> Forward Camera is null...");
                     _plugin.InitializeCamera();
                     PluginLog.Information($"NPCText ---> _plugin.PlayerCamera.Forward: {_plugin.PlayerCamera.Forward}");
                 }

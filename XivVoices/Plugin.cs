@@ -178,7 +178,6 @@ namespace XivVoices {
                 _textureProvider = textureProvider;
                 _interopProvider = interopProvider;
                 _objectTable = objectTable;
-                InitializeCamera();
                 _framework = framework;
                 _framework.Update += framework_Update;
                 _addonTalkManager = new AddonTalkManager(_framework, _clientState, condition, gameGui);
@@ -192,8 +191,11 @@ namespace XivVoices {
             #endregion
         }
 
-        private void InitializeEverything() {
+        private async void InitializeEverything() {
             try {
+                Print("XivVoices is initializing..");
+                await Task.Delay(5000);
+                InitializeCamera();
                 _chat.ChatMessage += Chat_ChatMessage;
                 _clientState.Login += _clientState_Login;
                 _clientState.Logout += _clientState_Logout;
