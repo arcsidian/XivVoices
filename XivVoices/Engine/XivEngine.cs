@@ -1894,7 +1894,7 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             PluginLog.Information("ReportUnknown");
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
+            if(Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 

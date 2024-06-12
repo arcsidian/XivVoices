@@ -845,6 +845,16 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("Dialogue Skip Enabled");
 
+            // AnnounceReports
+            var announceReports = this.Configuration.AnnounceReports;
+            if (ImGui.Checkbox("##announceReports", ref announceReports))
+            {
+                this.configuration.AnnounceReports = announceReports;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Announce Reported Lines");
+
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
             {
@@ -1270,7 +1280,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Voice Files Updater will not longer run when you're in a duty or in active combat or in an event or cutscene.");
+                    ImGui.Bullet(); ImGui.TextWrapped("An option has been added to allow disabling announcing reported lines in the chat. It can be found in Dialogues Settings > Other Settings > Announce Reported Lines.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing for LocalTTS.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where bubbles do not work upon starting FFXIV until disabling ffxiv and enabling it again.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where lipsync would sometimes not work until restarting the plugin.");
