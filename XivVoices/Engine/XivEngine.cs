@@ -198,8 +198,11 @@ namespace XivVoices.Engine
                 if (comparisonResult < 0)
                 {
                     this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
-                    this.Updater.ServerLastUpdate = serverDateTime;
-                    await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
+                    if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
+                    {
+                        this.Updater.ServerLastUpdate = serverDateTime;
+                        await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
+                    }    
                 }
             }
             catch (Exception ex)
@@ -1357,6 +1360,7 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bggty\b", "good game, thank you", options);
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
             sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much", options);
+            sentence = Regex.Replace(sentence, @"\btyft\b", "thank you for the train", options);
             sentence = Regex.Replace(sentence, @"\bty\b", "thank you", options);
             sentence = Regex.Replace(sentence, @"\brp\b", "role play", options);
             sentence = Regex.Replace(sentence, @"\bo7\b", "salute", options);
