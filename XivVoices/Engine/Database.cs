@@ -892,6 +892,8 @@ namespace XivVoices.Engine
             // Handle Bubbles
             if (ttsData != null && npcName == "Bubble")
             {
+                // TODO: Check if the bubble belongs to one of the main characters by making a list
+
                 PluginLog.Information("GetNPC: " + npcName + " - " + npcId + " --> Grabbed Bubble");
                 XivNPC npc = new XivNPC();
                 npc.Gender = ttsData.Gender;
@@ -1018,6 +1020,20 @@ namespace XivVoices.Engine
                 catch (Exception ex)
                 {
                     PluginLog.LogError($"Failed to delete zip file: {zipFile}. Error: {ex.Message}");
+                }
+            }
+
+            var oggFiles = Directory.GetFiles(DirectoryPath, "*.ogg", SearchOption.TopDirectoryOnly);
+            foreach (var oggFile in oggFiles)
+            {
+                try
+                {
+                    File.Delete(oggFile);
+                    PluginLog.Information($"Deleted ogg file: {oggFile}");
+                }
+                catch (Exception ex)
+                {
+                    PluginLog.LogError($"Failed to delete ogg file: {oggFile}. Error: {ex.Message}");
                 }
             }
         }
