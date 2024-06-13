@@ -1280,11 +1280,17 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.2"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
                     ImGui.Bullet(); ImGui.TextWrapped("Increased the size of the comment in reports.");
                 }
+
                 if (ImGui.CollapsingHeader("Version 0.2.7.1"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Voice Files Updater will not longer run when you're in a duty or in active combat or in an event or cutscene.");
