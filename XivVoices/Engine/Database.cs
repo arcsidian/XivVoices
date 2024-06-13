@@ -1348,6 +1348,12 @@ namespace XivVoices.Engine
                     wavdata["sentence"] = wavdata["sentence"].Replace("Arc", "_FIRSTNAME_");
                 }
 
+                if (wavdata.ContainsKey("comment"))
+                {
+                    this.Plugin.Print("Redo report by " + wavdata["user"]);
+                    this.Plugin.Print("("+ wavdata["comment"] + ")");
+                }
+
                 TTSData TtsData = new TTSData();
                 TtsData.Type = "test";
                 TtsData.NpcID = "-1";

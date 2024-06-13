@@ -1280,7 +1280,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("More reports optimization.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.3"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
                 }
