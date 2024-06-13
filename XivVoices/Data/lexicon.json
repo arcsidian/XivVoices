@@ -38,9 +38,9 @@
 	"Y'shtola": "Y'sh-tolla",
 	"Azys Lla": "A'zees-La",
 	"Baldesion": "Bal-dessian",
-	"Eorzea": "Eeorzeea",
-	"Eorzean": "Eor'zian",
-	"Eorzeans": "Eor'zians",
+	"Eorzea": "E-Orzia",
+	"Eorzean": "E-Orzian",
+	"Eorzeans": "E-Orzians",
 	"Coerthas": "Co'earthas",
 	"Gridania": "Gri-danya",
 	"Gridanian": "Gri'daan'ian",
@@ -88,7 +88,8 @@
 	"Ramuh": "Ra'Mu",
 	"Ysayle": "Ezel",
 	"A'aba": "Aaba",
-	"Nidhana":"Ni'dana",
-	"Emmanellain":"Ema'nelain",
-	"Honoroit":"Honorwa"
+	"Nidhana": "Ni'dana",
+	"Emmanellain": "Ema'nelain",
+	"Honoroit": "Honorwa",
+	"Vivi": "VeeVee"
 }

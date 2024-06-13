@@ -1133,7 +1133,7 @@ namespace XivVoices {
                                 ImGui.Text("Force generated sentence into this:");
                                 ImGui.Dummy(new Vector2(0, 15));
                                 string wholeSentence = XivEngine.Instance.Database.WholeSentence;
-                                if (ImGui.InputTextMultiline("##wholeSentenceEdit", ref wholeSentence, 250, new Vector2(335, 100)))
+                                if (ImGui.InputTextMultiline("##wholeSentenceEdit", ref wholeSentence, 2000, new Vector2(335, 100)))
                                 {
                                     XivEngine.Instance.Database.WholeSentence = wholeSentence;
                                 }
@@ -1158,7 +1158,7 @@ namespace XivVoices {
                                 {
                                     ImGui.TextWrapped("Tell me why this dialogue needs to be redone or muted");
                                     ImGui.Dummy(new Vector2(0, 5));
-                                    ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 250, new Vector2(335, 100));
+                                    ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 450, new Vector2(335, 100));
                                     ImGui.Dummy(new Vector2(0, 5));
                                     if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
                                     {
@@ -1280,7 +1280,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Increased the size of the comment in reports.");
+                }
+                if (ImGui.CollapsingHeader("Version 0.2.7.1"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Voice Files Updater will not longer run when you're in a duty or in active combat or in an event or cutscene.");
                     ImGui.Bullet(); ImGui.TextWrapped("An option has been added to allow disabling announcing reported lines in the chat. It can be found in Dialogues Settings > Other Settings > Announce Reported Lines.");
