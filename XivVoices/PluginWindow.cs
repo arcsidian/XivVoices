@@ -1280,7 +1280,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Adjust the volume of bubbles during duties.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for today's voice files update.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("More reports optimization.");
                 }
