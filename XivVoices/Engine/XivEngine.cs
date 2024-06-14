@@ -157,7 +157,7 @@ namespace XivVoices.Engine
                     {
                         this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
                         Random random = new Random();
-                        string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 5) + ".ogg");
+                        string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 4) + ".ogg");
                         if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent && this.Database.Plugin.Config.UpdateAudioNotification)
                             Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
                     }
@@ -1911,7 +1911,7 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
+            if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "mute", input));
         }
 
@@ -1919,7 +1919,7 @@ namespace XivVoices.Engine
         {
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
+            if (Database.Plugin.Config.AnnounceReports) PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));
         }
@@ -1929,7 +1929,7 @@ namespace XivVoices.Engine
         {
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
+            if (Database.Plugin.Config.AnnounceReports) PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
         }

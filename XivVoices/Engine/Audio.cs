@@ -268,10 +268,10 @@ namespace XivVoices.Engine
 
             if(Conditions.IsBoundByDuty)
             {
-                volumeRanges[0].volumeStart = 0.80f;
-                volumeRanges[0].volumeEnd = 0.75f;  // 0 to 3 units: 80% to 75%
                 volumeRanges[0].volumeStart = 0.75f;
-                volumeRanges[1].volumeEnd = 0.70f;   // 3 to 5 units: 75% to 70% 
+                volumeRanges[0].volumeEnd = 0.73f;  // 0 to 3 units: 75% to 73%
+                volumeRanges[0].volumeStart = 0.73f;
+                volumeRanges[1].volumeEnd = 0.70f;   // 3 to 5 units: 73% to 70% 
                 volumeRanges[2].volumeStart = 0.70f;
                 volumeRanges[2].volumeEnd = 0.60f;   // 5 to 20 units: 70% to 60%
             }

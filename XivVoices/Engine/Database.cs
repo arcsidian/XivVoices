@@ -1094,12 +1094,12 @@ namespace XivVoices.Engine
 
             // Use Lexicon
             string cleanedMessage = xivMessage.Sentence;
+            cleanedMessage = ProcessSentence(cleanedMessage);
             foreach (KeyValuePair<string, string> entry in XivEngine.Instance.Database.Lexicon)
             {
                 string pattern = "\\b" + entry.Key + "\\b";
                 cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
             }
-            cleanedMessage = ProcessSentence(cleanedMessage);
             cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
 
             string fileName = Path.GetFileName(xivMessage.FilePath);

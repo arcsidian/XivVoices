@@ -1280,7 +1280,16 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Further adjustment for the volume of bubbles during duties.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where AnnounceReports does not effect some reports.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where New Update Announcement Audio may fail to play sometimes.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.5"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Adjust the volume of bubbles during duties.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for today's voice files update.");
