@@ -1919,8 +1919,8 @@ namespace XivVoices.Engine
         {
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            if (Database.Plugin.Config.AnnounceReports) PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
+            PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
+            if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));
         }
 
@@ -1929,8 +1929,8 @@ namespace XivVoices.Engine
         {
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            if (Database.Plugin.Config.AnnounceReports) PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
+            PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
+            if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
         }
 

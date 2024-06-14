@@ -1280,7 +1280,14 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Somebody once told me.");
+                    ImGui.Bullet(); ImGui.TextWrapped("The world is gonna roll me");
+                    ImGui.Bullet(); ImGui.TextWrapped("I ain't the sharpest tool in the shed.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.6"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Further adjustment for the volume of bubbles during duties.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where AnnounceReports does not effect some reports.");
