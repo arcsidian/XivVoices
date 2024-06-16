@@ -264,6 +264,8 @@ namespace XivVoices.Engine
             {
                 PluginLog.Information("Race before Mapper: " + msg.TtsData.Race);
                 msg.TtsData.Race = Mapper.GetSkeleton(int.Parse(msg.TtsData.SkeletonID), msg.TtsData.Region);
+                if (msg.TtsData.Speaker.Contains("Moogle"))
+                    msg.TtsData.Race = "Moogle";
                 PluginLog.Information("Race after Mapper: " + msg.TtsData.Race);
             }
 
@@ -421,9 +423,10 @@ namespace XivVoices.Engine
             pattern = "\\b" + this.Database.Lastname + "\\b";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, this.Database.Firstname);
 
-            // Replace 'firstName' with 'Arc'
-            pattern = "\\b" + this.Database.Firstname + "\\b";
+            // Replace 'firstName' with '_NAME_'
+            pattern = "(?<!the )\\b" + this.Database.Firstname + "\\b(?! of the)";
             xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "_NAME_");
+
 
             // OTHER FUNDAMENTAL CHANGES ===========================
 
@@ -471,6 +474,39 @@ namespace XivVoices.Engine
                 else if (xivMessage.Sentence.StartsWith("You have no more need of"))
                     xivMessage.Sentence = "You have no more need of yours? So be it! I shall steal quietly from your loyal servant's dreams.";
             }
+
+            // 9 - Lady Luck
+            pattern = @"And the winning number for draw \d+ is... \d+!";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "And here is the winning number!");
+            pattern = @"And the Early Bird Bonus grants everyone an extra \d+%! Make sure you lucky folk claim your winnings promptly!";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "And the Early Bird Bonus grants everyone an extra! Make sure you lucky folk claim your winnings promptly!");
+
+            // 10- Jumbo Cactpot Broker
+            pattern = @"Welcome to drawing number \d+ of the Jumbo Cactpot! Can I interest you in a ticket to fame and fortune?";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Welcome to drawing number of the Jumbo Cactpot! Can I interest you in a ticket to fame and fortune?");
+
+            // 11- Gold Saucer Attendant
+            pattern = @"Tickets for drawing number \d+ of the Mini Cactpot are now on sale. To test your fortunes, make your way to Entrance Square!";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Tickets for this drawing number of the Mini Cactpot are now on sale. To test your fortunes, make your way to Entrance Square!");
+            pattern = @"Entries are now being accepted for drawing number \d+ of the Mini Cactpot! Venture to Entrance Square to test your luck!";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Entries are now being accepted for this drawing number of the Mini Cactpot! Venture to Entrance Square to test your luck!");
+            pattern = @"Entries for drawing number \d+ of the Mini Cactpot will close momentarily. Those still wishing to purchase a ticket are encouraged to act quickly!";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Entries for the drawing number of the Mini Cactpot will close momentarily. Those still wishing to purchase a ticket are encouraged to act quickly!");
+
+
+            // 12- Delivery Moogle
+            pattern = @"Your mailbox is a complete and utter mess! There wasn't any room left, so I had to send back \d+ letters, kupo!";
+            xivMessage.Sentence = Regex.Replace(xivMessage.Sentence, pattern, "Your mailbox is a complete and utter mess! There wasn't any room left, so I had to send back some letters, kupo!");
+
+            // 13- Mini Cactpot Broker
+            if (xivMessage.Speaker == "Mini Cactpot Broker")
+            {
+                if (xivMessage.Sentence.StartsWith("We have a winner! Please accept my congratulations"))
+                    xivMessage.Sentence = "We have a winner! Please accept my congratulations!";
+                if (xivMessage.Sentence.StartsWith("Congratulations! Here is your prize"))
+                    xivMessage.Sentence = "Congratulations! Here is your prize. Would you like to purchase another ticket?";
+            }
+
 
             // Send help
             xivMessage.Sentence = xivMessage.Sentence

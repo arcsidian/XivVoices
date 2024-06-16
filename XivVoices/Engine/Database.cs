@@ -840,8 +840,9 @@ namespace XivVoices.Engine
 
                 //PluginLog.Information(json.sentence);
                 var sentence_no_spaces = Regex.Replace(sentence, @"\s+", "").Trim();
-                var pattern = "\\b" + "Arc" + "\\b";
+                var pattern = "(?<!the )\\b" + "Arc" + "\\b(?! of the)";
                 var json_no_space = Regex.Replace(json.sentence, pattern, "_NAME_");
+
                 //PluginLog.Information(json_no_space);
                 json_no_space = Regex.Replace(json_no_space, @"\s+", "").Trim();
                 if (json_no_space.StartsWith("..."))
@@ -1381,6 +1382,8 @@ namespace XivVoices.Engine
                             TtsData.SkeletonID = match.Groups[1].Value;
                             TtsData.Region = ushort.Parse(match.Groups[2].Value);
                             TtsData.Race = XivEngine.Instance.Mapper.GetSkeleton(int.Parse(TtsData.SkeletonID), TtsData.Region);
+                            if (TtsData.Speaker.Contains("Moogle"))
+                                TtsData.Race = "Moogle";
                         }
                     }
                     XivEngine.Instance.Database.Plugin.Log("---> " + TtsData.Race);
