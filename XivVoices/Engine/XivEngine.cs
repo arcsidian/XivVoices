@@ -1395,6 +1395,7 @@ namespace XivVoices.Engine
             // Regex: replacements
             sentence = Regex.Replace(sentence, @"\bggty\b", "good game, thank you", options);
             sentence = Regex.Replace(sentence, @"\btyfp\b", "thank you for the party!", options);
+            sentence = Regex.Replace(sentence, @"\bty4p\b", "thank you for the party!", options);
             sentence = Regex.Replace(sentence, @"\btyvm\b", "thank you very much", options);
             sentence = Regex.Replace(sentence, @"\btyft\b", "thank you for the train", options);
             sentence = Regex.Replace(sentence, @"\bty\b", "thank you", options);
@@ -1445,7 +1446,9 @@ namespace XivVoices.Engine
             sentence = Regex.Replace(sentence, @"\bm1\b", "\"Melee one\"", options);
             sentence = Regex.Replace(sentence, @"\bm2\b", "\"Melee two\"", options);
             sentence = Regex.Replace(sentence, @"\bot\b", "\"Off-Tank\"", options);
-            sentence = Regex.Replace(sentence, @"\bmt\b", "\"Main-Tank\"", options);
+            sentence = Regex.Replace(sentence, @"\bMt\b", "\"Main-Tank\"");
+            sentence = Regex.Replace(sentence, @"\bMT\b", "\"Main-Tank\"");
+            sentence = Regex.Replace(sentence, @"\bmt\b", "\"mistake\"");
             sentence = Regex.Replace(sentence, @"\br1\b", "\"Ranged One\"", options);
             sentence = Regex.Replace(sentence, @"\br2\b", "\"Ranged Two\"", options);
             sentence = Regex.Replace(sentence, @"\bh1\b", "\"Healer One\"", options);
