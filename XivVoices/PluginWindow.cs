@@ -1156,7 +1156,7 @@ namespace XivVoices {
 
                                 if (item.type == "xivv")
                                 {
-                                    ImGui.TextWrapped("Tell me why this dialogue needs to be redone or muted");
+                                    ImGui.TextWrapped("Tell me why this needs to be redone or muted?");
                                     ImGui.Dummy(new Vector2(0, 5));
                                     ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 450, new Vector2(335, 100));
                                     ImGui.Dummy(new Vector2(0, 5));
@@ -1169,6 +1169,8 @@ namespace XivVoices {
                                     ImGui.Dummy(new Vector2(0, 2));
                                 }
 
+
+                                ImGui.TextWrapped("( only use the mute button for dialogues that are already voiced by the game itself )");
                                 if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
                                 {
                                     PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
@@ -1198,6 +1200,7 @@ namespace XivVoices {
                                 if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
                                 {
                                     PluginReference.audio.StopAudio();
+                                    item.data.Network = "Local";
                                     PluginReference.xivEngine.AddToQueue(item.data);
                                 }
                             }
@@ -1727,6 +1730,7 @@ namespace XivVoices {
                         if (ImGui.Button($"Play##{item.id}", new Vector2(50, 24)))
                         {
                             PluginReference.audio.StopAudio();
+                            item.data.Network = "Local";
                             PluginReference.xivEngine.AddToQueue(item.data);
                         }
                     }
