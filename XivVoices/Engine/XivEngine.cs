@@ -19,6 +19,7 @@ using XivVoices.LocalTTS;
 using System.Linq;
 using System.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System.Xml.Linq;
 
 namespace XivVoices.Engine
 {
@@ -563,7 +564,8 @@ namespace XivVoices.Engine
             }
 
             // Check if it belongs to a retainer
-            xivMessage = this.Database.GetRetainer(xivMessage);
+            if(!this.Database.NpcData.ContainsKey(xivMessage.Speaker))
+                xivMessage = this.Database.GetRetainer(xivMessage);
 
 
             // Changing 2-letter names because fuck windows defender
@@ -1947,8 +1949,12 @@ namespace XivVoices.Engine
 
         public void ReportMuteToArc(XivMessage msg, string input)
         {
-            if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if (input.IsNullOrEmpty())
+            {
+                this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
+                return;
+            }
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "mute", input));
@@ -1956,8 +1962,12 @@ namespace XivVoices.Engine
 
         public void ReportRedoToArc(XivMessage msg, string input)
         {
-            if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if(input.IsNullOrEmpty())
+            {
+                this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
+                return;
+            }
             PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));

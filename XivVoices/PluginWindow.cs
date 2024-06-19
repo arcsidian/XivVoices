@@ -1115,7 +1115,7 @@ namespace XivVoices {
                             reportTitle = "Edit";
                         if (ImGui.Button($"{reportTitle}##report{item.id}", new Vector2(50, 24)))
                         {
-                            reportInput = new string('\0', 250);
+                            reportInput = "";
                             if (XivEngine.Instance.Database.WholeSentence == "")
                                 XivEngine.Instance.Database.WholeSentence = item.data.Sentence;
                             ImGui.OpenPopup($"{reportTitle}##{item.id}");
@@ -1162,7 +1162,6 @@ namespace XivVoices {
                                     ImGui.Dummy(new Vector2(0, 5));
                                     if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
                                     {
-                                        //PluginReference.webSocketServer.SendMessage("input:" + reportInput);
                                         PluginReference.xivEngine.ReportRedoToArc(item.data, reportInput);
                                         ImGui.CloseCurrentPopup();
                                     }
@@ -1283,7 +1282,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.7.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Redo and Mute Reports menu and added more context.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing and added more shortcuts.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.8"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing to fit names such as \"Light\" and \"Darkness\".");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing for sentences that include numbers such as tickets, drawing numbers, winners and delivery moogle mail.");
