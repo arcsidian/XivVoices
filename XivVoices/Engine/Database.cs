@@ -34,6 +34,24 @@ namespace XivVoices.Engine
         public string Lastname { get; } = "_LASTNAME_";
         public Dictionary<string, XivNPC> NpcData { get; set; }
         public Dictionary<string, PlayerCharacter> PlayerData { get; set; }
+        public List<string> NpcsWithRetainerLines { get; set; } = new List<string>()
+            {
+                "Alphinaud",
+                "Alisaie",
+                "Y'shtola",
+                "Thancred",
+                "Yda",
+                "Lyse",
+                "Urianger",
+                "Cid",
+                "Merlwyb",
+                "Ryne",
+                "G'raha Tia",
+                "Estinien",
+                "Krile",
+                "Tataru",
+                "Minfilia"
+            };
         public List<string> NpcWithVariedLooks { get; set; } = new List<string>()
             {
                 "Abducted Ala Mhigan",
@@ -147,6 +165,7 @@ namespace XivVoices.Engine
                 "Oroniri Warrior",
                 "Picker of Locks",
                 "Provisions Crate",
+                "Ragged Refugee",
                 "Recompense Officer",
                 "Resident Caretaker",
                 "Resistance Commander",

@@ -1282,7 +1282,15 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a problem with retainers not being recognized when they have similar names to NPCs in the database.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing and added more shortcuts.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for the upcoming Voice Files Update.");
+
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.7.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Redo and Mute Reports menu and added more context.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing and added more shortcuts.");

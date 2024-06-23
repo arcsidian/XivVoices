@@ -564,7 +564,7 @@ namespace XivVoices.Engine
             }
 
             // Check if it belongs to a retainer
-            if(!this.Database.NpcData.ContainsKey(xivMessage.Speaker))
+            if(!this.Database.NpcsWithRetainerLines.Contains(xivMessage.Speaker))
                 xivMessage = this.Database.GetRetainer(xivMessage);
 
 
@@ -1327,6 +1327,7 @@ namespace XivVoices.Engine
             var emoticons = new Dictionary<string, string>
             {
                 { @"(^|\s)o/($|\s)", "waves and says " },
+                { @"(^|\s)\\o($|\s)", "waves and says " },
                 { @"(^|\s)(:\)|\^\^|\^[^\s]\^)($|\s)", "smiles and says " },
                 { @"(^|\s)(:D|:>)($|\s)", "looks happy and says " },
                 { @"(^|\s)(:O|:0)($|\s)", "looks surprised and says " },
