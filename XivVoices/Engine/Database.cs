@@ -22,7 +22,7 @@ namespace XivVoices.Engine
     {
 
         #region Private Parameters
-        private DalamudPluginInterface _pluginInterface;
+        private IDalamudPluginInterface _pluginInterface;
         #endregion
 
         #region Public Parameters
@@ -249,6 +249,7 @@ namespace XivVoices.Engine
                 "Uncanny Illusionist",
                 "Untrustworthy Illusionist",
                 "Usagi Doshin",
+                "Unnerved Knight",
                 "Vexed Villager",
                 "Vault Friar",
                 "Well-informed Adventurer",
@@ -282,7 +283,7 @@ namespace XivVoices.Engine
         public Plugin Plugin { get; set; }
 
         #region Unity Methods
-        public Database(DalamudPluginInterface pluginInterface, Plugin plugin)
+        public Database(IDalamudPluginInterface pluginInterface, Plugin plugin)
         {
             this._pluginInterface = pluginInterface;
             this.Plugin = plugin;
@@ -333,7 +334,7 @@ namespace XivVoices.Engine
 
             
 
-            PluginLog.Information("Working directory is: " + DirectoryPath);
+            Plugin.PluginLog.Information("Working directory is: " + DirectoryPath);
 
             Task.Run(async () => await LoadDatabaseAsync());
             Plugin.Chat.Print("Database: I am awake");
@@ -373,39 +374,39 @@ namespace XivVoices.Engine
             {
                 // Assume loadingScreen and other UI components are handled differently
                 Plugin.Chat.Print("Loading Data...");
-                PluginLog.Information("Loading Data...");
+                Plugin.PluginLog.Information("Loading Data...");
                 await LoadDataAsync();
                 await LoadLexiconsAsync();
 
                 Plugin.Chat.Print("Loading Nameless Data...");
-                PluginLog.Information("Loading Nameless Data...");
+                Plugin.PluginLog.Information("Loading Nameless Data...");
                 await LoadNamelessAsync();
 
                 Plugin.Chat.Print("Loading Retainers Data...");
-                PluginLog.Information("Loading Nameless Data...");
+                Plugin.PluginLog.Information("Loading Nameless Data...");
                 await LoadRetainersAsync();
 
                 Plugin.Chat.Print("Loading Ignored Data...");
-                PluginLog.Information("Loading Ignored Data...");
+                Plugin.PluginLog.Information("Loading Ignored Data...");
                 await LoadIgnoredAsync();
 
                 Plugin.Chat.Print("Loading NPC Data...");
-                PluginLog.Information("Loading NPC Data...");
+                Plugin.PluginLog.Information("Loading NPC Data...");
                 await LoadNPCsAsync();
 
                 Plugin.Chat.Print("Loading Player Data...");
-                PluginLog.Information("Loading Player Data...");
+                Plugin.PluginLog.Information("Loading Player Data...");
                 await LoadPlayersAsync();
 
                 Plugin.Chat.Print("Loading Voice Names...");
-                PluginLog.Information("Loading Voice Names...");
+                Plugin.PluginLog.Information("Loading Voice Names...");
 
                 await LoadVoiceNamesAsync();
 
                 Framework = new Framework();
 
                 Plugin.Chat.Print("Done.");
-                PluginLog.Information("Done.");
+                Plugin.PluginLog.Information("Done.");
                 await Task.Delay(200);
 
                 DeleteLeftoverZipFiles();
@@ -419,7 +420,7 @@ namespace XivVoices.Engine
             }
             catch (Exception ex)
             {
-                PluginLog.LogError(ex, "Error during database load.");
+                Plugin.PluginLog.Error(ex, "Error during database load.");
             }
         }
 
@@ -443,7 +444,7 @@ namespace XivVoices.Engine
             Lexicon = ReadResourceFile(resourceName);
             if (Lexicon == null)
             {
-                PluginLog.LogError("Failed to load Lexicon.json from Resources.");
+                Plugin.PluginLog.Error("Failed to load Lexicon.json from Resources.");
                 Lexicon = new Dictionary<string, string>();
             }
         }
@@ -464,7 +465,7 @@ namespace XivVoices.Engine
             Retainers = ReadResourceFile(resourceName);
             if (Retainers == null)
             {
-                PluginLog.LogError("Failed to load Retainers.json from Resources.");
+                Plugin.PluginLog.Error("Failed to load Retainers.json from Resources.");
                 Retainers = new Dictionary<string, string>();
             }
         }
@@ -487,7 +488,7 @@ namespace XivVoices.Engine
             if (NpcData == null)
             {
                 NpcData = new Dictionary<string, XivNPC>();
-                PluginLog.LogError("Something is wrong with the NPC database");
+                Plugin.PluginLog.Error("Something is wrong with the NPC database");
             }
         }
 
@@ -536,7 +537,7 @@ namespace XivVoices.Engine
             if (json == null)
             {
                 VoiceNames = new Dictionary<string, string>();
-                PluginLog.LogError("Failed to load voiceNames.json from embedded resources.");
+                Plugin.PluginLog.Error("Failed to load voiceNames.json from embedded resources.");
                 return;
             }
 
@@ -544,7 +545,7 @@ namespace XivVoices.Engine
             if (voiceMappings == null)
             {
                 VoiceNames = new Dictionary<string, string>();
-                PluginLog.LogError("Failed to deserialize voiceNames.json.");
+                Plugin.PluginLog.Error("Failed to deserialize voiceNames.json.");
                 return;
 
             }
@@ -586,7 +587,7 @@ namespace XivVoices.Engine
             var resourceStream = assembly.GetManifestResourceStream(resourceName);
             if (resourceStream == null)
             {
-                PluginLog.LogError($"Failed to find embedded resource: {resourceName}");
+                Plugin.PluginLog.Error($"Failed to find embedded resource: {resourceName}");
                 return null;
             }
 
@@ -603,7 +604,7 @@ namespace XivVoices.Engine
             var resourceStream = assembly.GetManifestResourceStream(resourceName);
             if (resourceStream == null)
             {
-                PluginLog.LogError($"Failed to find embedded resource: {resourceName}");
+                Plugin.PluginLog.Error($"Failed to find embedded resource: {resourceName}");
                 return null;
             }
 
@@ -621,7 +622,7 @@ namespace XivVoices.Engine
             {
                 if (stream == null)
                 {
-                    PluginLog.LogError($"Failed to load resource: {resourceName}");
+                    Plugin.PluginLog.Error($"Failed to load resource: {resourceName}");
                     return null;
                 }
                 using (var reader = new StreamReader(stream))
@@ -652,7 +653,7 @@ namespace XivVoices.Engine
             var resourceStream = assembly.GetManifestResourceStream(resourceName);
             if (resourceStream == null)
             {
-                PluginLog.LogError($"Failed to find embedded resource: {resourceName}");
+                Plugin.PluginLog.Error($"Failed to find embedded resource: {resourceName}");
                 return null;
             }
 
@@ -670,7 +671,7 @@ namespace XivVoices.Engine
             {
                 string jsonContent = File.ReadAllText(filePath);
                 Dictionary<string, XivNPC> jsonDictionary = JsonConvert.DeserializeObject<Dictionary<string, XivNPC>>(jsonContent);
-                PluginLog.Information(jsonDictionary.Count + " NPCs have been loaded.");
+                Plugin.PluginLog.Information(jsonDictionary.Count + " NPCs have been loaded.");
                 return jsonDictionary;
             }
             else
@@ -689,7 +690,7 @@ namespace XivVoices.Engine
             // Asynchronously write text to the file
             await File.WriteAllTextAsync(filePath, jsonContent);
 
-            PluginLog.Information("JSON file written successfully to path: " + filePath);
+            Plugin.PluginLog.Information("JSON file written successfully to path: " + filePath);
         }
 
         
@@ -755,7 +756,7 @@ namespace XivVoices.Engine
             {
                 await File.WriteAllBytesAsync(xivMessage.FilePath + ".mp3", audioData);
 
-                PluginLog.Information("MP3 file written successfully to path: " + filePath);
+                Plugin.PluginLog.Information("MP3 file written successfully to path: " + filePath);
                 if (!fileExistedBefore)
                 {
                     Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
@@ -774,7 +775,7 @@ namespace XivVoices.Engine
             }
             catch (Exception ex)
             {
-                PluginLog.LogError($"Failed to write MP3 file to path: {filePath}. Error: {ex.Message}");
+                Plugin.PluginLog.Error($"Failed to write MP3 file to path: {filePath}. Error: {ex.Message}");
             }
 
             await WriteJSON(DirectoryPath + "/Data.json", Data);
@@ -851,27 +852,27 @@ namespace XivVoices.Engine
             filePath = speakerDirectory + "/" + cleanedSentence;
 
             // Get Wav from filePath if it exists and return it as AudioClip, if not, return Null
-            PluginLog.Information($"looking for path [{filePath + ".ogg"}]");
+            Plugin.PluginLog.Information($"looking for path [{filePath + ".ogg"}]");
             if (File.Exists(filePath + ".ogg"))
             {
                 string jsonContent = File.ReadAllText(filePath + ".json");
                 var json = JsonConvert.DeserializeObject<DialogueData>(jsonContent);
 
-                //PluginLog.Information(json.sentence);
+                //Plugin.PluginLog.Information(json.sentence);
                 var sentence_no_spaces = Regex.Replace(sentence, @"\s+", "").Trim();
                 var pattern = "(?<!the )\\b" + "Arc" + "\\b(?! of the)";
                 var json_no_space = Regex.Replace(json.sentence, pattern, "_NAME_");
 
-                //PluginLog.Information(json_no_space);
+                //Plugin.PluginLog.Information(json_no_space);
                 json_no_space = Regex.Replace(json_no_space, @"\s+", "").Trim();
                 if (json_no_space.StartsWith("..."))
                     json_no_space = json_no_space[3..];
-                //PluginLog.Information(json_no_space);
+                //Plugin.PluginLog.Information(json_no_space);
 
                 if (sentence_no_spaces != json_no_space && !sentence.Contains("<"))
                 {
-                    PluginLog.Information("Sentence from XIVV:" + sentence_no_spaces);
-                    PluginLog.Information("Sentence from JSON:" + json_no_space);
+                    Plugin.PluginLog.Information("Sentence from XIVV:" + sentence_no_spaces);
+                    Plugin.PluginLog.Information("Sentence from JSON:" + json_no_space);
                     return "report";
                 }
                 else
@@ -914,7 +915,7 @@ namespace XivVoices.Engine
             {
                 // TODO: Check if the bubble belongs to one of the main characters by making a list
 
-                PluginLog.Information("GetNPC: " + npcName + " - " + npcId + " --> Grabbed Bubble");
+                Plugin.PluginLog.Information("GetNPC: " + npcName + " - " + npcId + " --> Grabbed Bubble");
                 XivNPC npc = new XivNPC();
                 npc.Gender = ttsData.Gender;
                 npc.Race = ttsData.Race;
@@ -928,7 +929,7 @@ namespace XivVoices.Engine
             // Handle NPCs Recognized by ID Rather Than Name
             else if(!npcId.IsNullOrEmpty() && NpcData.ContainsKey(npcId))
             {
-                PluginLog.Information("GetNPC: " + npcName + ", ID: " + npcId + " --> Grabbed ID");
+                Plugin.PluginLog.Information("GetNPC: " + npcName + ", ID: " + npcId + " --> Grabbed ID");
                 fetchedByID = true;
                 return NpcData[npcId];
             }
@@ -936,14 +937,14 @@ namespace XivVoices.Engine
             // Handle NPCs Recognized by Name
             else if (NpcData.ContainsKey(npcName))
             {
-                PluginLog.Information("GetNPC: " + npcName + " --> Grabbed NpcData");
+                Plugin.PluginLog.Information("GetNPC: " + npcName + " --> Grabbed NpcData");
                 return NpcData[npcName];
             }
 
             // Handle Beast Tribes
             else if (ttsData != null && ttsData.Body == "Beastman")
             {
-                PluginLog.Information("GetNPC: " + npcName + ", Beast Tribe: " + ttsData.Race + " --> Grabbed NpcData");
+                Plugin.PluginLog.Information("GetNPC: " + npcName + ", Beast Tribe: " + ttsData.Race + " --> Grabbed NpcData");
                 XivNPC npc = new XivNPC();
                 npc.Gender = ttsData.Gender;
                 npc.Race = ttsData.Race;
@@ -957,7 +958,7 @@ namespace XivVoices.Engine
             // When NPC Does Not Exist in NPC Database
             else
             {
-                PluginLog.Information("GetNPC: " + npcName + ", ID: " + npcId + " --> NULL");
+                Plugin.PluginLog.Information("GetNPC: " + npcName + ", ID: " + npcId + " --> NULL");
                 return null;
             }
         }
@@ -1015,13 +1016,13 @@ namespace XivVoices.Engine
                     }
                     else
                     {
-                        PluginLog.LogError("Failed to retrieve data: " + response.StatusCode);
+                        Plugin.PluginLog.Error("Failed to retrieve data: " + response.StatusCode);
                         return null;
                     }
                 }
                 catch (Exception ex)
                 {
-                    PluginLog.LogError("Failed to load the data from the server: " + ex.Message);
+                    Plugin.PluginLog.Error("Failed to load the data from the server: " + ex.Message);
                     return null;
                 }
             }
@@ -1035,11 +1036,11 @@ namespace XivVoices.Engine
                 try
                 {
                     File.Delete(zipFile);
-                    PluginLog.Information($"Deleted zip file: {zipFile}");
+                    Plugin.PluginLog.Information($"Deleted zip file: {zipFile}");
                 }
                 catch (Exception ex)
                 {
-                    PluginLog.LogError($"Failed to delete zip file: {zipFile}. Error: {ex.Message}");
+                    Plugin.PluginLog.Error($"Failed to delete zip file: {zipFile}. Error: {ex.Message}");
                 }
             }
 
@@ -1049,11 +1050,11 @@ namespace XivVoices.Engine
                 try
                 {
                     File.Delete(oggFile);
-                    PluginLog.Information($"Deleted ogg file: {oggFile}");
+                    Plugin.PluginLog.Information($"Deleted ogg file: {oggFile}");
                 }
                 catch (Exception ex)
                 {
-                    PluginLog.LogError($"Failed to delete ogg file: {oggFile}. Error: {ex.Message}");
+                    Plugin.PluginLog.Error($"Failed to delete ogg file: {oggFile}. Error: {ex.Message}");
                 }
             }
         }
@@ -1433,11 +1434,11 @@ namespace XivVoices.Engine
                     try
                     {
                         System.IO.File.Delete(filePath);
-                        PluginLog.Information($"Deleted file: {filePath}");
+                        Plugin.PluginLog.Information($"Deleted file: {filePath}");
                     }
                     catch (System.Exception ex)
                     {
-                        PluginLog.LogError($"Failed to delete file: {filePath}. Error: {ex.Message}");
+                        Plugin.PluginLog.Error($"Failed to delete file: {filePath}. Error: {ex.Message}");
                     }
                 }
 

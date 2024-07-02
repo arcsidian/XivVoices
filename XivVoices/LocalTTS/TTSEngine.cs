@@ -20,7 +20,7 @@ namespace XivVoices.LocalTTS
             lock (_lock)
             {
                 _context = TTSNative.LocalTTSStart();
-                PluginLog.Log("Loaded speech model successfully");
+                Plugin.PluginLog.Information("Loaded speech model successfully");
                 this.Plugin = _Plugin;
                 Loaded = true;
             }
@@ -29,7 +29,7 @@ namespace XivVoices.LocalTTS
         public async Task<float[]> SpeakTTS(string text, TTSVoiceNative voice)
         {
 
-            PluginLog.Log($"TTS for '{text ?? string.Empty}'");
+            Plugin.PluginLog.Information($"TTS for '{text ?? string.Empty}'");
             var units = SSMLPreprocessor.Preprocess(text );
             var samples = new List<float>();
             TTSResult result = null;
@@ -39,7 +39,7 @@ namespace XivVoices.LocalTTS
                 samples.AddRange(result.Samples);
             }
 
-            PluginLog.Log($"Done. Returned '{samples.Count}' samples .. result.SampleRate {result.SampleRate}");
+            Plugin.PluginLog.Information($"Done. Returned '{samples.Count}' samples .. result.SampleRate {result.SampleRate}");
             return samples.ToArray();
         }
 
@@ -64,7 +64,7 @@ namespace XivVoices.LocalTTS
                         if (Disposed || voice.Disposed)
                         { 
                             samples = Array.Empty<float>();
-                            PluginLog.LogWarning("Couldn't process TTS. TTSEngine or TTSVoiceNative has been disposed.");
+                            Plugin.PluginLog.Warning("Couldn't process TTS. TTSEngine or TTSVoiceNative has been disposed.");
                             return;
                         }
                         ValidatePointer(voice.Pointer, "Voice pointer is null.");
@@ -78,7 +78,7 @@ namespace XivVoices.LocalTTS
                     }
                     catch (Exception e)
                     {
-                        PluginLog.LogError($"Error while processing TTS: {e.Message}");
+                        Plugin.PluginLog.Error($"Error while processing TTS: {e.Message}");
                         tcs.SetException(e);
                     }
                 }
@@ -126,7 +126,7 @@ namespace XivVoices.LocalTTS
                 Disposed = true;
                 if (_context != IntPtr.Zero)
                     TTSNative.LocalTTSFree(_context);
-                PluginLog.Log("Successfully cleaned up TTS Engine");
+                Plugin.PluginLog.Information("Successfully cleaned up TTS Engine");
                 
             }
         }

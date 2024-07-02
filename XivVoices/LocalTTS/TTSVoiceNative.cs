@@ -23,12 +23,12 @@ namespace XivVoices.LocalTTS
             // Check if the files exist before trying to read them
             if (!File.Exists(modelPath))
             {
-                PluginLog.LogError($"Failed to find voice model {voiceName}.bytes in {toolsPath}");
+                Plugin.PluginLog.Error($"Failed to find voice model {voiceName}.bytes in {toolsPath}");
                 return null;
             }
             if (!File.Exists(configPath))
             {
-                PluginLog.LogError($"Failed to find voice model {voiceName}.config.json in {toolsPath}");
+                Plugin.PluginLog.Error($"Failed to find voice model {voiceName}.config.json in {toolsPath}");
                 return null;
             }
 

@@ -95,15 +95,15 @@ namespace XivVoices.Engine
 
             XivEngine.Instance.Database.Plugin.Config.Initialized = true;
             State.Add(1); // Checking Server Manifest State
-            PluginLog.Information("Updater: Check GetServerManifest");
+            Plugin.PluginLog.Information("Updater: Check GetServerManifest");
             await GetServerManifest();
 
             State.Add(2); // Checking Local Manifest State
-            PluginLog.Information("Updater: Check GetLocalManifest");
+            Plugin.PluginLog.Information("Updater: Check GetLocalManifest");
             await GetLocalManifest();
 
             State.Add(3); // Checking Xiv Voices Tools State
-            PluginLog.Information("Updater: Check GetTools");
+            Plugin.PluginLog.Information("Updater: Check GetTools");
             await GetTools();
 
             // Manifest Check
@@ -121,12 +121,12 @@ namespace XivVoices.Engine
             if (toolsExist)
             {
                 State.Add(4); // All Tools Exist State 
-                PluginLog.Information("Updater: Tools exist!");
+                Plugin.PluginLog.Information("Updater: Tools exist!");
             }
             else
             {
                 State.Add(5); // Tools Missing, Downloading...
-                PluginLog.Information("Updater: Tools are missing!");
+                Plugin.PluginLog.Information("Updater: Tools are missing!");
                 await DownloadAndExtractTools();
             }
 
@@ -152,14 +152,14 @@ namespace XivVoices.Engine
             if (manifestsMatch)
             {
                 State.Add(7); // Up To Date State
-                PluginLog.Information("Updater: Manifests match!");
+                Plugin.PluginLog.Information("Updater: Manifests match!");
                 await Task.Delay(2000);
             }
             else
             {
                 State.Add(8); // Downloading Files...
-                PluginLog.Information("Updater: Manifests are different!");
-                PluginLog.Information($"Updater: serverManifest is {serverManifest.Count} while localManifest is {localManifest.Count}");
+                Plugin.PluginLog.Information("Updater: Manifests are different!");
+                Plugin.PluginLog.Information($"Updater: serverManifest is {serverManifest.Count} while localManifest is {localManifest.Count}");
                 await DownloadAndExtractData();
             }
 
@@ -191,7 +191,7 @@ namespace XivVoices.Engine
                 }
                 catch (HttpRequestException e)
                 {
-                    PluginLog.LogError($"Updater: Error fetching server manifest: {e.Message}");
+                    Plugin.PluginLog.Error($"Updater: Error fetching server manifest: {e.Message}");
                 }
             }
         }
@@ -232,7 +232,7 @@ namespace XivVoices.Engine
             string manifestJson = JsonConvert.SerializeObject(localManifest, Formatting.Indented);
             await File.WriteAllTextAsync(XivEngine.Instance.Database.DirectoryPath + "/manifest.json", manifestJson);
 
-            PluginLog.Log("Updater:Manifest created successfully.");
+            Plugin.PluginLog.Information("Updater:Manifest created successfully.");
             localManifestLoaded = true;
         }
 
@@ -372,12 +372,12 @@ namespace XivVoices.Engine
             {
                 if (!localManifest.ContainsKey(pair.Key))
                 {
-                    PluginLog.Information($"Updater-DownloadAndExtractData: adding missing {pair.Key} to changedFiles");
+                    Plugin.PluginLog.Information($"Updater-DownloadAndExtractData: adding missing {pair.Key} to changedFiles");
                     changedFiles.Add(pair.Key);
                 }
                 else if (localManifest[pair.Key] != pair.Value)
                 {
-                    PluginLog.Information($"Updater-DownloadAndExtractData: adding different {pair.Key} to changedFiles");
+                    Plugin.PluginLog.Information($"Updater-DownloadAndExtractData: adding different {pair.Key} to changedFiles");
                     changedFiles.Add(pair.Key);
                 }
             }
@@ -386,7 +386,7 @@ namespace XivVoices.Engine
             {
                 if (!serverManifest.ContainsKey(pair.Key))
                 {
-                    PluginLog.Information($"Updater-DownloadAndExtractData: adding {pair.Key} to deletedFiles");
+                    Plugin.PluginLog.Information($"Updater-DownloadAndExtractData: adding {pair.Key} to deletedFiles");
                     deletedFiles.Add(pair.Key);
                 }
             }
@@ -397,7 +397,7 @@ namespace XivVoices.Engine
             foreach (var file in deletedFiles)
             {
                 string fullPath = Path.Combine(XivEngine.Instance.Database.VoiceFilesPath, file);
-                PluginLog.Information($"Updater-DownloadAndExtractData: Deleting: {fullPath}");
+                Plugin.PluginLog.Information($"Updater-DownloadAndExtractData: Deleting: {fullPath}");
                 if (Directory.Exists(fullPath))
                 {
                     Directory.Delete(fullPath, recursive: true);
@@ -418,11 +418,11 @@ namespace XivVoices.Engine
                 try
                 {
                     file.Delete();
-                    PluginLog.Information($"Updater-DownloadAndExtractData: Successfully deleted: {file.FullName}");
+                    Plugin.PluginLog.Information($"Updater-DownloadAndExtractData: Successfully deleted: {file.FullName}");
                 }
                 catch (Exception e)
                 {
-                    PluginLog.LogError($"Updater-DownloadAndExtractData: Failed to delete {file.FullName}. Exception: {e.Message}");
+                    Plugin.PluginLog.Error($"Updater-DownloadAndExtractData: Failed to delete {file.FullName}. Exception: {e.Message}");
                 }
             }
 
@@ -446,7 +446,7 @@ namespace XivVoices.Engine
 
             State.Add(10); // Downloading Data State
             await XivEngine.Instance.Database.ReloadAndUpdateData();
-            PluginLog.Information("Updater: Update complete.");
+            Plugin.PluginLog.Information("Updater: Update complete.");
         }
 
         private async Task ProcessFileAsync(string file)
@@ -517,16 +517,16 @@ namespace XivVoices.Engine
 
                 downloadInfo.percentage = 1f;
                 downloadInfo.status = "Processing";
-                PluginLog.Information($"Downloaded {file}. Extracting...");
+                Plugin.PluginLog.Information($"Downloaded {file}. Extracting...");
                 await UnzipAndDeleteFileAsync(savePath, XivEngine.Instance.Database.VoiceFilesPath);
-                PluginLog.Information($"Extracted {file}.");
+                Plugin.PluginLog.Information($"Extracted {file}.");
                 downloadInfo.status = "Finished";
             }
             catch (Exception ex)
             {
                 downloadInfo.percentage = 0f;
                 downloadInfo.status = "Failed";
-                PluginLog.LogError($"Failed to process {file}. Exception: {ex.Message}");
+                Plugin.PluginLog.Error($"Failed to process {file}. Exception: {ex.Message}");
             }
         }
 
@@ -536,11 +536,11 @@ namespace XivVoices.Engine
             {
                 ZipFile.ExtractToDirectory(zipPath, extractPath, true);
                 File.Delete(zipPath);
-                PluginLog.Information($"Unzipped and deleted {zipPath}");
+                Plugin.PluginLog.Information($"Unzipped and deleted {zipPath}");
             }
             catch (Exception e)
             {
-                PluginLog.LogError($"Failed to unzip/delete {zipPath}. Exception: {e.Message}");
+                Plugin.PluginLog.Error($"Failed to unzip/delete {zipPath}. Exception: {e.Message}");
             }
         }
 

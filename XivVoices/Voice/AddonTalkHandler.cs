@@ -21,7 +21,7 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Threading;
-using Character = Dalamud.Game.ClientState.Objects.Types.Character;
+using ICharacter = Dalamud.Game.ClientState.Objects.Types.ICharacter;
 using System.Text.RegularExpressions;
 using Dalamud.Game.Text;
 using System.Threading.Tasks;
@@ -58,7 +58,7 @@ namespace XivVoices.Voice {
         private MemoryService _memoryService;
         private AnimationService _animationService;
         private GameDataService _gameDataService;
-        private List<GameObject> _threadSafeObjectTable;
+        private List<Dalamud.Game.ClientState.Objects.Types.IGameObject> _threadSafeObjectTable;
         public List<ActionTimeline> LipSyncTypes { get; private set; }
 
         private readonly List<NPCBubbleInformation> _speechBubbleInfo = new();
@@ -69,7 +69,7 @@ namespace XivVoices.Voice {
         public string lastBubbleDialogue = "";
         public string lastBattleDialogue = "";
 
-        Dictionary<Character, CancellationTokenSource> taskCancellations = new Dictionary<Character, CancellationTokenSource>();
+        Dictionary<ICharacter, CancellationTokenSource> taskCancellations = new Dictionary<ICharacter, CancellationTokenSource>();
 
         public ConditionalWeakTable<ActorMemory, UserAnimationOverride> UserAnimationOverrides { get; private set; } = new();
         public bool TextIsPresent { get => _textIsPresent; set => _textIsPresent = value; }
@@ -90,15 +90,15 @@ namespace XivVoices.Voice {
 
             InitializeAsync().ContinueWith(t => {
                 if (t.Exception != null)
-                    PluginLog.LogError("Initialization failed: " + t.Exception);
+                    Plugin.PluginLog.Error("Initialization failed: " + t.Exception);
             });
         }
 
         private async Task InitializeAsync()
         {
-            PluginLog.Information("InitializeAsync --> Waiting for Game Process Stability");
+            Plugin.PluginLog.Information("InitializeAsync --> Waiting for Game Process Stability");
             await WaitForGameProcessStability();
-            PluginLog.Information("InitializeAsync --> Done waiting");
+            Plugin.PluginLog.Information("InitializeAsync --> Done waiting");
             InitializeServices();
         }
 
@@ -123,10 +123,10 @@ namespace XivVoices.Voice {
         private async void StartServices()
         {
             await _memoryService.Initialize();
-            PluginLog.Information("StartServices --> Waiting for Process Response");
+            Plugin.PluginLog.Information("StartServices --> Waiting for Process Response");
             while (!Process.GetCurrentProcess().Responding)
                 await Task.Delay(100);
-            PluginLog.Information("StartServices --> Done waiting");
+            Plugin.PluginLog.Information("StartServices --> Done waiting");
             await _memoryService.OpenProcess(Process.GetCurrentProcess());
             await _gameDataService.Initialize();
 
@@ -168,15 +168,16 @@ namespace XivVoices.Voice {
             }
         }
 
-        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, GameObject* pActor, IntPtr pString, bool param3) {
+        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, Dalamud.Game.ClientState.Objects.Types.IGameObject* pActor, IntPtr pString, bool param3) {
             if (_plugin.Config.Active)
             try {
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
                     if (pString != IntPtr.Zero &&
                     !Service.ClientState.IsPvPExcludingDen) {
+                            /*
                         //	Idk if the actor can ever be null, but if it can, assume that we should print the bubble just in case.  Otherwise, only don't print if the actor is a player.
                         if (pActor == null || pActor->ObjectKind != ObjectKind.Player) {
-                            PluginLog.Information("NPCBubbleTextDetour is running.");
+                            Plugin.PluginLog.Information("NPCBubbleTextDetour is running.");
                             long currentTime_mSec = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
                             SeString speakerName = SeString.Empty;
@@ -228,21 +229,21 @@ namespace XivVoices.Voice {
                                     NPCText(pActor->Name.TextValue, npcBubbleInformaton.MessageText.TextValue, true);
                                 }
                             }
-                        }
+                        }*/
                     }
                 }
             } catch (Exception e) {
-                Dalamud.Logging.PluginLog.Error(e, e.Message);
+                Plugin.PluginLog.Error(e, e.Message);
             }
             return _openChatBubbleHook.Original(pThis, pActor, pString, param3);
         }
-        private Character GetCharacterFromId(uint id) {
-            foreach (GameObject gameObject in _threadSafeObjectTable)
+        private ICharacter GetCharacterFromId(uint id) {
+            foreach (Dalamud.Game.ClientState.Objects.Types.IGameObject gameObject in _threadSafeObjectTable)
             {
-                if (gameObject.ObjectId == id
+                if (gameObject.DataId == id
                     && (gameObject.ObjectKind == ObjectKind.EventNpc || gameObject.ObjectKind == ObjectKind.BattleNpc))
                 {
-                    return gameObject as Character;
+                    return gameObject as ICharacter;
                 }
             }
             return null;
@@ -267,7 +268,7 @@ namespace XivVoices.Voice {
                                 unsafe {
                                     IntPtr fpOpenChatBubble = _scanner.ScanText("E8 ?? ?? ?? ?? F6 86 ?? ?? ?? ?? ?? C7 46 ?? ?? ?? ?? ??");
                                     if (fpOpenChatBubble != IntPtr.Zero) {
-                                        PluginLog.LogInformation($"OpenChatBubble function signature found at 0x{fpOpenChatBubble:X}.");
+                                        Plugin.PluginLog.Information($"OpenChatBubble function signature found at 0x{fpOpenChatBubble:X}.");
                                         _openChatBubbleHook = Service.GameInteropProvider.HookFromAddress<NPCSpeechBubble>(fpOpenChatBubble, NPCBubbleTextDetour);
                                         _openChatBubbleHook?.Enable();
                                     } else {
@@ -302,7 +303,7 @@ namespace XivVoices.Voice {
                                         try {
                                             //_plugin.webSocketServer.SendMessage($"----------------> [2] {_state.Speaker}: {_state.Text.TrimStart('.')}");
                                         } catch (Exception e) {
-                                            Dalamud.Logging.PluginLog.LogError(e, e.Message);
+                                            Plugin.PluginLog.Error(e, e.Message);
                                         }
                                     }
                                     if (_currentDialoguePaths.Count > 0) {
@@ -327,7 +328,7 @@ namespace XivVoices.Voice {
                         }
                     }
                 } catch (Exception e) {
-                    PluginLog.Log(e, e.Message);
+                    Plugin.PluginLog.Information(e, e.Message);
                 }
         }
 
@@ -404,7 +405,7 @@ namespace XivVoices.Voice {
             return sender;
         }
 
-        public async void TriggerLipSync(Character character, string length)
+        public async void TriggerLipSync(ICharacter character, string length)
         {
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
             if (!_plugin.Config.Active) return;
@@ -581,7 +582,7 @@ namespace XivVoices.Voice {
             return 404;
         }
 
-        public async void StopLipSync(Character character)
+        public async void StopLipSync(ICharacter character)
         {
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
             if (!_plugin.Config.Active) return;
@@ -596,7 +597,7 @@ namespace XivVoices.Voice {
                 }
                 catch (ObjectDisposedException)
                 {
-                    PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already.");
+                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already.");
                 }
                 return;
             }
@@ -636,7 +637,7 @@ namespace XivVoices.Voice {
                 byte tribe = 0;
                 byte eyes = 0;
 
-                GameObject npcObject = DiscoverNpc(npcName, ref id, ref skeleton, ref body, ref gender, ref tribe, ref race, ref eyes);
+                Dalamud.Game.ClientState.Objects.Types.IGameObject npcObject = DiscoverNpc(npcName, ref id, ref skeleton, ref body, ref gender, ref tribe, ref race, ref eyes);
 
                 // Gender Adjustment
                 if (npcName.ToLower().Contains("gaia"))
@@ -644,20 +645,20 @@ namespace XivVoices.Voice {
                     gender = true;
                 }
 
-                string nameToUse = npcObject != null ? npcObject.Name.TextValue : npcName;
+                string nameToUse = npcObject != null ? npcObject.Name.ToString() : npcName;
                 string correctedMessage = CleanSentence(message);
                 string correctSender = CleanSender(nameToUse);
                 
                 string genderType = gender ? "Female":"Male";
                 string user = $"{_plugin.ClientState.LocalPlayer.Name}@{_plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
 
-                Engine.XivEngine.Instance.Process("Dialogue", correctSender, id.ToString(), skeleton.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as Character, user);
+                Engine.XivEngine.Instance.Process("Dialogue", correctSender, id.ToString(), skeleton.ToString(), correctedMessage, body.ToString(), genderType, race.ToString(), tribe.ToString(), eyes.ToString(), _clientState.ClientLanguage.ToString(), new Vector3(-99), npcObject as ICharacter, user);
 
                 lastNPCDialogue = npcName + correctedMessage;
             }
             catch (Exception ex)
             {
-                PluginLog.Error($"NPCText1 ---> Exception: {ex}");
+                Plugin.PluginLog.Error($"NPCText1 ---> Exception: {ex}");
             }
         }
         
@@ -667,11 +668,11 @@ namespace XivVoices.Voice {
                 
                 if (_plugin.PlayerCamera.Forward == null)
                 {
-                    PluginLog.Information($"NPCText ---> Forward Camera is null...");
+                    Plugin.PluginLog.Information($"NPCText ---> Forward Camera is null...");
                     _plugin.InitializeCamera();
                 }
 
-                Character npcObject = null;
+                ICharacter npcObject = null;
 
                 string nameToUse = name;
                 string correctedMessage = CleanSentence(message);
@@ -727,11 +728,11 @@ namespace XivVoices.Voice {
             }
             catch (Exception ex)
             {
-                PluginLog.Error($"NPCText2 ---> Exception: {ex}");
+                Plugin.PluginLog.Error($"NPCText2 ---> Exception: {ex}");
             }
         }
 
-        private GameObject DiscoverNpc(string npcName, ref uint id, ref int skeleton, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
+        private Dalamud.Game.ClientState.Objects.Types.IGameObject DiscoverNpc(string npcName, ref uint id, ref int skeleton, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
             if (npcName == "???") {
                 /*
                 foreach (var item in _objectTable) {
@@ -752,7 +753,7 @@ namespace XivVoices.Voice {
             }
             else {
                 foreach (var item in _objectTable) {
-                    if (item as Character == null || item as Character == _clientState.LocalPlayer || item.Name.TextValue == "") continue;
+                    if (item as ICharacter == null || item as ICharacter == _clientState.LocalPlayer || item.Name.TextValue == "") continue;
                     //_plugin.webSocketServer.SendMessage($"DiscoverNpc: LOOKING AT {item.Name.TextValue} WITH {item.DataId}");
                     if (item.Name.TextValue == npcName) {
                         _namesToRemove.Add(npcName);
@@ -764,8 +765,8 @@ namespace XivVoices.Voice {
             return null;
         }
 
-        private unsafe GameObject GetCharacterData(GameObject gameObject, ref uint id, ref int skeleton, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
-            Character character = gameObject as Character;
+        private unsafe Dalamud.Game.ClientState.Objects.Types.IGameObject GetCharacterData(Dalamud.Game.ClientState.Objects.Types.IGameObject gameObject, ref uint id, ref int skeleton, ref byte body, ref bool gender, ref byte tribe, ref byte race, ref byte eyes) {
+            ICharacter character = gameObject as ICharacter;
             if (character != null) {
                 id = gameObject.DataId;
                 skeleton = ((FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)character.Address)->CharacterData.ModelSkeletonId;
@@ -776,19 +777,19 @@ namespace XivVoices.Voice {
                 eyes = character.Customize[(int)CustomizeIndex.EyeShape];
                 //_plugin.Log($"{character.Name.TextValue}: id[{id}] skeleton[{skeleton}] body[{body}] gender[{gender}] race[{race}] tribe[{tribe}] eyes[{eyes}] ---> area[{_plugin.ClientState.TerritoryType}]");
             }
-            return character;
+            return (Dalamud.Game.ClientState.Objects.Types.IGameObject)character;
         }
 
-        public Character GetCharacterFromName(string name)
+        public ICharacter GetCharacterFromName(string name)
         {
             try
             {
                 foreach (var item in _objectTable)
                 {
 
-                    if (item as Character == null || item.Name.TextValue == "") continue;
+                    if (item as ICharacter == null || item.Name.TextValue == "") continue;
 
-                    Character character = item as Character;
+                    ICharacter character = item as ICharacter;
                     if (name == character.Name.TextValue)
                     {
                         return character;
@@ -798,7 +799,7 @@ namespace XivVoices.Voice {
             }
             catch (Exception ex)
             {
-                PluginLog.Error($"GetCharacterFromName ---> Exception: {ex}");
+                Plugin.PluginLog.Error($"GetCharacterFromName ---> Exception: {ex}");
                 return null;
             }
         }
@@ -844,6 +845,6 @@ namespace XivVoices.Voice {
             public bool Interrupt { get; set; } = true;
         }
 
-        private unsafe delegate IntPtr NPCSpeechBubble(IntPtr pThis, GameObject* pActor, IntPtr pString, bool param3);
+        private unsafe delegate IntPtr NPCSpeechBubble(IntPtr pThis, Dalamud.Game.ClientState.Objects.Types.IGameObject* pActor, IntPtr pString, bool param3);
     }
 }

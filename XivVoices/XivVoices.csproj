@@ -46,7 +46,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Concentus.OggFile" Version="1.0.4" />
-		<PackageReference Include="DalamudPackager" Version="2.1.12" />
+		<PackageReference Include="DalamudPackager" Version="2.1.13" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Xabe.FFmpeg" Version="5.2.6" />

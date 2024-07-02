@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using FFXIVClientStructs.FFXIV.Client.Game.Housing;
+//using FFXIVClientStructs.FFXIV.Client.Game.Housing;
 using Dalamud.Plugin.Services;
 using System.Collections.Concurrent;
 using XivVoices.Voice;
@@ -23,13 +23,15 @@ using System.Threading.Tasks;
 using XivVoices.Engine;
 using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Enums;
-using Character = Dalamud.Game.ClientState.Objects.Types.Character;
+using ICharacter = Dalamud.Game.ClientState.Objects.Types.ICharacter;
+using Dalamud.Interface.Textures.TextureWraps;
+using Dalamud.Interface.Textures;
 #endregion
 
 namespace XivVoices {
     public class Plugin : IDalamudPlugin {
         #region Fields
-        private readonly DalamudPluginInterface pluginInterface;
+        private readonly IDalamudPluginInterface pluginInterface;
         private readonly IChatGui _chat;
         private readonly IClientState _clientState;
         private IObjectTable _objectTable;
@@ -46,7 +48,7 @@ namespace XivVoices {
         //public XIVVWebSocketServer webSocketServer;
         private readonly WindowSystem windowSystem;
         private PluginWindow _window { get; init; }
-
+        private static IPluginLog _plugin;
         private Filter _filter;
 
         private bool disposed;
@@ -69,20 +71,20 @@ namespace XivVoices {
         private unsafe FFXIVClientStructs.FFXIV.Client.Game.Camera* _camera;
         private MediaCameraObject _playerCamera;
 
-        public IDalamudTextureWrap Logo;
-        public IDalamudTextureWrap Icon;
-        public IDalamudTextureWrap GeneralSettings;
-        public IDalamudTextureWrap GeneralSettingsActive;
-        public IDalamudTextureWrap DialogueSettings;
-        public IDalamudTextureWrap DialogueSettingsActive;
-        public IDalamudTextureWrap AudioSettings;
-        public IDalamudTextureWrap AudioSettingsActive;
-        public IDalamudTextureWrap Archive;
-        public IDalamudTextureWrap ArchiveActive;
-        public IDalamudTextureWrap Discord;
-        public IDalamudTextureWrap KoFi;
-        public IDalamudTextureWrap Changelog;
-        public IDalamudTextureWrap ChangelogActive;
+        public ISharedImmediateTexture Logo;
+        public ISharedImmediateTexture Icon;
+        public ISharedImmediateTexture GeneralSettings;
+        public ISharedImmediateTexture GeneralSettingsActive;
+        public ISharedImmediateTexture DialogueSettings;
+        public ISharedImmediateTexture DialogueSettingsActive;
+        public ISharedImmediateTexture AudioSettings;
+        public ISharedImmediateTexture AudioSettingsActive;
+        public ISharedImmediateTexture Archive;
+        public ISharedImmediateTexture ArchiveActive;
+        public ISharedImmediateTexture Discord;
+        public ISharedImmediateTexture KoFi;
+        public ISharedImmediateTexture Changelog;
+        public ISharedImmediateTexture ChangelogActive;
         public string Name => "XivVoices Plugin";
 
         public ISigScanner SigScanner { get => _sigScanner; set => _sigScanner = value; }
@@ -109,13 +111,14 @@ namespace XivVoices {
 
         public MediaCameraObject PlayerCamera => _playerCamera;
 
-        public DalamudPluginInterface Interface => pluginInterface;
+        public IDalamudPluginInterface Interface => pluginInterface;
 
         public IChatGui Chat => _chat;
         public IClientState ClientState => _clientState;
         public ITextureProvider TextureProvider => _textureProvider;
 
         public AddonTalkHandler AddonTalkHandler { get => _addonTalkHandler; set => _addonTalkHandler = value; }
+        public static IPluginLog PluginLog { get => _plugin; set => _plugin = value; }
 
         public XivVoices.Engine.Updater updater;
         public XivVoices.Engine.Database database;
@@ -125,7 +128,7 @@ namespace XivVoices {
         #endregion
         #region Plugin Initiialization
         public unsafe Plugin(
-            DalamudPluginInterface pi,
+            IDalamudPluginInterface pi,
             ICommandManager commands,
             IChatGui chat,
             IClientState clientState,
@@ -185,7 +188,7 @@ namespace XivVoices {
                 _gameGui = gameGui;
 
             } catch (Exception e) {
-                Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
+                Plugin.PluginLog.Warning(e, e.Message);
                 PrintError("[XivVoices] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
             #endregion
@@ -213,23 +216,24 @@ namespace XivVoices {
                 xivEngine = new XivEngine(this.database, this.audio, this.updater);
 
             } catch (Exception e) {
-                Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
+                Plugin.PluginLog.Warning(e, e.Message);
                 PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
         }
+
 
         public unsafe void InitializeCamera()
         {
             try
             {
-                Dalamud.Logging.PluginLog.Information("Initializing Camera");
+                Plugin.PluginLog.Information("Initializing Camera");
                 _camera = CameraManager.Instance()->GetActiveCamera();
                 _playerCamera = new MediaCameraObject(_camera);
 
             }
             catch (Exception e)
             {
-                Dalamud.Logging.PluginLog.LogWarning("InitializeCamera: " + e, e.Message);
+                Plugin.PluginLog.Warning("InitializeCamera: " + e, e.Message);
                 PrintError("[XivVoices] Fatal Error, the Camera did not initialize correctly!\n" + e.Message);
             }
         }
@@ -238,14 +242,14 @@ namespace XivVoices {
         {
             try
             {
-                Dalamud.Logging.PluginLog.Information("Initializing AddonTalk");
+                Plugin.PluginLog.Information("Initializing AddonTalk");
                 _addonTalkManager = new AddonTalkManager(_framework, _clientState, _condition, _gameGui);
                 _addonTalkHandler = new AddonTalkHandler(_addonTalkManager, _framework, _objectTable, _clientState, this, _chat, _sigScanner);
 
             }
             catch (Exception e)
             {
-                Dalamud.Logging.PluginLog.LogWarning("AddonTalk: " + e, e.Message);
+                Plugin.PluginLog.Warning("AddonTalk: " + e, e.Message);
                 PrintError("[XivVoices] Fatal Error, AddonTalk did not initialize correctly!\n" + e.Message);
             }
         }
@@ -257,39 +261,47 @@ namespace XivVoices {
         #region Debugging
         public void Print(string text)
         {
+            /*
             this.Chat.Print(new XivChatEntry
             {
                 Message = text,
                 Type = XivChatType.CustomEmote
             });
+            */
         }
         public void PrintError(string text)
         {
+            /*
             this.Chat.Print(new XivChatEntry
             {
                 Message = text,
                 Type = XivChatType.Urgent
             });
+            */
         }
 
         public void Log(string text)
         {
+            /*
             if (this.Config.FrameworkActive)
                 this.Chat.Print(new XivChatEntry
                 {
                     Message = text,
                     Type = XivChatType.CustomEmote
                 });
+            */
         }
 
         public void LogError(string text)
         {
+            /*
             if (this.Config.FrameworkActive)
                 this.Chat.Print(new XivChatEntry
                 {
                     Message = text,
                     Type = XivChatType.Urgent
                 });
+            */
         }
         #endregion
         #region Sound Management
@@ -302,8 +314,8 @@ namespace XivVoices {
             }
         }
 
-        private void Chat_ChatMessage(XivChatType type, uint senderId,
-        ref SeString sender, ref SeString message, ref bool isHandled) {
+
+        private void Chat_ChatMessage(XivChatType type, int senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
             if (!disposed) {
                 if (!config.Active || !config.Initialized) return;
 
@@ -419,7 +431,7 @@ namespace XivVoices {
             }
         }
 
-        private async void HandleNPCDialogueAnnouncements(string playerName, XivChatType type, uint senderId, string message){
+        private async void HandleNPCDialogueAnnouncements(string playerName, XivChatType type, int senderId, string message){
             if (!config.Active || !config.Initialized) return;
 
             await Task.Delay(250);
@@ -439,7 +451,7 @@ namespace XivVoices {
 
         }
 
-        private void ChatText(string sender, SeString message, XivChatType type, uint senderId, bool cancel = false)
+        private void ChatText(string sender, SeString message, XivChatType type, int senderId, bool cancel = false)
         {
             try
             {
@@ -460,7 +472,7 @@ namespace XivVoices {
                 }
 
                 // Default Parameters
-                Character character = null;
+                ICharacter character = null;
                 string id = "-1";
                 string skeleton = "-1";
                 string body = "-1";
@@ -520,18 +532,18 @@ namespace XivVoices {
             catch (Exception ex)
             {
                 LogError("Error in ChatText method. " + ex);
-                Dalamud.Logging.PluginLog.Error($"ChatText ---> Exception: {ex}");
+                Plugin.PluginLog.Error($"ChatText ---> Exception: {ex}");
             }
         }
 
 
-        public void TriggerLipSync(Character character, string length)
+        public void TriggerLipSync(ICharacter character, string length)
         {
             if (config.LipsyncEnabled && character != null)
                 _addonTalkHandler.TriggerLipSync(character, length);
         }
 
-        public void StopLipSync(Character character)
+        public void StopLipSync(ICharacter character)
         {
             if (config.LipsyncEnabled && character != null)
                 _addonTalkHandler.StopLipSync(character);
@@ -554,7 +566,7 @@ namespace XivVoices {
                 {
                     if (!e.SoundPath.Contains("se_vfx_monster"))
                     {
-                        Dalamud.Logging.PluginLog.Log("Sound Mod Intercepted");
+                    Plugin.PluginLog.Info("Sound Mod Intercepted");
 #if DEBUG
                         _chat.Print("Sound Mod Intercepted");
 #endif
@@ -569,9 +581,9 @@ namespace XivVoices {
             _chat.Print("Territory is " + e);
 #endif
         }
-        private unsafe bool IsResidential() {
-            return HousingManager.Instance()->IsInside() || HousingManager.Instance()->OutdoorTerritory != null;
-        }
+        //private unsafe bool IsResidential() {
+        //    return HousingManager.Instance()->IsInside() || HousingManager.Instance()->OutdoorTerritory != null;
+        //}
 
         private void _clientState_Logout() {
         }
@@ -611,33 +623,33 @@ namespace XivVoices {
                 try
                 {
                     var imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "logo.png"));
-                    Logo = _textureProvider.GetTextureFromFile(imagePath);
+                    Logo = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "icon.png"));
-                    Icon = _textureProvider.GetTextureFromFile(imagePath);
+                    Icon = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "generalSettings.png"));
-                    GeneralSettings = _textureProvider.GetTextureFromFile(imagePath);
+                    GeneralSettings = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "generalSettingsActive.png"));
-                    GeneralSettingsActive = _textureProvider.GetTextureFromFile(imagePath);
+                    GeneralSettingsActive = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "dialogueSettings.png"));
-                    DialogueSettings = _textureProvider.GetTextureFromFile(imagePath);
+                    DialogueSettings = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "dialogueSettingsActive.png"));
-                    DialogueSettingsActive = _textureProvider.GetTextureFromFile(imagePath);
+                    DialogueSettingsActive = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "audioSettings.png"));
-                    AudioSettings = _textureProvider.GetTextureFromFile(imagePath);
+                    AudioSettings = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "audioSettingsActive.png"));
-                    AudioSettingsActive = _textureProvider.GetTextureFromFile(imagePath);
+                    AudioSettingsActive = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "archive.png"));
-                    Archive = _textureProvider.GetTextureFromFile(imagePath);
+                    Archive = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "archiveActive.png"));
-                    ArchiveActive = _textureProvider.GetTextureFromFile(imagePath);
+                    ArchiveActive = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "discord.png"));
-                    Discord = _textureProvider.GetTextureFromFile(imagePath);
+                    Discord = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "ko-fi.png"));
-                    KoFi = _textureProvider.GetTextureFromFile(imagePath);
+                    KoFi = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "changelog.png"));
-                    Changelog = _textureProvider.GetTextureFromFile(imagePath);
+                    Changelog = _textureProvider.GetFromFile(imagePath);
                     imagePath = new FileInfo(Path.Combine(pluginInterface.AssemblyLocation.Directory?.FullName!, "changelogActive.png"));
-                    ChangelogActive = _textureProvider.GetTextureFromFile(imagePath);
+                    ChangelogActive = _textureProvider.GetFromFile(imagePath);
                     if (Logo != null)
                     {
                         texturesLoaded = true; // Set the flag if the logo is successfully loaded
@@ -748,12 +760,12 @@ namespace XivVoices {
                     _clientState.Logout -= _clientState_Logout;
                     _clientState.TerritoryChanged -= _clientState_TerritoryChanged;
                 } catch (Exception e) {
-                    Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
+                    Plugin.PluginLog.Warning(e, e.Message);
                 }
                 try {
                     _framework.Update -= framework_Update;
                 } catch (Exception e) {
-                    Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
+                    Plugin.PluginLog.Warning(e, e.Message);
                 }
                 Filter?.Dispose();
                 _addonTalkHandler?.Dispose();
@@ -764,7 +776,7 @@ namespace XivVoices {
                 xivEngine?.Dispose();
                 //webSocketServer.Stop();
             } catch (Exception e) {
-                Dalamud.Logging.PluginLog.LogWarning(e, e.Message);
+                Plugin.PluginLog.Warning(e, e.Message);
             }
         }
 

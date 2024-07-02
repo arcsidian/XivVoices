@@ -49,17 +49,17 @@ namespace XivVoices.Engine
             {
                 try
                 {
-                    PluginLog.Information($"PlayAudio ---> start");
+                    Plugin.PluginLog.Information($"PlayAudio ---> start");
 
                     if (waveStream == null)
                     {
-                        PluginLog.Error("PlayAudio ---> waveStream is null");
+                        Plugin.PluginLog.Error("PlayAudio ---> waveStream is null");
                         return;
                     }
 
                     var volumeProvider = new VolumeSampleProvider(waveStream.ToSampleProvider());
                     var audioInfo = GetAudioInfo(xivMessage, type);
-                    PluginLog.Information($"PlayAudio ---> audioinfo receieved");
+                    Plugin.PluginLog.Information($"PlayAudio ---> audioinfo receieved");
 
                     audioIsStopped = false;
                     if (!this.Plugin.Config.Mute)
@@ -69,7 +69,7 @@ namespace XivVoices.Engine
 
                         using (var audioOutput = GetAudioEngine())
                         {
-                            PluginLog.Information($"PlayAudio ---> audioengine chosen");
+                            Plugin.PluginLog.Information($"PlayAudio ---> audioengine chosen");
                             audioOutput.Init(volumeProvider);
 
                             if (type == "ai")
@@ -78,7 +78,7 @@ namespace XivVoices.Engine
                                 volumeProvider.Volume = (float)Plugin.Config.Volume / 100f;
 
                             audioOutput.Play();
-                            PluginLog.Information($"PlayAudio ---> playing");
+                            Plugin.PluginLog.Information($"PlayAudio ---> playing");
                             audioInfo.state = "playing";
 
                             var totalDuration = waveStream.TotalTime.TotalMilliseconds;
@@ -106,18 +106,18 @@ namespace XivVoices.Engine
                     }
 
                     audioInfo.state = "stopped";
-                    PluginLog.Information($"PlayAudio ---> stopped");
+                    Plugin.PluginLog.Information($"PlayAudio ---> stopped");
                     audioInfo.percentage = 1f;
                 }
                 catch (Exception ex)
                 {
                     Plugin.PrintError("Error during audio playback. " + ex);
-                    PluginLog.Error($"PlayAudio ---> Exception: {ex}");
+                    Plugin.PluginLog.Error($"PlayAudio ---> Exception: {ex}");
                 }
                 finally
                 {
                     waveStream?.Dispose();
-                    PluginLog.Information($"PlayAudio ---> playAudioLock released");
+                    Plugin.PluginLog.Information($"PlayAudio ---> playAudioLock released");
                 }
             }
         }
@@ -128,13 +128,13 @@ namespace XivVoices.Engine
 
             using (await playBubbleLock.LockAsync())
             {
-                PluginLog.Information($"PlayBubble ---> start");
+                Plugin.PluginLog.Information($"PlayBubble ---> start");
 
                 try
                 {
                     if (waveStream == null)
                     {
-                        PluginLog.Error("PlayBubble ---> waveStream is null");
+                        Plugin.PluginLog.Error("PlayBubble ---> waveStream is null");
                         return;
                     }
 
@@ -205,7 +205,7 @@ namespace XivVoices.Engine
         public async Task PlaySystemAudio(WaveStream waveStream)
         {
             if (!Plugin.Config.Active) return;
-            PluginLog.Information($"PlaySystemAudio ---> start");
+            Plugin.PluginLog.Information($"PlaySystemAudio ---> start");
 
             try
             {
@@ -268,12 +268,12 @@ namespace XivVoices.Engine
 
             if(Conditions.IsBoundByDuty)
             {
-                volumeRanges[0].volumeStart = 0.75f;
-                volumeRanges[0].volumeEnd = 0.73f;  // 0 to 3 units: 75% to 73%
-                volumeRanges[0].volumeStart = 0.73f;
-                volumeRanges[1].volumeEnd = 0.70f;   // 3 to 5 units: 73% to 70% 
-                volumeRanges[2].volumeStart = 0.70f;
-                volumeRanges[2].volumeEnd = 0.60f;   // 5 to 20 units: 70% to 60%
+                volumeRanges[0].volumeStart = 0.65f;
+                volumeRanges[0].volumeEnd = 0.63f;  // 0 to 3 units: 65% to 63%
+                volumeRanges[0].volumeStart = 0.63f;
+                volumeRanges[1].volumeEnd = 0.60f;   // 3 to 5 units: 63% to 60% 
+                volumeRanges[2].volumeStart = 0.60f;
+                volumeRanges[2].volumeEnd = 0.55f;   // 5 to 20 units: 60% to 55%
             }
 
             foreach (var range in volumeRanges)

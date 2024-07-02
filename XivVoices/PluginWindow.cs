@@ -45,7 +45,7 @@ namespace XivVoices {
             }
         }
 
-        public DalamudPluginInterface PluginInterface { get; internal set; }
+        public IDalamudPluginInterface PluginInterface { get; internal set; }
 
         internal IClientState ClientState {
             get => clientState;
@@ -115,14 +115,14 @@ namespace XivVoices {
                         ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 26f);
                         if (currentTab == "Changelog")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.ChangelogActive.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.ChangelogActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Changelog";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Changelog");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.Changelog.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.Changelog.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Changelog";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Changelog");
@@ -135,14 +135,14 @@ namespace XivVoices {
                         
                         if(currentTab == "General")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "General";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("General Settings");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.GeneralSettings.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.GeneralSettings.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "General";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("General Settings");
@@ -150,14 +150,14 @@ namespace XivVoices {
 
                         if (currentTab == "Dialogue Settings")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.DialogueSettingsActive.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.DialogueSettingsActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Dialogue Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Dialogue Settings");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.DialogueSettings.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.DialogueSettings.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Dialogue Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Dialogue Settings");
@@ -165,14 +165,14 @@ namespace XivVoices {
 
                         if (currentTab == "Audio Settings")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.AudioSettingsActive.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.AudioSettingsActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Settings");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.AudioSettings.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.AudioSettings.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Settings");
@@ -180,21 +180,21 @@ namespace XivVoices {
 
                         if (currentTab == "Audio Logs")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.ArchiveActive.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.ArchiveActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Logs";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Logs");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.Archive.ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.Archive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Logs";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Logs");
                         }
 
 
-                        if (ImGui.ImageButton(this.PluginReference.Discord.ImGuiHandle, new Vector2(42, 42)))
+                        if (ImGui.ImageButton(this.PluginReference.Discord.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
                             try
@@ -212,7 +212,7 @@ namespace XivVoices {
                         if (ImGui.IsItemHovered())
                             ImGui.SetTooltip("Join Our Discord Community");
 
-                        if (ImGui.ImageButton(this.PluginReference.KoFi.ImGuiHandle, new Vector2(42, 42)))
+                        if (ImGui.ImageButton(this.PluginReference.KoFi.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
                             try
@@ -231,7 +231,7 @@ namespace XivVoices {
                             ImGui.SetTooltip("Support the Project on Ko-Fi");
 
                         if (this.configuration.FrameworkActive) {
-                            if (ImGui.ImageButton(this.PluginReference.Icon.ImGuiHandle, new Vector2(42, 42),new Vector2(1,1)))
+                            if (ImGui.ImageButton(this.PluginReference.Icon.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42),new Vector2(1,1)))
                             {
                                 isFrameworkWindowOpen = true;
                             }
@@ -429,7 +429,7 @@ namespace XivVoices {
             ImGui.Indent(65);
 
             if (this.PluginReference.Logo != null)
-                ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(200, 200));
+                ImGui.Image(this.PluginReference.Logo.GetWrapOrDefault().ImGuiHandle, new Vector2(200, 200));
             else
                 ImGui.Dummy(new Vector2(200, 200));
 
@@ -544,7 +544,7 @@ namespace XivVoices {
             ImGui.Indent(60);
             
             if (this.PluginReference.Logo != null)
-                ImGui.Image(this.PluginReference.Logo.ImGuiHandle, new Vector2(200, 200));
+                ImGui.Image(this.PluginReference.Logo.GetWrapOrDefault().ImGuiHandle, new Vector2(200, 200));
             else
                 ImGui.Dummy(new Vector2(200, 200));
 

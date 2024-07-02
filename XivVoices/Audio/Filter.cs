@@ -233,7 +233,7 @@ namespace XivVoices
             }
             catch (Exception ex)
             {
-                PluginLog.LogError(ex, "Error in PlaySpecificSoundDetour");
+                Plugin.PluginLog.Error(ex, "Error in PlaySpecificSoundDetour");
             }
             return this.PlaySpecificSoundHook!.Original(a1, idx);
         }
@@ -299,7 +299,7 @@ namespace XivVoices
                 || (_blacklist.Contains(splitPath)) && !splitPath.Contains("sound/foot")) // removed && Plugin.Config.MoveSCDBasedModsToPerformanceSlider
             {
 
-                Dalamud.Logging.PluginLog.Log("Trigger Sound Interception");
+                Plugin.PluginLog.Information("Trigger Sound Interception");
                 OnSoundIntercepted?.Invoke(this, new InterceptedSound() { SoundPath = splitPath });
                 return true;
             }
@@ -350,7 +350,7 @@ namespace XivVoices
             }
             catch (Exception ex)
             {
-                PluginLog.LogError(ex, "Error in LoadSoundFileDetour");
+                Plugin.PluginLog.Error(ex, "Error in LoadSoundFileDetour");
             }
 
             return ret;

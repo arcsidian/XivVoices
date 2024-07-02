@@ -17,13 +17,13 @@ namespace XivVoices
 
         public Task<IDisposable> LockAsync()
         {
-            PluginLog.Information("AsyncLock ---> Waiting to acquire lock");
+            Plugin.PluginLog.Information("AsyncLock ---> Waiting to acquire lock");
             var wait = _semaphore.WaitAsync();
             return wait.IsCompleted ?
                 _releaser :
                 wait.ContinueWith((_, state) =>
                 {
-                    PluginLog.Information("AsyncLock ---> Lock acquired");
+                    Plugin.PluginLog.Information("AsyncLock ---> Lock acquired");
                     return (IDisposable)state;
                 }, _releaser.Result,
                 CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
@@ -35,7 +35,7 @@ namespace XivVoices
             public Releaser(AsyncLock toRelease) { _toRelease = toRelease; }
             public void Dispose()
             {
-                PluginLog.Information("AsyncLock ---> Lock released");
+                Plugin.PluginLog.Information("AsyncLock ---> Lock released");
                 _toRelease._semaphore.Release();
             }
         }
