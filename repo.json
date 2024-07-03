@@ -8,7 +8,7 @@
     "TestingAssemblyVersion": "0.2.8.1",
     "RepoUrl": "https://github.com/arcsidian/XivVoices",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 9,
+    "DalamudApiLevel": 10,
     "IsHide": "False",
     "IsTestingExclusive": "False",
     "DownloadCount": 0,
