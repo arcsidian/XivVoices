@@ -168,22 +168,21 @@ namespace XivVoices.Voice {
             }
         }
 
-        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, Dalamud.Game.ClientState.Objects.Types.IGameObject* pActor, IntPtr pString, bool param3) {
+        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3) {
             if (_plugin.Config.Active)
             try {
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
                     if (pString != IntPtr.Zero &&
                     !Service.ClientState.IsPvPExcludingDen) {
-                            /*
-                        //	Idk if the actor can ever be null, but if it can, assume that we should print the bubble just in case.  Otherwise, only don't print if the actor is a player.
-                        if (pActor == null || pActor->ObjectKind != ObjectKind.Player) {
+                        if (pActor == null || (ObjectKind)pActor->GetObjectKind() != ObjectKind.Player) {
                             Plugin.PluginLog.Information("NPCBubbleTextDetour is running.");
                             long currentTime_mSec = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
                             SeString speakerName = SeString.Empty;
                             if (pActor != null && pActor->Name != null) {
-                                speakerName = pActor->Name;
+                                speakerName = (pActor)->NameString;
                             }
+
                             var npcBubbleInformaton = new NPCBubbleInformation(MemoryHelper.ReadSeStringNullTerminated(pString), currentTime_mSec, speakerName);
                             var extantMatch = _speechBubbleInfo.Find((x) => { return x.IsSameMessageAs(npcBubbleInformaton); });
                             if (extantMatch != null) {
@@ -195,13 +194,18 @@ namespace XivVoices.Voice {
                                     if (!_blockAudioGeneration && bubbleCooldown.ElapsedMilliseconds >= 0 ) {
                                         FFXIVClientStructs.FFXIV.Client.Game.Character.Character* character = (FFXIVClientStructs.FFXIV.Client.Game.Character.Character*)pActor;
                                         if ((ObjectKind)character->GameObject.ObjectKind == ObjectKind.EventNpc || (ObjectKind)character->GameObject.ObjectKind == ObjectKind.BattleNpc) {
-                                            string nameID = character->DrawData.Top.Value.ToString() + character->DrawData.Head.Value.ToString() +
-                                               character->DrawData.Feet.Value.ToString() + character->DrawData.Ear.Value.ToString() + speakerName.TextValue + character->GameObject.DataID;
-                                            ICharacter characterObject = GetCharacterFromId(character->GameObject.ObjectID);
+                                            string nameID =
+                                                    character->DrawData.Equipment(FFXIVClientStructs.FFXIV.Client.Game.Character.DrawDataContainer.EquipmentSlot.Body).Value.ToString() +
+                                                    character->DrawData.Equipment(FFXIVClientStructs.FFXIV.Client.Game.Character.DrawDataContainer.EquipmentSlot.Head).Value.ToString() +
+                                                    character->DrawData.Equipment(FFXIVClientStructs.FFXIV.Client.Game.Character.DrawDataContainer.EquipmentSlot.Feet).Value.ToString() +
+                                                    character->DrawData.Equipment(FFXIVClientStructs.FFXIV.Client.Game.Character.DrawDataContainer.EquipmentSlot.Ears).Value.ToString() +
+                                                    speakerName.TextValue +
+                                                    character->BaseId;
+                                            ICharacter characterObject = GetCharacterFromId(character->GameObject.EntityId);
                                             string finalName = characterObject != null && !string.IsNullOrEmpty(characterObject.Name.TextValue) && Conditions.IsBoundByDuty ? characterObject.Name.TextValue : nameID;
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
 
-                                                string id = character->GameObject.DataID.ToString();
+                                                string id = character->BaseId.ToString();
                                                 string skeleton = character->CharacterData.ModelSkeletonId.ToString();
 
                                                 if (_plugin.Config.BubblesEverywhere && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
@@ -226,10 +230,10 @@ namespace XivVoices.Voice {
                                     bubbleCooldown.Restart();
                                     _blockAudioGeneration = false;
                                 } catch {
-                                    NPCText(pActor->Name.TextValue, npcBubbleInformaton.MessageText.TextValue, true);
+                                    NPCText((pActor)->NameString, npcBubbleInformaton.MessageText.TextValue, true);
                                 }
                             }
-                        }*/
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -849,6 +853,6 @@ namespace XivVoices.Voice {
             public bool Interrupt { get; set; } = true;
         }
 
-        private unsafe delegate IntPtr NPCSpeechBubble(IntPtr pThis, Dalamud.Game.ClientState.Objects.Types.IGameObject* pActor, IntPtr pString, bool param3);
+        private unsafe delegate IntPtr NPCSpeechBubble(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3);
     }
 }

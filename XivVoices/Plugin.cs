@@ -201,24 +201,16 @@ namespace XivVoices {
                 
                 InitializeAddonTalk();
                 InitializeCamera();
-                Plugin.PluginLog.Warning("1");
                 _chat.ChatMessage += Chat_ChatMessage;
-                Plugin.PluginLog.Warning("2");
                 _clientState.Login += _clientState_Login;
-                Plugin.PluginLog.Warning("3");
                 _clientState.Logout += _clientState_Logout;
-                Plugin.PluginLog.Warning("4");
                 _clientState.TerritoryChanged += _clientState_TerritoryChanged;
-                Plugin.PluginLog.Warning("5");
                 Filter = new Filter(this);
-                Plugin.PluginLog.Warning("6");
                 Filter.Enable();
-                Plugin.PluginLog.Warning("7");
                 Filter.OnSoundIntercepted += _filter_OnSoundIntercepted;
                 if (_clientState.IsLoggedIn) {
                     Print("XivVoices is live.");
                 }
-                Plugin.PluginLog.Warning("8");
                 database = new Database(this.pluginInterface, this);
                 updater = new Updater();
                 audio = new Audio(this);

@@ -733,15 +733,15 @@ namespace XivVoices {
 
             // Bubble Settings ----------------------------------------------
             ImGui.Dummy(new Vector2(0, 10));
-            ImGui.TextWrapped("Bubble Settings (Not Available Yet)");
+            ImGui.TextWrapped("Bubble Settings");
             ImGui.Dummy(new Vector2(0, 10));
 
             // BubblesEnabled
-            var bubblesEnabled = false; //this.Configuration.BubblesEnabled;
+            var bubblesEnabled = this.Configuration.BubblesEnabled;
             if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
             {
-                //this.configuration.BubblesEnabled = bubblesEnabled;
-                //needSave = true;
+                this.configuration.BubblesEnabled = bubblesEnabled;
+                needSave = true;
             };
             ImGui.SameLine();
             ImGui.Text("Chat Bubbles Enabled");
@@ -1284,7 +1284,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Chat Bubbles are back for DT!");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.1"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated XivVoices to work on the latest version of Dalamud for Dawntrail.");
                     ImGui.Bullet(); ImGui.TextWrapped("The following features have been disabled temporarily: Bubbles chat, Lipsync.");
