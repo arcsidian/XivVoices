@@ -1284,7 +1284,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.2 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for new Dawntrail NPCs!");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.2"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Chat Bubbles are back for DT!");
                 }

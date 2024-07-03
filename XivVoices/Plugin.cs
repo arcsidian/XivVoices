@@ -263,47 +263,47 @@ namespace XivVoices {
         #region Debugging
         public void Print(string text)
         {
-            /*
+            
             this.Chat.Print(new XivChatEntry
             {
                 Message = text,
                 Type = XivChatType.CustomEmote
             });
-            */
+            
         }
         public void PrintError(string text)
         {
-            /*
+            
             this.Chat.Print(new XivChatEntry
             {
                 Message = text,
                 Type = XivChatType.Urgent
             });
-            */
+            
         }
 
         public void Log(string text)
         {
-            /*
+            
             if (this.Config.FrameworkActive)
                 this.Chat.Print(new XivChatEntry
                 {
                     Message = text,
                     Type = XivChatType.CustomEmote
                 });
-            */
+            
         }
 
         public void LogError(string text)
         {
-            /*
+            
             if (this.Config.FrameworkActive)
                 this.Chat.Print(new XivChatEntry
                 {
                     Message = text,
                     Type = XivChatType.Urgent
                 });
-            */
+            
         }
         #endregion
         #region Sound Management
