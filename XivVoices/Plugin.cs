@@ -127,7 +127,7 @@ namespace XivVoices {
 
         #endregion
         #region Plugin Initiialization
-        public unsafe Plugin(
+        public Plugin(
             IDalamudPluginInterface pi,
             ICommandManager commands,
             IChatGui chat,
@@ -142,7 +142,10 @@ namespace XivVoices {
             ICondition condition,
             IGameGui gameGui,
             IDragDropManager dragDrop,
+            IPluginLog pluginLog,
             ITextureProvider textureProvider) {
+            Plugin.PluginLog = pluginLog;
+            this._chat = chat;
             #region Constructor
             try {
                 Service.DataManager = dataManager;
@@ -152,7 +155,6 @@ namespace XivVoices {
                 Service.ClientState = clientState;
                 Service.ObjectTable = objectTable;
                 this.pluginInterface = pi;
-                this._chat = chat;
                 this._clientState = clientState; 
                 // Get or create a configuration object
                 this.config = this.pluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -196,27 +198,35 @@ namespace XivVoices {
 
         private async void InitializeEverything() {
             try {
+                
                 InitializeAddonTalk();
                 InitializeCamera();
+                Plugin.PluginLog.Warning("1");
                 _chat.ChatMessage += Chat_ChatMessage;
+                Plugin.PluginLog.Warning("2");
                 _clientState.Login += _clientState_Login;
+                Plugin.PluginLog.Warning("3");
                 _clientState.Logout += _clientState_Logout;
+                Plugin.PluginLog.Warning("4");
                 _clientState.TerritoryChanged += _clientState_TerritoryChanged;
+                Plugin.PluginLog.Warning("5");
                 Filter = new Filter(this);
+                Plugin.PluginLog.Warning("6");
                 Filter.Enable();
+                Plugin.PluginLog.Warning("7");
                 Filter.OnSoundIntercepted += _filter_OnSoundIntercepted;
                 if (_clientState.IsLoggedIn) {
                     Print("XivVoices is live.");
                 }
-
-                
+                Plugin.PluginLog.Warning("8");
                 database = new Database(this.pluginInterface, this);
                 updater = new Updater();
                 audio = new Audio(this);
                 xivEngine = new XivEngine(this.database, this.audio, this.updater);
 
-            } catch (Exception e) {
-                Plugin.PluginLog.Warning(e, e.Message);
+            }
+            catch (Exception e) {
+                Plugin.PluginLog.Warning("InitializeEverything: " + e, e.Message);
                 PrintError("[XivVoicesInitializer] Fatal Error, the plugin did not initialize correctly!\n" + e.Message);
             }
         }

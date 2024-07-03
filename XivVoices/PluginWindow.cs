@@ -115,14 +115,14 @@ namespace XivVoices {
                         ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 26f);
                         if (currentTab == "Changelog")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.ChangelogActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.ChangelogActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Changelog";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Changelog");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.Changelog.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.Changelog.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Changelog";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Changelog");
@@ -135,14 +135,14 @@ namespace XivVoices {
                         
                         if(currentTab == "General")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "General";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("General Settings");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.GeneralSettings.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.GeneralSettings.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "General";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("General Settings");
@@ -150,14 +150,14 @@ namespace XivVoices {
 
                         if (currentTab == "Dialogue Settings")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.DialogueSettingsActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.DialogueSettingsActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Dialogue Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Dialogue Settings");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.DialogueSettings.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.DialogueSettings.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Dialogue Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Dialogue Settings");
@@ -165,14 +165,14 @@ namespace XivVoices {
 
                         if (currentTab == "Audio Settings")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.AudioSettingsActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.AudioSettingsActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Settings");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.AudioSettings.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.AudioSettings.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Settings";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Settings");
@@ -180,21 +180,21 @@ namespace XivVoices {
 
                         if (currentTab == "Audio Logs")
                         {
-                            if (ImGui.ImageButton(this.PluginReference.ArchiveActive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.ArchiveActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Logs";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Logs");
                         }
                         else
                         {
-                            if (ImGui.ImageButton(this.PluginReference.Archive.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                            if (ImGui.ImageButton(this.PluginReference.Archive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                                 currentTab = "Audio Logs";
                             if (ImGui.IsItemHovered())
                                 ImGui.SetTooltip("Audio Logs");
                         }
 
 
-                        if (ImGui.ImageButton(this.PluginReference.Discord.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                        if (ImGui.ImageButton(this.PluginReference.Discord.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
                             try
@@ -212,7 +212,7 @@ namespace XivVoices {
                         if (ImGui.IsItemHovered())
                             ImGui.SetTooltip("Join Our Discord Community");
 
-                        if (ImGui.ImageButton(this.PluginReference.KoFi.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42)))
+                        if (ImGui.ImageButton(this.PluginReference.KoFi.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
                             try
@@ -231,7 +231,7 @@ namespace XivVoices {
                             ImGui.SetTooltip("Support the Project on Ko-Fi");
 
                         if (this.configuration.FrameworkActive) {
-                            if (ImGui.ImageButton(this.PluginReference.Icon.GetWrapOrDefault().ImGuiHandle, new Vector2(42, 42),new Vector2(1,1)))
+                            if (ImGui.ImageButton(this.PluginReference.Icon.RentAsync().Result.ImGuiHandle, new Vector2(42, 42),new Vector2(1,1)))
                             {
                                 isFrameworkWindowOpen = true;
                             }
@@ -429,7 +429,7 @@ namespace XivVoices {
             ImGui.Indent(65);
 
             if (this.PluginReference.Logo != null)
-                ImGui.Image(this.PluginReference.Logo.GetWrapOrDefault().ImGuiHandle, new Vector2(200, 200));
+                ImGui.Image(this.PluginReference.Logo.RentAsync().Result.ImGuiHandle, new Vector2(200, 200));
             else
                 ImGui.Dummy(new Vector2(200, 200));
 
@@ -544,7 +544,7 @@ namespace XivVoices {
             ImGui.Indent(60);
             
             if (this.PluginReference.Logo != null)
-                ImGui.Image(this.PluginReference.Logo.GetWrapOrDefault().ImGuiHandle, new Vector2(200, 200));
+                ImGui.Image(this.PluginReference.Logo.RentAsync().Result.ImGuiHandle, new Vector2(200, 200));
             else
                 ImGui.Dummy(new Vector2(200, 200));
 
@@ -570,10 +570,12 @@ namespace XivVoices {
             // Update Button
             ImGui.Unindent(70);
             ImGui.Dummy(new Vector2(0, 10));
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1.0f)); // Gray color
             if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(336, 60)))
             {
                 Updater.Instance.Check();
             }
+            ImGui.PopStyleColor();
 
             // Xiv Voices Enabled
             ImGui.Dummy(new Vector2(0, 15));
@@ -731,15 +733,15 @@ namespace XivVoices {
 
             // Bubble Settings ----------------------------------------------
             ImGui.Dummy(new Vector2(0, 10));
-            ImGui.TextWrapped("Bubble Settings");
+            ImGui.TextWrapped("Bubble Settings (Not Available Yet)");
             ImGui.Dummy(new Vector2(0, 10));
 
             // BubblesEnabled
-            var bubblesEnabled = this.Configuration.BubblesEnabled;
+            var bubblesEnabled = false; //this.Configuration.BubblesEnabled;
             if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
             {
-                this.configuration.BubblesEnabled = bubblesEnabled;
-                needSave = true;
+                //this.configuration.BubblesEnabled = bubblesEnabled;
+                //needSave = true;
             };
             ImGui.SameLine();
             ImGui.Text("Chat Bubbles Enabled");
@@ -880,14 +882,14 @@ namespace XivVoices {
 
             // Lipsync Enabled -----------------------------------------------
             ImGui.Dummy(new Vector2(0, 10));
-            var lipsyncEnabled = this.Configuration.LipsyncEnabled;
+            var lipsyncEnabled = false; // this.Configuration.LipsyncEnabled;
             if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
             {
-                this.configuration.LipsyncEnabled = lipsyncEnabled;
-                needSave = true;
+                //this.configuration.LipsyncEnabled = lipsyncEnabled;
+                //needSave = true;
             };
             ImGui.SameLine();
-            ImGui.Text("Lipsync Enabled");
+            ImGui.Text("Lipsync Enabled (Not Available Yet)");
 
             // Volume Slider ---------------------------------------------
 
@@ -1282,7 +1284,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated XivVoices to work on the latest version of Dalamud for Dawntrail.");
+                    ImGui.Bullet(); ImGui.TextWrapped("The following features have been disabled temporarily: Bubbles chat, Lipsync.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a problem with retainers not being recognized when they have similar names to NPCs in the database.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing and added more shortcuts.");
@@ -1422,139 +1430,55 @@ namespace XivVoices {
                     ImGui.Bullet(); ImGui.TextWrapped("Stability improvements.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.5.9"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: More logging and crash handling.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.8"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed a bug related to auto update crashing the game when the connection is unstable.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.7"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added the option in the settings to turn off the New Update Audio Notification.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat progressing and added party roles: m1, m2, mt, ot, r1, r2, h1, h2.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added more logging for future debugging.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.6"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Linked Xiv Voices Enabled with New Update Notificatiton as well as other functionalities.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.5"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added command: /xivv volup: increases volume by 10%.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added command: /xivv voldown: decreases volume by 10%.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Wood Wailer Lance to the list of npcs processed by their appearance.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.4"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Plugin Update Voices will no longer play when the user is in a duty or in the middle of a cutscene or event.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Users now can access Dialogue Settings and Audio Settings while in the middle of a Voice Files Update.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.3"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Regula van Hydrus now has an older voice.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Mute command now is a toggle, it mutes and unmutes XIVV audio each time");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated command: /xivv help");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated command: /xivv mute");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.2"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Wuk Lamat to the NPC Database.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.5.1"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added a system audio player.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added a version check that plays audio when a new version is available.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added more logging for future debugging purposes.");
-                }
-
                 if (ImGui.CollapsingHeader("Version 0.2.5.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug in the sound effects that stopped playing dialogues for Dragon.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.9"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database and VoiceName Database to reflect the addition of new characters and Primals.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for older people.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for Primals.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added new sound effects for Bosses.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Fixed an bug where bubbles cannot have sound effects.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Fixed an bug where Moogles may be mistaken with Qiqirn due to having similar skeleton IDs.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.8"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed a bug in Local TTS that removes spaces (oops).");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.7"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved Local TTS to not make weird sounds when a dialogue has no words.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Beast Tribe Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database and changed its structure to remove redundant data such as Height, Hair and Mouth, and to add new data related to sound effects."); 
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Dialogue Processing to recognize beast tribe dialogues better.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Retainers List to cover more dialogues.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved Sound Effects for Dragons.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Sound Effects for Primals.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.6"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added a new Audio Playback Engine option in the Audio Settings.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Dragon beast tribe voices to the Voice Names Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing for Local TTS.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.5"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: fixed an extremely rare instance where bubble chat processing is not initialized.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.4"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added a potential fix for bubble chats not being initialized correctly.");
+                    ImGui.Bullet(); ImGui.TextWrapped("System audio player added.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.3"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Potential fix for random crashes related to other plugins such as Mare");
-                    ImGui.Bullet(); ImGui.TextWrapped("Performance Improvements.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.2"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing, adding : ggty, cs, sry, kk, oki, gn, nn..etc");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Bubble message in chat to say the NPC name when available.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed player name in party chat.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added the option to say the speaker's name for Local TTS.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added the command /xivv skip to skip currently playing dialogue.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.4.1"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Alliance Chat to the list of enabled chats in the Dialogue Settings.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an error caused by SayWhat Plugin.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bubble chat now is printed as a green NPC Dialogue Message so users can filter it as they see fit.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Version check with audio notification.");
+                    ImGui.Bullet(); ImGui.TextWrapped("More logging for debugging.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Linked Xiv Voices Enabled with New Update Notification.");
+                    ImGui.Bullet(); ImGui.TextWrapped("New commands: /xivv volup, /xivv voldown.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Wood Wailer Lance NPC.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Auto update crashing game on unstable connection.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Settings: Turn off New Update Audio Notification.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing with party roles.");
+                    ImGui.Bullet(); ImGui.TextWrapped("More logging for debugging.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: More logging and crash handling.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.4.0"))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added the option in the Dialogue Settings to enable and disable printing Bubbles in chat.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved player chat processing to include self emoticons, so emotes such as 'o/' will be read as 'You are waving' instead of 'Name is waving'.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added job abbreviations to player chat processing so things such as PLD and BRD will be read as Paladin and Bard by Local TTS.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Linked Bubble Dialogues to Volume Slider.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Dynamic dialogue processing for Feo Ul.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Matanga, Giants, Skeletons to beast tribe mapper.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for May's voice data.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Player LocalTTS handles emotions and case sensitivity.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Stopping lipsync crash.");
+                    ImGui.Bullet(); ImGui.TextWrapped("New volume slider for Local TTS.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Dialogue Skip functionality.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added Mamool Ja to Beast Tribe Mapping.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Anamnesis crash during loading.");
+                    ImGui.Bullet(); ImGui.TextWrapped("New Audio Playback Engine option.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Dragon beast tribe voices added.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Player chat processing for Local TTS.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Bubble chat processing initialization.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fix for bubble chats initialization.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Player chat processing updates.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Potential fix for plugin-related crashes.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Performance Improvements.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated player chat processing.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bubble message in chat shows NPC name.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed player name in party chat.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Option to say speaker's name for Local TTS.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Command /xivv skip added.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Alliance Chat added to Dialogue Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed error caused by SayWhat Plugin.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bubble chat printed as green NPC Dialogue.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Option to enable/disable Bubble chat printing.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved player chat processing for emoticons.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Job abbreviations read by Local TTS.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.3.0"))

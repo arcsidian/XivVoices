@@ -128,9 +128,9 @@ namespace XivVoices.Voice {
                 await Task.Delay(100);
             Plugin.PluginLog.Information("StartServices --> Done waiting");
             await _memoryService.OpenProcess(Process.GetCurrentProcess());
-            await _gameDataService.Initialize();
+            //await _gameDataService.Initialize();
 
-            LipSyncTypes = GenerateLipList().ToList();
+            //LipSyncTypes = GenerateLipList().ToList();
             await _animationService.Initialize();
             await _animationService.Start();
             await _memoryService.Start();
@@ -197,7 +197,7 @@ namespace XivVoices.Voice {
                                         if ((ObjectKind)character->GameObject.ObjectKind == ObjectKind.EventNpc || (ObjectKind)character->GameObject.ObjectKind == ObjectKind.BattleNpc) {
                                             string nameID = character->DrawData.Top.Value.ToString() + character->DrawData.Head.Value.ToString() +
                                                character->DrawData.Feet.Value.ToString() + character->DrawData.Ear.Value.ToString() + speakerName.TextValue + character->GameObject.DataID;
-                                            Character characterObject = GetCharacterFromId(character->GameObject.ObjectID);
+                                            ICharacter characterObject = GetCharacterFromId(character->GameObject.ObjectID);
                                             string finalName = characterObject != null && !string.IsNullOrEmpty(characterObject.Name.TextValue) && Conditions.IsBoundByDuty ? characterObject.Name.TextValue : nameID;
                                             if (npcBubbleInformaton.MessageText.TextValue != _lastText) {
 
@@ -407,6 +407,7 @@ namespace XivVoices.Voice {
 
         public async void TriggerLipSync(ICharacter character, string length)
         {
+            /*
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
             if (!_plugin.Config.Active) return;
 
@@ -553,6 +554,7 @@ namespace XivVoices.Voice {
 
 
             }
+            */
         }
 
         int CalculateAdjustedDelay(int durationMs, int lipSyncType)
@@ -584,6 +586,7 @@ namespace XivVoices.Voice {
 
         public async void StopLipSync(ICharacter character)
         {
+            /*
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
             if (!_plugin.Config.Active) return;
             if (character == null) return;
@@ -615,6 +618,7 @@ namespace XivVoices.Voice {
             {
 
             }
+            */
         }
 
         public int EstimateDurationFromMessage(string message)
@@ -752,7 +756,7 @@ namespace XivVoices.Voice {
                 }*/
             }
             else {
-                foreach (var item in _objectTable) {
+                foreach (Dalamud.Game.ClientState.Objects.Types.IGameObject item in _objectTable) {
                     if (item as ICharacter == null || item as ICharacter == _clientState.LocalPlayer || item.Name.TextValue == "") continue;
                     //_plugin.webSocketServer.SendMessage($"DiscoverNpc: LOOKING AT {item.Name.TextValue} WITH {item.DataId}");
                     if (item.Name.TextValue == npcName) {
