@@ -128,9 +128,9 @@ namespace XivVoices.Voice {
                 await Task.Delay(100);
             Plugin.PluginLog.Information("StartServices --> Done waiting");
             await _memoryService.OpenProcess(Process.GetCurrentProcess());
-            //await _gameDataService.Initialize();
+            await _gameDataService.Initialize();
 
-            //LipSyncTypes = GenerateLipList().ToList();
+            LipSyncTypes = GenerateLipList().ToList();
             await _animationService.Initialize();
             await _animationService.Start();
             await _memoryService.Start();
@@ -411,7 +411,7 @@ namespace XivVoices.Voice {
 
         public async void TriggerLipSync(ICharacter character, string length)
         {
-            /*
+            
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
             if (!_plugin.Config.Active) return;
 
@@ -446,6 +446,7 @@ namespace XivVoices.Voice {
 #if DEBUG
                 _chatGui.Print($"durationMs[{durationMs}] durationRounded[{durationRounded}] fours[{mouthMovement[6]}] twos[{mouthMovement[5]}] ones[{mouthMovement[4]}]");
 #endif
+                _plugin.Log($"durationMs[{durationMs}] durationRounded[{durationRounded}] fours[{mouthMovement[6]}] twos[{mouthMovement[5]}] ones[{mouthMovement[4]}]");
 
                 // Decide on the Mode
                 ActorMemory.CharacterModes intialState = actorMemory.CharacterMode;
@@ -473,6 +474,8 @@ namespace XivVoices.Voice {
 #if DEBUG
                                 _chatGui.Print($"Task was started mouthMovement[6] durationMs[{mouthMovement[6]*4}] delay [{adjustedDelay}]");
 #endif
+                                _plugin.Log($"Task was started mouthMovement[6] durationMs[{mouthMovement[6] * 4}] delay [{adjustedDelay}]");
+
                                 await Task.Delay(adjustedDelay, token);
 
                                 if (!token.IsCancellationRequested && character != null && actorMemory != null)
@@ -480,6 +483,8 @@ namespace XivVoices.Voice {
 #if DEBUG
                                     _chatGui.Print($"Task mouthMovement[6] was finished");
 #endif
+                                    _plugin.Log($"Task mouthMovement[6] was finished");
+
                                     animationMemory.LipsOverride = 0;
                                     MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                                     MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
@@ -496,12 +501,16 @@ namespace XivVoices.Voice {
 #if DEBUG
                                 _chatGui.Print($"Task was started mouthMovement[5] durationMs[{mouthMovement[5] * 2}] delay [{adjustedDelay}]");
 #endif
+                                _plugin.Log($"Task was started mouthMovement[5] durationMs[{mouthMovement[5] * 2}] delay [{adjustedDelay}]");
+
                                 await Task.Delay(adjustedDelay, token);
                                 if (!token.IsCancellationRequested && character != null && actorMemory != null)
                                 {
 #if DEBUG
                                     _chatGui.Print($"Task mouthMovement[5] was finished");
 #endif
+                                    _plugin.Log($"Task mouthMovement[5] was finished");
+
                                     animationMemory.LipsOverride = 0;
                                     MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                                     MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
@@ -513,17 +522,22 @@ namespace XivVoices.Voice {
                             {
                                 animationMemory.LipsOverride = LipSyncTypes[4].Timeline.AnimationId;
                                 MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), mode, "Animation Mode Override");
-                                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[4].Timeline.AnimationId, "Lipsync");
+                                MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), LipSyncTypes[2].Timeline.AnimationId, "Lipsync");
                                 int adjustedDelay = CalculateAdjustedDelay(mouthMovement[4]*1000, 4);
 #if DEBUG
                                 _chatGui.Print($"Task was started mouthMovement[4] durationMs[{mouthMovement[4]}] delay [{adjustedDelay}]");
 #endif
+                                _plugin.Log($"Task was started mouthMovement[4] durationMs[{mouthMovement[4]}] delay [{adjustedDelay}]");
+
+
                                 await Task.Delay(adjustedDelay, token);
                                 if (!token.IsCancellationRequested && character != null && actorMemory != null)
                                 {
 #if DEBUG
                                     _chatGui.Print($"Task mouthMovement[4] was finished");
 #endif
+                                    _plugin.Log($"Task mouthMovement[4] was finished");
+
                                     animationMemory.LipsOverride = 0;
                                     MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                                     MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
@@ -535,6 +549,8 @@ namespace XivVoices.Voice {
 #if DEBUG
                                 _chatGui.Print($"Task was Completed");
 #endif
+                                _plugin.Log($"Task was Completed");
+
                                 cts.Dispose();
                                 taskCancellations.Remove(character);
                             }
@@ -545,6 +561,8 @@ namespace XivVoices.Voice {
 #if DEBUG
                             _chatGui.Print($"Task was canceled.");
 #endif
+                            _plugin.Log($"Task was canceled.");
+
                             animationMemory.LipsOverride = 0;
                             MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                             MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
@@ -558,7 +576,7 @@ namespace XivVoices.Voice {
 
 
             }
-            */
+            
         }
 
         int CalculateAdjustedDelay(int durationMs, int lipSyncType)
@@ -590,7 +608,7 @@ namespace XivVoices.Voice {
 
         public async void StopLipSync(ICharacter character)
         {
-            /*
+            
             if (Conditions.IsBoundByDuty && !Conditions.IsWatchingCutscene) return;
             if (!_plugin.Config.Active) return;
             if (character == null) return;
@@ -622,7 +640,7 @@ namespace XivVoices.Voice {
             {
 
             }
-            */
+            
         }
 
         public int EstimateDurationFromMessage(string message)

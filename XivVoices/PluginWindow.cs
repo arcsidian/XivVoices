@@ -882,14 +882,14 @@ namespace XivVoices {
 
             // Lipsync Enabled -----------------------------------------------
             ImGui.Dummy(new Vector2(0, 10));
-            var lipsyncEnabled = false; // this.Configuration.LipsyncEnabled;
+            var lipsyncEnabled = this.Configuration.LipsyncEnabled;
             if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
             {
-                //this.configuration.LipsyncEnabled = lipsyncEnabled;
-                //needSave = true;
+                this.configuration.LipsyncEnabled = lipsyncEnabled;
+                needSave = true;
             };
             ImGui.SameLine();
-            ImGui.Text("Lipsync Enabled (Not Available Yet)");
+            ImGui.Text("Lipsync Enabled");
 
             // Volume Slider ---------------------------------------------
 
@@ -985,15 +985,7 @@ namespace XivVoices {
             };
             ImGui.SameLine();
             ImGui.Text("Say Speaker Name in Chat");
-
             ImGui.Unindent(20);
-
-            // Polly Settings ----------------------------------------------
-
-            //ImGui.Dummy(new Vector2(0, 20));
-            //ImGui.TextWrapped("Poly Settings (soon)");
-            //ImGui.Dummy(new Vector2(0, 10));
-
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
@@ -1284,7 +1276,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Lipsync is back!");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Lipsync animations to fit more variaties of dialogues long and short.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.3"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for new Dawntrail NPCs!");
                 }
