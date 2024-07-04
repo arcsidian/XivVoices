@@ -329,7 +329,10 @@ namespace XivVoices.Engine
 
             this.Database.Plugin.Log($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
 
-            AddToQueue(msg);
+            if (msg.GetRequested)
+                _ = Database.Get(msg);
+            else
+                AddToQueue(msg);
 
         }
 
@@ -1975,10 +1978,17 @@ namespace XivVoices.Engine
         }
 
 
-        public void ReportToArc(XivMessage msg)
+        public void ReportToArc(XivMessage msg, bool ignoreAccess = false)
         {
             if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+
+            if (Database.Access && !ignoreAccess)
+            {
+                msg.GetRequested = true;
+                return;
+            }
+
             Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));

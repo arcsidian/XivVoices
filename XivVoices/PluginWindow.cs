@@ -1276,6 +1276,11 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
+                if (ImGui.CollapsingHeader("Version 0.2.8.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Further Dawntrail Optimizations.");
+                }
+
                 if (ImGui.CollapsingHeader("Version 0.2.8.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Lipsync is back!");
