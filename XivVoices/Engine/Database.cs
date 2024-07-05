@@ -417,12 +417,8 @@ namespace XivVoices.Engine
                 {
                     Access = true;
                     AccessData = ReadFile(accessFilePath);
-                    Plugin.Print("Found");
-                    Plugin.Print(AccessData["request"]);
-                    Plugin.Print(AccessData["token"]);
+                    Plugin.Print("You are an Access User.");
                 }
-                else
-                    Plugin.Print("Not Found");
             }
             catch (Exception ex)
             {
@@ -1272,9 +1268,9 @@ namespace XivVoices.Engine
                 cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
             }
             cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
-
             xivMessage.FilePath = GetFilePath(xivMessage);
             string fileName = Path.GetFileName(xivMessage.FilePath);
+            
             string url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=make&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&say={Uri.EscapeDataString(cleanedMessage)}&filename={Uri.EscapeDataString(fileName)}";
 
             try
@@ -1325,15 +1321,18 @@ namespace XivVoices.Engine
 
                         XivEngine.Instance.Database.Plugin.Print("Generated line completed.");
                         File.Delete(outputFilePath);
+                        XivEngine.Instance.SpeakLocallyAsync(xivMessage);
                     }
                     catch (Exception ex)
                     {
                         XivEngine.Instance.Database.Plugin.Print($"Replacement failed: {ex.Message}");
-                        XivEngine.Instance.ReportToArc(xivMessage,true);
+                        _ = Task.Run(async () =>
+                        {
+                            await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                            if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
+                                await XivEngine.Instance.SpeakAI(xivMessage);
+                        });
                     }
-
-                    XivEngine.Instance.SpeakLocallyAsync(xivMessage);
-                    
                 }
                 else
                 {
@@ -1394,20 +1393,35 @@ namespace XivVoices.Engine
                             // Read the response as a string
                             responseBody = await latestResponse.Content.ReadAsStringAsync();
                             XivEngine.Instance.Database.Plugin.Print("-->" + responseBody);
-                            XivEngine.Instance.ReportToArc(xivMessage, true);
+                            _ = Task.Run(async () =>
+                            {
+                                await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                                if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
+                                    await XivEngine.Instance.SpeakAI(xivMessage);
+                            });
                         }
                     }
                     else
                     {
                         XivEngine.Instance.Database.Plugin.Print(responseBody);
-                        XivEngine.Instance.ReportToArc(xivMessage, true);
+                        _ = Task.Run(async () =>
+                        {
+                            await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                            if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
+                                await XivEngine.Instance.SpeakAI(xivMessage);
+                        });
                     }
                 }
             }
             catch (HttpRequestException e)
             {
                 XivEngine.Instance.Database.Plugin.Print(e.Message);
-                XivEngine.Instance.ReportToArc(xivMessage, true);
+                _ = Task.Run(async () =>
+                {
+                    await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                    if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
+                        await XivEngine.Instance.SpeakAI(xivMessage);
+                });
             }
         }
 

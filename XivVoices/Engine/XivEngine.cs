@@ -309,7 +309,7 @@ namespace XivVoices.Engine
 
                 if (!sentenceFound)
                 {
-                    msg.Sentence = msg.TtsData.Message;
+                    //msg.Sentence = msg.TtsData.Message;
                     if (!msg.Reported)
                     {
                         ReportToArc(msg);
