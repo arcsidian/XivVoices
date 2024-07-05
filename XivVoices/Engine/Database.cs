@@ -1157,7 +1157,7 @@ namespace XivVoices.Engine
             cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
-            string url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=redo&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&say={Uri.EscapeDataString(cleanedMessage)}&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Redo&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&say={Uri.EscapeDataString(cleanedMessage)}&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {
@@ -1199,7 +1199,7 @@ namespace XivVoices.Engine
                     if (responseBody == "EXISTS")
                     {
                         XivEngine.Instance.Database.Plugin.Print("Someone already updated this voice file, retrieving the latest version..");
-                        url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=get&filename={Uri.EscapeDataString(fileName)}";
+                        url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Get&filename={Uri.EscapeDataString(fileName)}";
                         
                         // Send the second request
                         HttpResponseMessage latestResponse = await client.GetAsync(url);
@@ -1271,7 +1271,7 @@ namespace XivVoices.Engine
             xivMessage.FilePath = GetFilePath(xivMessage);
             string fileName = Path.GetFileName(xivMessage.FilePath);
             
-            string url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=make&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&say={Uri.EscapeDataString(cleanedMessage)}&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Make&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&say={Uri.EscapeDataString(cleanedMessage)}&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {
@@ -1341,7 +1341,7 @@ namespace XivVoices.Engine
                     if (responseBody == "EXISTS")
                     {
                         XivEngine.Instance.Database.Plugin.Print("Someone already generated this voice file, downloading it..");
-                        url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=get&filename={Uri.EscapeDataString(fileName)}";
+                        url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Get&filename={Uri.EscapeDataString(fileName)}";
 
                         // Send the second request
                         HttpResponseMessage latestResponse = await client.GetAsync(url);
@@ -1430,7 +1430,7 @@ namespace XivVoices.Engine
             RequestActive = false;
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
-            string url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=confirm&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Confirm&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {
@@ -1470,7 +1470,7 @@ namespace XivVoices.Engine
             RequestActive = false;
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
-            string url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=delete&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Delete&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {
@@ -1505,7 +1505,7 @@ namespace XivVoices.Engine
             RequestMuteBusy = true;
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
-            string url = $"{AccessData["request"]}?token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=mute&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Mute&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {

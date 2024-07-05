@@ -1546,59 +1546,64 @@ namespace XivVoices.Engine
         public async Task SpeakLocallyAsync(XivMessage msg, bool isMp3 = false)
         {
             await speakBlock.WaitAsync();
-            Plugin.PluginLog.Information($"SpeakLocallyAsync ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
-
-            if (isMp3)
+            try
             {
-                File.Delete(msg.FilePath + ".ogg");
-                string arguments = $"-i \"{msg.FilePath+".mp3"}\" -c:a libopus \"{msg.FilePath +".ogg"}\"";
-                string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath); ;
-                FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
-                IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
-                await conversion.Start();
-                File.Delete(msg.FilePath + ".mp3");
-                msg.FilePath = msg.FilePath + ".ogg";
-            }
+                Plugin.PluginLog.Information($"SpeakLocallyAsync ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
 
-            if (msg.FilePath.EndsWith(".ogg"))
+                if (isMp3)
+                {
+                    File.Delete(msg.FilePath + ".ogg");
+                    string arguments = $"-i \"{msg.FilePath + ".mp3"}\" -c:a libopus \"{msg.FilePath + ".ogg"}\"";
+                    string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath); ;
+                    FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
+                    IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
+                    await conversion.Start();
+                    File.Delete(msg.FilePath + ".mp3");
+                    msg.FilePath = msg.FilePath + ".ogg";
+                }
+
+                if (msg.FilePath.EndsWith(".ogg"))
+                {
+                    Plugin.PluginLog.Information($"SpeakLocallyAsync: found ogg path: {msg.FilePath}");
+                    WaveStream waveStream = null;
+
+                    // Check for audio speed adjustment or special effects
+                    bool changeSpeed = this.Database.Plugin.Config.Speed != 100;
+                    bool applyEffects = SoundEffects(msg) != "";
+
+
+                    try
+                    {
+                        // Load and possibly modify the OGG file
+                        if (changeSpeed || applyEffects)
+                            waveStream = await FFmpegFileToWaveStream(msg);
+                        else
+                            waveStream = DecodeOggOpusToPCM(msg.FilePath);
+                        PlayAudio(msg, waveStream, "xivv");
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.PluginLog.Error($"Error processing audio file: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    // Handling for other audio formats like WAV
+                    try
+                    {
+                        using (var audioFile = new AudioFileReader("file:" + msg.FilePath))
+                            PlayAudio(msg, audioFile, "xivv");
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.PluginLog.Error($"Error loading audio file: {ex.Message}");
+                    }
+                }
+            }
+            finally
             {
-                Plugin.PluginLog.Information($"SpeakLocallyAsync: found ogg path: {msg.FilePath}");
-                WaveStream waveStream = null;
-
-                // Check for audio speed adjustment or special effects
-                bool changeSpeed = this.Database.Plugin.Config.Speed != 100;
-                bool applyEffects = SoundEffects(msg) != "";
-
-
-                try
-                {
-                    // Load and possibly modify the OGG file
-                    if (changeSpeed || applyEffects)
-                        waveStream = await FFmpegFileToWaveStream(msg);
-                    else
-                        waveStream = DecodeOggOpusToPCM(msg.FilePath);
-                    PlayAudio(msg,waveStream, "xivv");
-                }
-                catch (Exception ex)
-                {
-                    Plugin.PluginLog.Error($"Error processing audio file: {ex.Message}");
-                }
+                speakBlock.Release();
             }
-            else
-            {
-                // Handling for other audio formats like WAV
-                try
-                {
-                    using (var audioFile = new AudioFileReader("file:" + msg.FilePath))
-                        PlayAudio(msg,audioFile, "xivv");
-                }
-                catch (Exception ex)
-                {
-                    Plugin.PluginLog.Error($"Error loading audio file: {ex.Message}");
-                }
-            }
-
-            speakBlock.Release();
         }
 
         public static WaveStream DecodeOggOpusToPCM(string filePath)
