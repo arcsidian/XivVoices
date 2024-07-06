@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Concentus.Structs;
 using Concentus.Oggfile;
 using Xabe.FFmpeg;
-using Dalamud.Logging;
 using Newtonsoft.Json;
 using Dalamud.Utility;
 using NAudio.Wave;
@@ -19,7 +18,7 @@ using XivVoices.LocalTTS;
 using System.Linq;
 using System.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using System.Xml.Linq;
+using System.Security.Policy;
 
 namespace XivVoices.Engine
 {
@@ -31,6 +30,7 @@ namespace XivVoices.Engine
 
         bool CheckingForNewVersion { get; set; } = false;
         private SemaphoreSlim speakBlock { get; set; }
+        private SemaphoreSlim reportBlock { get; set; }
         private Timer _updateTimer;
         private Timer _autoUpdateTimer;
 
@@ -67,6 +67,7 @@ namespace XivVoices.Engine
 
             currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             speakBlock = new SemaphoreSlim(1, 1);
+            reportBlock = new SemaphoreSlim(1, 1);
             this.Database = _database;
             this.Audio = _audio;
             this.Updater = _updater;
@@ -138,6 +139,36 @@ namespace XivVoices.Engine
         {
             if (!Active || !this.Database.Plugin.Config.Active) return;
             if (!this.Database.Plugin.Config.Initialized) return;
+
+            // Failed Reports Check
+            // TODO: if this.Database.ReportsPath folder is empty, ignore, if it's not empty, for each file, call LateReportToArcJSON() in a Task.Run
+            // LateReportToArcJSON should take two parameters, first parameter is the contents of the file, second parameter is the path of the file
+            if (Directory.Exists(this.Database.ReportsPath))
+            {
+                string[] reportFiles = Directory.GetFiles(this.Database.ReportsPath);
+                if (reportFiles.Length > 0)
+                {
+                    _ = Task.Run(async () =>
+                    {
+                        foreach (string filePath in reportFiles)
+                        {
+                            try
+                            {
+                                string url = await File.ReadAllTextAsync(filePath);
+                                await LateReportToArcJSON(url, filePath);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
+                            }
+                        }
+                    });
+                }
+            }
+
+            
+
 
             // Version Update Check
             using (var client = new HttpClient())
@@ -216,6 +247,7 @@ namespace XivVoices.Engine
         public void Dispose()
         {
             speakBlock.Dispose();
+            reportBlock.Dispose();
             StopTTS();
             _autoUpdateTimer?.Dispose();
             _autoUpdateTimer = null;
@@ -1922,35 +1954,21 @@ namespace XivVoices.Engine
 
 
         #region Reports
-        public void ReportUnprocessable(XivMessage msg)
-        {
-            if (!this.Database.Plugin.Config.Reports) return;
-            Plugin.PluginLog.Information("ReportUnprocessable");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            reports.Enqueue(new ReportXivMessage(msg, "/Unprocessable/", ""));
-        }
-
-        public void ReportError(XivMessage msg)
-        {
-            if (!this.Database.Plugin.Config.Reports) return;
-            Plugin.PluginLog.Information("ReportError");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-            reports.Enqueue(new ReportXivMessage(msg, "/Error/", ""));
-        }
 
         Queue<ReportXivMessage> reports = new Queue<ReportXivMessage>();
         public void ReportUnknown(XivMessage msg)
         {
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+
             if (!this.Database.Plugin.Config.Reports) return;
             Plugin.PluginLog.Information("ReportUnknown");
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            
             if(Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 
         public void ReportDifferent(XivMessage msg)
         {
-            
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
 
             if (Database.Access)
@@ -1965,7 +1983,6 @@ namespace XivVoices.Engine
             }
 
             if (!this.Database.Plugin.Config.Reports) return;
-
             Plugin.PluginLog.Information("ReportDifferent");
             reports.Enqueue(new ReportXivMessage(msg, "different", ""));
         }
@@ -1973,11 +1990,13 @@ namespace XivVoices.Engine
         public void ReportMuteToArc(XivMessage msg, string input)
         {
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+
             if (input.IsNullOrEmpty())
             {
                 this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
                 return;
             }
+
             Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "mute", input));
@@ -1986,11 +2005,13 @@ namespace XivVoices.Engine
         public void ReportRedoToArc(XivMessage msg, string input)
         {
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+
             if(input.IsNullOrEmpty())
             {
                 this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
                 return;
             }
+
             Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));
@@ -2013,70 +2034,66 @@ namespace XivVoices.Engine
             }
 
             if (!this.Database.Plugin.Config.Reports) return;
-            
-
             Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
         }
 
-        bool reportToArcJSONBusy = false;
+        private readonly HttpClient client = new HttpClient();
         public async Task ReportToArcJSON(XivMessage xivMessage, string folder, string comment)
         {
             if (!this.Database.Plugin.Config.Reports) return;
-            string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
-            xivMessage.Sentence = xivMessage.TtsData.Message;
-            xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
-            if (fullname.Length > 1)
+
+            await reportBlock.WaitAsync();
+            try
             {
-                xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
-            }
+                string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
+                xivMessage.Sentence = xivMessage.TtsData.Message;
+                xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
+                if (fullname.Length > 1)
+                {
+                    xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
+                }
 
-
-            while (reportToArcJSONBusy && Database.Data["voices"] != "0")
-                await Task.Delay(500);
-
-            reportToArcJSONBusy = true;
-            ReportData reportData = new ReportData
-            {
-                speaker = xivMessage.Speaker,
-                sentence = xivMessage.Sentence,
-                npcid = xivMessage.NpcId,
-                skeletonid = xivMessage.TtsData.SkeletonID,
-                body = xivMessage.TtsData.Body,
-                gender = xivMessage.TtsData.Gender,
-                race = xivMessage.TtsData.Race,
-                tribe = xivMessage.TtsData.Tribe,
-                eyes = xivMessage.TtsData.Eyes,
-                folder = folder,
-                user = xivMessage.TtsData.User,
-                comment = comment
-            };
-
-            string jsonContent = JsonConvert.SerializeObject(reportData);
-            string url = "https://arcsidian.com/report_to_arc.php";
-
-            using (HttpClient client = new HttpClient())
-            {
-                HttpContent content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
+                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}";
 
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync(url, content);
-
-                    if (response.IsSuccessStatusCode)
-                        Plugin.PluginLog.Information("Report uploaded successfully.");
-                    else
-                        Plugin.PluginLog.Error($"Error uploading Report: {response.StatusCode}");
+                    HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
                 }
-                catch (Exception ex)
+                catch (HttpRequestException e)
                 {
-                    Plugin.PluginLog.Error($"Exception when uploading Report: {ex.Message}");
+                    XivEngine.Instance.Database.Plugin.PrintError("Report failed, saving it Reports folder to be automatically sent later.");
+                    Directory.CreateDirectory(this.Database.ReportsPath);
+                    string fileName = Path.Combine(this.Database.ReportsPath, $"{xivMessage.Speaker}_{new Random().Next(10000, 99999)}.txt");
+                    await File.WriteAllTextAsync(fileName, url);
                 }
             }
+            finally
+            {
+                reportBlock.Release();
+            }
+            
+        }
 
-            reportToArcJSONBusy = false;
-            return;
+        public async Task LateReportToArcJSON(string url, string path)
+        {
+            if (!this.Database.Plugin.Config.Reports) return;
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
+                response.EnsureSuccessStatusCode();
+                string responseBody = await response.Content.ReadAsStringAsync();
+                XivEngine.Instance.Database.Plugin.Print(responseBody);
+                File.Delete(path);
+                return;
+            }
+            catch (HttpRequestException e)
+            {
+                return;
+            }
         }
         #endregion
 

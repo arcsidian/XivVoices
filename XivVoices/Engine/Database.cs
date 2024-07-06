@@ -9,13 +9,10 @@ using System.Text.RegularExpressions;
 using Directory = System.IO.Directory;
 using File = System.IO.File;
 using Dalamud.Plugin;
-using Dalamud.Logging;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Net.Http;
-using Xabe.FFmpeg;
 using Dalamud.Utility;
-using System.Security.Policy;
 
 namespace XivVoices.Engine
 {
@@ -30,6 +27,7 @@ namespace XivVoices.Engine
         public string RootPath { get; set; }
         public string DirectoryPath { get; set; }
         public string VoiceFilesPath { get { return Path.Combine(DirectoryPath, "Data"); } }
+        public string ReportsPath { get { return Path.Combine(DirectoryPath, "Reports"); } }
         public string ToolsPath { get { return "C:/XIV_Voices/Tools";  } }
         public string Firstname { get; } = "_FIRSTNAME_";
         public string Lastname { get; } = "_LASTNAME_";
@@ -434,8 +432,8 @@ namespace XivVoices.Engine
             if (Data == null)
             {
                 Data = new Dictionary<string, string>();
-                Data["voices"] = "0";
-                Data["npcs"] = "0";
+                Data["voices"] = "000000";
+                Data["npcs"] = "0000";
                 Data["actors"] = "0";
                 await ReloadAndUpdateData();
             }
@@ -746,13 +744,13 @@ namespace XivVoices.Engine
             if (!Directory.Exists(actorDirectory))
             {
                 Directory.CreateDirectory(actorDirectory);
-                Data["actors"] = (int.Parse(Data["actors"]) + 1).ToString();
+                Data["actors"] = (int.Parse(Data["actors"]) + 1).ToString("000");
             }
 
             if (!Directory.Exists(speakerDirectory))
             {
                 Directory.CreateDirectory(speakerDirectory);
-                Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
+                Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString("0000");
             }
 
             try
@@ -762,7 +760,7 @@ namespace XivVoices.Engine
                 Plugin.PluginLog.Information("MP3 file written successfully to path: " + filePath);
                 if (!fileExistedBefore)
                 {
-                    Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
+                    Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString("000000");
                 }
 
                 // Save JSON Data for this MP3
@@ -813,9 +811,9 @@ namespace XivVoices.Engine
                     _voices += Directory.GetFiles(voiceDirectory, "*.ogg").Length;
                 }
             }
-            Data["voices"] = _voices.ToString();
-            Data["npcs"] = _npcs.ToString();
-            Data["actors"] = _actors.ToString();
+            Data["voices"] = _voices.ToString("000000");
+            Data["npcs"] = _npcs.ToString("0000");
+            Data["actors"] = _actors.ToString("000");
             await WriteJSON(DirectoryPath + "/Data.json", Data);
         }
 
@@ -1134,12 +1132,23 @@ namespace XivVoices.Engine
             else
                 return sentence;
         }
+
+        public string GetDataSource()
+        {
+            return NpcData["Arc Data 1"].Gender + "://" + NpcData["Arc Data 1"].Race + "." + NpcData["Arc Data 1"].Tribe + '/' + NpcData["Arc Data 1"].Body + '.' + NpcData["Arc Data 1"].Eyes;
+        }
+
+        public string GetReportSource()
+        {
+            return NpcData["Arc Data 1"].Gender + "://" + NpcData["Arc Data 1"].Race + "." + NpcData["Arc Data 1"].Tribe + "/report." + NpcData["Arc Data 1"].Eyes;
+        }
         #endregion
 
 
         #region Access
         private readonly HttpClient client = new HttpClient();
         private string previousPath = "";
+
         public async Task Request(XivMessage xivMessage, string id)
         {
             RequestBusy = true;
@@ -1264,7 +1273,7 @@ namespace XivVoices.Engine
                     if (!Directory.Exists(directoryPath))
                     {
                         Directory.CreateDirectory(directoryPath);
-                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
+                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString("0000");
                     }
                     await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
                     var jsondata = new Dictionary<string, string>
@@ -1276,7 +1285,7 @@ namespace XivVoices.Engine
                     string directory = Path.Combine(Path.GetDirectoryName(xivMessage.FilePath), Path.GetFileNameWithoutExtension(xivMessage.FilePath));
                     await WriteJSON(directory + ".json", jsondata);
                     XivEngine.Instance.Database.Plugin.Print("Generated line completed.");
-                    Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
+                    Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString("000000");
                     XivEngine.Instance.SpeakLocallyAsync(xivMessage);
                     await WriteJSON(DirectoryPath + "/Data.json", Data);
 
@@ -1302,7 +1311,7 @@ namespace XivVoices.Engine
                             if (!Directory.Exists(directoryPath))
                             {
                                 Directory.CreateDirectory(directoryPath);
-                                Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
+                                Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString("0000");
                             }
                             await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
                             var jsondata = new Dictionary<string, string>
@@ -1315,7 +1324,7 @@ namespace XivVoices.Engine
                             await WriteJSON(directory + ".json", jsondata);
 
                             XivEngine.Instance.Database.Plugin.Print("Line downloaded.");
-                            Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
+                            Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString("000000");
                             XivEngine.Instance.SpeakLocallyAsync(xivMessage);
                             await WriteJSON(DirectoryPath + "/Data.json", Data);
 
@@ -1377,8 +1386,7 @@ namespace XivVoices.Engine
             xivMessage.FilePath = GetFilePath(xivMessage);
             string fileName = Path.GetFileName(xivMessage.FilePath);
 
-            string data = NpcData["Arc Data 1"].Gender + "://" + NpcData["Arc Data 1"].Race + "." + NpcData["Arc Data 1"].Tribe + '/' + NpcData["Arc Data 1"].Body + '.' + NpcData["Arc Data 1"].Eyes;
-            string url = $"{data}?user={xivMessage.TtsData.User}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Get&filename={Uri.EscapeDataString(fileName)}";
+            string url = $"{GetDataSource()}?user={xivMessage.TtsData.User}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Get&filename={Uri.EscapeDataString(fileName)}";
 
             try
             {
@@ -1395,7 +1403,7 @@ namespace XivVoices.Engine
                     if (!Directory.Exists(directoryPath))
                     {
                         Directory.CreateDirectory(directoryPath);
-                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
+                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString("0000");
                     }
                     await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
                     var jsondata = new Dictionary<string, string>
@@ -1408,7 +1416,7 @@ namespace XivVoices.Engine
                     await WriteJSON(directory + ".json", jsondata);
 
                     XivEngine.Instance.Database.Plugin.Print("Line downloaded.");
-                    Data["voices"] = (int.Parse(Data["voices"])+1).ToString();
+                    Data["voices"] = (int.Parse(Data["voices"])+1).ToString("000000");
                     XivEngine.Instance.SpeakLocallyAsync(xivMessage);
                     await WriteJSON(DirectoryPath + "/Data.json", Data);
                 }
@@ -1664,6 +1672,8 @@ namespace XivVoices.Engine
                 XivEngine.Instance.AddToQueue(xivMessage);
             }
         }
+
+
 
         #endregion
     }

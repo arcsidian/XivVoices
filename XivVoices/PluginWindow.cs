@@ -107,6 +107,8 @@ namespace XivVoices {
                     else
                     {
                         var backupColor = ImGui.GetStyle().Colors[(int)ImGuiCol.Button];
+
+
                         ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = new Vector4(0, 0, 0, 0);
 
                         // Floating Button ----------------------------------
@@ -128,7 +130,6 @@ namespace XivVoices {
                                 ImGui.SetTooltip("Changelog");
                         }
                         ImGui.SetCursorPos(originPos);
-                        // Floating Button ----------------------------------
 
                         // The sidebar with the tab buttons
                         ImGui.BeginChild("Sidebar", new Vector2(50, 500), false);
@@ -540,100 +541,112 @@ namespace XivVoices {
         }
 
         private void DrawGeneral() {
-            ImGui.Dummy(new Vector2(0, 10));
-            ImGui.Indent(60);
-            
-            if (this.PluginReference.Logo != null)
+            ImGui.Unindent(8);
+            if (ImGui.BeginChild("ScrollingRegion", new Vector2(360, -1), false, ImGuiWindowFlags.NoScrollbar))
+            {
+                ImGui.Columns(2, "ScrollingRegionColumns", false);
+                ImGui.SetColumnWidth(0, 350);
+
+                // START
+
+                ImGui.Dummy(new Vector2(0, 10));
+                ImGui.Indent(60);
+
                 ImGui.Image(this.PluginReference.Logo.RentAsync().Result.ImGuiHandle, new Vector2(200, 200));
-            else
-                ImGui.Dummy(new Vector2(200, 200));
 
-            // Working Directory
-            ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
-            ImGui.Dummy(new Vector2(0, 10));
+                // Working Directory
+                ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
+                ImGui.Dummy(new Vector2(0, 10));
 
-            // Data
-            ImGui.Indent(10);
-            ImGui.TextWrapped("NPCs:");
-            ImGui.SameLine();
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
-            ImGui.TextWrapped(XivEngine.Instance.Database.Data["npcs"]);
-            ImGui.PopStyleColor();
-            ImGui.SameLine();
+                // Data
+                ImGui.Indent(10);
+                ImGui.TextWrapped("NPCs:");
+                ImGui.SameLine();
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
+                ImGui.TextWrapped(XivEngine.Instance.Database.Data["npcs"]);
+                ImGui.PopStyleColor();
+                ImGui.SameLine();
 
-            ImGui.TextWrapped(" Voices:");
-            ImGui.SameLine();
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
-            ImGui.TextWrapped(XivEngine.Instance.Database.Data["voices"]);
-            ImGui.PopStyleColor();
+                ImGui.TextWrapped(" Voices:");
+                ImGui.SameLine();
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.0f, 1.0f, 0.0f, 1.0f)); // Green color
+                ImGui.TextWrapped(XivEngine.Instance.Database.Data["voices"]);
+                ImGui.PopStyleColor();
 
-            // Update Button
-            ImGui.Unindent(70);
-            ImGui.Dummy(new Vector2(0, 10));
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1.0f)); // Gray color
-            if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(336, 60)))
-            {
-                Updater.Instance.Check();
+                // Update Button
+                ImGui.Unindent(70);
+                ImGui.Dummy(new Vector2(0, 10));
+                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1.0f)); // Gray color
+                if (ImGui.Button("Click here to download the latest Voice Files", new Vector2(336, 60)))
+                {
+                    Updater.Instance.Check();
+                }
+                ImGui.PopStyleColor();
+
+                // Xiv Voices Enabled
+                ImGui.Dummy(new Vector2(0, 15));
+                var activeValue = this.Configuration.Active;
+                if (ImGui.Checkbox("##xivVoicesActive", ref activeValue))
+                {
+                    this.configuration.Active = activeValue;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Xiv Voices Enabled");
+
+                // Auto Update Enabled
+                ImGui.Dummy(new Vector2(0, 8));
+                var autoUpdate = this.Configuration.AutoUpdate;
+                if (ImGui.Checkbox("##autoUpdate", ref autoUpdate))
+                {
+                    this.configuration.AutoUpdate = autoUpdate;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Auto Update Enabled");
+
+                // Update Audio Notification Enabled
+                ImGui.Dummy(new Vector2(0, 8));
+                var updateAudioNotification = this.Configuration.UpdateAudioNotification;
+                if (ImGui.Checkbox("##updateAudioNotification", ref updateAudioNotification))
+                {
+                    this.configuration.UpdateAudioNotification = updateAudioNotification;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("New Update Audio Notification Enabled");
+
+                // OnlineRequests
+                ImGui.Dummy(new Vector2(0, 8));
+                var onlineRequests = this.Configuration.OnlineRequests;
+                if (ImGui.Checkbox("##onlineRequests", ref onlineRequests))
+                {
+                    this.configuration.OnlineRequests = onlineRequests;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Download missing lines individually if they exist");
+
+                // Xiv Voices Enabled
+                ImGui.Dummy(new Vector2(0, 8));
+                var reports = this.Configuration.Reports;
+                if (ImGui.Checkbox("##reports", ref reports))
+                {
+                    this.configuration.Reports = reports;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Report Missing Dialogues Automatically");
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
+                ImGui.Text("( English lines only, do not enable for other languages )");
+                ImGui.PopStyleColor();
+
+
+                // END
+
+                ImGui.Columns(1);
             }
-            ImGui.PopStyleColor();
-
-            // Xiv Voices Enabled
-            ImGui.Dummy(new Vector2(0, 15));
-            var activeValue = this.Configuration.Active;
-            if (ImGui.Checkbox("##xivVoicesActive", ref activeValue)){
-                this.configuration.Active = activeValue;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Xiv Voices Enabled");
-
-            // Auto Update Enabled
-            ImGui.Dummy(new Vector2(0, 8));
-            var autoUpdate = this.Configuration.AutoUpdate;
-            if (ImGui.Checkbox("##autoUpdate", ref autoUpdate))
-            {
-                this.configuration.AutoUpdate = autoUpdate;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Auto Update Enabled");
-
-            // Update Audio Notification Enabled
-            ImGui.Dummy(new Vector2(0, 8));
-            var updateAudioNotification = this.Configuration.UpdateAudioNotification;
-            if (ImGui.Checkbox("##updateAudioNotification", ref updateAudioNotification))
-            {
-                this.configuration.UpdateAudioNotification = updateAudioNotification;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("New Update Audio Notification Enabled");
-
-            // OnlineRequests
-            ImGui.Dummy(new Vector2(0, 8));
-            var onlineRequests = this.Configuration.OnlineRequests;
-            if (ImGui.Checkbox("##onlineRequests", ref onlineRequests))
-            {
-                this.configuration.OnlineRequests = onlineRequests;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Download missing lines individually if they exist");
-
-            // Xiv Voices Enabled
-            ImGui.Dummy(new Vector2(0, 8));
-            var reports = this.Configuration.Reports;
-            if (ImGui.Checkbox("##reports", ref reports))
-            {
-                this.configuration.Reports = reports;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Report Missing Dialogues Automatically");
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
-            ImGui.Text("( English lines only, do not enable for other languages )");
-            ImGui.PopStyleColor();
-
+            ImGui.Indent(8);
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
@@ -645,120 +658,128 @@ namespace XivVoices {
 
         private void DrawSettings() {
 
-            // Chat Settings ----------------------------------------------
-            ImGui.Dummy(new Vector2(0, 10));
-            ImGui.TextWrapped("Chat Settings");
-            ImGui.Dummy(new Vector2(0, 10));
-
-
-            // SayEnabled
-            var sayEnabled = this.Configuration.SayEnabled;
-            if (ImGui.Checkbox("##sayEnabled", ref sayEnabled))
+            ImGui.Unindent(8);
+            if (ImGui.BeginChild("ScrollingRegion", new Vector2(360, -1), false, ImGuiWindowFlags.NoScrollbar))
             {
-                this.configuration.SayEnabled = sayEnabled;
-                needSave = true;
+                ImGui.Columns(2, "ScrollingRegionColumns", false);
+                ImGui.SetColumnWidth(0, 350);
 
-            };
-            ImGui.SameLine();
-            ImGui.Text("Say Enabled");
+                // START
 
-            // TellEnabled
-            var tellEnabled = this.Configuration.TellEnabled;
-            if (ImGui.Checkbox("##tellEnabled", ref tellEnabled))
-            {
-                this.configuration.TellEnabled = tellEnabled;
-                needSave = true;
+                // Chat Settings ----------------------------------------------
+                ImGui.Dummy(new Vector2(0, 10));
+                ImGui.TextWrapped("Chat Settings");
+                ImGui.Dummy(new Vector2(0, 10));
 
-            };
-            ImGui.SameLine();
-            ImGui.Text("Tell Enabled");
 
-            // ShoutEnabled
-            var shoutEnabled = this.Configuration.ShoutEnabled;
-            if (ImGui.Checkbox("##shoutEnabled", ref shoutEnabled))
-            {
-                this.configuration.ShoutEnabled = shoutEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Shout/Yell Enabled");
+                // SayEnabled
+                var sayEnabled = this.Configuration.SayEnabled;
+                if (ImGui.Checkbox("##sayEnabled", ref sayEnabled))
+                {
+                    this.configuration.SayEnabled = sayEnabled;
+                    needSave = true;
 
-            // PartyEnabled
-            var partyEnabled = this.Configuration.PartyEnabled;
-            if (ImGui.Checkbox("##partyEnabled", ref partyEnabled))
-            {
-                this.configuration.PartyEnabled = partyEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Party Enabled");
+                };
+                ImGui.SameLine();
+                ImGui.Text("Say Enabled");
 
-            // AllianceEnabled
-            var allianceEnabled = this.Configuration.AllianceEnabled;
-            if (ImGui.Checkbox("##allianceEnabled", ref allianceEnabled))
-            {
-                this.configuration.AllianceEnabled = allianceEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Alliance Enabled");
+                // TellEnabled
+                var tellEnabled = this.Configuration.TellEnabled;
+                if (ImGui.Checkbox("##tellEnabled", ref tellEnabled))
+                {
+                    this.configuration.TellEnabled = tellEnabled;
+                    needSave = true;
 
-            // FreeCompanyEnabled
-            var freeCompanyEnabled = this.Configuration.FreeCompanyEnabled;
-            if (ImGui.Checkbox("##freeCompanyEnabled", ref freeCompanyEnabled))
-            {
-                this.configuration.FreeCompanyEnabled = freeCompanyEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Free Company Enabled");
+                };
+                ImGui.SameLine();
+                ImGui.Text("Tell Enabled");
 
-            // LinkshellEnabled
-            var linkshellEnabled = this.Configuration.LinkshellEnabled;
-            if (ImGui.Checkbox("##linkshellEnabled", ref linkshellEnabled))
-            {
-                this.configuration.LinkshellEnabled = linkshellEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Linkshell Enabled");
+                // ShoutEnabled
+                var shoutEnabled = this.Configuration.ShoutEnabled;
+                if (ImGui.Checkbox("##shoutEnabled", ref shoutEnabled))
+                {
+                    this.configuration.ShoutEnabled = shoutEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Shout/Yell Enabled");
 
-            // BattleDialoguesEnabled
-            var battleDialoguesEnabled = this.Configuration.BattleDialoguesEnabled;
-            if (ImGui.Checkbox("##battleDialoguesEnabled", ref battleDialoguesEnabled))
-            {
-                this.configuration.BattleDialoguesEnabled = battleDialoguesEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Battle Dialogues Enabled");
+                // PartyEnabled
+                var partyEnabled = this.Configuration.PartyEnabled;
+                if (ImGui.Checkbox("##partyEnabled", ref partyEnabled))
+                {
+                    this.configuration.PartyEnabled = partyEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Party Enabled");
 
-            // RetainersEnabled
-            var retainersEnabled = this.Configuration.RetainersEnabled;
-            if (ImGui.Checkbox("##retainersEnabled", ref retainersEnabled))
-            {
-                this.configuration.RetainersEnabled = retainersEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Retainers Enabled");
+                // AllianceEnabled
+                var allianceEnabled = this.Configuration.AllianceEnabled;
+                if (ImGui.Checkbox("##allianceEnabled", ref allianceEnabled))
+                {
+                    this.configuration.AllianceEnabled = allianceEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Alliance Enabled");
 
-            // Bubble Settings ----------------------------------------------
-            ImGui.Dummy(new Vector2(0, 10));
-            ImGui.TextWrapped("Bubble Settings");
-            ImGui.Dummy(new Vector2(0, 10));
+                // FreeCompanyEnabled
+                var freeCompanyEnabled = this.Configuration.FreeCompanyEnabled;
+                if (ImGui.Checkbox("##freeCompanyEnabled", ref freeCompanyEnabled))
+                {
+                    this.configuration.FreeCompanyEnabled = freeCompanyEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Free Company Enabled");
 
-            // BubblesEnabled
-            var bubblesEnabled = this.Configuration.BubblesEnabled;
-            if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
-            {
-                this.configuration.BubblesEnabled = bubblesEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Chat Bubbles Enabled");
+                // LinkshellEnabled
+                var linkshellEnabled = this.Configuration.LinkshellEnabled;
+                if (ImGui.Checkbox("##linkshellEnabled", ref linkshellEnabled))
+                {
+                    this.configuration.LinkshellEnabled = linkshellEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Linkshell Enabled");
 
-            ImGui.Indent(28);
+                // BattleDialoguesEnabled
+                var battleDialoguesEnabled = this.Configuration.BattleDialoguesEnabled;
+                if (ImGui.Checkbox("##battleDialoguesEnabled", ref battleDialoguesEnabled))
+                {
+                    this.configuration.BattleDialoguesEnabled = battleDialoguesEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Battle Dialogues Enabled");
+
+                // RetainersEnabled
+                var retainersEnabled = this.Configuration.RetainersEnabled;
+                if (ImGui.Checkbox("##retainersEnabled", ref retainersEnabled))
+                {
+                    this.configuration.RetainersEnabled = retainersEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Retainers Enabled");
+
+                // Bubble Settings ----------------------------------------------
+                ImGui.Dummy(new Vector2(0, 10));
+                ImGui.TextWrapped("Bubble Settings");
+                ImGui.Dummy(new Vector2(0, 10));
+
+                // BubblesEnabled
+                var bubblesEnabled = this.Configuration.BubblesEnabled;
+                if (ImGui.Checkbox("##bubblesEnabled", ref bubblesEnabled))
+                {
+                    this.configuration.BubblesEnabled = bubblesEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Chat Bubbles Enabled");
+
+                ImGui.Indent(28);
                 var nullcheck = false;
                 // BubblesEverywhere
                 var bubblesEverywhere = this.Configuration.BubblesEverywhere;
@@ -786,7 +807,7 @@ namespace XivVoices {
                 {
                     if (ImGui.Checkbox("##bubblesOutOfBattlesOnly", ref bubblesOutOfBattlesOnly))
                     {
-                        if(bubblesOutOfBattlesOnly)
+                        if (bubblesOutOfBattlesOnly)
                         {
                             this.configuration.BubblesEverywhere = !bubblesOutOfBattlesOnly;
                             this.configuration.BubblesInSafeZones = bubblesOutOfBattlesOnly;
@@ -831,44 +852,52 @@ namespace XivVoices {
                 ImGui.Text("Print Bubbles in Chat");
 
 
-            ImGui.Unindent(28);
+                ImGui.Unindent(28);
 
-            // Other Settings ----------------------------------------------
+                // Other Settings ----------------------------------------------
 
-            ImGui.Dummy(new Vector2(0, 10));
-            ImGui.TextWrapped("Other Settings");
-            ImGui.Dummy(new Vector2(0, 10));
+                ImGui.Dummy(new Vector2(0, 10));
+                ImGui.TextWrapped("Other Settings");
+                ImGui.Dummy(new Vector2(0, 10));
 
-            // ReplaceVoicedARRCutscenes
-            var replaceVoicedARRCutscenes = this.Configuration.ReplaceVoicedARRCutscenes;
-            if (ImGui.Checkbox("##replaceVoicedARRCutscenes", ref replaceVoicedARRCutscenes))
-            {
-                this.configuration.ReplaceVoicedARRCutscenes = replaceVoicedARRCutscenes;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Replace ARR Cutscenes");
+                // ReplaceVoicedARRCutscenes
+                var replaceVoicedARRCutscenes = this.Configuration.ReplaceVoicedARRCutscenes;
+                if (ImGui.Checkbox("##replaceVoicedARRCutscenes", ref replaceVoicedARRCutscenes))
+                {
+                    this.configuration.ReplaceVoicedARRCutscenes = replaceVoicedARRCutscenes;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Replace ARR Cutscenes");
 
-            // SkipEnabled
-            var skipEnabled = this.Configuration.SkipEnabled;
-            if (ImGui.Checkbox("##interruptEnabled", ref skipEnabled))
-            {
-                this.configuration.SkipEnabled = skipEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Dialogue Skip Enabled");
+                // SkipEnabled
+                var skipEnabled = this.Configuration.SkipEnabled;
+                if (ImGui.Checkbox("##interruptEnabled", ref skipEnabled))
+                {
+                    this.configuration.SkipEnabled = skipEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Dialogue Skip Enabled");
 
-            // AnnounceReports
-            var announceReports = this.Configuration.AnnounceReports;
-            if (ImGui.Checkbox("##announceReports", ref announceReports))
-            {
-                this.configuration.AnnounceReports = announceReports;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Announce Reported Lines");
+                // AnnounceReports
+                var announceReports = this.Configuration.AnnounceReports;
+                if (ImGui.Checkbox("##announceReports", ref announceReports))
+                {
+                    this.configuration.AnnounceReports = announceReports;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Announce Reported Lines");
 
+
+                // END
+
+                ImGui.Columns(1);
+            }
+            ImGui.Indent(8);
+
+            
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
@@ -881,124 +910,140 @@ namespace XivVoices {
 
         private void AudioSettings()
         {
-            // Mute Button -----------------------------------------------
-
-            ImGui.Dummy(new Vector2(0, 20));
-            var mute = this.Configuration.Mute;
-            if (ImGui.Checkbox("##mute", ref mute))
+            ImGui.Unindent(8);
+            if (ImGui.BeginChild("ScrollingRegion", new Vector2(360, -1), false, ImGuiWindowFlags.NoScrollbar))
             {
-                this.configuration.Mute = mute;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Mute Enabled");
+                ImGui.Columns(2, "ScrollingRegionColumns", false);
+                ImGui.SetColumnWidth(0, 350);
 
-            // Lipsync Enabled -----------------------------------------------
-            ImGui.Dummy(new Vector2(0, 10));
-            var lipsyncEnabled = this.Configuration.LipsyncEnabled;
-            if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
-            {
-                this.configuration.LipsyncEnabled = lipsyncEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Lipsync Enabled");
+                // START
 
-            // Volume Slider ---------------------------------------------
+                // Mute Button -----------------------------------------------
 
-            ImGui.Dummy(new Vector2(0, 20));
-            ImGui.TextWrapped("Volume Control");
-            int volume = this.Configuration.Volume;
-            if (ImGui.SliderInt("##volumeSlider", ref volume, 0, 100, volume.ToString()))
-            {
-                this.Configuration.Volume = volume;
-                needSave = true;
+                ImGui.Dummy(new Vector2(0, 20));
+                var mute = this.Configuration.Mute;
+                if (ImGui.Checkbox("##mute", ref mute))
+                {
+                    this.configuration.Mute = mute;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Mute Enabled");
+
+                // Lipsync Enabled -----------------------------------------------
+                ImGui.Dummy(new Vector2(0, 10));
+                var lipsyncEnabled = this.Configuration.LipsyncEnabled;
+                if (ImGui.Checkbox("##lipsyncEnabled", ref lipsyncEnabled))
+                {
+                    this.configuration.LipsyncEnabled = lipsyncEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Lipsync Enabled");
+
+                // Volume Slider ---------------------------------------------
+
+                ImGui.Dummy(new Vector2(0, 20));
+                ImGui.TextWrapped("Volume Control");
+                int volume = this.Configuration.Volume;
+                if (ImGui.SliderInt("##volumeSlider", ref volume, 0, 100, volume.ToString()))
+                {
+                    this.Configuration.Volume = volume;
+                    needSave = true;
+                }
+                ImGui.SameLine();
+                ImGui.Text("Volume");
+
+                // Speed Slider ---------------------------------------------
+
+                ImGui.Dummy(new Vector2(0, 20));
+                ImGui.TextWrapped("Speed Control");
+                int speed = this.Configuration.Speed;
+                if (ImGui.SliderInt("##speedSlider", ref speed, 75, 150, speed.ToString()))
+                {
+                    this.Configuration.Speed = speed;
+                    needSave = true;
+                }
+                ImGui.SameLine();
+                ImGui.Text("Speed");
+
+                // Playback Engine  ---------------------------------------------
+                ImGui.Dummy(new Vector2(0, 20));
+                ImGui.TextWrapped("Playback Engine");
+                string[] audioEngines = new string[] { "DirectSound", "Wasapi", "WaveOut" };
+                int currentEngine = this.Configuration.AudioEngine - 1;
+
+                if (ImGui.Combo("##audioEngine", ref currentEngine, audioEngines, audioEngines.Length))
+                {
+                    this.Configuration.AudioEngine = currentEngine + 1;
+                    needSave = true;
+                }
+                ImGui.SameLine();
+                ImGui.Text("Engine");
+
+
+                // Speed Slider ---------------------------------------------
+
+                ImGui.Dummy(new Vector2(0, 30));
+                ImGui.Unindent(15);
+                ImGui.Separator();
+                ImGui.Indent(15);
+
+                // Local AI Settings Settings ----------------------------------------------
+
+                ImGui.Dummy(new Vector2(0, 20));
+                var localTTSEnabled = this.Configuration.LocalTTSEnabled;
+                if (ImGui.Checkbox("##localTTSEnabled", ref localTTSEnabled))
+                {
+                    this.configuration.LocalTTSEnabled = localTTSEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Local TTS Enabled");
+
+                ImGui.Indent(20);
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.Text("Local TTS Ungendered Voice:");
+                ImGui.SameLine();
+                var localTTSUngendered = this.Configuration.LocalTTSUngendered;
+                string[] genders = { "Male", "Female" };
+                ImGui.SetNextItemWidth(129);
+                if (ImGui.Combo("##localTTSUngendered", ref localTTSUngendered, genders, genders.Length))
+                {
+                    this.Configuration.LocalTTSUngendered = localTTSUngendered;
+                    needSave = true;
+                }
+
+
+                // LocalTTS Volume Slider
+                ImGui.Dummy(new Vector2(0, 5));
+                ImGui.Text("Volume:");
+                ImGui.SameLine();
+                int localTTSVolume = this.Configuration.LocalTTSVolume;
+                if (ImGui.SliderInt("##localTTSVolumeSlider", ref localTTSVolume, 0, 100, localTTSVolume.ToString()))
+                {
+                    this.Configuration.LocalTTSVolume = localTTSVolume;
+                    needSave = true;
+                }
+
+                ImGui.Dummy(new Vector2(0, 5));
+                var localTTSPlayerSays = this.Configuration.LocalTTSPlayerSays;
+                if (ImGui.Checkbox("##localTTSPlayerSays", ref localTTSPlayerSays))
+                {
+                    this.configuration.LocalTTSPlayerSays = localTTSPlayerSays;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Say Speaker Name in Chat");
+                ImGui.Unindent(20);
+
+
+                // END
+
+                ImGui.Columns(1);
             }
-            ImGui.SameLine();
-            ImGui.Text("Volume");
+            ImGui.Indent(8);
 
-            // Speed Slider ---------------------------------------------
-
-            ImGui.Dummy(new Vector2(0, 20));
-            ImGui.TextWrapped("Speed Control");
-            int speed = this.Configuration.Speed;
-            if (ImGui.SliderInt("##speedSlider", ref speed, 75, 150, speed.ToString()))
-            {
-                this.Configuration.Speed = speed;
-                needSave = true;
-            }
-            ImGui.SameLine();
-            ImGui.Text("Speed");
-
-            // Playback Engine  ---------------------------------------------
-            ImGui.Dummy(new Vector2(0, 20));
-            ImGui.TextWrapped("Playback Engine");
-            string[] audioEngines = new string[] { "DirectSound", "Wasapi", "WaveOut" }; 
-            int currentEngine = this.Configuration.AudioEngine - 1;
-
-            if (ImGui.Combo("##audioEngine", ref currentEngine, audioEngines, audioEngines.Length))
-            {
-                this.Configuration.AudioEngine = currentEngine + 1;
-                needSave = true;
-            }
-            ImGui.SameLine();
-            ImGui.Text("Engine");
-
-
-            // Speed Slider ---------------------------------------------
-
-            ImGui.Dummy(new Vector2(0, 30));
-            ImGui.Unindent(15);
-            ImGui.Separator();
-            ImGui.Indent(15);
-
-            // Local AI Settings Settings ----------------------------------------------
-
-            ImGui.Dummy(new Vector2(0, 20));
-            var localTTSEnabled = this.Configuration.LocalTTSEnabled;
-            if (ImGui.Checkbox("##localTTSEnabled", ref localTTSEnabled))
-            {
-                this.configuration.LocalTTSEnabled = localTTSEnabled;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Local TTS Enabled");
-
-            ImGui.Indent(20);
-            ImGui.Dummy(new Vector2(0, 5));
-            ImGui.Text("Local TTS Ungendered Voice:");
-            ImGui.SameLine();
-            var localTTSUngendered = this.Configuration.LocalTTSUngendered;
-            string[] genders = { "Male", "Female" };
-            ImGui.SetNextItemWidth(129);
-            if (ImGui.Combo("##localTTSUngendered", ref localTTSUngendered, genders, genders.Length))
-            {
-                this.Configuration.LocalTTSUngendered = localTTSUngendered;
-                needSave = true;
-            }
-            
-
-            // LocalTTS Volume Slider
-            ImGui.Dummy(new Vector2(0, 5));
-            ImGui.Text("Volume:");
-            ImGui.SameLine();
-            int localTTSVolume = this.Configuration.LocalTTSVolume;
-            if (ImGui.SliderInt("##localTTSVolumeSlider", ref localTTSVolume, 0, 100, localTTSVolume.ToString()))
-            {
-                this.Configuration.LocalTTSVolume = localTTSVolume;
-                needSave = true;
-            }
-
-            ImGui.Dummy(new Vector2(0, 5));
-            var localTTSPlayerSays = this.Configuration.LocalTTSPlayerSays;
-            if (ImGui.Checkbox("##localTTSPlayerSays", ref localTTSPlayerSays))
-            {
-                this.configuration.LocalTTSPlayerSays = localTTSPlayerSays;
-                needSave = true;
-            };
-            ImGui.SameLine();
-            ImGui.Text("Say Speaker Name in Chat");
-            ImGui.Unindent(20);
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
@@ -1289,24 +1334,33 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("To ensure that users get the latest Dawntail voice lines as early as possible without waiting for the next update, an option has been added to allow users to automatically download and play any missing line they encounter that exists in the server but does not exist in their computer yet. You can enable this feature by checking \"Download missing lines indiviually\" in the General Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Reports have been restructured in order to ensure a better and faster experience.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue in the UI where buttons may not be as clickable as they used to be pre-Dawntrail.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: reports and http requests will no longer cause users to crash randomly in rare instances.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.7", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Data with more Dawntrail NPCs.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.6", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Data with more Dawntrail NPCs.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
                     ImGui.Bullet(); ImGui.TextWrapped("Minor Bugfixes.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.5", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Further Dawntrail Optimizations.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.4", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Lipsync is back!");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved Lipsync animations to fit more variaties of dialogues long and short.");
@@ -1336,136 +1390,27 @@ namespace XivVoices {
 
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.7.9"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Redo and Mute Reports menu and added more context.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing and added more shortcuts.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.8"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing to fit names such as \"Light\" and \"Darkness\".");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated dialogue processing for sentences that include numbers such as tickets, drawing numbers, winners and delivery moogle mail.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for the upcoming Voice Files Update.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.7"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Somebody once told me.");
-                    ImGui.Bullet(); ImGui.TextWrapped("The world is gonna roll me");
-                    ImGui.Bullet(); ImGui.TextWrapped("I ain't the sharpest tool in the shed.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.6"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Further adjustment for the volume of bubbles during duties.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where AnnounceReports does not effect some reports.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where New Update Announcement Audio may fail to play sometimes.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.5"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Adjust the volume of bubbles during duties.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for today's voice files update.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.4"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("More reports optimization.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.3"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.2"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Increased the size of the comment in reports.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.7.1"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Voice Files Updater will not longer run when you're in a duty or in active combat or in an event or cutscene.");
-                    ImGui.Bullet(); ImGui.TextWrapped("An option has been added to allow disabling announcing reported lines in the chat. It can be found in Dialogues Settings > Other Settings > Announce Reported Lines.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Player Chat Processing for LocalTTS.");
-                }
-
                 if (ImGui.CollapsingHeader("Version 0.2.7.0"))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where bubbles do not work upon starting FFXIV until disabling ffxiv and enabling it again.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue where lipsync would sometimes not work until restarting the plugin.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Ignored Database.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.9"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Removed unused libraries.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bug fixes.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.8"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Cait Sith, Gilgamesh to the NPC Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Giants and Qiqirn beast tribes.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bug fixes.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.7"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Ea Beast Tribe to the NPC Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added sound effects for Ea voice lines.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.6"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Utility update.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Performance optimization.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.5"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed Nameless Dialogues not connecting to their database correctly.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.4"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Adjust bubble dialogues in duties to have better volumes depending on the distance.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Added Genbu, Yozakura and Omega, Nodes and Lupins voices to the NPC Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved beast tribe NPC recognition.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Nameless Dialogues Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Nameless Dialogues Database.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved Player Chat Processing.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved Player Chat Processing.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.3"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Fixed inconsistent bubble speech volume.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.2"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated bubble dialogues to work properly when changing zones mid sentence.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database to include Artoirel, Gaia, Garuda and Golems.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated Retainers Database to include missing dialogues.");
-                }
-
-                if (ImGui.CollapsingHeader("Version 0.2.6.1"))
-                {
-                    ImGui.Bullet(); ImGui.TextWrapped("More logging to catch problems!.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Enhanced Redo and Mute Reports menu.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved Player Chat Processing with added shortcuts.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Enhanced dialogue processing for names like \"Light\" and \"Darkness\".");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved handling of sentences with numbers (tickets, winners, etc.).");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database for upcoming Voice Files Update.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed issues with bubble volumes and report announcements.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon and Player Chat Processing.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Voice Files Updater improved to avoid running during duties or events.");
+                    ImGui.Bullet(); ImGui.TextWrapped("New option to disable announcing reported lines in chat.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.6.0"))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Updated the Audio Playing Engine.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug related to playerData not initializing correctly.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Stability improvements.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Enhanced bubble dialogue volumes and improved beast tribe NPC recognition.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added NPCs and voices (Cait Sith, Gilgamesh, Genbu, Yozakura, etc.).");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC, Nameless Dialogues, and Retainers Databases.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed issues with sound effects and bubble speech volumes.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved logging and stability of the Audio Playing Engine.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Performance optimizations and utility updates.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.5.0"))
