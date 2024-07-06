@@ -1336,7 +1336,7 @@ namespace XivVoices {
 
                 if (ImGui.CollapsingHeader("Version 0.2.8.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("To ensure that users get the latest Dawntail voice lines as early as possible without waiting for the next update, an option has been added to allow users to automatically download and play any missing line they encounter that exists in the server but does not exist in their computer yet. You can enable this feature by checking \"Download missing lines indiviually\" in the General Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("To ensure that users get the latest Dawntrail voice lines as early as possible without waiting for the next update, an option has been added to allow users to automatically download and play any missing line they encounter that exists in the server but does not exist in their computer yet. You can enable this feature by checking \"Download missing lines individually\" in the General Settings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Reports have been restructured in order to ensure a better and faster experience.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed an issue in the UI where buttons may not be as clickable as they used to be pre-Dawntrail.");
                     ImGui.Bullet(); ImGui.TextWrapped("Bugfix: reports and http requests will no longer cause users to crash randomly in rare instances.");

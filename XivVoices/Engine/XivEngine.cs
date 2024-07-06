@@ -35,6 +35,7 @@ namespace XivVoices.Engine
         private Timer _autoUpdateTimer;
 
         private Queue<XivMessage> ffxivMessages = new Queue<XivMessage>();
+        private Queue<string> reportedLines = new Queue<string>();
         private TTSEngine ttsEngine;
         TTSVoiceNative[] localTTS = new TTSVoiceNative[2];
         #endregion
@@ -2056,20 +2057,28 @@ namespace XivVoices.Engine
                 }
 
                 string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}";
+                if (!reportedLines.Contains(url))
+                {
+                    reportedLines.Enqueue(url);
+                    if (reportedLines.Count > 100)
+                        reportedLines.Dequeue();
 
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
+                        response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        XivEngine.Instance.Database.Plugin.PrintError("Report failed, saving it Reports folder to be automatically sent later.");
+                        Directory.CreateDirectory(this.Database.ReportsPath);
+                        string fileName = Path.Combine(this.Database.ReportsPath, $"{xivMessage.Speaker}_{new Random().Next(10000, 99999)}.txt");
+                        await File.WriteAllTextAsync(fileName, url);
+                    }
+
                 }
-                catch (HttpRequestException e)
-                {
-                    XivEngine.Instance.Database.Plugin.PrintError("Report failed, saving it Reports folder to be automatically sent later.");
-                    Directory.CreateDirectory(this.Database.ReportsPath);
-                    string fileName = Path.Combine(this.Database.ReportsPath, $"{xivMessage.Speaker}_{new Random().Next(10000, 99999)}.txt");
-                    await File.WriteAllTextAsync(fileName, url);
-                }
+                
             }
             finally
             {
