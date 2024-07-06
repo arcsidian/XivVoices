@@ -609,6 +609,17 @@ namespace XivVoices {
             ImGui.SameLine();
             ImGui.Text("New Update Audio Notification Enabled");
 
+            // OnlineRequests
+            ImGui.Dummy(new Vector2(0, 8));
+            var onlineRequests = this.Configuration.OnlineRequests;
+            if (ImGui.Checkbox("##onlineRequests", ref onlineRequests))
+            {
+                this.configuration.OnlineRequests = onlineRequests;
+                needSave = true;
+            };
+            ImGui.SameLine();
+            ImGui.Text("Download missing lines individually if they exist");
+
             // Xiv Voices Enabled
             ImGui.Dummy(new Vector2(0, 8));
             var reports = this.Configuration.Reports;
@@ -622,6 +633,7 @@ namespace XivVoices {
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
             ImGui.Text("( English lines only, do not enable for other languages )");
             ImGui.PopStyleColor();
+
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
@@ -856,6 +868,7 @@ namespace XivVoices {
             };
             ImGui.SameLine();
             ImGui.Text("Announce Reported Lines");
+
 
             // Saving Process
             if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)

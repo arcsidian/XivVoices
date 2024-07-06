@@ -21,6 +21,7 @@ namespace XivVoices
         public bool LipsyncEnabled { get; set; } = true;
         public bool SkipEnabled { get; set; } = true;
         public bool AnnounceReports { get; set; } = true;
+        public bool OnlineRequests { get; set; } = false;
 
         // Chat Settings
         public bool SayEnabled { get; set; } = true;

@@ -318,8 +318,6 @@ namespace XivVoices.Engine
                 }
             }
 
-
-
             if (msg.isRetainer && !this.Database.Plugin.Config.RetainersEnabled) return;
             if (IgnoredDialogues.Contains(msg.Speaker + msg.Sentence) || this.Database.Ignored.Contains(msg.Speaker)) return;
 
@@ -329,8 +327,10 @@ namespace XivVoices.Engine
 
             this.Database.Plugin.Log($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
 
-            if (msg.GetRequested)
-                _ = Database.Get(msg);
+            if (msg.AccessRequested != "")
+                _ = Database.AccessRequest(msg);
+            else if (msg.GetRequested != "")
+                _ = Database.GetRequest(msg);
             else
                 AddToQueue(msg);
 
@@ -1950,9 +1950,23 @@ namespace XivVoices.Engine
 
         public void ReportDifferent(XivMessage msg)
         {
-            if (!this.Database.Plugin.Config.Reports) return;
-            Plugin.PluginLog.Information("ReportDifferent");
+            
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+
+            if (Database.Access)
+            {
+                msg.AccessRequested = "different";
+                return;
+            }
+            else if (XivEngine.Instance.Database.Plugin.Config.OnlineRequests)
+            {
+                msg.GetRequested = "different";
+                return;
+            }
+
+            if (!this.Database.Plugin.Config.Reports) return;
+
+            Plugin.PluginLog.Information("ReportDifferent");
             reports.Enqueue(new ReportXivMessage(msg, "different", ""));
         }
 
@@ -1983,16 +1997,23 @@ namespace XivVoices.Engine
         }
 
 
-        public void ReportToArc(XivMessage msg, bool ignoreAccess = false)
+        public void ReportToArc(XivMessage msg)
         {
-            if (!this.Database.Plugin.Config.Reports) return;
             if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
 
-            if (Database.Access && !ignoreAccess)
+            if (Database.Access)
             {
-                msg.GetRequested = true;
+                msg.AccessRequested = "missing";
                 return;
             }
+            else if (XivEngine.Instance.Database.Plugin.Config.OnlineRequests)
+            {
+                msg.GetRequested = "missing";
+                return;
+            }
+
+            if (!this.Database.Plugin.Config.Reports) return;
+            
 
             Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
             if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");

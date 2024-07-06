@@ -73,7 +73,8 @@ namespace XivVoices.Engine
             TtsData = ttsData;
             Ignored = false;
             Reported = false;
-            GetRequested = false;
+            AccessRequested = "";
+            GetRequested = "";
             isRetainer = false;
             Time = DateTime.Now;
         }
@@ -91,7 +92,8 @@ namespace XivVoices.Engine
 
         public bool Ignored;
         public bool Reported;
-        public bool GetRequested;
+        public string AccessRequested;
+        public string GetRequested;
         public bool isRetainer;
         public DateTime Time;
 

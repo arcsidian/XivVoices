@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Net.Http;
 using Xabe.FFmpeg;
 using Dalamud.Utility;
+using System.Security.Policy;
 
 namespace XivVoices.Engine
 {
@@ -1170,20 +1171,8 @@ namespace XivVoices.Engine
                 {
                     // Save the received file (assuming it could be mp3 or ogg)
                     byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
-                    string tempFilePath = DirectoryPath +"/temp.ogg"; // Temporary file path
-                    await File.WriteAllBytesAsync(tempFilePath, fileBytes);
-
-                    // Convert to OGG Opus using FFmpeg
                     string outputFilePath = DirectoryPath + "/" + fileName;
-                    string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath);
-                    FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
-
-                    string arguments = $"-i \"{tempFilePath}\" -c:a libopus \"{outputFilePath}\"";
-                    IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
-                    await conversion.Start();
-
-                    // Clean up the temporary file
-                    File.Delete(tempFilePath);
+                    await File.WriteAllBytesAsync(outputFilePath, fileBytes);
 
                     XivEngine.Instance.Database.Plugin.Print("New dialogue has been generated, choose YES/NO to keep or delete it.");
                     previousPath = xivMessage.FilePath;
@@ -1211,22 +1200,8 @@ namespace XivVoices.Engine
 
                             //-------------------------------
                             byte[] fileBytes = await latestResponse.Content.ReadAsByteArrayAsync();
-                            string tempFilePath = DirectoryPath + "/" + fileName;
-                            File.Delete(xivMessage.FilePath);
-                            await File.WriteAllBytesAsync(tempFilePath, fileBytes);
-
-                            // Convert to OGG Opus using FFmpeg
-                            string outputFilePath = xivMessage.FilePath;
-                            string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath);
-                            FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
-
-                            string arguments = $"-i \"{tempFilePath}\" -c:a libopus \"{outputFilePath}\"";
-                            IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
-                            await conversion.Start();
-
-                            // Clean up the temporary file
-                            File.Delete(tempFilePath);
-
+                            //File.Delete(xivMessage.FilePath);
+                            await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
                             XivEngine.Instance.SpeakLocallyAsync(xivMessage);
                         }
                         else
@@ -1254,7 +1229,7 @@ namespace XivVoices.Engine
             }
         }
 
-        public async Task Get(XivMessage xivMessage)
+        public async Task AccessRequest(XivMessage xivMessage)
         {
             XivEngine.Instance.Database.Plugin.Print("Connecting to the framework to generate a new line...");
             Plugin.PluginLog.Info("Starting GET");
@@ -1285,54 +1260,26 @@ namespace XivVoices.Engine
                     XivEngine.Instance.Database.Plugin.Print("Generating new line.");
                     // Save the received file (assuming it could be mp3 or ogg)
                     byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
-                    string tempFilePath = DirectoryPath + "/temp.ogg"; // Temporary file path
-                    await File.WriteAllBytesAsync(tempFilePath, fileBytes);
-
-                    // Convert to OGG Opus using FFmpeg
-                    string outputFilePath = DirectoryPath + "/" + fileName;
-                    string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath);
-                    FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
-
-                    string arguments = $"-i \"{tempFilePath}\" -c:a libopus \"{outputFilePath}\"";
-                    IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
-                    await conversion.Start();
-
-                    // Clean up the temporary file
-                    File.Delete(tempFilePath);
-
-                    // Copy new line to its designated location
-                    try
+                    string directoryPath = Path.GetDirectoryName(xivMessage.FilePath);
+                    if (!Directory.Exists(directoryPath))
                     {
-                        string directoryPath = Path.GetDirectoryName(xivMessage.FilePath);
-                        if (!Directory.Exists(directoryPath))
-                        {
-                            Directory.CreateDirectory(directoryPath);
-                        }
-
-                        File.Copy(outputFilePath, xivMessage.FilePath, true);
-                        var jsondata = new Dictionary<string, string>
-                        {
-                            ["speaker"] = xivMessage.Speaker,
-                            ["sentence"] = xivMessage.Sentence,
-                            ["lastSave"] = DateTime.UtcNow.ToString("o")
-                        };
-                        string directory = Path.Combine(Path.GetDirectoryName(xivMessage.FilePath), Path.GetFileNameWithoutExtension(xivMessage.FilePath));
-                        await WriteJSON(directory + ".json", jsondata);
-
-                        XivEngine.Instance.Database.Plugin.Print("Generated line completed.");
-                        File.Delete(outputFilePath);
-                        XivEngine.Instance.SpeakLocallyAsync(xivMessage);
+                        Directory.CreateDirectory(directoryPath);
+                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
                     }
-                    catch (Exception ex)
+                    await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
+                    var jsondata = new Dictionary<string, string>
                     {
-                        XivEngine.Instance.Database.Plugin.Print($"Replacement failed: {ex.Message}");
-                        _ = Task.Run(async () =>
-                        {
-                            await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
-                            if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
-                                await XivEngine.Instance.SpeakAI(xivMessage);
-                        });
-                    }
+                        ["speaker"] = xivMessage.Speaker,
+                        ["sentence"] = xivMessage.Sentence,
+                        ["lastSave"] = DateTime.UtcNow.ToString("o")
+                    };
+                    string directory = Path.Combine(Path.GetDirectoryName(xivMessage.FilePath), Path.GetFileNameWithoutExtension(xivMessage.FilePath));
+                    await WriteJSON(directory + ".json", jsondata);
+                    XivEngine.Instance.Database.Plugin.Print("Generated line completed.");
+                    Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
+                    XivEngine.Instance.SpeakLocallyAsync(xivMessage);
+                    await WriteJSON(DirectoryPath + "/Data.json", Data);
+
                 }
                 else
                 {
@@ -1350,29 +1297,14 @@ namespace XivVoices.Engine
                         // Check the response content type for the second request
                         if (latestResponse.Content.Headers.ContentType.MediaType == "audio/ogg")
                         {
-
-                            //-------------------------------
-                            
-
                             byte[] fileBytes = await latestResponse.Content.ReadAsByteArrayAsync();
-                            string tempFilePath = DirectoryPath + "/" + fileName;
-
-                            await File.WriteAllBytesAsync(tempFilePath, fileBytes);
-
-                            // Convert to OGG Opus using FFmpeg
-                            string ffmpegDirectoryPath = Path.Combine(XivEngine.Instance.Database.ToolsPath);
-                            FFmpeg.SetExecutablesPath(ffmpegDirectoryPath);
-
                             string directoryPath = Path.GetDirectoryName(xivMessage.FilePath);
                             if (!Directory.Exists(directoryPath))
                             {
                                 Directory.CreateDirectory(directoryPath);
+                                Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
                             }
-
-                            string arguments = $"-i \"{tempFilePath}\" -c:a libopus \"{xivMessage.FilePath}\"";
-                            IConversion conversion = FFmpeg.Conversions.New().AddParameter(arguments);
-                            await conversion.Start();
-
+                            await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
                             var jsondata = new Dictionary<string, string>
                             {
                                 ["speaker"] = xivMessage.Speaker,
@@ -1383,10 +1315,10 @@ namespace XivVoices.Engine
                             await WriteJSON(directory + ".json", jsondata);
 
                             XivEngine.Instance.Database.Plugin.Print("Line downloaded.");
-
-                            // Clean up the temporary file
-                            File.Delete(tempFilePath);
+                            Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString();
                             XivEngine.Instance.SpeakLocallyAsync(xivMessage);
+                            await WriteJSON(DirectoryPath + "/Data.json", Data);
+
                         }
                         else
                         {
@@ -1395,7 +1327,8 @@ namespace XivVoices.Engine
                             XivEngine.Instance.Database.Plugin.Print("-->" + responseBody);
                             _ = Task.Run(async () =>
                             {
-                                await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                                if (Plugin.Config.Reports)
+                                    await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.AccessRequested, "");
                                 if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
                                     await XivEngine.Instance.SpeakAI(xivMessage);
                             });
@@ -1406,7 +1339,8 @@ namespace XivVoices.Engine
                         XivEngine.Instance.Database.Plugin.Print(responseBody);
                         _ = Task.Run(async () =>
                         {
-                            await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                            if (Plugin.Config.Reports)
+                                await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.AccessRequested, "");
                             if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
                                 await XivEngine.Instance.SpeakAI(xivMessage);
                         });
@@ -1418,7 +1352,87 @@ namespace XivVoices.Engine
                 XivEngine.Instance.Database.Plugin.Print(e.Message);
                 _ = Task.Run(async () =>
                 {
-                    await XivEngine.Instance.ReportToArcJSON(xivMessage, "missing", "");
+                    if (Plugin.Config.Reports)
+                        await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.AccessRequested, "");
+                    if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
+                        await XivEngine.Instance.SpeakAI(xivMessage);
+                });
+            }
+        }
+
+        public async Task GetRequest(XivMessage xivMessage)
+        {
+            XivEngine.Instance.Database.Plugin.Print("Connecting to the server to get the line if it has already been created...");
+            Plugin.PluginLog.Info("Starting GET");
+            // Use Lexicon
+            string cleanedMessage = xivMessage.Sentence;
+            cleanedMessage = ProcessSentence(cleanedMessage);
+
+            foreach (KeyValuePair<string, string> entry in XivEngine.Instance.Database.Lexicon)
+            {
+                string pattern = "\\b" + entry.Key + "\\b";
+                cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
+            }
+            cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
+            xivMessage.FilePath = GetFilePath(xivMessage);
+            string fileName = Path.GetFileName(xivMessage.FilePath);
+
+            string data = NpcData["Arc Data 1"].Gender + "://" + NpcData["Arc Data 1"].Race + "." + NpcData["Arc Data 1"].Tribe + '/' + NpcData["Arc Data 1"].Body + '.' + NpcData["Arc Data 1"].Eyes;
+            string url = $"{data}?user={xivMessage.TtsData.User}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Get&filename={Uri.EscapeDataString(fileName)}";
+
+            try
+            {
+                // Send the request
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+
+                // Check the response content type for the second request
+                if (response.Content.Headers.ContentType.MediaType == "audio/ogg")
+                {
+
+                    byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+                    string directoryPath = Path.GetDirectoryName(xivMessage.FilePath);
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString();
+                    }
+                    await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
+                    var jsondata = new Dictionary<string, string>
+                    {
+                        ["speaker"] = xivMessage.Speaker,
+                        ["sentence"] = xivMessage.Sentence,
+                        ["lastSave"] = DateTime.UtcNow.ToString("o")
+                    };
+                    string directory = Path.Combine(Path.GetDirectoryName(xivMessage.FilePath), Path.GetFileNameWithoutExtension(xivMessage.FilePath));
+                    await WriteJSON(directory + ".json", jsondata);
+
+                    XivEngine.Instance.Database.Plugin.Print("Line downloaded.");
+                    Data["voices"] = (int.Parse(Data["voices"])+1).ToString();
+                    XivEngine.Instance.SpeakLocallyAsync(xivMessage);
+                    await WriteJSON(DirectoryPath + "/Data.json", Data);
+                }
+                else
+                {
+                    // Read the response as a string
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    XivEngine.Instance.Database.Plugin.Print("-->" + responseBody);
+                    _ = Task.Run(async () =>
+                    {
+                        if (Plugin.Config.Reports)
+                            await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.GetRequested, "");
+                        if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
+                            await XivEngine.Instance.SpeakAI(xivMessage);
+                    });
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                XivEngine.Instance.Database.Plugin.Print(e.Message);
+                _ = Task.Run(async () =>
+                {
+                    if (Plugin.Config.Reports)
+                        await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.GetRequested, "");
                     if (Plugin.Config.LocalTTSEnabled && !Plugin.Config.WebsocketRedirectionEnabled)
                         await XivEngine.Instance.SpeakAI(xivMessage);
                 });

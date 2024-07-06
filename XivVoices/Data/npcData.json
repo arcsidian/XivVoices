@@ -17559,6 +17559,14 @@
     "Eyes": "",
     "Type": "Default"
   },
+  "Elegant Eulmoran": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Fat Cat",
+    "Body": "Adult",
+    "Eyes": "",
+    "Type": "Default"
+  },
   "Dull-eyed Adventurer": {
     "Gender": "Male",
     "Race": "Miqo'te",
@@ -58125,6 +58133,14 @@
     "Tribe": "Midlander",
     "Body": "Adult",
     "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Arc Data 1": {
+    "Gender": "http",
+    "Race": "arcsidian",
+    "Tribe": "net",
+    "Body": "access",
+    "Eyes": "php",
     "Type": "Default"
   },
   "Sanson the Stiff": {
