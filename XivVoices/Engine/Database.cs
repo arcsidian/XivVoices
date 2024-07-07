@@ -49,7 +49,8 @@ namespace XivVoices.Engine
                 "Estinien",
                 "Krile",
                 "Tataru",
-                "Minfilia"
+                "Minfilia",
+                "Riol"
             };
         public List<string> NpcWithVariedLooks { get; set; } = new List<string>()
             {
@@ -923,7 +924,7 @@ namespace XivVoices.Engine
             public string lastSave;
         }
 
-        string RemoveSymbolsAndLowercase(string input)
+        public string RemoveSymbolsAndLowercase(string input)
         {
             // Replace player name with Adventurer before loading or saving
             string pattern = "\\b" + "_NAME_" + "\\b";

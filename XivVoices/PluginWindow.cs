@@ -1334,7 +1334,16 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Users will no longer report a line they reported before.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where a line from Riol is seen as a retainer line.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Empty and non-verbal lines will not longer be processed.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated VoiceNames Databse for new NPCs with unique voices: Alayla, Hunmurruk, Koana, Otis.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.8"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("To ensure that users get the latest Dawntrail voice lines as early as possible without waiting for the next update, an option has been added to allow users to automatically download and play any missing line they encounter that exists in the server but does not exist in their computer yet. You can enable this feature by checking \"Download missing lines individually\" in the General Settings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Reports have been restructured in order to ensure a better and faster experience.");
@@ -1343,24 +1352,24 @@ namespace XivVoices {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.7", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.7"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Data with more Dawntrail NPCs.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.6", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.6"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Data with more Dawntrail NPCs.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated Lexicon.");
                     ImGui.Bullet(); ImGui.TextWrapped("Minor Bugfixes.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.5", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.5"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Further Dawntrail Optimizations.");
                 }
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.4", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.8.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Lipsync is back!");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved Lipsync animations to fit more variaties of dialogues long and short.");

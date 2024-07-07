@@ -262,6 +262,10 @@ namespace XivVoices.Engine
         #region Processing Methods
         public void Process(string type, string speaker, string npcID, string skeletonID, string message, string body, string gender, string race, string tribe, string eyes, string language, Vector3 position, ICharacter character, string user)
         {
+            string possibleFileName = Regex.Replace(message, "<[^<]*>", "");
+            possibleFileName = this.Database.RemoveSymbolsAndLowercase(possibleFileName);
+            if(possibleFileName.IsNullOrEmpty()) return;
+
 
             TTSData ttsData = new TTSData(type, speaker, npcID, skeletonID, message, body, gender, race, tribe, eyes, language, position, character, user);
             XivMessage msg = new XivMessage(ttsData);
@@ -1964,7 +1968,6 @@ namespace XivVoices.Engine
             if (!this.Database.Plugin.Config.Reports) return;
             Plugin.PluginLog.Information("ReportUnknown");
             
-            if(Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 
@@ -1998,8 +2001,6 @@ namespace XivVoices.Engine
                 return;
             }
 
-            Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "mute", input));
         }
 
@@ -2013,8 +2014,6 @@ namespace XivVoices.Engine
                 return;
             }
 
-            Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
             reports.Enqueue(new ReportXivMessage(msg, "redo", input));
         }
 
@@ -2035,8 +2034,7 @@ namespace XivVoices.Engine
             }
 
             if (!this.Database.Plugin.Config.Reports) return;
-            Plugin.PluginLog.Information($"Reporting line: \"{msg.Sentence}\"");
-            if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{msg.Sentence}\"");
+
             reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
         }
 
@@ -2048,6 +2046,8 @@ namespace XivVoices.Engine
             await reportBlock.WaitAsync();
             try
             {
+                Plugin.PluginLog.Information($"Reporting line: \"{xivMessage.Sentence}\"");
+
                 string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
                 xivMessage.Sentence = xivMessage.TtsData.Message;
                 xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
@@ -2062,6 +2062,9 @@ namespace XivVoices.Engine
                     reportedLines.Enqueue(url);
                     if (reportedLines.Count > 100)
                         reportedLines.Dequeue();
+
+                    
+                    if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{xivMessage.Sentence}\"");
 
                     try
                     {

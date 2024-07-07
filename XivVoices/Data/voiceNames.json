@@ -424,6 +424,22 @@
     "speakers": [ "Wuk Lamat" ]
   },
   {
+    "voiceName": "Alayla",
+    "speakers": [ "Alayla" ]
+  },
+  {
+    "voiceName": "Hunmurruk",
+    "speakers": [ "Hunmurruk" ]
+  },
+  {
+    "voiceName": "Koana",
+    "speakers": [ "Koana" ]
+  },
+  {
+    "voiceName": "Otis",
+    "speakers": [ "Otis" ]
+  },
+  {
     "voiceName": "2B",
     "speakers": [ "2B", "2P", "FUDefender_2B", "FUDefender_2P" ]
   },
