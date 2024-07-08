@@ -1334,7 +1334,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.8.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug in lipsync that causes some users to crash upon starting or ending some dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug in the volume of bubble chats inside duties.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.8.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Users will no longer report a line they reported before.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug where a line from Riol is seen as a retainer line.");

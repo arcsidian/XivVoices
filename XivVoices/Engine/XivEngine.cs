@@ -33,6 +33,7 @@ namespace XivVoices.Engine
         private SemaphoreSlim reportBlock { get; set; }
         private Timer _updateTimer;
         private Timer _autoUpdateTimer;
+        private Timer _frameworkUpdateTimer;
 
         private Queue<XivMessage> ffxivMessages = new Queue<XivMessage>();
         private Queue<string> reportedLines = new Queue<string>();
@@ -76,6 +77,8 @@ namespace XivVoices.Engine
             Mapper = new DataMapper();
             _updateTimer = new Timer(Update, null, 0, 50);
             _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
+            if (this.Database.Plugin.Config.FrameworkActive)
+                _autoUpdateTimer = new Timer(FrameworkUpdate, null, 10000, 10000);
             localTTS[0] = null;
             localTTS[1] = null;
             Active = true;
@@ -168,9 +171,6 @@ namespace XivVoices.Engine
                 }
             }
 
-            
-
-
             // Version Update Check
             using (var client = new HttpClient())
             {
@@ -245,11 +245,27 @@ namespace XivVoices.Engine
             
         }
 
+        private void FrameworkUpdate(object state)
+        {
+            if (!Active || !this.Database.Plugin.Config.Active || !this.Database.Plugin.Config.FrameworkActive ) return;
+
+            if (this.Database.Framework.Queue.Count > 0)
+            {
+                Plugin.PluginLog.Error($"ffxivMessages is busy atm");
+                return;
+            }
+            Plugin.PluginLog.Error($"FrameworkUpdate");
+
+            this.Database.Framework.Run("C:\\XIV_Server\\Server\\report_missing");
+        }
+
         public void Dispose()
         {
             speakBlock.Dispose();
             reportBlock.Dispose();
             StopTTS();
+            _frameworkUpdateTimer?.Dispose();
+            _frameworkUpdateTimer = null;
             _autoUpdateTimer?.Dispose();
             _autoUpdateTimer = null;
             _updateTimer?.Dispose();
@@ -2056,7 +2072,7 @@ namespace XivVoices.Engine
                     xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
                 }
 
-                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}";
+                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}&folder={comment}";
                 if (!reportedLines.Contains(url))
                 {
                     reportedLines.Enqueue(url);

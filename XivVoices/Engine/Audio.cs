@@ -270,7 +270,7 @@ namespace XivVoices.Engine
             {
                 volumeRanges[0].volumeStart = 0.65f;
                 volumeRanges[0].volumeEnd = 0.63f;  // 0 to 3 units: 65% to 63%
-                volumeRanges[0].volumeStart = 0.63f;
+                volumeRanges[1].volumeStart = 0.63f;
                 volumeRanges[1].volumeEnd = 0.60f;   // 3 to 5 units: 63% to 60% 
                 volumeRanges[2].volumeStart = 0.60f;
                 volumeRanges[2].volumeEnd = 0.55f;   // 5 to 20 units: 60% to 55%

@@ -69,7 +69,7 @@ namespace XivVoices.Voice {
         public string lastBubbleDialogue = "";
         public string lastBattleDialogue = "";
 
-        Dictionary<ICharacter, CancellationTokenSource> taskCancellations = new Dictionary<ICharacter, CancellationTokenSource>();
+        Dictionary<string, CancellationTokenSource> taskCancellations = new Dictionary<string, CancellationTokenSource>();
 
         public ConditionalWeakTable<ActorMemory, UserAnimationOverride> UserAnimationOverrides { get; private set; } = new();
         public bool TextIsPresent { get => _textIsPresent; set => _textIsPresent = value; }
@@ -452,11 +452,10 @@ namespace XivVoices.Voice {
                 ActorMemory.CharacterModes intialState = actorMemory.CharacterMode;
                 ActorMemory.CharacterModes mode = ActorMemory.CharacterModes.EmoteLoop;
 
-
-                if (!taskCancellations.ContainsKey(character))
+                if (!taskCancellations.ContainsKey(character.ToString()))
                 {
                     var cts = new CancellationTokenSource();
-                    taskCancellations.Add(character, cts);
+                    taskCancellations.Add(character.ToString(), cts);
                     var token = cts.Token;
 
                     Task task = Task.Run(async () => {
@@ -552,7 +551,8 @@ namespace XivVoices.Voice {
                                 _plugin.Log($"Task was Completed");
 
                                 cts.Dispose();
-                                taskCancellations.Remove(character);
+                                if (taskCancellations.ContainsKey(character.ToString()))
+                                    taskCancellations.Remove(character.ToString());
                             }
                         }
                         catch (TaskCanceledException)
@@ -567,7 +567,19 @@ namespace XivVoices.Voice {
                             MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
                             MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
                             cts.Dispose();
-                            taskCancellations.Remove(character);
+                            if (taskCancellations.ContainsKey(character.ToString()))
+                                taskCancellations.Remove(character.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            Plugin.PluginLog.Error($"Unhandled exception in TriggerLipSync task: {ex}");
+
+                            animationMemory.LipsOverride = 0;
+                            MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
+                            MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
+                            cts.Dispose();
+                            if(taskCancellations.ContainsKey(character.ToString()))
+                                taskCancellations.Remove(character.ToString());
                         }
                     }, token);
                 }
@@ -613,7 +625,7 @@ namespace XivVoices.Voice {
             if (!_plugin.Config.Active) return;
             if (character == null) return;
 
-            if (taskCancellations.TryGetValue(character, out var cts))
+            if (taskCancellations.TryGetValue(character.ToString(), out var cts))
             {
                 //_chatGui.Print("Cancellation " + character.Name);
                 try
@@ -622,7 +634,11 @@ namespace XivVoices.Voice {
                 }
                 catch (ObjectDisposedException)
                 {
-                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already.");
+                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already, tell Arc!");
+                }
+                catch (Exception ex)
+                {
+                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed but caught an exception, tell Arc!");
                 }
                 return;
             }
