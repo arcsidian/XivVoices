@@ -17,14 +17,12 @@ using System.Text.RegularExpressions;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.Interface.DragDrop;
 using XivVoices.Services;
-using Dalamud.Interface.Internal;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using System.Threading.Tasks;
 using XivVoices.Engine;
 using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Enums;
 using ICharacter = Dalamud.Game.ClientState.Objects.Types.ICharacter;
-using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Textures;
 #endregion
 

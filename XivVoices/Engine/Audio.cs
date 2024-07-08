@@ -1,5 +1,4 @@
-﻿using Dalamud.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game;
+﻿using FFXIVClientStructs.FFXIV.Client.Game;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -22,23 +21,37 @@ namespace XivVoices.Engine
 
         public Audio(Plugin plugin)
         {
-            this.Plugin = plugin;
-            Plugin.Chat.Print("Audio: I am awake");
-            playAudioLock = new AsyncLock();
-            playBubbleLock = new AsyncLock();
-            audioIsStopped = false;
-            unknownQueue = new Queue<string>();
-            AudioInfoState = new LinkedList<AudioInfo>();
+            try
+            {
+                this.Plugin = plugin;
+                Plugin.Chat.Print("Audio: I am awake");
+                playAudioLock = new AsyncLock();
+                playBubbleLock = new AsyncLock();
+                audioIsStopped = false;
+                unknownQueue = new Queue<string>();
+                AudioInfoState = new LinkedList<AudioInfo>();
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error initializing Audio: {ex.Message}");
+            }
         }
 
         public void Dispose()
         {
-            playAudioLock.Dispose();
-            playBubbleLock.Dispose();
-            unknownQueue.Clear();
-            unknownQueue = null;
-            AudioInfoState.Clear();
-            AudioInfoState = null;
+            try
+            {
+                playAudioLock.Dispose();
+                playBubbleLock.Dispose();
+                unknownQueue.Clear();
+                unknownQueue = null;
+                AudioInfoState.Clear();
+                AudioInfoState = null;
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error disposing Audio: {ex.Message}");
+            }
         }
 
         public async Task PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
@@ -116,8 +129,14 @@ namespace XivVoices.Engine
                 }
                 finally
                 {
-                    waveStream?.Dispose();
-                    Plugin.PluginLog.Information($"PlayAudio ---> playAudioLock released");
+                    try
+                    {
+                        waveStream?.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.PluginLog.Error("An error occurred while disposing of waveStream resources: " + ex);
+                    }
                 }
             }
         }
@@ -197,7 +216,14 @@ namespace XivVoices.Engine
                 }
                 finally
                 {
-                    waveStream?.Dispose();
+                    try
+                    {
+                        waveStream?.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.PluginLog.Error("An error occurred while disposing of bubble waveStream resources: " + ex);
+                    }
                 }
             }
         }
@@ -228,7 +254,14 @@ namespace XivVoices.Engine
             }
             finally
             {
-                waveStream?.Dispose();
+                try
+                {
+                    waveStream?.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Plugin.PluginLog.Error("An error occurred while disposing of system waveStream resources: " + ex);
+                }
             }
 
         }
@@ -248,94 +281,122 @@ namespace XivVoices.Engine
 
         public async Task PlayEmptyAudio(XivMessage xivMessage)
         {
-            var audioInfo = GetAudioInfo(xivMessage, "empty");
-            audioInfo.percentage = 1f;
-            if(xivMessage.Reported)
-                audioInfo.state = "Reported";
-            else
-                audioInfo.state = "";
+            try
+            {
+                var audioInfo = GetAudioInfo(xivMessage, "empty");
+                audioInfo.percentage = 1f;
+                if (xivMessage.Reported)
+                    audioInfo.state = "Reported";
+                else
+                    audioInfo.state = "";
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error in PlayEmptyAudio method: {ex.Message}");
+            }
         }
 
         float AdjustVolume(float distance)
         {
-            float volume = (float)Plugin.Config.Volume / 100f;
-            (float distanceStart, float distanceEnd, float volumeStart, float volumeEnd)[] volumeRanges =
+            try
             {
-                (0f, 3f, volume*1f, volume*0.85f),   // 0 to 3 units: 100% to 85%
-                (3f, 5f, volume*0.85f, volume*0.3f),   // 3 to 5 units: 85% to 30% 
-                (5f, 20f, volume*0.3f, volume*0.05f)     // 5 to 20 units: 30% to 5%
-            };
-
-            if(Conditions.IsBoundByDuty)
-            {
-                volumeRanges[0].volumeStart = 0.65f;
-                volumeRanges[0].volumeEnd = 0.63f;  // 0 to 3 units: 65% to 63%
-                volumeRanges[1].volumeStart = 0.63f;
-                volumeRanges[1].volumeEnd = 0.60f;   // 3 to 5 units: 63% to 60% 
-                volumeRanges[2].volumeStart = 0.60f;
-                volumeRanges[2].volumeEnd = 0.55f;   // 5 to 20 units: 60% to 55%
-            }
-
-            foreach (var range in volumeRanges)
-            {
-                if (distance >= range.distanceStart && distance <= range.distanceEnd)
+                float volume = (float)Plugin.Config.Volume / 100f;
+                (float distanceStart, float distanceEnd, float volumeStart, float volumeEnd)[] volumeRanges =
                 {
-                    float slope = (range.volumeEnd - range.volumeStart) / (range.distanceEnd - range.distanceStart);
-                    float yIntercept = range.volumeStart - slope * range.distanceStart;
-                    float _volume = slope * distance + yIntercept;
-                    return Math.Clamp(_volume, Math.Min(range.volumeStart, range.volumeEnd), Math.Max(range.volumeStart, range.volumeEnd));
+                    (0f, 3f, volume*1f, volume*0.85f),   // 0 to 3 units: 100% to 85%
+                    (3f, 5f, volume*0.85f, volume*0.3f),   // 3 to 5 units: 85% to 30%
+                    (5f, 20f, volume*0.3f, volume*0.05f)     // 5 to 20 units: 30% to 5%
+                };
+
+                if (Conditions.IsBoundByDuty)
+                {
+                    volumeRanges[0].volumeStart = 0.65f;
+                    volumeRanges[0].volumeEnd = 0.63f;  // 0 to 3 units: 65% to 63%
+                    volumeRanges[1].volumeStart = 0.63f;
+                    volumeRanges[1].volumeEnd = 0.60f;   // 3 to 5 units: 63% to 60%
+                    volumeRanges[2].volumeStart = 0.60f;
+                    volumeRanges[2].volumeEnd = 0.55f;   // 5 to 20 units: 60% to 55%
                 }
+
+                foreach (var range in volumeRanges)
+                {
+                    if (distance >= range.distanceStart && distance <= range.distanceEnd)
+                    {
+                        float slope = (range.volumeEnd - range.volumeStart) / (range.distanceEnd - range.distanceStart);
+                        float yIntercept = range.volumeStart - slope * range.distanceStart;
+                        float _volume = slope * distance + yIntercept;
+                        return Math.Clamp(_volume, Math.Min(range.volumeStart, range.volumeEnd), Math.Max(range.volumeStart, range.volumeEnd));
+                    }
+                }
+                return volumeRanges[^1].volumeEnd;
             }
-            return volumeRanges[^1].volumeEnd;
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error adjusting volume: {ex.Message}");
+                return 0.05f; // return a default value in case of error
+            }
         }
 
         AudioInfo GetAudioInfo(XivMessage xivMessage, string type)
         {
-            string id = $"{xivMessage.Speaker}_{xivMessage.Sentence}";
-            id = Regex.Replace(id, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
-            var audioInfo = AudioInfoState.FirstOrDefault(ai => ai.id == id);
-            if (audioInfo == null)
+            try
             {
-                audioInfo = new AudioInfo(id, "new", 0f, type, xivMessage);
-                AudioInfoState.AddFirst(audioInfo);
+                string id = $"{xivMessage.Speaker}_{xivMessage.Sentence}";
+                id = Regex.Replace(id, @"[^a-zA-Z0-9 _-]", "").Replace(" ", "_").Replace("-", "_");
+                var audioInfo = AudioInfoState.FirstOrDefault(ai => ai.id == id);
+                if (audioInfo == null)
+                {
+                    audioInfo = new AudioInfo(id, "new", 0f, type, xivMessage);
+                    AudioInfoState.AddFirst(audioInfo);
+                }
+                else
+                {
+                    AudioInfoState.Remove(audioInfo);
+                    audioInfo = new AudioInfo(id, "new", 0f, type, xivMessage);
+                    AudioInfoState.AddFirst(audioInfo);
+                    audioInfo.state = "new";
+                }
+                if (AudioInfoState.Count > 100)
+                {
+                    var oldestFinished = AudioInfoState.LastOrDefault(ddi => ddi.state == "stopped" || ddi.state == "Reported");
+                    if (oldestFinished != null)
+                        AudioInfoState.Remove(oldestFinished);
+                }
+                return audioInfo;
             }
-            else
+            catch (Exception ex)
             {
-                AudioInfoState.Remove(audioInfo);
-                audioInfo = new AudioInfo(id, "new", 0f, type, xivMessage);
-                AudioInfoState.AddFirst(audioInfo);
-                audioInfo.state = "new";
+                Plugin.PluginLog.Error($"Error getting audio info: {ex.Message}");
+                return new AudioInfo("error", "error", 0f, "error", xivMessage);
             }
-            if (AudioInfoState.Count > 100)
-            {
-                var oldestFinished = AudioInfoState.LastOrDefault(ddi => ddi.state == "stopped" || ddi.state == "Reported");
-                if (oldestFinished != null)
-                    AudioInfoState.Remove(oldestFinished);
-            }
-            return audioInfo;
         }
 
         (float Distance,float Balance) GetDistanceAndBalance(Vector3 speakerPosition)
         {
-            // Update camera vectors
-            Vector3 cameraForward = Vector3.Normalize(Plugin.PlayerCamera.Forward);
-            Vector3 cameraUp = Vector3.Normalize(Plugin.PlayerCamera.Top);
-            Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(cameraUp, cameraForward));
+            try
+            {
+                // Update camera vectors
+                Vector3 cameraForward = Vector3.Normalize(Plugin.PlayerCamera.Forward);
+                Vector3 cameraUp = Vector3.Normalize(Plugin.PlayerCamera.Top);
+                Vector3 cameraRight = Vector3.Normalize(Vector3.Cross(cameraUp, cameraForward));
 
-            // Calculate relative position from player to speaker
-            Vector3 relativePosition = speakerPosition - Plugin.ClientState.LocalPlayer.Position;
+                // Calculate relative position from player to speaker
+                Vector3 relativePosition = speakerPosition - Plugin.ClientState.LocalPlayer.Position;
 
-            // Distance for volume adjustment
-            float distance = relativePosition.Length();
-            //volumeProvider.Volume = AdjustVolume(distance);
+                // Distance for volume adjustment
+                float distance = relativePosition.Length();
 
+                // Direction for stereo balance
+                float dotProduct = Vector3.Dot(relativePosition, cameraRight);
+                float balance = Math.Clamp(dotProduct / 20, -1, 1); // Normalize and clamp the value for balance
 
-            // Direction for stereo balance
-            float dotProduct = Vector3.Dot(relativePosition, cameraRight);
-            float balance = Math.Clamp(dotProduct / 20, -1, 1); // Normalize and clamp the value for balance
-            //panningProvider.Pan = balance; // Set stereo balance based on direction
-
-            return (Distance: distance, Balance: balance);
+                return (Distance: distance, Balance: balance);
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error calculating distance and balance: {ex.Message}");
+                return (Distance: 0, Balance: 0);
+            }
         }
 
         public void StopAudio()

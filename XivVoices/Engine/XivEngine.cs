@@ -18,7 +18,6 @@ using XivVoices.LocalTTS;
 using System.Linq;
 using System.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using System.Security.Policy;
 
 namespace XivVoices.Engine
 {
@@ -60,31 +59,37 @@ namespace XivVoices.Engine
 
         public XivEngine(Database _database, Audio _audio, Updater _updater)
         {
-            if (Instance == null)
+            try
             {
-                Instance = this;
+                if (Instance == null)
+                {
+                    Instance = this;
+                }
+                else
+                    return;
+
+                currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                speakBlock = new SemaphoreSlim(1, 1);
+                reportBlock = new SemaphoreSlim(1, 1);
+                this.Database = _database;
+                this.Audio = _audio;
+                this.Updater = _updater;
+                this.ttsEngine = null;
+                Mapper = new DataMapper();
+                _updateTimer = new Timer(Update, null, 0, 50);
+                _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
+                if (this.Database.Plugin.Config.FrameworkActive)
+                    _autoUpdateTimer = new Timer(FrameworkUpdate, null, 10000, 10000);
+                localTTS[0] = null;
+                localTTS[1] = null;
+                Active = true;
+                this.Database.Plugin.Chat.Print("Engine: I am awake");
+                Plugin.PluginLog.Information($"Version[{currentVersion}]");
             }
-            else
-                return;
-
-            currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            speakBlock = new SemaphoreSlim(1, 1);
-            reportBlock = new SemaphoreSlim(1, 1);
-            this.Database = _database;
-            this.Audio = _audio;
-            this.Updater = _updater;
-            this.ttsEngine = null;
-            Mapper = new DataMapper();
-            _updateTimer = new Timer(Update, null, 0, 50);
-            _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
-            if (this.Database.Plugin.Config.FrameworkActive)
-                _autoUpdateTimer = new Timer(FrameworkUpdate, null, 10000, 10000);
-            localTTS[0] = null;
-            localTTS[1] = null;
-            Active = true;
-            this.Database.Plugin.Chat.Print("Engine: I am awake");
-            Plugin.PluginLog.Information($"Version[{currentVersion}]");
-
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error in XivEngine constructor: {ex.Message}");
+            }
         }
 
 
@@ -110,140 +115,152 @@ namespace XivVoices.Engine
 
         private void Update(object state)
         {
-            if (!Active || !this.Database.Plugin.Config.Active) return;
-
-            if (ffxivMessages.Count > 0)
-            {
-                if (ffxivMessages.TryDequeue(out XivMessage msg))
-                {
-                    Plugin.PluginLog.Information($"Update ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
-                    if (msg.Network == "Online")
-                    {
-                        if (this.Database.Plugin.Config.LocalTTSEnabled && !this.Database.Plugin.Config.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored)) // !&& AudioIsMuted?
-                            Task.Run(async () => await SpeakAI(msg));
-                        else
-                            Speak(msg);
-                    }
-                    else
-                    {
-                        Task.Run(async () => await SpeakLocallyAsync(msg));
-                    }
-                }
-            }
-
-            if (reports.Count > 0)
-            {
-                ReportXivMessage report = reports.Dequeue();
-                if (!this.Database.Plugin.Config.FrameworkActive)
-                    Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
-            }
-        }
-
-        private async void AutoUpdate(object state)
-        {
-            if (!Active || !this.Database.Plugin.Config.Active) return;
-            if (!this.Database.Plugin.Config.Initialized) return;
-
-            // Failed Reports Check
-            // TODO: if this.Database.ReportsPath folder is empty, ignore, if it's not empty, for each file, call LateReportToArcJSON() in a Task.Run
-            // LateReportToArcJSON should take two parameters, first parameter is the contents of the file, second parameter is the path of the file
-            if (Directory.Exists(this.Database.ReportsPath))
-            {
-                string[] reportFiles = Directory.GetFiles(this.Database.ReportsPath);
-                if (reportFiles.Length > 0)
-                {
-                    _ = Task.Run(async () =>
-                    {
-                        foreach (string filePath in reportFiles)
-                        {
-                            try
-                            {
-                                string url = await File.ReadAllTextAsync(filePath);
-                                await LateReportToArcJSON(url, filePath);
-
-                            }
-                            catch (Exception ex)
-                            {
-                                XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
-                            }
-                        }
-                    });
-                }
-            }
-
-            // Version Update Check
-            using (var client = new HttpClient())
-            {
-                client.Timeout = TimeSpan.FromMinutes(2);
-                client.DefaultRequestHeaders.Add("User-Agent", "MyGitHubApp");
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync("https://api.github.com/repos/arcsidian/XivVoices/releases/latest");
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-
-                    var releaseInfo = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
-
-                    if (releaseInfo.TagName == currentVersion)
-                        this.Database.Plugin.Log($"Latest Release Tag: {releaseInfo.TagName}, you're up to date!");
-                    else
-                    {
-                        this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
-                        Random random = new Random();
-                        string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 4) + ".ogg");
-                        if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent && this.Database.Plugin.Config.UpdateAudioNotification)
-                            Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
-                    }
-                }
-                catch (HttpRequestException e)
-                {
-                    this.Database.Plugin.PrintError("Exception Caught!");
-                    this.Database.Plugin.PrintError("Message: " + e.Message);
-                }
-                catch (TaskCanceledException e)
-                {
-                    this.Database.Plugin.PrintError("Request Timed Out!");
-                    this.Database.Plugin.PrintError("Message: " + e.Message);
-                }
-                catch (Exception e)
-                {
-                    this.Database.Plugin.PrintError("Unexpected Exception Caught: " + e.Message);
-                    this.Database.Plugin.LogError("AutoUpdate1 ---> Exception Stack Trace: " + e.StackTrace);
-                }
-                finally
-                {
-                    await Task.Delay(600000);
-                    CheckingForNewVersion = false;
-                }
-            }
-
-            if (!this.Database.Plugin.Config.AutoUpdate) return;
-            if (Updater.Busy) return;
-
-            // Voice Files Update Check
-            string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
-            if (dateString == null) return;
-
             try
             {
-                DateTime serverDateTime = DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind);
-                int comparisonResult = DateTime.Compare(this.Database.Plugin.Config.LastUpdate, serverDateTime);
-                if (comparisonResult < 0)
+                if (!Active || !this.Database.Plugin.Config.Active) return;
+
+                if (ffxivMessages.Count > 0)
                 {
-                    this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
-                    if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
+                    if (ffxivMessages.TryDequeue(out XivMessage msg))
                     {
-                        this.Updater.ServerLastUpdate = serverDateTime;
-                        await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
-                    }    
+                        Plugin.PluginLog.Information($"Update ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
+                        if (msg.Network == "Online")
+                        {
+                            if (this.Database.Plugin.Config.LocalTTSEnabled && !this.Database.Plugin.Config.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored))
+                                Task.Run(async () => await SpeakAI(msg));
+                            else
+                                Speak(msg);
+                        }
+                        else
+                        {
+                            Task.Run(async () => await SpeakLocallyAsync(msg));
+                        }
+                    }
+                }
+
+                if (reports.Count > 0)
+                {
+                    ReportXivMessage report = reports.Dequeue();
+                    if (!this.Database.Plugin.Config.FrameworkActive)
+                        Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
                 }
             }
             catch (Exception ex)
             {
-                Plugin.PluginLog.Error($"AutoUpdate2 ---> Exception: {ex}");
+                Plugin.PluginLog.Error($"Error in Update method: {ex.Message}");
             }
-            
         }
+
+
+        private async void AutoUpdate(object state)
+        {
+            try
+            {
+                if (!Active || !this.Database.Plugin.Config.Active) return;
+                if (!this.Database.Plugin.Config.Initialized) return;
+
+                if (Directory.Exists(this.Database.ReportsPath))
+                {
+                    string[] reportFiles = Directory.GetFiles(this.Database.ReportsPath);
+                    if (reportFiles.Length > 0)
+                    {
+                        _ = Task.Run(async () =>
+                        {
+                            foreach (string filePath in reportFiles)
+                            {
+                                try
+                                {
+                                    string url = await File.ReadAllTextAsync(filePath);
+                                    await LateReportToArcJSON(url, filePath);
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
+                                }
+                            }
+                        });
+                    }
+                }
+
+                // Version Update Check
+                using (var client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(2);
+                    client.DefaultRequestHeaders.Add("User-Agent", "MyGitHubApp");
+                    try
+                    {
+                        HttpResponseMessage response = await client.GetAsync("https://api.github.com/repos/arcsidian/XivVoices/releases/latest");
+                        response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+
+                        var releaseInfo = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
+
+                        if (releaseInfo.TagName == currentVersion)
+                            this.Database.Plugin.Log($"Latest Release Tag: {releaseInfo.TagName}, you're up to date!");
+                        else
+                        {
+                            this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
+                            Random random = new Random();
+                            string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 4) + ".ogg");
+                            if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent && this.Database.Plugin.Config.UpdateAudioNotification)
+                                Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
+                        }
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        this.Database.Plugin.PrintError("Exception Caught!");
+                        this.Database.Plugin.PrintError("Message: " + e.Message);
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        this.Database.Plugin.PrintError("Request Timed Out!");
+                        this.Database.Plugin.PrintError("Message: " + e.Message);
+                    }
+                    catch (Exception e)
+                    {
+                        this.Database.Plugin.PrintError("Unexpected Exception Caught: " + e.Message);
+                        this.Database.Plugin.LogError("AutoUpdate1 ---> Exception Stack Trace: " + e.StackTrace);
+                    }
+                    finally
+                    {
+                        await Task.Delay(600000);
+                        CheckingForNewVersion = false;
+                    }
+                }
+
+                if (!this.Database.Plugin.Config.AutoUpdate) return;
+                if (Updater.Busy) return;
+
+                // Voice Files Update Check
+                string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
+                if (dateString == null) return;
+
+                try
+                {
+                    DateTime serverDateTime = DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind);
+                    int comparisonResult = DateTime.Compare(this.Database.Plugin.Config.LastUpdate, serverDateTime);
+                    if (comparisonResult < 0)
+                    {
+                        this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
+                        if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
+                        {
+                            this.Updater.ServerLastUpdate = serverDateTime;
+                            await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Plugin.PluginLog.Error($"AutoUpdate2 ---> Exception: {ex}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error in AutoUpdate method: {ex.Message}");
+            }
+        }
+
 
         private void FrameworkUpdate(object state)
         {
@@ -1325,54 +1342,62 @@ namespace XivVoices.Engine
 
         public async Task SpeakAI(XivMessage msg)
         {
-            // Start Local TTS Engine
-            if (this.ttsEngine == null)
-                this.ttsEngine = new TTSEngine(Database.Plugin);
-
-            if (localTTS[0] == null)
-                localTTS[0] = TTSVoiceNative.LoadVoiceFromDisk(this.Database.Plugin.Config.LocalTTSMale);
-            if (localTTS[1] == null)
-                localTTS[1] = TTSVoiceNative.LoadVoiceFromDisk(this.Database.Plugin.Config.LocalTTSFemale);
-
             try
             {
-                int speaker = this.Database.Plugin.Config.LocalTTSUngendered;
-                if (msg.TtsData.Gender == "Male")
-                    speaker = 0;
-                if (msg.TtsData.Gender == "Female")
-                    speaker = 1;
+                // Start Local TTS Engine
+                if (this.ttsEngine == null)
+                    this.ttsEngine = new TTSEngine(Database.Plugin);
 
-                string sentence = Regex.Replace(msg.TtsData.Message, "[“”]", "\"");
-                if (msg.Ignored)
-                    sentence = ProcessPlayerChat(sentence, msg.Speaker);
-                
-                sentence = ApplyLexicon(sentence, msg.Speaker);
+                if (localTTS[0] == null)
+                    localTTS[0] = TTSVoiceNative.LoadVoiceFromDisk(this.Database.Plugin.Config.LocalTTSMale);
+                if (localTTS[1] == null)
+                    localTTS[1] = TTSVoiceNative.LoadVoiceFromDisk(this.Database.Plugin.Config.LocalTTSFemale);
 
-                // Remove anything that's not a letter, number, space, ',' or '.'
-                string cleanedMessage = new string(sentence.Where(c => char.IsLetterOrDigit(c) || c == ',' || c == '.' || c == ' ').ToArray());
-                if (!cleanedMessage.Any(char.IsLetter))
-                    return;
-                sentence = cleanedMessage;
-
-                var pcmData = await ttsEngine.SpeakTTS(sentence, localTTS[speaker]);
-                var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
-                var stream = new MemoryStream();
-                var writer = new BinaryWriter(stream);
-
-                foreach (var sample in pcmData)
+                try
                 {
-                    writer.Write(sample);
-                }
+                    int speaker = this.Database.Plugin.Config.LocalTTSUngendered;
+                    if (msg.TtsData.Gender == "Male")
+                        speaker = 0;
+                    if (msg.TtsData.Gender == "Female")
+                        speaker = 1;
 
-                stream.Position = 0;
-                WaveStream waveStream = new RawSourceWaveStream(stream, waveFormat);
-                PlayAudio(msg, waveStream, "ai");
+                    string sentence = Regex.Replace(msg.TtsData.Message, "[“”]", "\"");
+                    if (msg.Ignored)
+                        sentence = ProcessPlayerChat(sentence, msg.Speaker);
+
+                    sentence = ApplyLexicon(sentence, msg.Speaker);
+
+                    // Remove anything that's not a letter, number, space, ',' or '.'
+                    string cleanedMessage = new string(sentence.Where(c => char.IsLetterOrDigit(c) || c == ',' || c == '.' || c == ' ').ToArray());
+                    if (!cleanedMessage.Any(char.IsLetter))
+                        return;
+                    sentence = cleanedMessage;
+
+                    var pcmData = await ttsEngine.SpeakTTS(sentence, localTTS[speaker]);
+                    var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(22050, 1);
+                    var stream = new MemoryStream();
+                    var writer = new BinaryWriter(stream);
+
+                    foreach (var sample in pcmData)
+                    {
+                        writer.Write(sample);
+                    }
+
+                    stream.Position = 0;
+                    WaveStream waveStream = new RawSourceWaveStream(stream, waveFormat);
+                    PlayAudio(msg, waveStream, "ai");
+                }
+                catch (Exception ex)
+                {
+                    Plugin.PluginLog.Error($"Error processing audio file: {ex}");
+                }
             }
             catch (Exception ex)
             {
-                Plugin.PluginLog.Error($"Error processing audio file: {ex}");
+                Plugin.PluginLog.Error($"Error in SpeakAI method: {ex.Message}");
             }
         }
+
 
         public static string ProcessPlayerChat(string sentence, string speaker)
         {
@@ -1624,7 +1649,6 @@ namespace XivVoices.Engine
                     bool changeSpeed = this.Database.Plugin.Config.Speed != 100;
                     bool applyEffects = SoundEffects(msg) != "";
 
-
                     try
                     {
                         // Load and possibly modify the OGG file
@@ -1653,11 +1677,16 @@ namespace XivVoices.Engine
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error($"Error in SpeakLocallyAsync method: {ex.Message}");
+            }
             finally
             {
                 speakBlock.Release();
             }
         }
+
 
         public static WaveStream DecodeOggOpusToPCM(string filePath)
         {
@@ -1928,14 +1957,21 @@ namespace XivVoices.Engine
 
         private void PlayAudio(XivMessage xivMessage, WaveStream waveStream, string type)
         {
-            Plugin.PluginLog.Information($"PlayAudio ---> type: " + type);
-            if (xivMessage.TtsData != null && xivMessage.TtsData.Position != new Vector3(-99))
+            try
             {
-                Audio.PlayBubble(xivMessage, waveStream, type);
+                Plugin.PluginLog.Information($"PlayAudio ---> type: " + type);
+                if (xivMessage.TtsData != null && xivMessage.TtsData.Position != new Vector3(-99))
+                {
+                    Audio.PlayBubble(xivMessage, waveStream, type);
+                }
+                else
+                {
+                    Audio.PlayAudio(xivMessage, waveStream, type);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Audio.PlayAudio(xivMessage, waveStream, type);
+                Plugin.PluginLog.Error($"Error in XivEngine PlayAudio method: {ex.Message}");
             }
         }
         #endregion

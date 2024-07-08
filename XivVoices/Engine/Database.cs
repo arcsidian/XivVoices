@@ -50,7 +50,8 @@ namespace XivVoices.Engine
                 "Krile",
                 "Tataru",
                 "Minfilia",
-                "Riol"
+                "Riol",
+                "Unukalhai"
             };
         public List<string> NpcWithVariedLooks { get; set; } = new List<string>()
             {

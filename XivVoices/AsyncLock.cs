@@ -1,5 +1,4 @@
-﻿using Dalamud.Logging;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +8,7 @@ namespace XivVoices
     {
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
         private readonly Task<IDisposable> _releaser;
+        private bool _disposed;
 
         public AsyncLock()
         {
@@ -17,6 +17,8 @@ namespace XivVoices
 
         public Task<IDisposable> LockAsync()
         {
+            if (_disposed) throw new ObjectDisposedException(nameof(AsyncLock));
+
             Plugin.PluginLog.Information("AsyncLock ---> Waiting to acquire lock");
             var wait = _semaphore.WaitAsync();
             return wait.IsCompleted ?
@@ -33,16 +35,21 @@ namespace XivVoices
         {
             private readonly AsyncLock _toRelease;
             public Releaser(AsyncLock toRelease) { _toRelease = toRelease; }
+
             public void Dispose()
             {
-                Plugin.PluginLog.Information("AsyncLock ---> Lock released");
+                if (_toRelease._disposed) return;
+                Plugin.PluginLog.Information("AsyncLock --->");
                 _toRelease._semaphore.Release();
+                Plugin.PluginLog.Information("AsyncLock ---> Lock released");
             }
         }
 
         public void Dispose()
         {
+            if (_disposed) return;
             _semaphore.Dispose();
+            _disposed = true;
         }
     }
 }

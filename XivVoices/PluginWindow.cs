@@ -1334,7 +1334,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.0 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.1 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Better optimization and error catching for future crashes.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.0"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug in lipsync that causes some users to crash upon starting or ending some dialogues.");
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a bug in the volume of bubble chats inside duties.");

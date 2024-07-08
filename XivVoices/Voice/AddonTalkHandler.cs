@@ -1,15 +1,10 @@
-﻿using Anamnesis;
-using Anamnesis.Actor;
-using Anamnesis.Core.Memory;
-using Anamnesis.GameData.Excel;
+﻿using Anamnesis.GameData.Excel;
 using Anamnesis.Memory;
 using Anamnesis.Services;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Hooking;
-using Dalamud.Logging;
 using Dalamud.Memory;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.Game;
