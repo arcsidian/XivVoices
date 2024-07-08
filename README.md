@@ -16,10 +16,11 @@
 4. **Chat Voicing**: Implements voice output for player chats in say, party, FC, tell, shout, and yell using local TTS.
 5. **Immersive Experience**: Every aspect of the game's audio is designed to enrich your gameplay, providing a fully voiced experience that rivals major narrative-driven games.
 6. **Dialogue Reports**: Every missing dialogue gets reported to me automatically so I can include it in the next update. Users also can report any dialogue that they think should be redone for better quality.
+7. **Frequent Updates**: New voices and dialogues are provided as soon as they are reported, and users have the option to stream missing voice files individually from the server.
 
 ### Requirements
 
-- Approximately 8GB of free storage space.
+- Approximately 12GB of free storage space.
 - XIV Launcher with Dalamud installed.
 
 ## Installation Guide
