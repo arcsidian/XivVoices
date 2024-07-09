@@ -159,6 +159,7 @@ namespace XivVoices.Engine
                 "Moonfire Faire Chaperone",
                 "Moonfire Faire Vendor",
                 "Moonfire Marine",
+                "Meghaduta Attendant",
                 "OIC Administrator",
                 "OIC Officer of Arms",
                 "OIC Quartermaster",
@@ -890,6 +891,7 @@ namespace XivVoices.Engine
             Plugin.PluginLog.Information($"looking for path [{filePath + ".ogg"}]");
             if (File.Exists(filePath + ".ogg"))
             {
+                /*
                 string jsonContent = File.ReadAllText(filePath + ".json");
                 var json = JsonConvert.DeserializeObject<DialogueData>(jsonContent);
 
@@ -911,10 +913,9 @@ namespace XivVoices.Engine
                     return "report";
                 }
                 else
+                */
                     return filePath + ".ogg";
             }
-            else if (File.Exists(filePath + ".wav"))
-                return filePath + ".wav";
             else
                 return null;
         }

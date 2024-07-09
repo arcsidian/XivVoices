@@ -1334,7 +1334,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.3 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.4 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.3"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("More code optimization to never allow those crashing bugs inside our house again!");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
