@@ -1171,6 +1171,8 @@ namespace XivVoices.Engine
             cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
+            if(xivMessage.TtsData.User.IsNullOrEmpty())
+                xivMessage.TtsData.User = $"{Plugin.ClientState.LocalPlayer.Name}@{Plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
             string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Redo&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&say={Uri.EscapeDataString(cleanedMessage)}&filename={Uri.EscapeDataString(fileName)}";
 
             try
@@ -1604,6 +1606,7 @@ namespace XivVoices.Engine
                 {
                     this.Plugin.Print("Redo report by " + wavdata["user"]);
                     this.Plugin.Print("("+ wavdata["comment"] + ")");
+                    
                 }
 
                 TTSData TtsData = new TTSData();
@@ -1612,6 +1615,8 @@ namespace XivVoices.Engine
                 TtsData.Speaker = wavdata["speaker"];
                 TtsData.Message = wavdata["sentence"];
                 TtsData.Race = "idk";
+                if (wavdata.ContainsKey("user"))
+                    TtsData.User = wavdata["user"];
 
                 if (!wavdata.ContainsKey("gender") || !wavdata.ContainsKey("body") ||
                     !wavdata.ContainsKey("race") || !wavdata.ContainsKey("tribe") ||

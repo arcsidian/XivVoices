@@ -274,8 +274,6 @@ namespace XivVoices.Engine
                 this.Database.Plugin.LogError($"ffxivMessages is busy atm");
                 return;
             }
-            this.Database.Plugin.LogError($"FrameworkUpdate");
-
             this.Database.Framework.Run("C:\\XIV_Server\\Server\\report_missing");
         }
 

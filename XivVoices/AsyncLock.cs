@@ -39,7 +39,6 @@ namespace XivVoices
             public void Dispose()
             {
                 if (_toRelease._disposed) return;
-                Plugin.PluginLog.Information("AsyncLock --->");
                 _toRelease._semaphore.Release();
                 Plugin.PluginLog.Information("AsyncLock ---> Lock released");
             }

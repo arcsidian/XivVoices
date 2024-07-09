@@ -126,6 +126,9 @@ namespace XivVoices.Engine
 
             {(11030,0), "Lupin"},
 
+            {(11037,0), "Nu Mou"},
+            {(11037,816), "Nu Mou"},
+
             {(11038,0), "Pixie"},
             {(11038,816), "Pixie"},
 
