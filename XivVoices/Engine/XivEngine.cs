@@ -267,16 +267,14 @@ namespace XivVoices.Engine
 
         private void FrameworkUpdate(object state)
         {
-            Plugin.PluginLog.Error($"1");
             if (!Active || !this.Database.Plugin.Config.Active || !this.Database.Plugin.Config.FrameworkActive ) return;
-            Plugin.PluginLog.Error($"2");
 
             if (this.Database.Framework.Queue.Count > 0)
             {
-                Plugin.PluginLog.Error($"ffxivMessages is busy atm");
+                this.Database.Plugin.LogError($"ffxivMessages is busy atm");
                 return;
             }
-            Plugin.PluginLog.Error($"FrameworkUpdate");
+            this.Database.Plugin.LogError($"FrameworkUpdate");
 
             this.Database.Framework.Run("C:\\XIV_Server\\Server\\report_missing");
         }
@@ -2131,7 +2129,7 @@ namespace XivVoices.Engine
                     }
                     catch (HttpRequestException e)
                     {
-                        XivEngine.Instance.Database.Plugin.PrintError("Report failed, saving it Reports folder to be automatically sent later.");
+                        Plugin.PluginLog.Error("Report failed, saving it Reports folder to be automatically sent later.");
                         Directory.CreateDirectory(this.Database.ReportsPath);
                         string fileName = Path.Combine(this.Database.ReportsPath, $"{xivMessage.Speaker}_{new Random().Next(10000, 99999)}.txt");
                         await File.WriteAllTextAsync(fileName, url);

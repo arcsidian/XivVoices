@@ -307,7 +307,7 @@ namespace XivVoices.Engine
                 dataAndToolsExist = false;
             }
 
-            // Check for Data folder
+            // Check for Voice Data folder
             if (!Directory.Exists(VoiceFilesPath))
             {
                 Directory.CreateDirectory(VoiceFilesPath);
@@ -405,6 +405,7 @@ namespace XivVoices.Engine
 
                 await LoadVoiceNamesAsync();
 
+                Plugin.Config.FrameworkActive = false;
                 Framework = new Framework();
 
                 Plugin.Chat.Print("Done.");

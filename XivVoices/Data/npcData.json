@@ -42239,14 +42239,6 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
-  "Maudlin Latool Ja": {
-    "Gender": "",
-    "Race": "Mamool Ja",
-    "Tribe": "",
-    "Body": "",
-    "Eyes": "",
-    "Type": "Default"
-  },
   "Mauguissant": {
     "Gender": "Male",
     "Race": "Elezen",
@@ -83547,6 +83539,526 @@
     "Gender": "Male",
     "Race": "Hyur",
     "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Anxious Radiant": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Basil": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Bestgirl": {
+    "Gender": "Female",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Br'uk Noq'": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Bubble": {
+    "Gender": "Female",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Cadmus": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Clerk PX-0083": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Clerk P3-0188": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Covellite": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Disgruntled Hyune": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Disgruntled Milalla": {
+    "Gender": "Female",
+    "Race": "Lalafell",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Disgruntled Shetona": {
+    "Gender": "Male",
+    "Race": "Viera",
+    "Tribe": "Rava",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Disgruntled Woman": {
+    "Gender": "Female",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Downcast Youth": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Elderly Customer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Elderly",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Exasperated Radiant": {
+    "Gender": "Male",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Feldspar": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Duskwight",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Furtive Youth": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Greying Gatherer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Elderly",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Hannish Citizen": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Harrowed Girl": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Hungry Milalla": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Hungry Tonawawta": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Hungry Xbr'aal": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Imperiled Hunter": {
+    "Gender": "Female",
+    "Race": "Viera",
+    "Tribe": "Rava",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Iniga": {
+    "Gender": "Female",
+    "Race": "Hrothgar",
+    "Tribe": "The Lost",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Justiciar": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Kind-eyed Xbr'aal": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Kipeshpe": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Kunuk": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Letemenyi": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Lieutenant Golias": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Maudlin Latool Ja": {
+    "Gender": "Male",
+    "Race": "Mamool Ja",
+    "Tribe": "Unknown:0",
+    "Body": "Beastman",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Mozeo": {
+    "Gender": "Female",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Myron": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Nalien": {
+    "Gender": "Female",
+    "Race": "Hrothgar",
+    "Tribe": "The Lost",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Nettse": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Pelupelu Guest": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Pelupelu Tippler": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Perplexed Weaver": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Peshiwa": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Elderly",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Phiniph": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Quickdart Kuiyki": {
+    "Gender": "Female",
+    "Race": "Viera",
+    "Tribe": "Rava",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Refined Reforger": {
+    "Gender": "Female",
+    "Race": "Viera",
+    "Tribe": "Rava",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Rhoa": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Rral Ty'ukuk": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Samidare": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Sopli": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Sulking Youth": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Surly Youth": {
+    "Gender": "Female",
+    "Race": "Au Ra",
+    "Tribe": "Raen",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Tepeke the Contrite": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Tokot": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Tonawawtan Trapper": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Train Watchguard": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Uncouth Thug": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Virazahn's Father": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Virazahn the Deceiver": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Virazahn": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Wawkwa": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Waylaid Peddler": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Wayward Artisan": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Wopli": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Worried Weaver": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Xbr'aal Youth": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Zale": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
     "Body": "Adult",
     "Eyes": "Option 3",
     "Type": "Default"

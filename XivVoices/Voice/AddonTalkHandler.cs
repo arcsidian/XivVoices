@@ -71,30 +71,43 @@ namespace XivVoices.Voice {
 
         public AddonTalkHandler(AddonTalkManager addonTalkManager, IFramework framework, IObjectTable objects,
             IClientState clientState, Plugin plugin, IChatGui chatGui, ISigScanner sigScanner) {
-            this.addonTalkManager = addonTalkManager;
-            this.framework = framework;
-            this._objectTable = objects;
-            _clientState = clientState;
-            framework.Update += Framework_Update;
-            _plugin = plugin;
-            _chatGui = chatGui;
-            //_chatGui.ChatMessage += _chatGui_ChatMessage;
-            _clientState.TerritoryChanged += _clientState_TerritoryChanged;
-            _scanner = sigScanner;
-            bubbleCooldown.Start();
+            try
+            {
+                this.addonTalkManager = addonTalkManager;
+                this.framework = framework;
+                this._objectTable = objects;
+                _clientState = clientState;
+                framework.Update += Framework_Update;
+                _plugin = plugin;
+                _chatGui = chatGui;
+                //_chatGui.ChatMessage += _chatGui_ChatMessage;
+                _clientState.TerritoryChanged += _clientState_TerritoryChanged;
+                _scanner = sigScanner;
+                bubbleCooldown.Start();
 
-            InitializeAsync().ContinueWith(t => {
-                if (t.Exception != null)
-                    Plugin.PluginLog.Error("Initialization failed: " + t.Exception);
-            });
+                InitializeAsync().ContinueWith(t => {
+                    if (t.Exception != null)
+                        Plugin.PluginLog.Error("Initialization failed: " + t.Exception);
+                });
+            } catch (Exception ex)
+            {
+                Plugin.PluginLog.Error(ex, "Error initializing AddonTalkHandler");
+            }
         }
 
         private async Task InitializeAsync()
         {
-            Plugin.PluginLog.Information("InitializeAsync --> Waiting for Game Process Stability");
-            await WaitForGameProcessStability();
-            Plugin.PluginLog.Information("InitializeAsync --> Done waiting");
-            InitializeServices();
+            try
+            {
+                Plugin.PluginLog.Information("InitializeAsync --> Waiting for Game Process Stability");
+                await WaitForGameProcessStability();
+                Plugin.PluginLog.Information("InitializeAsync --> Done waiting");
+                InitializeServices();
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error(ex, "Error in InitializeAsync");
+            }
         }
 
         private async Task WaitForGameProcessStability()
@@ -139,25 +152,40 @@ namespace XivVoices.Voice {
         }
 
         private void _clientState_TerritoryChanged(ushort obj) {
-            _speechBubbleInfo.Clear();
+            try
+            {
+                _speechBubbleInfo.Clear();
+            }
+            catch (Exception ex)
+            {
+                Plugin.PluginLog.Error(ex, "Error handling territory change");
+            }
         }
 
         
         private void _chatGui_ChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled) {
             if (_plugin.Config.Active && _clientState.IsLoggedIn && bubbleCooldown.ElapsedMilliseconds >= 200 && Conditions.IsBoundByDuty) {
                 if (_state == null) {
-                    switch (type) {
-                        case XivChatType.NPCDialogueAnnouncements:
-                            if (message.TextValue != _lastText && !Conditions.IsWatchingCutscene && !_blockAudioGeneration) {
-                                _lastText = message.TextValue;
-                                NPCText(sender.TextValue, message.TextValue.TrimStart('.'), true, !Conditions.IsBoundByDuty);
+                    try
+                    {
+                        switch (type) {
+                            case XivChatType.NPCDialogueAnnouncements:
+                                if (message.TextValue != _lastText && !Conditions.IsWatchingCutscene && !_blockAudioGeneration) {
+                                    _lastText = message.TextValue;
+                                    NPCText(sender.TextValue, message.TextValue.TrimStart('.'), true, !Conditions.IsBoundByDuty);
 #if DEBUG
-                                _plugin.Chat.Print("Sent audio from NPC chat.");
+                                    _plugin.Chat.Print("Sent audio from NPC chat.");
 #endif
-                            }
-                            _lastText = message.TextValue;
-                            _blockAudioGeneration = false;
-                            break;
+                                }
+                                _lastText = message.TextValue;
+                                _blockAudioGeneration = false;
+                                break;
+                        }
+
+                        }
+                    catch (Exception ex)
+                    {
+                        Plugin.PluginLog.Error(ex, "Error processing chat message");
                     }
                 }
             }
