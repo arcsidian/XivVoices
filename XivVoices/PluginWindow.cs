@@ -528,7 +528,8 @@ namespace XivVoices {
 
             if (Updater.Instance.State.Contains(9))
             {
-                foreach (var item in Updater.Instance.DownloadInfoState)
+                var downloadInfoSnapshot = Updater.Instance.DownloadInfoState.ToList();
+                foreach (var item in downloadInfoSnapshot)
                 {
                     ImGui.ProgressBar(item.percentage, new Vector2(-1, 0), $"{item.file} {item.status}");
                 }
@@ -1072,7 +1073,6 @@ namespace XivVoices {
                     ImGui.SetColumnWidth(0, 350);
 
                     var audioInfoStateCopy = PluginReference.audio.AudioInfoState.ToList();
-
                     foreach (var item in audioInfoStateCopy)
                     {
                         // Show Dialogue Details (Name: Sentence)
@@ -1296,7 +1296,8 @@ namespace XivVoices {
 
             ImGui.Dummy(new Vector2(0, 10));
 
-            foreach (string item in XivEngine.Instance.Audio.unknownQueue)
+            var unknownQueueSnapshot = XivEngine.Instance.Audio.unknownQueue.ToList();
+            foreach (string item in unknownQueueSnapshot)
             {
                 if (ImGui.BeginChild("unknownList"+item, new Vector2(275, 50), true))
                 {
