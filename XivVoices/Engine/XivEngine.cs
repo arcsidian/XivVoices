@@ -79,7 +79,10 @@ namespace XivVoices.Engine
                 _updateTimer = new Timer(Update, null, 0, 50);
                 _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
                 if (this.Database.Plugin.Config.FrameworkActive)
+                {
+                    this.Database.Plugin.Log($"Running Auto Download");
                     _autoUpdateTimer = new Timer(FrameworkUpdate, null, 10000, 10000);
+                }
                 localTTS[0] = null;
                 localTTS[1] = null;
                 Active = true;
@@ -264,7 +267,9 @@ namespace XivVoices.Engine
 
         private void FrameworkUpdate(object state)
         {
+            Plugin.PluginLog.Error($"1");
             if (!Active || !this.Database.Plugin.Config.Active || !this.Database.Plugin.Config.FrameworkActive ) return;
+            Plugin.PluginLog.Error($"2");
 
             if (this.Database.Framework.Queue.Count > 0)
             {
@@ -2108,7 +2113,7 @@ namespace XivVoices.Engine
                     xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
                 }
 
-                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}&folder={comment}";
+                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}&comment={comment}";
                 if (!reportedLines.Contains(url))
                 {
                     reportedLines.Enqueue(url);

@@ -414,6 +414,7 @@ namespace XivVoices.Voice {
             AnimationMemory animationMemory = null;
             if (character != null)
             {
+                Plugin.PluginLog.Information("Starting LipSync");
                 actorMemory = new ActorMemory();
                 actorMemory.SetAddress(character.Address);
                 animationMemory = actorMemory.Animation;
@@ -544,6 +545,7 @@ namespace XivVoices.Voice {
                                 _chatGui.Print($"Task was Completed");
 #endif
                                 _plugin.Log($"Task was Completed");
+                                Plugin.PluginLog.Information("LipSync was completed");
 
                                 cts.Dispose();
                                 if (taskCancellations.ContainsKey(character.ToString()))
@@ -557,6 +559,7 @@ namespace XivVoices.Voice {
                             _chatGui.Print($"Task was canceled.");
 #endif
                             _plugin.Log($"Task was canceled.");
+                            Plugin.PluginLog.Information("LipSync was canceled");
 
                             animationMemory.LipsOverride = 0;
                             MemoryService.Write(actorMemory.GetAddressOfProperty(nameof(ActorMemory.CharacterModeRaw)), intialState, "Animation Mode Override");
@@ -620,11 +623,14 @@ namespace XivVoices.Voice {
             if (!_plugin.Config.Active) return;
             if (character == null) return;
 
+            Plugin.PluginLog.Information("StopLipSync started");
+
             if (taskCancellations.TryGetValue(character.ToString(), out var cts))
             {
                 //_chatGui.Print("Cancellation " + character.Name);
                 try
                 {
+                    Plugin.PluginLog.Information("StopLipSync cancelling cts");
                     cts.Cancel();
                 }
                 catch (ObjectDisposedException)
@@ -640,18 +646,18 @@ namespace XivVoices.Voice {
 
             try
             {
-                //_chatGui.Print("StopLipSync " + character.Name);
+                Plugin.PluginLog.Information("StopLipSync writing memory");
                 var actorMemory = new ActorMemory();
                 actorMemory.SetAddress(character.Address);
                 var animationMemory = actorMemory.Animation;
                 animationMemory.LipsOverride = LipSyncTypes[5].Timeline.AnimationId;
                 MemoryService.Write(animationMemory.GetAddressOfProperty(nameof(AnimationMemory.LipsOverride)), 0, "Lipsync");
             }
-            catch
+            catch (Exception ex)
             {
-
+                Plugin.PluginLog.Error($"Error writing memory for {character.Name}, tell Arc!");
             }
-            
+
         }
 
         public int EstimateDurationFromMessage(string message)
