@@ -1334,13 +1334,18 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.5 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Late reports will no longer loop infinitely.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.5"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Added Nu Mou beast tribe to the Data Mapper.");
                     ImGui.Bullet(); ImGui.TextWrapped("Improved dialogue reports.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
                 }
-
+                 
                 if (ImGui.CollapsingHeader("Version 0.2.9.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");

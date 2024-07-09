@@ -167,22 +167,10 @@ namespace XivVoices.Engine
                     string[] reportFiles = Directory.GetFiles(this.Database.ReportsPath);
                     if (reportFiles.Length > 0)
                     {
-                        _ = Task.Run(async () =>
+                        foreach (string filePath in reportFiles)
                         {
-                            foreach (string filePath in reportFiles)
-                            {
-                                try
-                                {
-                                    string url = await File.ReadAllTextAsync(filePath);
-                                    await LateReportToArcJSON(url, filePath);
-
-                                }
-                                catch (Exception ex)
-                                {
-                                    XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
-                                }
-                            }
-                        });
+                            await ProcessReportFileAsync(filePath);
+                        }
                     }
                 }
 
@@ -2143,23 +2131,66 @@ namespace XivVoices.Engine
             
         }
 
-        public async Task LateReportToArcJSON(string url, string path)
+        private async Task ProcessReportFileAsync(string filePath)
         {
-            if (!this.Database.Plugin.Config.Reports) return;
             try
             {
-                HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
-                response.EnsureSuccessStatusCode();
-                string responseBody = await response.Content.ReadAsStringAsync();
-                XivEngine.Instance.Database.Plugin.Print(responseBody);
-                File.Delete(path);
-                return;
+                if (!File.Exists(filePath)) return; // Ensure file still exists
+
+                string url = await File.ReadAllTextAsync(filePath);
+                if (!this.Database.Plugin.Config.Reports) return;
+
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    XivEngine.Instance.Database.Plugin.Print(responseBody);
+                    DeleteFileWithRetry(filePath);
+                }
+                catch (HttpRequestException e)
+                {
+                    XivEngine.Instance.Database.Plugin.PrintError($"HTTP request failed for file {filePath}: {e.Message}");
+                }
             }
-            catch (HttpRequestException e)
+            catch (Exception ex)
             {
-                return;
+                XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
             }
         }
+
+
+        private void DeleteFileWithRetry(string path)
+        {
+            const int MaxRetries = 5;
+            const int DelayBetweenRetries = 200; // in milliseconds
+
+            for (int i = 0; i < MaxRetries; i++)
+            {
+                try
+                {
+                    if (File.Exists(path))
+                    {
+                        File.Delete(path);
+                    }
+                    return;
+                }
+                catch (IOException ex)
+                {
+                    Plugin.PluginLog.Error($"IOException on attempt {i + 1}: {ex.Message}");
+                    // Wait before retrying
+                    Task.Delay(DelayBetweenRetries).Wait();
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Plugin.PluginLog.Error($"UnauthorizedAccessException on attempt {i + 1}: {ex.Message}");
+                    // Wait before retrying
+                    Task.Delay(DelayBetweenRetries).Wait();
+                }
+            }
+            Plugin.PluginLog.Error($"Failed to delete file after {MaxRetries} attempts: {path}");
+        }
+
         #endregion
 
     }
