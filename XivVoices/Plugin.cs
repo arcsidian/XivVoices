@@ -652,6 +652,7 @@ namespace XivVoices {
                     ChangelogActive = _textureProvider.GetFromFile(imagePath);
                     if (Logo != null)
                     {
+                        _window.InitializeImageHandles();
                         texturesLoaded = true; // Set the flag if the logo is successfully loaded
                     }
                 }
@@ -774,7 +775,7 @@ namespace XivVoices {
                 database?.Dispose();
                 audio?.Dispose();
                 xivEngine?.Dispose();
-                //webSocketServer.Stop();
+                _window.Dispose();
             } catch (Exception e) {
                 Plugin.PluginLog.Warning(e, e.Message);
             }

@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using XivVoices.Engine;
 using System.IO;
 using System.Linq;
+using Dalamud.Interface.Textures.TextureWraps;
+using Dalamud.Interface.Textures;
 
 namespace XivVoices {
     public class PluginWindow : Window {
@@ -30,12 +32,76 @@ namespace XivVoices {
         private bool isFrameworkWindowOpen = false;
         private string currentTab = "General";
 
+        private IDalamudTextureWrap changelogTexture;
+        private IDalamudTextureWrap changelogActiveTexture;
+        private IDalamudTextureWrap generalSettingsTexture;
+        private IDalamudTextureWrap generalSettingsActiveTexture;
+        private IDalamudTextureWrap dialogueSettingsTexture;
+        private IDalamudTextureWrap dialogueSettingsActiveTexture;
+        private IDalamudTextureWrap audioSettingsTexture;
+        private IDalamudTextureWrap audioSettingsActiveTexture;
+        private IDalamudTextureWrap archiveTexture;
+        private IDalamudTextureWrap archiveActiveTexture;
+        private IDalamudTextureWrap discordTexture;
+        private IDalamudTextureWrap koFiTexture;
+        private IDalamudTextureWrap iconTexture;
+        private IDalamudTextureWrap logoTexture;
+
+        private IntPtr changelogHandle;
+        private IntPtr changelogActiveHandle;
+        private IntPtr generalSettingsHandle;
+        private IntPtr generalSettingsActiveHandle;
+        private IntPtr dialogueSettingsHandle;
+        private IntPtr dialogueSettingsActiveHandle;
+        private IntPtr audioSettingsHandle;
+        private IntPtr audioSettingsActiveHandle;
+        private IntPtr archiveHandle;
+        private IntPtr archiveActiveHandle;
+        private IntPtr discordHandle;
+        private IntPtr koFiHandle;
+        private IntPtr iconHandle;
+        private IntPtr logoHandle;
+
 
         public PluginWindow() : base("    XIVV                                      ~  Xiv Voices by Arcsidian  ~") {
             Size = new Vector2(440, 650);
             initialSize = Size;
             SizeCondition = ImGuiCond.Always;
             Flags = ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize;
+        }
+
+        public async void InitializeImageHandles()
+        {
+
+            changelogTexture = await this.PluginReference.Changelog.RentAsync();
+            changelogActiveTexture = await this.PluginReference.ChangelogActive.RentAsync();
+            generalSettingsTexture = await this.PluginReference.GeneralSettings.RentAsync();
+            generalSettingsActiveTexture = await this.PluginReference.GeneralSettingsActive.RentAsync();
+            dialogueSettingsTexture = await this.PluginReference.DialogueSettings.RentAsync();
+            dialogueSettingsActiveTexture = await this.PluginReference.DialogueSettingsActive.RentAsync();
+            audioSettingsTexture = await this.PluginReference.AudioSettings.RentAsync();
+            audioSettingsActiveTexture = await this.PluginReference.AudioSettingsActive.RentAsync();
+            archiveTexture = await this.PluginReference.Archive.RentAsync();
+            archiveActiveTexture = await this.PluginReference.ArchiveActive.RentAsync();
+            discordTexture = await this.PluginReference.Discord.RentAsync();
+            koFiTexture = await this.PluginReference.KoFi.RentAsync();
+            iconTexture = await this.PluginReference.Icon.RentAsync();
+            logoTexture = await this.PluginReference.Logo.RentAsync();
+
+            changelogHandle = changelogTexture.ImGuiHandle;
+            changelogActiveHandle = changelogActiveTexture.ImGuiHandle;
+            generalSettingsHandle = generalSettingsTexture.ImGuiHandle;
+            generalSettingsActiveHandle = generalSettingsActiveTexture.ImGuiHandle;
+            dialogueSettingsHandle = dialogueSettingsTexture.ImGuiHandle;
+            dialogueSettingsActiveHandle = dialogueSettingsActiveTexture.ImGuiHandle;
+            audioSettingsHandle = audioSettingsTexture.ImGuiHandle;
+            audioSettingsActiveHandle = audioSettingsActiveTexture.ImGuiHandle;
+            archiveHandle = archiveTexture.ImGuiHandle;
+            archiveActiveHandle = archiveActiveTexture.ImGuiHandle;
+            discordHandle = discordTexture.ImGuiHandle;
+            koFiHandle = koFiTexture.ImGuiHandle;
+            iconHandle = iconTexture.ImGuiHandle;
+            logoHandle = logoTexture.ImGuiHandle;
         }
 
         public Configuration Configuration {
@@ -63,11 +129,6 @@ namespace XivVoices {
         }
 
         private void ClientState_Login() {
-        }
-
-        public void InitializeImages()
-        {
-
         }
 
         public override void Draw() {
@@ -107,95 +168,24 @@ namespace XivVoices {
                     else
                     {
                         var backupColor = ImGui.GetStyle().Colors[(int)ImGuiCol.Button];
-
-
                         ImGui.GetStyle().Colors[(int)ImGuiCol.Button] = new Vector4(0, 0, 0, 0);
 
                         // Floating Button ----------------------------------
                         var originPos = ImGui.GetCursorPos();
                         ImGui.SetCursorPosX(ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMax().X + 8f);
                         ImGui.SetCursorPosY(ImGui.GetWindowContentRegionMax().Y - ImGui.GetFrameHeight() - 26f);
-                        if (currentTab == "Changelog")
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.ChangelogActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Changelog";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Changelog");
-                        }
-                        else
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.Changelog.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Changelog";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Changelog");
-                        }
+                        DrawImageButton("Changelog", currentTab == "Changelog" ? changelogActiveHandle : changelogHandle);
                         ImGui.SetCursorPos(originPos);
 
                         // The sidebar with the tab buttons
                         ImGui.BeginChild("Sidebar", new Vector2(50, 500), false);
-                        
-                        if(currentTab == "General")
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.GeneralSettingsActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "General";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("General Settings");
-                        }
-                        else
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.GeneralSettings.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "General";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("General Settings");
-                        }
 
-                        if (currentTab == "Dialogue Settings")
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.DialogueSettingsActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Dialogue Settings";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Dialogue Settings");
-                        }
-                        else
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.DialogueSettings.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Dialogue Settings";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Dialogue Settings");
-                        }
+                        DrawSidebarButton("General", generalSettingsHandle, generalSettingsActiveHandle);
+                        DrawSidebarButton("Dialogue Settings", dialogueSettingsHandle, dialogueSettingsActiveHandle);
+                        DrawSidebarButton("Audio Settings", audioSettingsHandle, audioSettingsActiveHandle);
+                        DrawSidebarButton("Audio Logs", archiveHandle, archiveActiveHandle);
 
-                        if (currentTab == "Audio Settings")
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.AudioSettingsActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Audio Settings";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Audio Settings");
-                        }
-                        else
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.AudioSettings.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Audio Settings";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Audio Settings");
-                        }
-
-                        if (currentTab == "Audio Logs")
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.ArchiveActive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Audio Logs";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Audio Logs");
-                        }
-                        else
-                        {
-                            if (ImGui.ImageButton(this.PluginReference.Archive.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
-                                currentTab = "Audio Logs";
-                            if (ImGui.IsItemHovered())
-                                ImGui.SetTooltip("Audio Logs");
-                        }
-
-
-                        if (ImGui.ImageButton(this.PluginReference.Discord.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
+                        if (ImGui.ImageButton(discordHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
                             try
@@ -213,7 +203,7 @@ namespace XivVoices {
                         if (ImGui.IsItemHovered())
                             ImGui.SetTooltip("Join Our Discord Community");
 
-                        if (ImGui.ImageButton(this.PluginReference.KoFi.RentAsync().Result.ImGuiHandle, new Vector2(42, 42)))
+                        if (ImGui.ImageButton(koFiHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
                             try
@@ -232,7 +222,7 @@ namespace XivVoices {
                             ImGui.SetTooltip("Support the Project on Ko-Fi");
 
                         if (this.configuration.FrameworkActive) {
-                            if (ImGui.ImageButton(this.PluginReference.Icon.RentAsync().Result.ImGuiHandle, new Vector2(42, 42),new Vector2(1,1)))
+                            if (ImGui.ImageButton(iconHandle, new Vector2(42, 42), new Vector2(1, 1)))
                             {
                                 isFrameworkWindowOpen = true;
                             }
@@ -284,6 +274,23 @@ namespace XivVoices {
             } else {
                 ImGui.TextUnformatted("Please login to access and configure settings.");
             }
+        }
+
+        private void DrawImageButton(string tabName, IntPtr imageHandle)
+        {
+            if (ImGui.ImageButton(imageHandle, new Vector2(42, 42)))
+            {
+                currentTab = tabName;
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip(tabName);
+            }
+        }
+
+        private void DrawSidebarButton(string tabName, IntPtr normalHandle, IntPtr activeHandle)
+        {
+            DrawImageButton(tabName, currentTab == tabName ? activeHandle : normalHandle);
         }
 
         private static readonly List<string> ValidTextureExtensions = new List<string>(){
@@ -429,10 +436,10 @@ namespace XivVoices {
             ImGui.Dummy(new Vector2(0, 20));
             ImGui.Indent(65);
 
-            if (this.PluginReference.Logo != null)
-                ImGui.Image(this.PluginReference.Logo.RentAsync().Result.ImGuiHandle, new Vector2(200, 200));
-            else
-                ImGui.Dummy(new Vector2(200, 200));
+            //if (logoHandle != null)
+                ImGui.Image(logoHandle, new Vector2(200, 200));
+            //else
+            //    ImGui.Dummy(new Vector2(200, 200));
 
             ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
             ImGui.Dummy(new Vector2(0, 10));
@@ -553,7 +560,7 @@ namespace XivVoices {
                 ImGui.Dummy(new Vector2(0, 10));
                 ImGui.Indent(60);
 
-                ImGui.Image(this.PluginReference.Logo.RentAsync().Result.ImGuiHandle, new Vector2(200, 200));
+                ImGui.Image(logoHandle, new Vector2(200, 200));
 
                 // Working Directory
                 ImGui.TextWrapped("Working Directory is " + this.configuration.WorkingDirectory);
@@ -1343,7 +1350,10 @@ namespace XivVoices {
 
                 if (ImGui.CollapsingHeader("Version 0.2.9.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Late reports will no longer print the response.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved UI and made it more efficient, it should no longer cause a crash upon version update.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Late reports will no longer print the response.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Updater window now shows download bars correctly.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Mute reports now will work on unknown dialogues.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.9.6"))
@@ -1727,6 +1737,27 @@ namespace XivVoices {
                 RequestSave();
                 needSave = false;
             }
+        }
+
+        public void Dispose()
+        {
+            changelogTexture?.Dispose();
+            changelogActiveTexture?.Dispose();
+            generalSettingsTexture?.Dispose();
+            generalSettingsActiveTexture?.Dispose();
+            dialogueSettingsTexture?.Dispose();
+            dialogueSettingsActiveTexture?.Dispose();
+            audioSettingsTexture?.Dispose();
+            audioSettingsActiveTexture?.Dispose();
+            archiveTexture?.Dispose();
+            archiveActiveTexture?.Dispose();
+            discordTexture?.Dispose();
+            koFiTexture?.Dispose();
+            iconTexture?.Dispose();
+            logoTexture?.Dispose();
+
+            clientState.Login -= ClientState_Login;
+            clientState.Logout -= ClientState_Logout;
         }
 
         public class MessageEventArgs : EventArgs {
