@@ -1219,7 +1219,13 @@ namespace XivVoices {
                                     }
                                     ImGui.Dummy(new Vector2(0, 2));
                                 }
-
+                                else if (item.type == "empty")
+                                {
+                                    ImGui.TextWrapped("Tell me why this needs to be muted?");
+                                    ImGui.Dummy(new Vector2(0, 5));
+                                    ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 450, new Vector2(335, 100));
+                                    ImGui.Dummy(new Vector2(0, 2));
+                                }
 
                                 ImGui.TextWrapped("( only use the mute button for dialogues that are already voiced by the game itself )");
                                 if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
