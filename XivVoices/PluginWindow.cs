@@ -1335,7 +1335,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.6 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Late reports will no longer print the response.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.6"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Hotfix: Late reports will no longer loop infinitely.");
                 }

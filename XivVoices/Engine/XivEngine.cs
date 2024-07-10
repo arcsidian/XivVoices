@@ -2145,7 +2145,6 @@ namespace XivVoices.Engine
                     HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
-                    XivEngine.Instance.Database.Plugin.Print(responseBody);
                     DeleteFileWithRetry(filePath);
                 }
                 catch (HttpRequestException e)
