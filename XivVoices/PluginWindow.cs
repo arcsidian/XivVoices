@@ -1019,7 +1019,7 @@ namespace XivVoices {
                 {
                     this.Configuration.LocalTTSUngendered = localTTSUngendered;
                     needSave = true;
-                }
+                } 
 
 
                 // LocalTTS Volume Slider
@@ -1042,7 +1042,7 @@ namespace XivVoices {
                 };
                 ImGui.SameLine();
                 ImGui.Text("Say Speaker Name in Chat");
-                ImGui.Unindent(20);
+                
 
                 ImGui.Dummy(new Vector2(0, 5));
                 var ignoreNarratorLines = this.Configuration.IgnoreNarratorLines;
@@ -1358,12 +1358,18 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.7 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Improved UI and made it more efficient, it should no longer cause a crash upon version update.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Added alternative names for Otis and Koana.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.7"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added the option to Ignore Narrator Lines, it can be found under Local TTS in the Audio Settings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Late reports will no longer print the response.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Updater window now shows download bars correctly.");
-                    ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Mute reports now will work on unknown dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.9.6"))

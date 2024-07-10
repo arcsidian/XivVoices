@@ -80383,7 +80383,23 @@
     "Eyes": "Option 1",
     "Type": "Default"
   },
+  "Ketenramm the Blue": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Hellsguard",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
   "Koana": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Second Promise of Tuliyollal": {
     "Gender": "Male",
     "Race": "Miqo'te",
     "Tribe": "Seeker of the Sun",
@@ -80472,6 +80488,14 @@
     "Type": "Default"
   },
   "Otis": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Otis Oathbroken": {
     "Gender": "Male",
     "Race": "Hyur",
     "Tribe": "Highlander",
@@ -84813,6 +84837,182 @@
     "Tribe": "Highlander",
     "Body": "Adult",
     "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Amaryllis": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Befuddled Bather": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Bloemerl": {
+    "Gender": "Male",
+    "Race": "Roegadyn",
+    "Tribe": "Sea Wolf",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Courteous Temple Knight": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Hurting Helper": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Keen-eyed Temple Knight": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Laugh-weary Lalafell": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Little Lady Nogginette": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Little Lord Noggington": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Loazenikwe the Shut Eye": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Spirited Temple Knight": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Tentoawa the Wide Eye": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Traveling Peddler": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Bapli": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Br'uk Ty'ev": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Chalteaufite": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Earnest Escort": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Garrulous Trader": {
+    "Gender": "Male",
+    "Race": "Elezen",
+    "Tribe": "Wildwood",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Porta Praetoria Commander": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Sovli": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Timid Trader": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Waylaid Merchant": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 1",
     "Type": "Default"
   }
 }
