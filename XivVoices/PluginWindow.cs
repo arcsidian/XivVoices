@@ -11,7 +11,6 @@ using XivVoices.Engine;
 using System.IO;
 using System.Linq;
 using Dalamud.Interface.Textures.TextureWraps;
-using Dalamud.Interface.Textures;
 
 namespace XivVoices {
     public class PluginWindow : Window {
