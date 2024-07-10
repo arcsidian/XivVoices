@@ -1333,7 +1333,8 @@ namespace XivVoices.Engine
         {
             try
             {
-                // Start Local TTS Engine
+                if (msg.Speaker == "Narrator" && this.Database.Plugin.Config.IgnoreNarratorLines) return;
+
                 if (this.ttsEngine == null)
                     this.ttsEngine = new TTSEngine(Database.Plugin);
 

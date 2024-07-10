@@ -1044,6 +1044,17 @@ namespace XivVoices {
                 ImGui.Text("Say Speaker Name in Chat");
                 ImGui.Unindent(20);
 
+                ImGui.Dummy(new Vector2(0, 5));
+                var ignoreNarratorLines = this.Configuration.IgnoreNarratorLines;
+                if (ImGui.Checkbox("##ignoreNarratorLines", ref ignoreNarratorLines))
+                {
+                    this.configuration.IgnoreNarratorLines = ignoreNarratorLines;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Ignore Narrator Lines");
+                ImGui.Unindent(20);
+
 
                 // END
 
