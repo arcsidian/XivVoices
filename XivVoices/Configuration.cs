@@ -8,20 +8,12 @@ namespace XivVoices
     public class Configuration : IPluginConfiguration
     {
         public int Version { get; set; } = 0;
-        public string Port { get; set; } = "16969";
         public bool Active { get; set; } = true;
         public bool Initialized { get; set; } = false;
         public string WorkingDirectory { get; set; } = "C:/XIV_Voices";
-        public bool Reports { get; set; } = false;
-        public bool AutoUpdate { get; set; } = true;
-        public bool UpdateAudioNotification { get; set; } = true;
-        public DateTime LastUpdate { get; set; } = new DateTime(1969, 7, 20);
-        public string WebsocketStatus { get; set; } = "";
         public bool ReplaceVoicedARRCutscenes { get; set; } = true;
         public bool LipsyncEnabled { get; set; } = true;
         public bool SkipEnabled { get; set; } = true;
-        public bool AnnounceReports { get; set; } = true;
-        public bool OnlineRequests { get; set; } = false;
 
         // Chat Settings
         public bool SayEnabled { get; set; } = true;
@@ -52,7 +44,6 @@ namespace XivVoices
         public int LocalTTSVolume { get; set; } = 100;
         public bool LocalTTSPlayerSays { get; set; } = false;
         public bool IgnoreNarratorLines { get; set; } = false;
-        public bool WebsocketRedirectionEnabled { get; set; } = false;
 
         // Framework Settings
         public bool FrameworkActive { get; set; } = false;

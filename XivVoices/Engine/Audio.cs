@@ -286,7 +286,7 @@ namespace XivVoices.Engine
                 var audioInfo = GetAudioInfo(xivMessage, "empty");
                 audioInfo.percentage = 1f;
                 if (xivMessage.Reported)
-                    audioInfo.state = "Reported";
+                    audioInfo.state = "not voiced";
                 else
                     audioInfo.state = "";
             }

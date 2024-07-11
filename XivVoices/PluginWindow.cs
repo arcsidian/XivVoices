@@ -580,53 +580,6 @@ namespace XivVoices {
                 ImGui.SameLine();
                 ImGui.Text("Xiv Voices Enabled");
 
-                // Auto Update Enabled
-                ImGui.Dummy(new Vector2(0, 8));
-                var autoUpdate = this.Configuration.AutoUpdate;
-                if (ImGui.Checkbox("##autoUpdate", ref autoUpdate))
-                {
-                    this.configuration.AutoUpdate = autoUpdate;
-                    needSave = true;
-                };
-                ImGui.SameLine();
-                ImGui.Text("Auto Update Enabled");
-
-                // Update Audio Notification Enabled
-                ImGui.Dummy(new Vector2(0, 8));
-                var updateAudioNotification = this.Configuration.UpdateAudioNotification;
-                if (ImGui.Checkbox("##updateAudioNotification", ref updateAudioNotification))
-                {
-                    this.configuration.UpdateAudioNotification = updateAudioNotification;
-                    needSave = true;
-                };
-                ImGui.SameLine();
-                ImGui.Text("New Update Audio Notification Enabled");
-
-                // OnlineRequests
-                ImGui.Dummy(new Vector2(0, 8));
-                var onlineRequests = this.Configuration.OnlineRequests;
-                if (ImGui.Checkbox("##onlineRequests", ref onlineRequests))
-                {
-                    this.configuration.OnlineRequests = onlineRequests;
-                    needSave = true;
-                };
-                ImGui.SameLine();
-                ImGui.Text("Download missing lines individually if they exist");
-
-                // Xiv Voices Enabled
-                ImGui.Dummy(new Vector2(0, 8));
-                var reports = this.Configuration.Reports;
-                if (ImGui.Checkbox("##reports", ref reports))
-                {
-                    this.configuration.Reports = reports;
-                    needSave = true;
-                };
-                ImGui.SameLine();
-                ImGui.Text("Report Missing Dialogues Automatically");
-                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
-                ImGui.Text("( English lines only, do not enable for other languages )");
-                ImGui.PopStyleColor();
-
 
                 // END
 
@@ -866,15 +819,6 @@ namespace XivVoices {
                 ImGui.SameLine();
                 ImGui.Text("Dialogue Skip Enabled");
 
-                // AnnounceReports
-                var announceReports = this.Configuration.AnnounceReports;
-                if (ImGui.Checkbox("##announceReports", ref announceReports))
-                {
-                    this.configuration.AnnounceReports = announceReports;
-                    needSave = true;
-                };
-                ImGui.SameLine();
-                ImGui.Text("Announce Reported Lines");
 
 
                 // END
@@ -1075,13 +1019,13 @@ namespace XivVoices {
                         ImGui.TextWrapped($"{item.data.Speaker}: {item.data.TtsData.Message}");
 
                         // Show Player Progress Bar
-                        int progressSize = 203;
+                        int progressSize = 253;
                         if (item.type == "xivv")
                             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.0f, 0.7f, 0.0f, 1.0f)); // RGBA: Full green
                         else if (item.type == "empty")
                         {
                             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.2f, 0.2f, 0.2f, 1.0f)); // RGBA: Full green
-                            progressSize = 260;
+                            progressSize = 310;
                         }
 
                         if (XivEngine.Instance.Database.Access) progressSize -= 100;
@@ -1090,154 +1034,6 @@ namespace XivVoices {
                         if (item.type == "xivv" || item.type == "empty")
                             ImGui.PopStyleColor();
 
-
-                        // Access
-                        
-                        if (XivEngine.Instance.Database.Access && item.type == "xivv")
-                        {
-                            if (XivEngine.Instance.Database.RequestActive)
-                            {
-                                ImGui.SameLine();
-                                if (ImGui.Button($"YES##AccessYes{item.id}", new Vector2(35, 24)))
-                                {
-                                    _ = XivEngine.Instance.Database.Confirm(item.data);
-                                    XivEngine.Instance.Database.ForceWholeSentence = false;
-                                    XivEngine.Instance.Database.WholeSentence = "";
-                                }
-
-                                ImGui.SameLine();
-                                if (ImGui.Button($"NO##AccessNo{item.id}", new Vector2(35, 24)))
-                                {
-                                    _ = XivEngine.Instance.Database.Cancel(item.data);
-                                }
-                            }
-                            else
-                            {
-                                ImGui.SameLine();
-                                string _muteTitle = "Mute";
-                                if (XivEngine.Instance.Database.RequestMuteBusy) _muteTitle = "WAIT";
-                                if (ImGui.Button($"{_muteTitle}##AccessMute{item.id}", new Vector2(40, 24)))
-                                {
-                                    if (!XivEngine.Instance.Database.RequestMuteBusy)
-                                        ImGui.OpenPopup($"MuteConfirmation##AccessMuteConfirmation{item.id}");
-                                }
-
-                                bool muteopen = true;
-                                ImGui.SetNextWindowPos(ImGui.GetMousePos(), ImGuiCond.Appearing);
-                                ImGui.SetNextWindowSizeConstraints(new Vector2(350, 100), new Vector2(350, float.MaxValue));
-                                if (ImGui.BeginPopupModal($"MuteConfirmation##AccessMuteConfirmation{item.id}", ref muteopen, ImGuiWindowFlags.AlwaysAutoResize))
-                                {
-                                    if (ImGui.Button("Confirm To Mute For Everyone", new Vector2(335, 25)))
-                                    {
-                                        _ = XivEngine.Instance.Database.Mute(item.data);
-                                        ImGui.CloseCurrentPopup();
-                                    }
-                                    ImGui.Dummy(new Vector2(0, 2));
-                                    if (ImGui.Button("Cancel Action", new Vector2(335, 25)))
-                                        ImGui.CloseCurrentPopup();
-                                    ImGui.Dummy(new Vector2(0, 2));
-                                    ImGui.EndPopup();
-                                }
-
-                                ImGui.SameLine();
-                                string _accessTitle = "Redo";
-                                if (XivEngine.Instance.Database.RequestBusy) _accessTitle = "WAIT";
-                                if (ImGui.Button($"{_accessTitle}##AccessRedo{item.id}", new Vector2(45, 24)))
-                                {
-                                    if (!XivEngine.Instance.Database.RequestBusy)
-                                    {
-                                        _ = XivEngine.Instance.Database.Request(item.data, item.id);
-                                    }
-
-                                }
-                            }
-
-                        }
-
-                        // Show Report Button
-                        ImGui.SameLine();
-                        string reportTitle = "Report";
-                        if(item.type != "xivv")
-                            reportTitle = "Mute";
-                        else if(XivEngine.Instance.Database.Access)
-                            reportTitle = "Edit";
-                        if (ImGui.Button($"{reportTitle}##report{item.id}", new Vector2(50, 24)))
-                        {
-                            reportInput = "";
-                            if (XivEngine.Instance.Database.WholeSentence == "")
-                                XivEngine.Instance.Database.WholeSentence = item.data.Sentence;
-                            ImGui.OpenPopup($"{reportTitle}##{item.id}");
-                        }
-
-                        // Report Popup
-                        bool open = true;
-                        ImGui.SetNextWindowPos(ImGui.GetMousePos(), ImGuiCond.Appearing);
-                        ImGui.SetNextWindowSizeConstraints(new Vector2(350, 350), new Vector2(350, float.MaxValue));
-                        if (ImGui.BeginPopupModal($"{reportTitle}##{item.id}", ref open, ImGuiWindowFlags.AlwaysAutoResize))
-                        {
-                            if (XivEngine.Instance.Database.Access)
-                            {
-                                ImGui.Dummy(new Vector2(0, 25));
-                                ImGui.Text("Force generated sentence into this:");
-                                ImGui.Dummy(new Vector2(0, 15));
-                                string wholeSentence = XivEngine.Instance.Database.WholeSentence;
-                                if (ImGui.InputTextMultiline("##wholeSentenceEdit", ref wholeSentence, 2000, new Vector2(335, 100)))
-                                {
-                                    XivEngine.Instance.Database.WholeSentence = wholeSentence;
-                                }
-                                ImGui.Dummy(new Vector2(0, 25));
-                                var forceWholeSentence = XivEngine.Instance.Database.ForceWholeSentence;
-                                if (ImGui.Checkbox("##forceWholeSentenceEdit", ref forceWholeSentence))
-                                {
-                                    XivEngine.Instance.Database.ForceWholeSentence = forceWholeSentence;
-                                };
-                                ImGui.SameLine();
-                                ImGui.Text("Enable new sentence to change into this");
-                            }
-                            else
-                            {
-                                ImGui.Dummy(new Vector2(0, 5));
-                                ImGui.Text($"Speaker: {item.data.Speaker}");
-                                ImGui.Dummy(new Vector2(0, 5));
-                                ImGui.TextWrapped($"Sentence: {item.data.TtsData.Message}");
-                                ImGui.Dummy(new Vector2(0, 20));
-
-                                if (item.type == "xivv")
-                                {
-                                    ImGui.TextWrapped("Tell me why this needs to be redone or muted?");
-                                    ImGui.Dummy(new Vector2(0, 5));
-                                    ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 450, new Vector2(335, 100));
-                                    ImGui.Dummy(new Vector2(0, 5));
-                                    if (ImGui.Button("Ask to Redo", new Vector2(335, 25)))
-                                    {
-                                        PluginReference.xivEngine.ReportRedoToArc(item.data, reportInput);
-                                        ImGui.CloseCurrentPopup();
-                                    }
-                                    ImGui.Dummy(new Vector2(0, 2));
-                                }
-                                else if (item.type == "empty")
-                                {
-                                    ImGui.TextWrapped("Tell me why this needs to be muted?");
-                                    ImGui.Dummy(new Vector2(0, 5));
-                                    ImGui.InputTextMultiline($"##input_{item.id}", ref reportInput, 450, new Vector2(335, 100));
-                                    ImGui.Dummy(new Vector2(0, 2));
-                                }
-
-                                ImGui.TextWrapped("( only use the mute button for dialogues that are already voiced by the game itself )");
-                                if (ImGui.Button("Ask to Mute", new Vector2(335, 25)))
-                                {
-                                    PluginReference.xivEngine.ReportMuteToArc(item.data, reportInput);
-                                    PluginReference.xivEngine.IgnoredDialogues.Add(item.data.Speaker + item.data.Sentence);
-                                    ImGui.CloseCurrentPopup();
-                                }
-                            }
-                            
-                            ImGui.Dummy(new Vector2(0, 2));
-                            if (ImGui.Button("Close", new Vector2(335, 25)))
-                                ImGui.CloseCurrentPopup();
-                            ImGui.Dummy(new Vector2(0, 2));
-                            ImGui.EndPopup();
-                        }
 
                         if (item.type != "empty")
                         {
@@ -1337,7 +1133,13 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.3.0.0 (final)", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("XIVV will no longer sent reports for missing dialogues.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.9"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Optimized UI.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
@@ -1701,13 +1503,6 @@ namespace XivVoices {
 
                 if (item.type != "empty")
                 {
-                    ImGui.SameLine();
-
-                    // Show Report Button
-                    if (ImGui.Button($"Redo##redo{item.id}", new Vector2(50, 24)))
-                    {
-                        XivEngine.Instance.Database.Framework.Process(item.data);
-                    }
 
                     // Show Play and Stop Buttons
                     ImGui.SameLine();

@@ -170,8 +170,6 @@ namespace XivVoices.Engine
             if (calledByAutoUpdate)
             {
                 Plugin.PluginLog.Information("Updater: calledByAutoUpdate Process");
-                XivEngine.Instance.Database.Plugin.Config.LastUpdate = ServerLastUpdate;
-                XivEngine.Instance.Database.Plugin.Config.Save();
                 if (!intialWindowState && XivEngine.Instance.Database.Plugin.Window.IsOpen)
                     XivEngine.Instance.Database.Plugin.Window.Toggle();
             }

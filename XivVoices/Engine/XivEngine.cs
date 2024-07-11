@@ -77,7 +77,6 @@ namespace XivVoices.Engine
                 this.ttsEngine = null;
                 Mapper = new DataMapper();
                 _updateTimer = new Timer(Update, null, 1000, 100);
-                _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
                 if (this.Database.Plugin.Config.FrameworkActive)
                 {
                     this.Database.Plugin.Log($"Running Auto Download");
@@ -129,7 +128,7 @@ namespace XivVoices.Engine
                         Plugin.PluginLog.Information($"Update ---> {msg.TtsData.Speaker}: {msg.TtsData.Message}");
                         if (msg.Network == "Online")
                         {
-                            if (this.Database.Plugin.Config.LocalTTSEnabled && !this.Database.Plugin.Config.WebsocketRedirectionEnabled && (msg.Reported || msg.Ignored))
+                            if (this.Database.Plugin.Config.LocalTTSEnabled && (msg.Reported || msg.Ignored))
                                 Task.Run(async () => await SpeakAI(msg));
                             else
                                 Speak(msg);
@@ -140,115 +139,10 @@ namespace XivVoices.Engine
                         }
                     }
                 }
-
-                if (reports.Count > 0)
-                {
-                    ReportXivMessage report = reports.Dequeue();
-                    if (!this.Database.Plugin.Config.FrameworkActive)
-                        Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
-                }
             }
             catch (Exception ex)
             {
                 Plugin.PluginLog.Error($"Error in Update method: {ex.Message}");
-            }
-        }
-
-
-        private async void AutoUpdate(object state)
-        {
-            try
-            {
-                if (!Active || !this.Database.Plugin.Config.Active) return;
-                if (!this.Database.Plugin.Config.Initialized) return;
-
-                if (Directory.Exists(this.Database.ReportsPath))
-                {
-                    string[] reportFiles = Directory.GetFiles(this.Database.ReportsPath);
-                    if (reportFiles.Length > 0)
-                    {
-                        foreach (string filePath in reportFiles)
-                        {
-                            await ProcessReportFileAsync(filePath);
-                        }
-                    }
-                }
-
-                // Version Update Check
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromMinutes(2);
-                    client.DefaultRequestHeaders.Add("User-Agent", "MyGitHubApp");
-                    try
-                    {
-                        HttpResponseMessage response = await client.GetAsync("https://api.github.com/repos/arcsidian/XivVoices/releases/latest");
-                        response.EnsureSuccessStatusCode();
-                        string responseBody = await response.Content.ReadAsStringAsync();
-
-                        var releaseInfo = JsonConvert.DeserializeObject<GitHubRelease>(responseBody);
-
-                        if (releaseInfo.TagName == currentVersion)
-                            this.Database.Plugin.Log($"Latest Release Tag: {releaseInfo.TagName}, you're up to date!");
-                        else
-                        {
-                            this.Database.Plugin.Print($"XIVV: Version {releaseInfo.TagName} is out, please update the plugin!");
-                            Random random = new Random();
-                            string filePath = Path.Combine(this.Database.Plugin.Interface.AssemblyLocation.Directory?.FullName!, "update_" + random.Next(1, 4) + ".ogg");
-                            if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent && this.Database.Plugin.Config.UpdateAudioNotification)
-                                Audio.PlaySystemAudio(DecodeOggOpusToPCM(filePath));
-                        }
-                    }
-                    catch (HttpRequestException e)
-                    {
-                        this.Database.Plugin.PrintError("Exception Caught!");
-                        this.Database.Plugin.PrintError("Message: " + e.Message);
-                    }
-                    catch (TaskCanceledException e)
-                    {
-                        this.Database.Plugin.PrintError("Request Timed Out!");
-                        this.Database.Plugin.PrintError("Message: " + e.Message);
-                    }
-                    catch (Exception e)
-                    {
-                        this.Database.Plugin.PrintError("Unexpected Exception Caught: " + e.Message);
-                        this.Database.Plugin.LogError("AutoUpdate1 ---> Exception Stack Trace: " + e.StackTrace);
-                    }
-                    finally
-                    {
-                        await Task.Delay(600000);
-                        CheckingForNewVersion = false;
-                    }
-                }
-
-                if (!this.Database.Plugin.Config.AutoUpdate) return;
-                if (Updater.Busy) return;
-
-                // Voice Files Update Check
-                string dateString = await this.Database.FetchDateFromServer("http://www.arcsidian.com/xivv.json");
-                if (dateString == null) return;
-
-                try
-                {
-                    DateTime serverDateTime = DateTime.Parse(dateString, null, DateTimeStyles.RoundtripKind);
-                    int comparisonResult = DateTime.Compare(this.Database.Plugin.Config.LastUpdate, serverDateTime);
-                    if (comparisonResult < 0)
-                    {
-                        this.Database.Plugin.Chat.Print("Xiv Voices: Checking for new Voice Files... There is a new update!");
-                        if (!Conditions.IsBoundByDuty && !Conditions.IsOccupiedInCutSceneEvent && !Conditions.IsOccupiedInEvent && !Conditions.IsOccupiedInQuestEvent)
-                        {
-                            this.Updater.ServerLastUpdate = serverDateTime;
-                            await this.Updater.Check(true, this.Database.Plugin.Window.IsOpen);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Plugin.PluginLog.Error($"AutoUpdate2 ---> Exception: {ex}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Plugin.PluginLog.Error($"Error in AutoUpdate method: {ex.Message}");
             }
         }
 
@@ -386,12 +280,7 @@ namespace XivVoices.Engine
 
             this.Database.Plugin.Log($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
 
-            if (msg.AccessRequested != "")
-                _ = Database.AccessRequest(msg);
-            else if (msg.GetRequested != "")
-                _ = Database.GetRequest(msg);
-            else
-                AddToQueue(msg);
+            AddToQueue(msg);
 
         }
 
@@ -2005,192 +1894,24 @@ namespace XivVoices.Engine
         Queue<ReportXivMessage> reports = new Queue<ReportXivMessage>();
         public void ReportUnknown(XivMessage msg)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-
-            if (!this.Database.Plugin.Config.Reports) return;
-            Plugin.PluginLog.Information("ReportUnknown");
-            
-            reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 
         public void ReportDifferent(XivMessage msg)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-
-            if (Database.Access)
-            {
-                msg.AccessRequested = "different";
-                return;
-            }
-            else if (XivEngine.Instance.Database.Plugin.Config.OnlineRequests)
-            {
-                msg.GetRequested = "different";
-                return;
-            }
-
-            if (!this.Database.Plugin.Config.Reports) return;
-            Plugin.PluginLog.Information("ReportDifferent");
-            reports.Enqueue(new ReportXivMessage(msg, "different", ""));
         }
 
         public void ReportMuteToArc(XivMessage msg, string input)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-
-            if (input.IsNullOrEmpty())
-            {
-                this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
-                return;
-            }
-
-            reports.Enqueue(new ReportXivMessage(msg, "mute", input));
         }
 
         public void ReportRedoToArc(XivMessage msg, string input)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-
-            if(input.IsNullOrEmpty())
-            {
-                this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
-                return;
-            }
-
-            reports.Enqueue(new ReportXivMessage(msg, "redo", input));
         }
 
 
         public void ReportToArc(XivMessage msg)
         {
-            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
-
-            if (Database.Access)
-            {
-                msg.AccessRequested = "missing";
-                return;
-            }
-            else if (XivEngine.Instance.Database.Plugin.Config.OnlineRequests)
-            {
-                msg.GetRequested = "missing";
-                return;
-            }
-
-            if (!this.Database.Plugin.Config.Reports) return;
-
-            reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
         }
-
-        private readonly HttpClient client = new HttpClient();
-        public async Task ReportToArcJSON(XivMessage xivMessage, string folder, string comment)
-        {
-            if (!this.Database.Plugin.Config.Reports) return;
-
-            await reportBlock.WaitAsync();
-            try
-            {
-                Plugin.PluginLog.Information($"Reporting line: \"{xivMessage.Sentence}\"");
-
-                string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
-                xivMessage.Sentence = xivMessage.TtsData.Message;
-                xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
-                if (fullname.Length > 1)
-                {
-                    xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
-                }
-
-                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}&comment={comment}";
-                if (!reportedLines.Contains(url))
-                {
-                    reportedLines.Enqueue(url);
-                    if (reportedLines.Count > 100)
-                        reportedLines.Dequeue();
-
-                    
-                    if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{xivMessage.Sentence}\"");
-
-                    try
-                    {
-                        HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
-                        response.EnsureSuccessStatusCode();
-                        string responseBody = await response.Content.ReadAsStringAsync();
-                    }
-                    catch (HttpRequestException e)
-                    {
-                        Plugin.PluginLog.Error("Report failed, saving it Reports folder to be automatically sent later.");
-                        Directory.CreateDirectory(this.Database.ReportsPath);
-                        string fileName = Path.Combine(this.Database.ReportsPath, $"{xivMessage.Speaker}_{new Random().Next(10000, 99999)}.txt");
-                        await File.WriteAllTextAsync(fileName, url);
-                    }
-
-                }
-                
-            }
-            finally
-            {
-                reportBlock.Release();
-            }
-            
-        }
-
-        private async Task ProcessReportFileAsync(string filePath)
-        {
-            try
-            {
-                if (!File.Exists(filePath)) return; // Ensure file still exists
-
-                string url = await File.ReadAllTextAsync(filePath);
-                if (!this.Database.Plugin.Config.Reports) return;
-
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
-                    response.EnsureSuccessStatusCode();
-                    string responseBody = await response.Content.ReadAsStringAsync();
-                    DeleteFileWithRetry(filePath);
-                }
-                catch (HttpRequestException e)
-                {
-                    XivEngine.Instance.Database.Plugin.PrintError($"HTTP request failed for file {filePath}: {e.Message}");
-                }
-            }
-            catch (Exception ex)
-            {
-                XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
-            }
-        }
-
-
-        private void DeleteFileWithRetry(string path)
-        {
-            const int MaxRetries = 5;
-            const int DelayBetweenRetries = 200; // in milliseconds
-
-            for (int i = 0; i < MaxRetries; i++)
-            {
-                try
-                {
-                    if (File.Exists(path))
-                    {
-                        File.Delete(path);
-                    }
-                    return;
-                }
-                catch (IOException ex)
-                {
-                    Plugin.PluginLog.Error($"IOException on attempt {i + 1}: {ex.Message}");
-                    // Wait before retrying
-                    Task.Delay(DelayBetweenRetries).Wait();
-                }
-                catch (UnauthorizedAccessException ex)
-                {
-                    Plugin.PluginLog.Error($"UnauthorizedAccessException on attempt {i + 1}: {ex.Message}");
-                    // Wait before retrying
-                    Task.Delay(DelayBetweenRetries).Wait();
-                }
-            }
-            Plugin.PluginLog.Error($"Failed to delete file after {MaxRetries} attempts: {path}");
-        }
-
         #endregion
 
     }

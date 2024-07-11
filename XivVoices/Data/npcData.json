@@ -58103,14 +58103,6 @@
     "Eyes": "Option 3",
     "Type": "Default"
   },
-  "Arc Data 1": {
-    "Gender": "http",
-    "Race": "arcsidian",
-    "Tribe": "net",
-    "Body": "access",
-    "Eyes": "php",
-    "Type": "Default"
-  },
   "Sanson the Stiff": {
     "Gender": "Male",
     "Race": "Hyur",
@@ -85021,6 +85013,270 @@
     "Tribe": "Plainsfolk",
     "Body": "Adult",
     "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Amiable Worker": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Bespectacled Man": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Captivated Courier": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Carefree Drunkard": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Cheerful Drunkard": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Chipper Customer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Concerned Lass": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Dark-haired Xbr'aal": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Electrope Enthusiast": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Fraught Farmer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Gegeruju's Attendant": {
+    "Gender": "Female",
+    "Race": "Lalafell",
+    "Tribe": "Plainsfolk",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Gloomy Drunkard": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Impetuous Youth": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Kepayuwte": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Kokonowa the Callous": {
+    "Gender": "Male",
+    "Race": "Lalafell",
+    "Tribe": "Dunesfolk",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Loashkana the Leal": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 4",
+    "Type": "Default"
+  },
+  "Maatso": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Melancholic Worker": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Pelupelu Cloth Merchant": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Railroad Foreman": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Railroad Inspector": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 6",
+    "Type": "Default"
+  },
+  "Red-haired Hhetsarro": {
+    "Gender": "Male",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Refinery Engineer": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Rral Br'aax": {
+    "Gender": "Male",
+    "Race": "Hrothgar",
+    "Tribe": "Helions",
+    "Body": "Adult",
+    "Eyes": "Option 1",
+    "Type": "Default"
+  },
+  "Spirited Hhetsarro": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Stern Hhetsarro": {
+    "Gender": "Female",
+    "Race": "Miqo'te",
+    "Tribe": "Seeker of the Sun",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Strapping Young Lad": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Trainee Hunter": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Troubled Civilian": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 5",
+    "Type": "Default"
+  },
+  "Unassuming Merchant": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Adult",
+    "Eyes": "Option 2",
+    "Type": "Default"
+  },
+  "Veteran Hunter": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Highlander",
+    "Body": "Adult",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Wawkepe": {
+    "Gender": "Male",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Elderly",
+    "Eyes": "Option 3",
+    "Type": "Default"
+  },
+  "Yuplu": {
+    "Gender": "Female",
+    "Race": "Hyur",
+    "Tribe": "Midlander",
+    "Body": "Child",
+    "Eyes": "Option 4",
     "Type": "Default"
   }
 }
