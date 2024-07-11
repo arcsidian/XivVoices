@@ -70,6 +70,7 @@ namespace XivVoices.Engine
                 "Arrivals Attendant",
                 "Attentive Radiant",
                 "Auri Boy",
+                "Alexandrian Citizen",
                 "Brass Blade",
                 "Calamity Salvager",
                 "Campaign Attendant",
@@ -1534,6 +1535,8 @@ namespace XivVoices.Engine
             RequestMuteBusy = true;
 
             string fileName = Path.GetFileName(xivMessage.FilePath);
+            if (xivMessage.TtsData.User.IsNullOrEmpty())
+                xivMessage.TtsData.User = $"{Plugin.ClientState.LocalPlayer.Name}@{Plugin.ClientState.LocalPlayer.HomeWorld.GameData.Name}";
             string url = $"{AccessData["request"]}?user={xivMessage.TtsData.User}&token={AccessData["token"]}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Mute&sentence={Uri.EscapeDataString(xivMessage.Sentence)}&filename={Uri.EscapeDataString(fileName)}";
 
             try

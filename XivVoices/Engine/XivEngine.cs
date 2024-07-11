@@ -76,7 +76,7 @@ namespace XivVoices.Engine
                 this.Updater = _updater;
                 this.ttsEngine = null;
                 Mapper = new DataMapper();
-                _updateTimer = new Timer(Update, null, 0, 50);
+                _updateTimer = new Timer(Update, null, 1000, 100);
                 _autoUpdateTimer = new Timer(AutoUpdate, null, 10000, 600000);
                 if (this.Database.Plugin.Config.FrameworkActive)
                 {

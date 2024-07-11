@@ -23,8 +23,6 @@ namespace XivVoices {
         private Vector2? initialSize;
         private Vector2? changedSize;
 
-        private DateTime lastSaveTime;
-        private const int debounceIntervalMs = 500;
         private bool needSave = false;
         private string selectedDrive = string.Empty;
         private string reportInput = new string('\0', 250);
@@ -184,6 +182,7 @@ namespace XivVoices {
                         DrawSidebarButton("Audio Settings", audioSettingsHandle, audioSettingsActiveHandle);
                         DrawSidebarButton("Audio Logs", archiveHandle, archiveActiveHandle);
 
+                        
                         if (ImGui.ImageButton(discordHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
@@ -201,24 +200,6 @@ namespace XivVoices {
                         }
                         if (ImGui.IsItemHovered())
                             ImGui.SetTooltip("Join Our Discord Community");
-
-                        if (ImGui.ImageButton(koFiHandle, new Vector2(42, 42)))
-                        {
-                            Process process = new Process();
-                            try
-                            {
-                                // true is the default, but it is important not to set it to false
-                                process.StartInfo.UseShellExecute = true;
-                                process.StartInfo.FileName = "https://ko-fi.com/arcsidian";
-                                process.Start();
-                            }
-                            catch (Exception e)
-                            {
-
-                            }
-                        }
-                        if (ImGui.IsItemHovered())
-                            ImGui.SetTooltip("Support the Project on Ko-Fi");
 
                         if (this.configuration.FrameworkActive) {
                             if (ImGui.ImageButton(iconHandle, new Vector2(42, 42), new Vector2(1, 1)))
@@ -331,13 +312,11 @@ namespace XivVoices {
 
         private void RequestSave()
         {
-            Task.Run(() => {
-                this.configuration.Save();
-            });
-            lastSaveTime = DateTime.Now;
+            Plugin.PluginLog.Error("RequestSave");
+            this.configuration.Save();
         }
 
-        private void DrawErrors() {
+        private void DrawErrors() { 
             ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 10f);
             ImGui.BeginChild("ErrorRegion", new Vector2(
             ImGui.GetContentRegionAvail().X,
@@ -656,10 +635,10 @@ namespace XivVoices {
             ImGui.Indent(8);
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave)
             {
+                needSave = false;
                 RequestSave();
-                needSave = false; // Reset save flag after saving
             }
         }
 
@@ -907,10 +886,10 @@ namespace XivVoices {
             
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave)
             {
+                needSave = false;
                 RequestSave();
-                needSave = false; // Reset save flag after saving
             }
 
         }
@@ -1064,10 +1043,10 @@ namespace XivVoices {
 
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave)
             {
+                needSave = false;
                 RequestSave();
-                needSave = false; // Reset save flag after saving
             }
 
         }
@@ -1302,10 +1281,10 @@ namespace XivVoices {
             ImGui.Text("Framework Enabled");
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave)
             {
-                RequestSave();
                 needSave = false;
+                RequestSave();
             }
         }
 
@@ -1343,10 +1322,10 @@ namespace XivVoices {
             }
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave)
             {
-                RequestSave();
                 needSave = false;
+                RequestSave();
             }
         }
 
@@ -1358,16 +1337,22 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.2.9.8 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.2.9.9 (Latest)", ImGuiTreeNodeFlags.DefaultOpen))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Improved UI and made it more efficient, it should no longer cause a crash upon version update.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Optimized UI.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
+                }
+
+                if (ImGui.CollapsingHeader("Version 0.2.9.8"))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Added the option to Ignore Narrator Lines, it can be found under Local TTS in the Audio Settings.");
                     ImGui.Bullet(); ImGui.TextWrapped("Added alternative names for Otis and Koana.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
                 }
 
                 if (ImGui.CollapsingHeader("Version 0.2.9.7"))
                 {
-                    ImGui.Bullet(); ImGui.TextWrapped("Added the option to Ignore Narrator Lines, it can be found under Local TTS in the Audio Settings.");
+                    ImGui.Bullet(); ImGui.TextWrapped("Improved UI and made it more efficient, it should no longer cause a crash upon version update.");
                     ImGui.Bullet(); ImGui.TextWrapped("Bugfix: Late reports will no longer print the response.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
                 }
@@ -1748,10 +1733,10 @@ namespace XivVoices {
             ImGui.TextWrapped($"Files: {XivEngine.Instance.Database.Framework.Queue.Count}");
 
             // Saving Process
-            if (needSave && (DateTime.Now - lastSaveTime).TotalMilliseconds > debounceIntervalMs)
+            if (needSave)
             {
-                RequestSave();
                 needSave = false;
+                RequestSave();
             }
         }
 

@@ -164,15 +164,18 @@ namespace XivVoices.Engine
 
             await Task.Delay(2000);
             State.Clear();
+            Plugin.PluginLog.Information("Updater: State Cleared!");
             Busy = false;
 
             if (calledByAutoUpdate)
             {
+                Plugin.PluginLog.Information("Updater: calledByAutoUpdate Process");
                 XivEngine.Instance.Database.Plugin.Config.LastUpdate = ServerLastUpdate;
                 XivEngine.Instance.Database.Plugin.Config.Save();
                 if (!intialWindowState && XivEngine.Instance.Database.Plugin.Window.IsOpen)
                     XivEngine.Instance.Database.Plugin.Window.Toggle();
             }
+            Plugin.PluginLog.Information("Updater: Done");
         }
 
         public async Task GetServerManifest()
