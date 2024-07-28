@@ -56,4 +56,4 @@ Follow these steps to install Xiv Voices:
 
 Join the conversation and contribute to the development by following our Discord channel:
 
-[Join Discord](https://arcsidian.com/discord
+[Join Discord](https://arcsidian.com/discord)
