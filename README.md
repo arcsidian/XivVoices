@@ -1,3 +1,7 @@
+# Status
+
+**The plugin has ceased further development due to personal reasons. Thank you everyone for your support. I am proud of what has been achieved: 200,000 lines voiced, 8,300 NPCs covered, and 334 unique voices. You are welcome to fork this project and continue its development, and you can DM me on Discord if you need help cloning the current voices I created if you plan on making new voice lines.**
+
 # Xiv Voices
 
 **Transforming Final Fantasy XIV by voicing every piece of dialogue!**
@@ -52,13 +56,4 @@ Follow these steps to install Xiv Voices:
 
 Join the conversation and contribute to the development by following our Discord channel:
 
-[Join Discord](https://arcsidian.com/discord)
-
-## Support This Project
-
-Running the server as well as the framework that helps create
-new unique voices for XIVV has demanding costs.
-
-All donations go towards the development of this project.
-
-[Support me in Ko-Fi](https://ko-fi.com/arcsidian)
+[Join Discord](https://arcsidian.com/discord
