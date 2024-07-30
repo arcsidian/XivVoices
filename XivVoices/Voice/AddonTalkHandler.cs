@@ -191,7 +191,7 @@ namespace XivVoices.Voice {
             }
         }
 
-        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3) {
+        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3, int attachmentPointID) {
             if (_plugin.Config.Active)
             try {
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
@@ -262,7 +262,7 @@ namespace XivVoices.Voice {
             } catch (Exception e) {
                 Plugin.PluginLog.Error(e, e.Message);
             }
-            return _openChatBubbleHook.Original(pThis, pActor, pString, param3);
+            return _openChatBubbleHook.Original(pThis, pActor, pString, param3, attachmentPointID);
         }
         private ICharacter GetCharacterFromId(uint id) {
             foreach (Dalamud.Game.ClientState.Objects.Types.IGameObject gameObject in _threadSafeObjectTable)
@@ -916,6 +916,6 @@ namespace XivVoices.Voice {
             public bool Interrupt { get; set; } = true;
         }
 
-        private unsafe delegate IntPtr NPCSpeechBubble(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3);
+        private unsafe delegate IntPtr NPCSpeechBubble(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3, int attachmentPointID);
     }
 }
