@@ -1,6 +1,6 @@
 # Status
 
-**The plugin has ceased further development due to personal reasons. Thank you everyone for your support. I am proud of what has been achieved: 200,000 lines voiced, 8,300 NPCs covered, and 334 unique voices. This plugin is still usable as of 7.05, it has covered nearly the entirety of the game up to Endwalker, and most of Dawntrail. You are welcome to fork this project and continue its development, and you can DM me on Discord if you need help cloning the current voices I created if you plan on making new voice lines.**
+**The plugin has ceased further development due to personal reasons. Thank you everyone for your support. I am proud of what has been achieved: 200,000 lines voiced, 8,300 NPCs covered, and 334 unique voices. This plugin is still usable as of 7.05, it has covered nearly the entirety of the game up to Endwalker, and most of Dawntrail.**
 
 # Xiv Voices
 
@@ -51,9 +51,3 @@ Follow these steps to install Xiv Voices:
    - Upon first launch, you'll be prompted with a setup screen to select a storage location for the plugin’s content.
    - After selecting the appropriate drive, click "Start Downloading".
      - <img src="https://arcsidian.com/xivv/images/05.png" alt="Add Repository" width="300"/>
-
-## Join Our Community
-
-Join the conversation and contribute to the development by following our Discord channel:
-
-[Join Discord](https://arcsidian.com/discord)
