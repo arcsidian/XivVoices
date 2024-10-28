@@ -121,6 +121,7 @@ namespace XivVoices.Engine
             {
                 if (!Active || !this.Database.Plugin.Config.Active) return;
 
+                // If there are any pending dialogues, start processing them
                 if (ffxivMessages.Count > 0)
                 {
                     if (ffxivMessages.TryDequeue(out XivMessage msg))
@@ -138,6 +139,14 @@ namespace XivVoices.Engine
                             Task.Run(async () => await SpeakLocallyAsync(msg));
                         }
                     }
+                }
+
+                // If there are any reports, start processing them
+                if (reports.Count > 0)
+                {
+                    ReportXivMessage report = reports.Dequeue();
+                    if (!this.Database.Plugin.Config.FrameworkActive)
+                        Task.Run(async () => await ReportToArcJSON(report.message, report.folder, report.comment));
                 }
             }
             catch (Exception ex)
@@ -1855,10 +1864,11 @@ namespace XivVoices.Engine
         }
         #endregion
 
+
         #region Framework
         public void RedoAudio(XivMessage xivMessage)
         {
-            XivEngine.Instance.Database.Plugin.Log("ArcFramework: RedoAudio");
+            XivEngine.Instance.Database.Plugin.Log("Framework: RedoAudio");
             if (xivMessage.VoiceName == "Unknown")
             {
                 xivMessage = XivEngine.Instance.CleanXivMessage(xivMessage);
@@ -1894,23 +1904,172 @@ namespace XivVoices.Engine
         Queue<ReportXivMessage> reports = new Queue<ReportXivMessage>();
         public void ReportUnknown(XivMessage msg)
         {
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if (!this.Database.Plugin.Config.Reports) return;
+            Plugin.PluginLog.Information("ReportUnknown");
+
+            reports.Enqueue(new ReportXivMessage(msg, "unknown", ""));
         }
 
         public void ReportDifferent(XivMessage msg)
         {
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if (Database.Access)
+            {
+                msg.AccessRequested = "different";
+                return;
+            }
+            else if (XivEngine.Instance.Database.Plugin.Config.OnlineRequests)
+            {
+                msg.GetRequested = "different";
+                return;
+            }
+            if (!this.Database.Plugin.Config.Reports) return;
+            Plugin.PluginLog.Information("ReportDifferent");
+            reports.Enqueue(new ReportXivMessage(msg, "different", ""));
         }
 
         public void ReportMuteToArc(XivMessage msg, string input)
         {
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if (input.IsNullOrEmpty())
+            {
+                this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
+                return;
+            }
+            reports.Enqueue(new ReportXivMessage(msg, "mute", input));
         }
 
         public void ReportRedoToArc(XivMessage msg, string input)
         {
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if (input.IsNullOrEmpty())
+            {
+                this.Database.Plugin.PrintError("Report failed, you did not provide any context.");
+                return;
+            }
+            reports.Enqueue(new ReportXivMessage(msg, "redo", input));
         }
 
 
         public void ReportToArc(XivMessage msg)
         {
+            if (Database.Ignored.Contains(msg.Speaker) || Database.Plugin.Config.FrameworkActive) return;
+            if (Database.Access)
+            {
+                msg.AccessRequested = "missing";
+                return;
+            }
+            else if (XivEngine.Instance.Database.Plugin.Config.OnlineRequests)
+            {
+                msg.GetRequested = "missing";
+                return;
+            }
+            if (!this.Database.Plugin.Config.Reports) return;
+            reports.Enqueue(new ReportXivMessage(msg, "missing", ""));
+        }
+
+
+        private readonly HttpClient client = new HttpClient();
+        public async Task ReportToArcJSON(XivMessage xivMessage, string folder, string comment)
+        {
+            if (!this.Database.Plugin.Config.Reports) return;
+            await reportBlock.WaitAsync();
+            try
+            {
+                Plugin.PluginLog.Information($"Reporting line: \"{xivMessage.Sentence}\"");
+                string[] fullname = Database.Plugin.ClientState.LocalPlayer.Name.TextValue.Split(" ");
+                xivMessage.Sentence = xivMessage.TtsData.Message;
+                xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[0], "_FIRSTNAME_");
+                if (fullname.Length > 1)
+                {
+                    xivMessage.Sentence = xivMessage.Sentence.Replace(fullname[1], "_LASTNAME_");
+                }
+                string url = $"?user={xivMessage.TtsData.User}&speaker={xivMessage.Speaker}&sentence={xivMessage.Sentence}&npcid={xivMessage.NpcId}&skeletonid={xivMessage.TtsData.SkeletonID}&body={xivMessage.TtsData.Body}&gender={xivMessage.TtsData.Gender}&race={xivMessage.TtsData.Race}&tribe={xivMessage.TtsData.Tribe}&eyes={xivMessage.TtsData.Eyes}&folder={folder}&comment={comment}";
+                if (!reportedLines.Contains(url))
+                {
+                    reportedLines.Enqueue(url);
+                    if (reportedLines.Count > 100)
+                        reportedLines.Dequeue();
+
+                    if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{xivMessage.Sentence}\"");
+                    try
+                    {
+                        HttpResponseMessage response = await client.GetAsync("http://arcsidian.net/access.php" + url);
+                        response.EnsureSuccessStatusCode();
+                        string responseBody = await response.Content.ReadAsStringAsync();
+                    }
+                    catch (HttpRequestException e)
+                    {
+                        Plugin.PluginLog.Error("Report failed, saving it Reports folder to be automatically sent later.");
+                        Directory.CreateDirectory(this.Database.ReportsPath);
+                        string fileName = Path.Combine(this.Database.ReportsPath, $"{xivMessage.Speaker}_{new Random().Next(10000, 99999)}.txt");
+                        await File.WriteAllTextAsync(fileName, url);
+                    }
+                }
+
+            }
+            finally
+            {
+                reportBlock.Release();
+            }
+
+        }
+
+        // This function sends reports when the user has failed to
+        // send them previously due to my server being offline
+        private async Task ProcessReportFileAsync(string filePath)
+        {
+            try
+            {
+                if (!File.Exists(filePath)) return; // Ensure file still exists
+                string url = await File.ReadAllTextAsync(filePath);
+                if (!this.Database.Plugin.Config.Reports) return;
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync("http://arcsidian.net/access.php" + url);
+                    response.EnsureSuccessStatusCode();
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    DeleteFileWithRetry(filePath);
+                }
+                catch (HttpRequestException e)
+                {
+                    XivEngine.Instance.Database.Plugin.PrintError($"HTTP request failed for file {filePath}: {e.Message}");
+                }
+            }
+            catch (Exception ex)
+            {
+                XivEngine.Instance.Database.Plugin.PrintError($"Failed to process report file {filePath}: {ex.Message}");
+            }
+        }
+        private void DeleteFileWithRetry(string path)
+        {
+            const int MaxRetries = 5;
+            const int DelayBetweenRetries = 200; // in milliseconds
+            for (int i = 0; i < MaxRetries; i++)
+            {
+                try
+                {
+                    if (File.Exists(path))
+                    {
+                        File.Delete(path);
+                    }
+                    return;
+                }
+                catch (IOException ex)
+                {
+                    Plugin.PluginLog.Error($"IOException on attempt {i + 1}: {ex.Message}");
+                    // Wait before retrying
+                    Task.Delay(DelayBetweenRetries).Wait();
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Plugin.PluginLog.Error($"UnauthorizedAccessException on attempt {i + 1}: {ex.Message}");
+                    // Wait before retrying
+                    Task.Delay(DelayBetweenRetries).Wait();
+                }
+            }
+            Plugin.PluginLog.Error($"Failed to delete file after {MaxRetries} attempts: {path}");
         }
         #endregion
 

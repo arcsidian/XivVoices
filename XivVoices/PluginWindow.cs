@@ -60,7 +60,7 @@ namespace XivVoices {
         private IntPtr logoHandle;
 
 
-        public PluginWindow() : base("    XIVV                                      ~  Xiv Voices by Arcsidian  ~") {
+        public PluginWindow() : base("    XIVV") {
             Size = new Vector2(440, 650);
             initialSize = Size;
             SizeCondition = ImGuiCond.Always;
@@ -182,7 +182,7 @@ namespace XivVoices {
                         DrawSidebarButton("Audio Settings", audioSettingsHandle, audioSettingsActiveHandle);
                         DrawSidebarButton("Audio Logs", archiveHandle, archiveActiveHandle);
 
-                        
+                        /*
                         if (ImGui.ImageButton(discordHandle, new Vector2(42, 42)))
                         {
                             Process process = new Process();
@@ -190,7 +190,7 @@ namespace XivVoices {
                             {
                                 // true is the default, but it is important not to set it to false
                                 process.StartInfo.UseShellExecute = true;
-                                process.StartInfo.FileName = "https://arcsidian.com/discord";
+                                process.StartInfo.FileName = "https://discord.com";
                                 process.Start();
                             }
                             catch (Exception e)
@@ -200,6 +200,8 @@ namespace XivVoices {
                         }
                         if (ImGui.IsItemHovered())
                             ImGui.SetTooltip("Join Our Discord Community");
+                        */
+
 
                         if (this.configuration.FrameworkActive) {
                             if (ImGui.ImageButton(iconHandle, new Vector2(42, 42), new Vector2(1, 1)))
@@ -580,6 +582,44 @@ namespace XivVoices {
                 ImGui.SameLine();
                 ImGui.Text("Xiv Voices Enabled");
 
+                /*
+
+                // OnlineRequests
+                ImGui.Dummy(new Vector2(0, 8));
+                var onlineRequests = this.Configuration.OnlineRequests;
+                if (ImGui.Checkbox("##onlineRequests", ref onlineRequests))
+                {
+                    this.configuration.OnlineRequests = onlineRequests;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Download missing lines individually if they exist");
+
+                // Reports Enabled
+                ImGui.Dummy(new Vector2(0, 8));
+                var reports = this.Configuration.Reports;
+                if (ImGui.Checkbox("##reports", ref reports))
+                {
+                    this.configuration.Reports = reports;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Report Missing Dialogues Automatically");
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.6f, 0.25f, 0.25f, 1.0f));
+                ImGui.Text("( English lines only, do not enable for other languages )");
+                ImGui.PopStyleColor();
+
+                // AnnounceReports
+                var announceReports = this.Configuration.AnnounceReports;
+                if (ImGui.Checkbox("##announceReports", ref announceReports))
+                {
+                    this.configuration.AnnounceReports = announceReports;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Announce Reported Lines");
+
+                */
 
                 // END
 
@@ -1133,6 +1173,12 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
+                if (ImGui.CollapsingHeader("Version 0.3.0.1", ImGuiTreeNodeFlags.DefaultOpen))
+                {
+                    ImGui.Bullet(); ImGui.TextWrapped("Fixed a major issue where some users crash due to Settings Window's saving functionality.");
+                    ImGui.Bullet(); ImGui.TextWrapped("A few changes under the hood in preparation for moving the project to a new home.");
+                }
+
                 if (ImGui.CollapsingHeader("Version 0.3.0.0 (final)", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("XIVV will no longer sent reports for missing dialogues.");
@@ -1170,7 +1216,7 @@ namespace XivVoices {
                     ImGui.Bullet(); ImGui.TextWrapped("Improved dialogue reports.");
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");
                 }
-                 
+
                 if (ImGui.CollapsingHeader("Version 0.2.9.4"))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Updated NPC Database with more Dawntrail NPCs.");

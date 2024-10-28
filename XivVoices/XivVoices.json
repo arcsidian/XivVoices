@@ -1,12 +1,11 @@
 {
-    "Author": "Arcsidian",
-    "Name": "XivVoices",
-    "Punchline": "Voicing every dialogues in FFXIV.",
-    "Description": "A plugin for Xiv Voices to forward FFXIV dialogues to XIVV so they can be voiced. /xivv",
-    "ApplicableVersion": "any",
-    "Tags": [
-        "xivvoices",
-        "xivv",
-        "arcsidian"
-    ]
+  "Author": "XIVV",
+  "Name": "XivVoices",
+  "Punchline": "Voicing every dialogues in FFXIV.",
+  "Description": "A plugin that enhances your gaming experience by adding voice to every NPC dialogue, battle interaction, and more. /xivv",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "xivvoices",
+    "xivv"
+  ]
 }

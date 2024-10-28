@@ -40,14 +40,14 @@ Follow these steps to install Xiv Voices:
      https://raw.githubusercontent.com/arcsidian/XivVoices/main/repo.json
      ```
    - Use the images below for guidance:
-     - <img src="https://arcsidian.com/xivv/images/01.png" alt="Settings Guide" width="300"/>
-     - <img src="https://arcsidian.com/xivv/images/02.png" alt="Add Repository" width="600"/>
+     - <img src="Data/01.png" alt="Settings Guide" width="300"/>
+     - <img src="Data/02.png" alt="Add Repository" width="600"/>
 3. **Install the Plugin**:
    - Open the Dalamud Plugins panel.
    - Navigate to 'All Plugins', search for "xivv", and click 'Install'.
-     - <img src="https://arcsidian.com/xivv/images/03.png" alt="Add Repository" width="300"/>
-     - <img src="https://arcsidian.com/xivv/images/04.png" alt="Add Repository" width="600"/>
+     - <img src="Data/03.png" alt="Add Repository" width="300"/>
+     - <img src="Data/04.png" alt="Add Repository" width="600"/>
 4. **Setup Plugin**:
    - Upon first launch, you'll be prompted with a setup screen to select a storage location for the plugin’s content.
    - After selecting the appropriate drive, click "Start Downloading".
-     - <img src="https://arcsidian.com/xivv/images/05.png" alt="Add Repository" width="300"/>
+     - <img src="Data/05.png" alt="Add Repository" width="300"/>

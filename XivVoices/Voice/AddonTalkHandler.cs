@@ -191,7 +191,8 @@ namespace XivVoices.Voice {
             }
         }
 
-        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3, int attachmentPointID) {
+        unsafe private IntPtr NPCBubbleTextDetour(IntPtr pThis, FFXIVClientStructs.FFXIV.Client.Game.Object.GameObject* pActor, IntPtr pString, bool param3, int attachmentPointID)
+        {
             if (_plugin.Config.Active)
             try {
                 if (_clientState.IsLoggedIn && !Conditions.IsWatchingCutscene && !Conditions.IsWatchingCutscene78) {
@@ -663,11 +664,11 @@ namespace XivVoices.Voice {
                 }
                 catch (ObjectDisposedException)
                 {
-                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already, tell Arc!");
+                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed even though it was disposed already, report it!");
                 }
                 catch (Exception ex)
                 {
-                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed but caught an exception, tell Arc!");
+                    Plugin.PluginLog.Error($"CTS for {character.Name} was called to be disposed but caught an exception, report it!");
                 }
                 return;
             }
@@ -683,7 +684,7 @@ namespace XivVoices.Voice {
             }
             catch (Exception ex)
             {
-                Plugin.PluginLog.Error($"Error writing memory for {character.Name}, tell Arc!");
+                Plugin.PluginLog.Error($"Error writing memory for {character.Name}, report it!");
             }
 
         }

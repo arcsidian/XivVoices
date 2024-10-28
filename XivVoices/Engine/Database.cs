@@ -560,7 +560,7 @@ namespace XivVoices.Engine
                 }
             }
         }
-
+         
         public void OnClick_Reload()
         {
             Task.Run(async () => await ReloadAsync());
@@ -573,7 +573,6 @@ namespace XivVoices.Engine
             await LoadIgnoredAsync(true);
             await LoadNPCsAsync();
             await LoadPlayersAsync();
-            //if (XivVoices.Instance.ArcFramework) XivVoices.Instance.ArcFramework.LoadDatabase();
             await LoadVoiceNamesAsync();
         }
         #endregion
