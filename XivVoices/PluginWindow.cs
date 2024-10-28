@@ -1173,7 +1173,7 @@ namespace XivVoices {
                 ImGui.Columns(2, "ChangelogColumns", false);
                 ImGui.SetColumnWidth(0, 350);
 
-                if (ImGui.CollapsingHeader("Version 0.3.0.1", ImGuiTreeNodeFlags.DefaultOpen))
+                if (ImGui.CollapsingHeader("Version 0.3.0.2", ImGuiTreeNodeFlags.DefaultOpen))
                 {
                     ImGui.Bullet(); ImGui.TextWrapped("Fixed a major issue where some users crash due to Settings Window's saving functionality.");
                     ImGui.Bullet(); ImGui.TextWrapped("A few changes under the hood in preparation for moving the project to a new home.");
