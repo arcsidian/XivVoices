@@ -289,7 +289,10 @@ namespace XivVoices.Engine
 
             this.Database.Plugin.Log($"Data: [Gender]:{msg.TtsData.Gender}, [Body]:{msg.TtsData.Body}, [Race]:{msg.TtsData.Race}, [Tribe]:{msg.TtsData.Tribe}, [Eyes]:{msg.TtsData.Eyes} [Reported]:{msg.Reported} [Ignored]:{msg.Ignored}\n{msg.TtsData.Speaker}:{msg.TtsData.Message}\n");
 
-            AddToQueue(msg);
+            if (msg.GetRequested != "")
+                _ = Database.GetRequest(msg);
+            else
+                AddToQueue(msg);
 
         }
 
@@ -1995,7 +1998,7 @@ namespace XivVoices.Engine
                     if (Database.Plugin.Config.AnnounceReports) this.Database.Plugin.Print($"Reporting line: \"{xivMessage.Sentence}\"");
                     try
                     {
-                        HttpResponseMessage response = await client.GetAsync("http://arcsidian.net/access.php" + url);
+                        HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
                         response.EnsureSuccessStatusCode();
                         string responseBody = await response.Content.ReadAsStringAsync();
                     }
@@ -2027,7 +2030,7 @@ namespace XivVoices.Engine
                 if (!this.Database.Plugin.Config.Reports) return;
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync("http://arcsidian.net/access.php" + url);
+                    HttpResponseMessage response = await client.GetAsync(this.Database.GetReportSource() + url);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     DeleteFileWithRetry(filePath);

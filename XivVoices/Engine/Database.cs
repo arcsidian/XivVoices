@@ -417,6 +417,13 @@ namespace XivVoices.Engine
 
                 DeleteLeftoverZipFiles();
 
+                string accessFilePath = Path.Combine(DirectoryPath, "access.json");
+                if (File.Exists(accessFilePath))
+                {
+                    Access = true;
+                    AccessData = ReadFile(accessFilePath);
+                    Plugin.Print("You are an Access User.");
+                }
             }
             catch (Exception ex)
             {
@@ -1132,6 +1139,88 @@ namespace XivVoices.Engine
         }
 
         #endregion
+
+
+        #region Access
+
+        public string GetDataSource() => "http://arcsidian.net/access.php";
+        public string GetReportSource() => "http://arcsidian.net/report.php";
+        private readonly HttpClient client = new HttpClient();
+
+        public async Task GetRequest(XivMessage xivMessage)
+        {
+            XivEngine.Instance.Database.Plugin.Print("Connecting to the server to get the line if it has already been created...");
+            Plugin.PluginLog.Info("Starting GET");
+            // Use Lexicon
+            string cleanedMessage = xivMessage.Sentence;
+            cleanedMessage = ProcessSentence(cleanedMessage);
+            foreach (KeyValuePair<string, string> entry in XivEngine.Instance.Database.Lexicon)
+            {
+                string pattern = "\\b" + entry.Key + "\\b";
+                cleanedMessage = Regex.Replace(cleanedMessage, pattern, entry.Value, RegexOptions.IgnoreCase);
+            }
+            cleanedMessage = Regex.Replace(cleanedMessage, "  ", " ");
+            xivMessage.FilePath = GetFilePath(xivMessage);
+            string fileName = Path.GetFileName(xivMessage.FilePath);
+            string url = $"{GetDataSource()}?user={xivMessage.TtsData.User}&speaker={Uri.EscapeDataString(xivMessage.VoiceName)}&npc={Uri.EscapeDataString(xivMessage.Speaker)}&type=Get&filename={Uri.EscapeDataString(fileName)}";
+            try
+            {
+                // Send the request
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                // Check the response content type for the second request
+                if (response.Content.Headers.ContentType.MediaType == "audio/ogg")
+                {
+                    byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+                    string directoryPath = Path.GetDirectoryName(xivMessage.FilePath);
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                        Data["npcs"] = (int.Parse(Data["npcs"]) + 1).ToString("0000");
+                    }
+                    await File.WriteAllBytesAsync(xivMessage.FilePath, fileBytes);
+                    var jsondata = new Dictionary<string, string>
+                    {
+                        ["speaker"] = xivMessage.Speaker,
+                        ["sentence"] = xivMessage.Sentence,
+                        ["lastSave"] = DateTime.UtcNow.ToString("o")
+                    };
+                    string directory = Path.Combine(Path.GetDirectoryName(xivMessage.FilePath), Path.GetFileNameWithoutExtension(xivMessage.FilePath));
+                    await WriteJSON(directory + ".json", jsondata);
+                    XivEngine.Instance.Database.Plugin.Print("Line downloaded.");
+                    Data["voices"] = (int.Parse(Data["voices"]) + 1).ToString("000000");
+                    XivEngine.Instance.SpeakLocallyAsync(xivMessage);
+                    await WriteJSON(DirectoryPath + "/Data.json", Data);
+                }
+                else
+                {
+                    // Read the response as a string
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    XivEngine.Instance.Database.Plugin.Print("-->" + responseBody);
+                    _ = Task.Run(async () =>
+                    {
+                        if (Plugin.Config.Reports)
+                            await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.GetRequested, "");
+                        if (Plugin.Config.LocalTTSEnabled)
+                            await XivEngine.Instance.SpeakAI(xivMessage);
+                    });
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                XivEngine.Instance.Database.Plugin.Print(e.Message);
+                _ = Task.Run(async () =>
+                {
+                    if (Plugin.Config.Reports)
+                        await XivEngine.Instance.ReportToArcJSON(xivMessage, xivMessage.GetRequested, "");
+                    if (Plugin.Config.LocalTTSEnabled)
+                        await XivEngine.Instance.SpeakAI(xivMessage);
+                });
+            }
+        }
+
+        #endregion
+
     }
 
 }
