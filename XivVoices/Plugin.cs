@@ -549,6 +549,11 @@ namespace XivVoices {
                 _addonTalkHandler.StopLipSync(character);
         }
 
+        public void ClickTalk()
+        {
+            if (config.AdvanceTalkEnabled)
+                _addonTalkManager.Click();
+        }
 
         public int GetNumberFromString(string value) {
             try {

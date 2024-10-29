@@ -21,6 +21,12 @@ namespace XivVoices.Voice {
             return addonTalk != null && addonTalk->AtkUnitBase.IsVisible;
         }
 
+        public unsafe void Click(){
+            var addonTalk = GetAddonTalk();
+            if (addonTalk != null)
+                addonTalk->FireCallbackInt(0);
+        }
+
         private unsafe AddonTalk* GetAddonTalk() {
             return (AddonTalk*)Address.ToPointer();
         }

@@ -19,6 +19,7 @@ namespace XivVoices
         public bool ReplaceVoicedARRCutscenes { get; set; } = true;
         public bool LipsyncEnabled { get; set; } = true;
         public bool SkipEnabled { get; set; } = true;
+        public bool AdvanceTalkEnabled { get; set; } = true;
 
         // Chat Settings
         public bool SayEnabled { get; set; } = true;
@@ -87,6 +88,7 @@ namespace XivVoices
                         this.ReplaceVoicedARRCutscenes = loadedConfig.ReplaceVoicedARRCutscenes;
                         this.LipsyncEnabled = loadedConfig.LipsyncEnabled;
                         this.SkipEnabled = loadedConfig.SkipEnabled;
+                        this.AdvanceTalkEnabled = loadedConfig.AdvanceTalkEnabled;
                         this.SayEnabled = loadedConfig.SayEnabled;
                         this.TellEnabled = loadedConfig.TellEnabled;
                         this.ShoutEnabled = loadedConfig.ShoutEnabled;

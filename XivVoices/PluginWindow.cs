@@ -859,7 +859,15 @@ namespace XivVoices {
                 ImGui.SameLine();
                 ImGui.Text("Dialogue Skip Enabled");
 
-
+                // AdvanceTalkEnabled
+                var advanceTalkEnabled = this.Configuration.AdvanceTalkEnabled;
+                if (ImGui.Checkbox("##advanceTalkEnabled", ref advanceTalkEnabled))
+                {
+                    this.configuration.AdvanceTalkEnabled = advanceTalkEnabled;
+                    needSave = true;
+                };
+                ImGui.SameLine();
+                ImGui.Text("Advance Talk Addon Enabled");
 
                 // END
 
