@@ -1,7 +1,5 @@
 ﻿using Dalamud.Plugin.Services;
-using FFXIVClientStructs.FFXIV.Application.Network.WorkDefinitions;
 using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace XivVoices.Voice {
     public class AddonTalkManager : AddonManager {
