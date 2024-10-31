@@ -24,6 +24,9 @@ using System.Numerics;
 using Dalamud.Game.ClientState.Objects.Enums;
 using ICharacter = Dalamud.Game.ClientState.Objects.Types.ICharacter;
 using Dalamud.Interface.Textures;
+using Dalamud.Game.ClientState.Keys;
+using FFXIVClientStructs.FFXIV.Client.UI;
+using System.Runtime.InteropServices;
 #endregion
 
 namespace XivVoices {
@@ -552,7 +555,7 @@ namespace XivVoices {
         public void ClickTalk()
         {
             if (config.AdvanceTalkEnabled)
-                _addonTalkManager.Click();
+                SetKeyValue(VirtualKey.NUMPAD0, KeyStateFlags.Pressed);
         }
 
         public int GetNumberFromString(string value) {
@@ -563,7 +566,8 @@ namespace XivVoices {
             }
         }
 
-        
+        private unsafe static void SetKeyValue(VirtualKey virtualKey, KeyStateFlags keyStateFlag) => (*(int*)(Service.SigScanner.Module.BaseAddress + Marshal.ReadInt32(Service.SigScanner.ScanText("48 8D 0C 85 ?? ?? ?? ?? 8B 04 31 85 C2 0F 85") + 0x4) + (4 * (*(byte*)(Service.SigScanner.Module.BaseAddress + Marshal.ReadInt32(Service.SigScanner.ScanText("0F B6 94 33 ?? ?? ?? ?? 84 D2") + 0x4) + (int)virtualKey))))) = (int)keyStateFlag;
+
         private void _filter_OnSoundIntercepted(object sender, InterceptedSound e)
         {
             

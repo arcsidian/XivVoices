@@ -1,5 +1,7 @@
 ﻿using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Application.Network.WorkDefinitions;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Component.GUI;
 
 namespace XivVoices.Voice {
     public class AddonTalkManager : AddonManager {
@@ -19,12 +21,6 @@ namespace XivVoices.Voice {
         public unsafe bool IsVisible() {
             var addonTalk = GetAddonTalk();
             return addonTalk != null && addonTalk->AtkUnitBase.IsVisible;
-        }
-
-        public unsafe void Click(){
-            var addonTalk = GetAddonTalk();
-            if (addonTalk != null)
-                addonTalk->FireCallbackInt(0);
         }
 
         private unsafe AddonTalk* GetAddonTalk() {
